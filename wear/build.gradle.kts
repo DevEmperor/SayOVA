@@ -22,11 +22,11 @@ val keystoreProperties = rootProject.file("keystore.properties").takeIf { it.exi
     Properties().apply { file.inputStream().use(::load) }
 }
 
-// Where the pairing page and its relay live (pair/ in this repository). Set `parley.pairBaseUrl` in
-// gradle.properties or with -P once the Worker is deployed; the address is compiled into the app
-// and is the same for the QR code and for the watch's own requests.
+// Where the pairing page and its relay live (pair/ in this repository), set as `parley.pairBaseUrl`
+// in gradle.properties. The address is compiled into the app and is the same for the QR code and
+// for the watch's own requests.
 val pairBaseUrl = (findProperty("parley.pairBaseUrl") as String?)?.trimEnd('/')
-    ?: "https://parley-pair.devemperor.workers.dev"
+    ?: error("parley.pairBaseUrl is not set (see gradle.properties)")
 
 kotlin {
     compilerOptions {

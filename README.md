@@ -88,8 +88,8 @@ sees data it cannot read. Details: [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
 JAVA_HOME=/usr/lib/jvm/java-21-openjdk ./gradlew :core:testDebugUnitTest :wear:testDebugUnitTest :wear:lintDebug :wear:assembleRelease
 ```
 
-The address of the pairing page is compiled into the app; set it with
-`-Pparley.pairBaseUrl=https://…` or in `gradle.properties`. See [pair/README.md](pair/README.md)
+The address of the pairing page is compiled into the app from `parley.pairBaseUrl` in
+`gradle.properties` (currently `https://parley-pair.flat-pine-028f.workers.dev`). See [pair/README.md](pair/README.md)
 for the relay.
 
 Debug builds can play a scripted conversation for screenshots:
@@ -97,6 +97,11 @@ Debug builds can play a scripted conversation for screenshots:
 ```bash
 adb shell am start -n net.devemperor.parley.debug/net.devemperor.parley.MainActivity --ez demo true
 ```
+
+## Credits
+
+The orb is adapted from the Cloud theme of [orb-ui](https://github.com/exprmntl/orb-ui) by
+Alexander Chen (MIT License), recoloured in Parley's palette.
 
 ## License
 
