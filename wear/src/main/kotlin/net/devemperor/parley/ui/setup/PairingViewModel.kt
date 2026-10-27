@@ -67,6 +67,8 @@ class PairingViewModel(application: Application) : AndroidViewModel(application)
             keyPair = pair
             val id = PairingIds.newId()
             val link = PairingLink.build(BuildConfig.PAIR_BASE_URL, id, pair.publicKey, provider.key)
+            // Lets an emulator be paired without scanning its screen. The link holds only public data.
+            if (BuildConfig.DEBUG) android.util.Log.d("ParleyPair", link)
             var failures = 0
             // Announce the code; keep trying while offline, the QR code is shown either way.
             _state.value = PairingState.Waiting(link, provider)
