@@ -18,6 +18,7 @@ import net.devemperor.parley.audio.Haptics
 import net.devemperor.parley.audio.Headphones
 import net.devemperor.parley.audio.Microphone
 import net.devemperor.parley.audio.SpeechPlayer
+import net.devemperor.parley.core.audio.BargeInDetector
 import net.devemperor.parley.core.audio.Pcm
 import net.devemperor.parley.core.conversation.Conversation
 import net.devemperor.parley.core.conversation.Role
@@ -100,6 +101,15 @@ class ConversationEngine(
 
     private val headphones = Headphones(context)
 
+    // Talking over an answer on the watch speaker (see BargeInDetector). Touched by the mic thread.
+    private val bargeIn = BargeInDetector()
+    @Volatile private var listeningForBargeIn = false
+    @Volatile private var bargeInHeard = false
+    /** The last moments of microphone audio held back during an answer, so the user's first words survive. */
+    private val preRoll = ArrayDeque<ByteArray>()
+    /** Set when the user talked over an answer: the held-back audio goes out once the microphone opens. */
+    @Volatile private var keepPreRoll = false
+
     private var muted = false
     private var talking = false
     private var currentAnswerKey: String? = null
@@ -175,13 +185,31 @@ class ConversationEngine(
     // ── Microphone ──────────────────────────────────────────────────────────────────────────────
 
     private fun onMicAudio(pcm: ByteArray) {
-        if (!micOpen) return
+        if (!micOpen) {
+            if (listeningForBargeIn) synchronized(preRoll) {
+                preRoll.addLast(pcm)
+                while (preRoll.size > PRE_ROLL_CHUNKS) preRoll.removeFirst()
+            }
+            return
+        }
+        synchronized(preRoll) {
+            while (preRoll.isNotEmpty()) session.sendAudio(preRoll.removeFirst())
+            keepPreRoll = false
+        }
         session.sendAudio(pcm)
         inputAudioMs.addAndGet(Pcm.durationMs(pcm.size, session.inputSampleRate))
     }
 
     private fun onMicLevel(level: Float) {
         micLevel = if (micOpen) level else 0f
+        if (BuildConfig.DEBUG && listeningForBargeIn) echoPeak = maxOf(echoPeak, level)
+        if (listeningForBargeIn && !bargeInHeard) {
+            val played = player?.recentLevel(ECHO_WINDOW_MS) ?: 0f
+            if (bargeIn.onFrame(level, played, SystemClock.elapsedRealtime())) {
+                bargeInHeard = true
+                if (BuildConfig.DEBUG) Log.d(TAG, "barge-in: mic %.2f, played %.2f, coupling %.2f".format(level, played, bargeIn.learnedCoupling))
+            }
+        }
     }
 
     // ── Events ──────────────────────────────────────────────────────────────────────────────────
@@ -271,12 +299,12 @@ class ConversationEngine(
     }
 
     /**
-     * Whether the user's voice may cut an answer short right now. Over the watch speaker the
-     * microphone hears every answer, which the provider then takes for the user talking over it: the
-     * screen flickers between listening and speaking and answers break off. So with the automatic
-     * setting the microphone listens during an answer only through headphones; a tap still interrupts.
+     * Whether the microphone may stream to the provider while Parley speaks. Over the watch speaker
+     * it hears every answer, which the provider takes for the user talking over it: answers break
+     * off. So in the automatic mode the audio stays on the watch during an answer and BargeInDetector
+     * listens for the user instead; through headphones there is no echo and the microphone streams.
      */
-    private fun voiceBargeIn(): Boolean = when (options.bargeIn) {
+    private fun streamWhileSpeaking(): Boolean = when (options.bargeIn) {
         BargeIn.ON -> true
         BargeIn.OFF -> false
         BargeIn.AUTO -> headphones.connected
@@ -323,9 +351,24 @@ class ConversationEngine(
         // flip back to listening at every gap.
         speaking = if (options.textOnly) answerStreaming else answerStreaming || playing || now - lastAudibleAt < SPEAKING_TAIL_MS
 
-        micOpen = ready && !muted &&
-            (!_state.value.pushToTalk || talking) &&
-            !(speaking && !voiceBargeIn())
+        // The answer's echo still reaches the microphone for a moment after the last of it was played.
+        var echoTail = !options.textOnly && lastAudibleAt > 0 && now - lastAudibleAt < ECHO_WINDOW_MS
+        if (bargeInHeard) {
+            bargeInHeard = false
+            if (speaking) interruptAnswer()
+            speaking = false
+            echoTail = false
+            lastAudibleAt = 0
+            keepPreRoll = true
+        }
+        val listening = ready && !muted && (!_state.value.pushToTalk || talking)
+        if (!listening) keepPreRoll = false
+        val gated = (speaking || echoTail) && !streamWhileSpeaking()
+        listeningForBargeIn = listening && gated && options.bargeIn == BargeIn.AUTO && !options.textOnly
+        // Held-back audio is the user's first words when they talked over the answer, and otherwise
+        // only the answer's echo, which must not reach the provider when the microphone opens.
+        if (!listeningForBargeIn && !keepPreRoll) synchronized(preRoll) { preRoll.clear() }
+        micOpen = listening && !gated
         if (micOpen && micLevel > SPEECH_LEVEL) touch()
         if (BuildConfig.DEBUG) logMicPeak(now)
         if (speaking) touch()
@@ -346,6 +389,7 @@ class ConversationEngine(
         // One tap on the wrist per answer, not one per burst of audio.
         if (phase == Phase.SPEAKING && answerHapticKey != currentAnswerKey) {
             answerHapticKey = currentAnswerKey
+            bargeIn.startAnswer(now)
             haptics.answering()
         }
         if (phase != lastPhase && BuildConfig.DEBUG) Log.d(TAG, "phase ${lastPhase.name} -> ${phase.name} (mic ${if (micOpen) "open" else "closed"})")
@@ -369,7 +413,7 @@ class ConversationEngine(
             transport = transport.value,
             muted = muted,
             talking = talking,
-            halfDuplex = speaking && !voiceBargeIn() && !options.textOnly,
+            halfDuplex = speaking && options.bargeIn == BargeIn.OFF && !options.textOnly,
             notice = notice,
         )
     }
@@ -461,13 +505,19 @@ class ConversationEngine(
 
     private var micPeak = 0f
     private var micPeakSince = 0L
+    @Volatile private var echoPeak = 0f
 
-    /** Debug: once a second, how loud the microphone got — proves injected speech reaches the watch. */
+    /**
+     * Debug: once a second, how loud the microphone got — proves injected speech reaches the watch —
+     * and, during an answer, how loud Parley's own voice comes back (what the barge-in detector sees).
+     */
     private fun logMicPeak(now: Long) {
         micPeak = maxOf(micPeak, if (micOpen) micLevel else 0f)
         if (now - micPeakSince < 1_000) return
         if (micPeak > 0.05f) Log.d(TAG, "mic peak %.2f".format(micPeak))
+        if (echoPeak > 0.05f) Log.d(TAG, "echo peak %.2f, coupling %.2f".format(echoPeak, bargeIn.learnedCoupling))
         micPeak = 0f
+        echoPeak = 0f
         micPeakSince = now
     }
 
@@ -476,5 +526,15 @@ class ConversationEngine(
         const val TICK_MS = 66L
         const val SPEECH_LEVEL = 0.45f
         const val SPEAKING_TAIL_MS = 400L
+        /**
+         * How far back the played answer counts as possible echo: output and input buffers plus the
+         * room. The emulator's loop measured about 300 ms; watches are faster, but not all of them.
+         */
+        const val ECHO_WINDOW_MS = 600L
+        /**
+         * 10 × 100 ms of microphone audio kept during an answer for when the user talks over it: when
+         * the echo is loud the user is often recognised only in the answer's next pause.
+         */
+        const val PRE_ROLL_CHUNKS = 10
     }
 }

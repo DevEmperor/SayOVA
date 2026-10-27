@@ -26,9 +26,9 @@ import java.time.YearMonth
 
 /** Whether the user's voice may cut the answer short. */
 enum class BargeIn(val label: String, val description: String) {
-    AUTO("With headphones", "On the watch speaker, tap the orb instead"),
-    ON("Always", "The watch may hear its own voice"),
-    OFF("Never", "Tap the orb to interrupt"),
+    AUTO("Automatic", "Talk over Parley to interrupt it"),
+    ON("Open microphone", "For headphones; the speaker may interrupt itself"),
+    OFF("Tap only", "Tap the orb to interrupt"),
 }
 
 data class ParleySettings(

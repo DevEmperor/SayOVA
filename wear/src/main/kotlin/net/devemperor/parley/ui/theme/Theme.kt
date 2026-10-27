@@ -17,6 +17,8 @@ object ParleyColors {
     val VioletBright = Color(0xFFB9A3FF)
     val Amber = Color(0xFFF5A524)
     val Coral = Color(0xFFFF7A6E)
+    /** The hang-up button: the red everyone knows from phone calls, a shade darker than Coral. */
+    val HangUp = Color(0xFFE5484D)
     val Muted = Color(0xFF9AA2B3)
     val Faint = Color(0x66F2F4F8)
     val Text = Color(0xFFF2F4F8)

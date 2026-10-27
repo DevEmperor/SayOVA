@@ -116,6 +116,26 @@ class SpeechPlayer(private val sampleRate: Int) {
             levels.lastOrNull { it.first <= head }?.second ?: 0f
         }
 
+    /**
+     * The loudest of what was played in the last [windowMs]. The microphone hears the speaker a
+     * little late and the room rings on, so echo is compared with this rather than the current chunk.
+     */
+    fun recentLevel(windowMs: Long): Float = synchronized(this) {
+        if (released) return 0f
+        val head = framesPlayed
+        val from = head - windowMs * sampleRate / 1000
+        var loudest = 0f
+        var underHead = 0f
+        for ((start, level) in levels) {
+            if (start > head) break
+            if (start >= from) loudest = maxOf(loudest, level)
+            underHead = level
+        }
+        // The chunk being played may have started before the window.
+        if (head < framesWritten) loudest = maxOf(loudest, underHead)
+        loudest
+    }
+
     /** Stops the answer at once and drops everything still queued. */
     fun flush() {
         if (released) return

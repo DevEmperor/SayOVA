@@ -56,11 +56,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.rotary.RotaryScrollableDefaults
 import androidx.wear.compose.foundation.rotary.rotaryScrollable
-import androidx.wear.compose.material3.ButtonDefaults
-import androidx.wear.compose.material3.EdgeButton
-import androidx.wear.compose.material3.EdgeButtonSize
+import androidx.wear.compose.material3.FilledIconButton
+import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.TimeText
 import androidx.wear.compose.material3.curvedText
@@ -75,7 +75,6 @@ import net.devemperor.parley.net.Transport
 import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.Phase
 import net.devemperor.parley.session.UiTurn
-import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.KeepScreenOn
 import net.devemperor.parley.ui.components.MessageScreen
 import net.devemperor.parley.ui.components.Orb
@@ -114,7 +113,9 @@ fun ConversationScreen(
 
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
-    EdgeButtonScaffold(
+    // No edge button: a small red hang-up button leaves the transcript most of the screen and is
+    // recognisable at a glance, like the one on a phone call.
+    ScreenScaffold(
         timeText = {
             TimeText { time ->
                 timeTextCurvedText(time)
@@ -122,20 +123,10 @@ fun ConversationScreen(
                 curvedText(status, color = statusColor)
             }
         },
-        edgeButton = {
-            EdgeButton(
-                onClick = onEnd,
-                buttonSize = EdgeButtonSize.ExtraSmall,
-                colors = ButtonDefaults.filledTonalButtonColors(),
-                enabled = state.active,
-            ) {
-                Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(20.dp))
-            }
-        },
-    ) { padding ->
+    ) { _ ->
         val width = screenWidth()
         Column(
-            Modifier.fillMaxSize().padding(bottom = padding.calculateBottomPadding()),
+            Modifier.fillMaxSize().padding(bottom = width * 0.03f),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(width * 0.12f))
@@ -162,6 +153,14 @@ fun ConversationScreen(
             }
             Caption(state)
             Transcript(state, width, Modifier.weight(1f).fillMaxWidth())
+            FilledIconButton(
+                onClick = onEnd,
+                enabled = state.active,
+                colors = IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.HangUp, contentColor = Color.White),
+                modifier = Modifier.size(width * 0.15f),
+            ) {
+                Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.085f))
+            }
         }
     }
 }
@@ -207,7 +206,10 @@ private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier
             .drawWithContent {
                 drawContent()
                 val fade = (FADE.toPx() / size.height).coerceIn(0f, 0.5f)
-                drawRect(Brush.verticalGradient(0f to Color.Transparent, fade to Color.Black), blendMode = BlendMode.DstIn)
+                drawRect(
+                    Brush.verticalGradient(0f to Color.Transparent, fade to Color.Black, 1f - fade to Color.Black, 1f to Color.Transparent),
+                    blendMode = BlendMode.DstIn,
+                )
             }
             .rotaryScrollable(RotaryScrollableDefaults.behavior(scroll), focus)
             .verticalScroll(scroll)
