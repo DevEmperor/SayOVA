@@ -4,7 +4,7 @@
 # emulator's own gRPC bridge (tools/emu_audio.py), so a whole conversation can be tested without a sound in
 # the room and without touching the desktop's audio devices.
 #
-#   tools/emulator.sh start            create the AVD if needed, boot it headless with the virtual audio
+#   tools/emulator.sh start [--headless]   create the AVD if needed and boot it, in a window by default
 #   tools/emulator.sh install          install the debug build and grant its permissions
 #   tools/emulator.sh say "<text>" [voice]   speak into the watch (espeak-ng, default voice en-us)
 #   tools/emulator.sh play <file.wav>  play a recording into the watch
@@ -59,13 +59,24 @@ case "${1:-}" in
              -e 's/^hw.lcd.circular=.*/hw.lcd.circular=true/' "$CONFIG"
     fi
     venv_up
-    # Headless qemu: no window anywhere. `-grpc <port>` opens the bridge on localhost without a token.
-    nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" -no-window -no-boot-anim \
-      -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$STATE/emulator.log" 2>&1 &
+    # `-grpc <port>` opens the bridge on localhost without a token; tools/emu_audio.py speaks into the
+    # microphone and records through it. The host microphone stays off (no -allow-host-audio).
+    if [ "${2:-}" = --headless ]; then
+      # Headless qemu: no window at all, and no host audio driver either.
+      nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" -no-window -no-boot-anim \
+        -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$STATE/emulator.log" 2>&1 &
+    else
+      # In a window the emulator would open the desktop's sound devices, and its PulseAudio input
+      # failing ("pa_simple_read failed") went together with two emulator crashes. With the host audio
+      # driver set to none it touches no desktop audio at all; gRPC still carries both directions.
+      QEMU_AUDIO_DRV=none nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" \
+        -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$STATE/emulator.log" 2>&1 &
+    fi
     echo $! > "$STATE/emulator.pid"
     boot_wait
     "$ADB" -s "$SERIAL" shell dumpsys battery unplug   # otherwise the charging screen covers everything
     "$ADB" -s "$SERIAL" shell settings put system screen_off_timeout 600000
+    "$ADB" -s "$SERIAL" shell svc power stayon true   # no ambient mode, where taps would not land
     echo "booted $SERIAL"
     ;;
   install)
@@ -93,6 +104,7 @@ case "${1:-}" in
   stop)
     "$ADB" -s "$SERIAL" emu kill > /dev/null 2>&1 || true
     [ -s "$STATE/emulator.pid" ] && { kill "$(cat "$STATE/emulator.pid")" 2>/dev/null || true; rm -f "$STATE/emulator.pid"; }
+    [ -s "$STATE/sink.module" ] && { pactl unload-module "$(cat "$STATE/sink.module")" 2>/dev/null || true; rm -f "$STATE/sink.module"; }
     echo "stopped"
     ;;
   remove)
