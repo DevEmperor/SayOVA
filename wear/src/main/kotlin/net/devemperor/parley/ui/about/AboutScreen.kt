@@ -78,6 +78,7 @@ fun LicensesScreen() {
         "OkHttp, Okio" to "Apache License 2.0 · Square",
         "Tink" to "Apache License 2.0 · Google",
         "QR Code generator" to "MIT License · Project Nayuki",
+        "orb-ui (Cloud orb)" to "MIT License · Alexander Chen",
         "Material Symbols" to "Apache License 2.0 · Google",
     )
     ListScreen { spec ->

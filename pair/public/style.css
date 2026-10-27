@@ -41,27 +41,15 @@ body {
 .brand { text-align: center; margin-bottom: 1.75rem; }
 
 .orb {
-  position: relative;
   width: 76px;
   height: 76px;
   margin: 0 auto 1rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 32% 30%, #7ff0e4, var(--teal) 38%, var(--violet) 100%);
-  box-shadow: 0 0 40px rgb(46 196 182 / 0.35), 0 0 80px rgb(139 92 246 / 0.25);
+  /* A still frame of the app's cloud orb (orb-ui's Cloud theme in Parley's colours). */
+  background: url("/orb.png") center / cover no-repeat;
+  box-shadow: 0 0 40px rgb(115 148 250 / 0.35), 0 0 80px rgb(140 219 219 / 0.18);
   animation: breathe 4.5s ease-in-out infinite;
 }
-
-.orb span {
-  position: absolute;
-  top: 50%;
-  width: 6px;
-  border-radius: 3px;
-  background: #fff;
-  transform: translateY(-50%);
-}
-.orb span:nth-child(1) { left: 26px; height: 14px; }
-.orb span:nth-child(2) { left: 35px; height: 26px; }
-.orb span:nth-child(3) { left: 44px; height: 14px; }
 
 @keyframes breathe {
   0%, 100% { transform: scale(1); }
