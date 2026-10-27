@@ -7,7 +7,6 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +15,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.audio.Haptics
+import net.devemperor.parley.audio.Headphones
 import net.devemperor.parley.audio.Microphone
 import net.devemperor.parley.audio.SpeechPlayer
 import net.devemperor.parley.core.audio.Pcm
@@ -98,11 +98,16 @@ class ConversationEngine(
     private val outputAudioMs = AtomicLong()
     private var tokens = TokenUsage()
 
+    private val headphones = Headphones(context)
+
     private var muted = false
     private var talking = false
-    private var halfDuplex = options.bargeIn == BargeIn.OFF
     private var currentAnswerKey: String? = null
     private var answerStreaming = false
+    /** An answer is being heard: from its first word until it has been played to the end. */
+    private var speaking = false
+    private var lastAudibleAt = 0L
+    private var answerHapticKey: String? = null
     private var awaitingAnswer = false
     private var lastUserTextAt = 0L
     private var lastActivityAt = SystemClock.elapsedRealtime()
@@ -111,11 +116,9 @@ class ConversationEngine(
     private var lastPhase = Phase.CONNECTING
     private var notice: String? = null
     private var noticeUntil = 0L
-    private var echoStrikes = 0
-    private var echoCheck: Job? = null
-    private var userWordsSinceInterruption = 0
 
     fun start() {
+        headphones.start()
         scope.launch { session.events.collect(::handle) }
         scope.launch {
             while (isActive && !finished) {
@@ -141,7 +144,7 @@ class ConversationEngine(
     fun tapOrb() {
         touch()
         when {
-            player?.isPlaying == true || (options.textOnly && answerStreaming) -> interruptAnswer(byUser = true)
+            speaking -> interruptAnswer()
             _state.value.pushToTalk -> setTalking(!talking)
             else -> toggleMute()
         }
@@ -201,7 +204,7 @@ class ConversationEngine(
                 touch()
                 event.turnKey?.let { record(it, Role.USER) }
                 // OpenAI reports speech start; the answer must stop here and now (barge-in).
-                if (player?.isPlaying == true) interruptAnswer(byUser = false)
+                if (speaking) interruptAnswer()
             }
             VoiceEvent.SpeechStopped -> awaitingAnswer = true
             is VoiceEvent.UserTranscript -> {
@@ -209,7 +212,6 @@ class ConversationEngine(
                 val record = record(event.turnKey, Role.USER)
                 if (event.replace) record.text.setLength(0)
                 record.text.append(event.text)
-                userWordsSinceInterruption += event.text.count { !it.isWhitespace() }
                 lastUserTextAt = SystemClock.elapsedRealtime()
                 if (!answerStreaming) awaitingAnswer = true
             }
@@ -224,7 +226,7 @@ class ConversationEngine(
                 outputAudioMs.addAndGet(Pcm.durationMs(event.pcm.size, session.outputSampleRate))
                 player?.enqueue(event.turnKey, event.pcm)
             }
-            VoiceEvent.Interrupted -> interruptAnswer(byUser = false)
+            VoiceEvent.Interrupted -> interruptAnswer()
             VoiceEvent.TurnComplete -> {
                 answerStreaming = false
                 awaitingAnswer = false
@@ -238,10 +240,7 @@ class ConversationEngine(
     }
 
     private fun startAnswer(key: String) {
-        if (currentAnswerKey != key) {
-            currentAnswerKey = key
-            userWordsSinceInterruption = 0
-        }
+        currentAnswerKey = key
         answerStreaming = true
         awaitingAnswer = false
     }
@@ -250,44 +249,37 @@ class ConversationEngine(
         records.lastOrNull { it.key == key && it.role == role }
             ?: Record(key, role, System.currentTimeMillis()).also { records += it }
 
-    /**
-     * Cuts the answer short, keeps only what was heard of it, and tells the provider so. When the
-     * server did the cutting (it heard speech), [byUser] is false; if no words follow, it was probably
-     * the watch hearing its own speaker, and after two such cases this conversation stops listening
-     * while Parley speaks.
-     */
-    private fun interruptAnswer(byUser: Boolean) {
+    /** Cuts the answer short, keeps only what was heard of it, and tells the provider so. */
+    private fun interruptAnswer() {
         val key = currentAnswerKey ?: return
         val record = records.lastOrNull { it.key == key && it.role == Role.ASSISTANT }
         val played = player?.playedMs(key) ?: 0L
         val received = player?.receivedMs(key) ?: 0L
-        val wasPlaying = player?.isPlaying == true || (options.textOnly && answerStreaming)
+        val wasHeard = speaking
         player?.flush()
         session.interrupt(key, played)
         answerStreaming = false
-        if (record != null && wasPlaying && received > 0 && played < received - 150) {
+        speaking = false
+        lastAudibleAt = 0
+        if (record != null && wasHeard && received > 0 && played < received - 150) {
             val keep = (record.text.length * played / received).toInt()
             val cut = record.text.lastIndexOf(" ", keep).takeIf { it > 0 } ?: keep
             record.text.setLength(cut.coerceIn(0, record.text.length))
             record.text.append(" …")
             record.interrupted = true
         }
-        if (!byUser && wasPlaying && options.bargeIn == BargeIn.AUTO && !halfDuplex) watchForEcho()
     }
 
-    private fun watchForEcho() {
-        userWordsSinceInterruption = 0
-        echoCheck?.cancel()
-        echoCheck = scope.launch {
-            delay(ECHO_WINDOW_MS)
-            if (userWordsSinceInterruption < 2) {
-                echoStrikes++
-                if (echoStrikes >= 2) {
-                    halfDuplex = true
-                    showNotice("Tap the orb to interrupt", 4_000)
-                }
-            }
-        }
+    /**
+     * Whether the user's voice may cut an answer short right now. Over the watch speaker the
+     * microphone hears every answer, which the provider then takes for the user talking over it: the
+     * screen flickers between listening and speaking and answers break off. So with the automatic
+     * setting the microphone listens during an answer only through headphones; a tap still interrupts.
+     */
+    private fun voiceBargeIn(): Boolean = when (options.bargeIn) {
+        BargeIn.ON -> true
+        BargeIn.OFF -> false
+        BargeIn.AUTO -> headphones.connected
     }
 
     private fun runTool(call: VoiceEvent.ToolCall) {
@@ -323,13 +315,20 @@ class ConversationEngine(
         if (finished) return
         val now = SystemClock.elapsedRealtime()
         val playing = player?.isPlaying == true
+        if (playing) lastAudibleAt = now
+
+        // Speaking holds from the first word of an answer until the provider has finished it and the
+        // last of it has been played, plus a short tail for the room to fall quiet. Audio arrives in
+        // bursts over Wi-Fi or Bluetooth, and judging by the playback buffer alone made the state
+        // flip back to listening at every gap.
+        speaking = if (options.textOnly) answerStreaming else answerStreaming || playing || now - lastAudibleAt < SPEAKING_TAIL_MS
 
         micOpen = ready && !muted &&
             (!_state.value.pushToTalk || talking) &&
-            !(halfDuplex && playing)
+            !(speaking && !voiceBargeIn())
         if (micOpen && micLevel > SPEECH_LEVEL) touch()
         if (BuildConfig.DEBUG) logMicPeak(now)
-        if (playing) touch()
+        if (speaking) touch()
 
         // Gemini announces no end of speech; a pause after the user's words means an answer is due.
         if (!awaitingAnswer && !answerStreaming && lastUserTextAt > 0 && now - lastUserTextAt > 700 && micLevel < SPEECH_LEVEL) {
@@ -339,17 +338,20 @@ class ConversationEngine(
         val phase = when {
             reconnecting -> Phase.RECONNECTING
             !ready -> Phase.CONNECTING
+            speaking -> Phase.SPEAKING
             pendingTools > 0 -> Phase.THINKING
-            playing -> Phase.SPEAKING
-            options.textOnly && answerStreaming -> Phase.SPEAKING
             awaitingAnswer -> Phase.THINKING
             else -> Phase.LISTENING
         }
-        if (phase == Phase.SPEAKING && lastPhase != Phase.SPEAKING) haptics.answering()
+        // One tap on the wrist per answer, not one per burst of audio.
+        if (phase == Phase.SPEAKING && answerHapticKey != currentAnswerKey) {
+            answerHapticKey = currentAnswerKey
+            haptics.answering()
+        }
         if (phase != lastPhase && BuildConfig.DEBUG) Log.d(TAG, "phase ${lastPhase.name} -> ${phase.name} (mic ${if (micOpen) "open" else "closed"})")
         lastPhase = phase
 
-        if (endAfterSpeech && !playing && pendingTools == 0) {
+        if (endAfterSpeech && !speaking && pendingTools == 0) {
             end()
         } else if (options.autoEndSeconds > 0 && phase == Phase.LISTENING && now - lastActivityAt > options.autoEndSeconds * 1000L) {
             end()
@@ -367,7 +369,7 @@ class ConversationEngine(
             transport = transport.value,
             muted = muted,
             talking = talking,
-            halfDuplex = halfDuplex && options.bargeIn == BargeIn.AUTO,
+            halfDuplex = speaking && !voiceBargeIn() && !options.textOnly,
             notice = notice,
         )
     }
@@ -380,7 +382,7 @@ class ConversationEngine(
         } else {
             text.length
         }
-        UiTurn(record.key, record.role, text, if (answerStreaming || player?.isPlaying == true) spoken else text.length, record.interrupted)
+        UiTurn(record.key, record.role, text, if (speaking) spoken else text.length, record.interrupted)
     }
 
     private fun cost(): Double = CostMeter(model.pricing).apply {
@@ -397,7 +399,7 @@ class ConversationEngine(
         finished = true
         finalError = error
         micOpen = false
-        echoCheck?.cancel()
+        headphones.stop()
         val finalTurns = uiTurns()
         microphone.stop()
         player?.release()
@@ -473,6 +475,6 @@ class ConversationEngine(
         const val TAG = "ParleyEvent"
         const val TICK_MS = 66L
         const val SPEECH_LEVEL = 0.45f
-        const val ECHO_WINDOW_MS = 3_000L
+        const val SPEAKING_TAIL_MS = 400L
     }
 }

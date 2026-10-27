@@ -40,7 +40,7 @@ data class ConversationUiState(
     val pushToTalk: Boolean = false,
     /** Push-to-talk: the microphone is open right now. */
     val talking: Boolean = false,
-    /** Barge-in was switched off for this conversation because the watch heard itself. */
+    /** Parley is speaking over the watch speaker, so the microphone is closed: a tap interrupts. */
     val halfDuplex: Boolean = false,
     val providerLabel: String = "",
     /** A short, temporary hint ("Timer set", "Searching the web…"). */
