@@ -2,6 +2,7 @@ package net.devemperor.parley.ui.conversation
 
 import android.os.SystemClock
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -82,9 +83,11 @@ import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
- * The live conversation. The header stays put: status on the bezel, the orb as the one control, one
- * caption line under it. Below it, in its own area, the transcript scrolls; the part of an answer
- * already heard is bright, the rest dim. The end button never leaves the bottom edge.
+ * The live conversation: status on the bezel, the orb as the one control, one caption line under it,
+ * the red end button at the bottom with the text button beside it. By default only the orb is shown,
+ * large and centred, pulsing with whoever speaks; with the transcript on, the orb moves up and the
+ * transcript scrolls below it, the part of an answer already heard bright, the rest dim. The last
+ * choice is remembered ([showTranscript]); silent mode always shows the text, its only output.
  *
  * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
  * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
@@ -92,6 +95,8 @@ import net.devemperor.parley.ui.theme.ParleyColors
 @Composable
 fun ConversationScreen(
     state: ConversationUiState,
+    showTranscript: Boolean,
+    onToggleTranscript: () -> Unit,
     onTapOrb: () -> Unit,
     onEnd: () -> Unit,
     onDone: () -> Unit,
@@ -113,7 +118,8 @@ fun ConversationScreen(
 
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
-    // No edge button: a small red hang-up button leaves the transcript most of the screen and is
+    val transcript = showTranscript || state.textOnly
+    // No edge button: a small red hang-up button leaves the content most of the screen and is
     // recognisable at a glance, like the one on a phone call.
     ScreenScaffold(
         timeText = {
@@ -125,15 +131,18 @@ fun ConversationScreen(
         },
     ) { _ ->
         val width = screenWidth()
+        val orbSize by animateDpAsState(if (transcript) width * 0.2f else width * 0.46f, label = "orb")
         Column(
             Modifier.fillMaxSize().padding(bottom = width * 0.03f),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(width * 0.12f))
+            // The orb keeps its place in the composition either way, so switching only resizes it.
+            if (!transcript) Spacer(Modifier.weight(1f))
             val orbLabel = orbDescription(state)
             Box(
                 Modifier
-                    .size(width * 0.2f)
+                    .size(orbSize)
                     .semantics { contentDescription = orbLabel }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
@@ -151,17 +160,70 @@ fun ConversationScreen(
                     modifier = Modifier.fillMaxSize(),
                 )
             }
+            if (!transcript) Spacer(Modifier.height(6.dp))
             Caption(state)
-            Transcript(state, width, Modifier.weight(1f).fillMaxWidth())
-            FilledIconButton(
-                onClick = onEnd,
-                enabled = state.active,
-                colors = IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.HangUp, contentColor = Color.White),
-                modifier = Modifier.size(width * 0.15f),
-            ) {
-                Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.085f))
+            if (transcript) {
+                Transcript(state, width, Modifier.weight(1f).fillMaxWidth())
+            } else {
+                Spacer(Modifier.weight(1f))
+            }
+            Controls(
+                state = state,
+                width = width,
+                transcript = transcript,
+                onToggleTranscript = onToggleTranscript.takeUnless { state.textOnly },
+                onEnd = onEnd,
+            )
+        }
+    }
+}
+
+/**
+ * The red end button in the middle and, left of it, the text button: dim with the text hidden, lit
+ * with it shown. [onToggleTranscript] is null in silent mode, where the text cannot be hidden. The
+ * empty slot on the right keeps the end button centred.
+ */
+@Composable
+private fun Controls(state: ConversationUiState, width: Dp, transcript: Boolean, onToggleTranscript: (() -> Unit)?, onEnd: () -> Unit) {
+    val side = width * 0.12f
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(width * 0.04f),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(Modifier.size(side)) {
+            if (onToggleTranscript != null) {
+                FilledIconButton(
+                    onClick = onToggleTranscript,
+                    colors = if (transcript) {
+                        IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    } else {
+                        IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Icon(
+                        painterResource(if (transcript) R.drawable.ic_subtitles else R.drawable.ic_subtitles_off),
+                        contentDescription = stringResource(if (transcript) R.string.action_hide_text else R.string.action_show_text),
+                        modifier = Modifier.size(width * 0.07f),
+                    )
+                }
             }
         }
+        FilledIconButton(
+            onClick = onEnd,
+            enabled = state.active,
+            colors = IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.HangUp, contentColor = Color.White),
+            modifier = Modifier.size(width * 0.15f),
+        ) {
+            Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.085f))
+        }
+        Spacer(Modifier.size(side))
     }
 }
 

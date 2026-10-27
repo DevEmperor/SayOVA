@@ -47,6 +47,8 @@ data class ParleySettings(
     val autoEndSeconds: Int = 20,
     val haptics: Boolean = true,
     val showCost: Boolean = true,
+    /** Whether a conversation shows the transcript or only the orb; the last choice sticks. */
+    val showTranscript: Boolean = false,
     /** Days conversations are kept; 0 = not saved, -1 = forever. */
     val historyDays: Int = 30,
     val startOnLaunch: Boolean = false,
@@ -96,6 +98,7 @@ class SettingsRepository(private val context: Context) {
         val autoEnd = intPreferencesKey("auto_end_seconds")
         val haptics = booleanPreferencesKey("haptics")
         val showCost = booleanPreferencesKey("show_cost")
+        val showTranscript = booleanPreferencesKey("show_transcript")
         val historyDays = intPreferencesKey("history_days")
         val startOnLaunch = booleanPreferencesKey("start_on_launch")
         val costMonth = stringPreferencesKey("cost_month")
@@ -132,6 +135,7 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.autoEnd] = updated.autoEndSeconds
             prefs[Keys.haptics] = updated.haptics
             prefs[Keys.showCost] = updated.showCost
+            prefs[Keys.showTranscript] = updated.showTranscript
             prefs[Keys.historyDays] = updated.historyDays
             prefs[Keys.startOnLaunch] = updated.startOnLaunch
             prefs[Keys.costMonth] = updated.costMonth
@@ -161,6 +165,7 @@ class SettingsRepository(private val context: Context) {
             autoEndSeconds = prefs[Keys.autoEnd]?.takeIf { it in ParleySettings.AUTO_END_OPTIONS } ?: d.autoEndSeconds,
             haptics = prefs[Keys.haptics] ?: d.haptics,
             showCost = prefs[Keys.showCost] ?: d.showCost,
+            showTranscript = prefs[Keys.showTranscript] ?: d.showTranscript,
             historyDays = prefs[Keys.historyDays]?.takeIf { it in ParleySettings.HISTORY_OPTIONS } ?: d.historyDays,
             startOnLaunch = prefs[Keys.startOnLaunch] ?: d.startOnLaunch,
             costMonth = prefs[Keys.costMonth] ?: d.costMonth,

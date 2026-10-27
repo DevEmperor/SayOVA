@@ -65,6 +65,8 @@
     <string name="orb_start_talking">Start talking</string>
     <string name="orb_stop_talking">Done talking</string>
     <string name="action_end">End</string>
+    <string name="action_show_text">Show text</string>
+    <string name="action_hide_text">Hide text</string>
     <string name="action_close">Close</string>
     <string name="action_try_again">Try again</string>
     <string name="action_connect">Connect</string>

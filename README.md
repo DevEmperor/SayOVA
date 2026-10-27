@@ -19,8 +19,10 @@ your own API key.
 - **Real conversations, not commands.** Parley streams your voice live to a
   speech-to-speech model (Gemini Live or OpenAI Realtime) and plays the answer as it is
   generated. Speak over it to interrupt, or tap the orb.
-- **Live transcript.** Both sides of the conversation appear as you talk; the part of an
-  answer you have already heard is bright, the rest is still dim.
+- **Live transcript, one tap away.** By default Parley shows only its orb, pulsing with
+  whoever speaks. Tap the text button and both sides of the conversation appear as you
+  talk; the part of an answer you have already heard is bright, the rest is still dim.
+  Parley remembers your choice.
 - **Silent mode.** Answers as text only, with push-to-talk — for lectures, meetings or a
   quiet room.
 - **Does things on the watch.** Timers, alarms, notes, battery and time, and web search

@@ -113,12 +113,15 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     )
                 }
                 composable(Routes.CONVERSATION) {
+                    val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     val state = session
                     if (state == null) {
                         LaunchedEffect(Unit) { if (!navController.popBackStack(Routes.HOME, inclusive = false)) navController.navigateHome() }
                     } else {
                         ConversationScreen(
                             state = state,
+                            showTranscript = s.showTranscript,
+                            onToggleTranscript = { update { it.copy(showTranscript = !it.showTranscript) } },
                             onTapOrb = SessionHub::tapOrb,
                             onEnd = { SessionHub.end(context) },
                             onDone = {
