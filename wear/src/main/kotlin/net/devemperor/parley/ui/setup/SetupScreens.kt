@@ -49,6 +49,7 @@ import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.TimeText
 import androidx.wear.compose.material3.curvedText
 import net.devemperor.parley.R
 import net.devemperor.parley.core.provider.ProviderCatalog
@@ -229,36 +230,33 @@ private fun QrContent(state: PairingState.Waiting, onTypeKey: () -> Unit) {
     val context = LocalContext.current
     var phoneOpened by remember { mutableStateOf(false) }
     val continueOnPhone = stringResource(R.string.pair_continue_on_phone)
+    // The instruction runs along the top bezel where the clock usually is: the QR code needs the
+    // middle of the screen, and a straight line of text there collided with the clock.
+    val instruction = stringResource(if (state.offline) R.string.pair_waiting_offline else R.string.pair_scan)
+    val instructionColor = if (state.offline) ParleyColors.Coral else MaterialTheme.colorScheme.onSurfaceVariant
     EdgeButtonScaffold(
+        timeText = { TimeText(maxSweepAngle = 130f) { curvedText(instruction, color = instructionColor, maxSweepAngle = 130f) } },
         edgeButton = {
             EdgeButton(
                 onClick = { phoneOpened = openOnPhone(context, state.link) },
-                buttonSize = EdgeButtonSize.Small,
+                buttonSize = EdgeButtonSize.ExtraSmall,
                 colors = ButtonDefaults.filledTonalButtonColors(),
             ) {
-                Icon(painterResource(R.drawable.ic_smartphone), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(18.dp))
-                Text(stringResource(R.string.pair_open_on_phone))
+                Text(stringResource(R.string.pair_open_on_phone), maxLines = 1)
             }
         },
     ) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(top = 10.dp, bottom = padding.calculateBottomPadding()),
+            Modifier.fillMaxSize().padding(top = screenWidth() * 0.15f, bottom = padding.calculateBottomPadding()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Text(
-                stringResource(if (state.offline) R.string.pair_waiting_offline else R.string.pair_scan),
-                style = MaterialTheme.typography.labelSmall,
-                color = if (state.offline) ParleyColors.Coral else MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(Modifier.height(4.dp))
-            QrCodeImage(state.link, Modifier.size(screenWidth() * 0.5f))
+            QrCodeImage(state.link, Modifier.size(screenWidth() * 0.4f))
             Text(
                 stringResource(R.string.pair_type_instead),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable(onClick = onTypeKey).padding(6.dp),
+                modifier = Modifier.clickable(onClick = onTypeKey).padding(horizontal = 8.dp, vertical = 5.dp),
             )
         }
     }

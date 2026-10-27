@@ -1,16 +1,13 @@
 package net.devemperor.parley.ui.conversation
 
 import android.os.SystemClock
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,37 +16,51 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
-import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
+import androidx.wear.compose.foundation.rotary.RotaryScrollableDefaults
+import androidx.wear.compose.foundation.rotary.rotaryScrollable
 import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.EdgeButton
 import androidx.wear.compose.material3.EdgeButtonSize
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.MaterialTheme
-import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.TimeText
 import androidx.wear.compose.material3.curvedText
@@ -60,17 +71,24 @@ import net.devemperor.parley.R
 import net.devemperor.parley.core.conversation.Role as TurnRole
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.session.ErrorKind
+import net.devemperor.parley.net.Transport
 import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.Phase
 import net.devemperor.parley.session.UiTurn
+import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.KeepScreenOn
 import net.devemperor.parley.ui.components.MessageScreen
 import net.devemperor.parley.ui.components.Orb
+import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
- * The live conversation: status on the bezel, the orb as the one control, and the transcript
- * scrolling under it. While Parley speaks, the heard part of the answer is bright and the rest dim.
+ * The live conversation. The header stays put: status on the bezel, the orb as the one control, one
+ * caption line under it. Below it, in its own area, the transcript scrolls; the part of an answer
+ * already heard is bright, the rest dim. The end button never leaves the bottom edge.
+ *
+ * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
+ * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
  */
 @Composable
 fun ConversationScreen(
@@ -94,30 +112,9 @@ fun ConversationScreen(
         }
     }
 
-    val listState = rememberTransformingLazyColumnState()
-    val turns = state.turns
-    // Follow the newest line, unless the user scrolled back with the crown or a swipe in the last
-    // few seconds; our own scrolling must not count as theirs.
-    var scrollingOurselves by remember { mutableStateOf(false) }
-    var userScrolledAt by remember { mutableLongStateOf(0L) }
-    LaunchedEffect(listState.isScrollInProgress) {
-        if (listState.isScrollInProgress && !scrollingOurselves) userScrolledAt = SystemClock.elapsedRealtime()
-    }
-    LaunchedEffect(turns.size, turns.lastOrNull()?.text?.length) {
-        if (turns.isNotEmpty() && SystemClock.elapsedRealtime() - userScrolledAt > FOLLOW_PAUSE_MS) {
-            scrollingOurselves = true
-            try {
-                listState.animateScrollToItem(turns.size)
-            } finally {
-                scrollingOurselves = false
-            }
-        }
-    }
-
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
-    ScreenScaffold(
-        scrollState = listState,
+    EdgeButtonScaffold(
         timeText = {
             TimeText { time ->
                 timeTextCurvedText(time)
@@ -136,52 +133,98 @@ fun ConversationScreen(
             }
         },
     ) { padding ->
-        Box(Modifier.fillMaxSize()) {
-            TransformingLazyColumn(
-                state = listState,
-                contentPadding = PaddingValues(top = 104.dp, bottom = padding.calculateBottomPadding() + 8.dp, start = 14.dp, end = 14.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                item(key = "top") { Spacer(Modifier.height(1.dp)) }
-                if (turns.isEmpty()) {
-                    item(key = "hint") { EmptyHint(state) }
-                }
-                items(turns.size, key = { turns[it].key + turns[it].role }) { index -> TurnLine(turns[index]) }
-            }
-
-            // The orb and its caption float above the transcript, which fades out under them.
+        val width = screenWidth()
+        Column(
+            Modifier.fillMaxSize().padding(bottom = padding.calculateBottomPadding()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(Modifier.height(width * 0.12f))
+            val orbLabel = orbDescription(state)
             Box(
                 Modifier
-                    .fillMaxWidth()
-                    .height(118.dp)
-                    .background(Brush.verticalGradient(0.7f to Color.Black, 1f to Color.Transparent)),
-            )
-            Column(
-                Modifier.fillMaxWidth().padding(top = 26.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .size(width * 0.2f)
+                    .semantics { contentDescription = orbLabel }
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        role = Role.Button,
+                        enabled = state.active,
+                        onClick = onTapOrb,
+                    ),
             ) {
-                val orbLabel = orbDescription(state)
-                Box(
-                    Modifier
-                        .size(62.dp)
-                        .semantics { contentDescription = orbLabel }
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.Button,
-                            enabled = state.active,
-                            onClick = onTapOrb,
-                        ),
-                ) {
-                    val level = if (state.phase == Phase.SPEAKING) state.speechLevel else state.micLevel
-                    Orb(
-                        phase = state.phase,
-                        level = level,
-                        muted = state.muted || (state.pushToTalk && !state.talking && state.phase == Phase.LISTENING),
-                        modifier = Modifier.fillMaxSize(),
-                    )
+                val level = if (state.phase == Phase.SPEAKING) state.speechLevel else state.micLevel
+                Orb(
+                    phase = state.phase,
+                    level = level,
+                    muted = state.muted || (state.pushToTalk && !state.talking && state.phase == Phase.LISTENING),
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+            Caption(state)
+            Transcript(state, width, Modifier.weight(1f).fillMaxWidth())
+        }
+    }
+}
+
+/**
+ * The conversation so far. While Parley speaks it follows the spoken words, keeping the line being
+ * said near the top: the text of an answer arrives seconds before its voice, and following the end of
+ * the text would scroll the bright, heard part out of sight. Otherwise it follows the newest line.
+ * Either way it leaves the user alone for a few seconds after they scrolled with the crown or a swipe.
+ * The top edge fades, so lines leave under the caption rather than being cut.
+ */
+@Composable
+private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier) {
+    val scroll = rememberScrollState()
+    val focus = remember { FocusRequester() }
+    var scrollingOurselves by remember { mutableStateOf(false) }
+    var userScrolledAt by remember { mutableLongStateOf(0L) }
+    // Where the line being spoken starts, in the column's own coordinates; -1 when nobody speaks.
+    var spokenLineY by remember { mutableFloatStateOf(-1f) }
+    val speaking = state.phase == Phase.SPEAKING && !state.textOnly
+    val leadPx = with(LocalDensity.current) { LEAD.toPx() }
+    LaunchedEffect(scroll.isScrollInProgress) {
+        if (scroll.isScrollInProgress && !scrollingOurselves) userScrolledAt = SystemClock.elapsedRealtime()
+    }
+    LaunchedEffect(speaking) {
+        snapshotFlow { if (speaking && spokenLineY >= 0f) spokenLineY - leadPx else scroll.maxValue.toFloat() }
+            .collect { target ->
+                if (SystemClock.elapsedRealtime() - userScrolledAt > FOLLOW_PAUSE_MS) {
+                    scrollingOurselves = true
+                    try {
+                        scroll.animateScrollTo(target.toInt().coerceIn(0, scroll.maxValue))
+                    } finally {
+                        scrollingOurselves = false
+                    }
                 }
-                Caption(state)
+            }
+    }
+    LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
+
+    Column(
+        modifier
+            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+            .drawWithContent {
+                drawContent()
+                val fade = (FADE.toPx() / size.height).coerceIn(0f, 0.5f)
+                drawRect(Brush.verticalGradient(0f to Color.Transparent, fade to Color.Black), blendMode = BlendMode.DstIn)
+            }
+            .rotaryScrollable(RotaryScrollableDefaults.behavior(scroll), focus)
+            .verticalScroll(scroll)
+            .padding(horizontal = width * 0.11f, vertical = 6.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (state.turns.isEmpty()) {
+            EmptyHint(state)
+        } else {
+            val lastAssistant = state.turns.indexOfLast { it.role == TurnRole.ASSISTANT }
+            state.turns.forEachIndexed { index, turn ->
+                TurnLine(
+                    turn,
+                    latest = index >= lastAssistant,
+                    onSpokenLine = if (index == lastAssistant && speaking) ({ y -> spokenLineY = y }) else null,
+                )
             }
         }
     }
@@ -209,34 +252,40 @@ private fun orbDescription(state: ConversationUiState): String = when {
     else -> stringResource(if (state.muted) R.string.orb_unmute else R.string.orb_mute)
 }
 
+/**
+ * One fixed-height line under the orb: a notice when there is one ("Timer · 5 min"), the hint that a
+ * tap interrupts while Parley speaks on the watch speaker, otherwise time, cost and network.
+ */
 @Composable
 private fun Caption(state: ConversationUiState) {
-    val parts = buildList {
+    val meta = buildList {
         if (state.elapsedMs > 0) add(formatElapsed(state.elapsedMs))
         if (state.showCost && state.costUsd > 0) add(CostMeter.format(state.costUsd))
-        if (state.transport.label.isNotEmpty() && state.phase != Phase.CONNECTING) add(state.transport.label)
+        if (state.transport != Transport.NONE && state.phase != Phase.CONNECTING) add(state.transport.label)
+    }.joinToString(" · ")
+    val hint = when {
+        state.notice != null -> state.notice
+        state.halfDuplex && state.phase == Phase.SPEAKING -> stringResource(R.string.notice_tap_to_interrupt)
+        else -> null
     }
-    Spacer(Modifier.height(2.dp))
-    AnimatedVisibility(visible = state.notice != null || state.halfDuplex, enter = fadeIn(), exit = fadeOut()) {
-        val notice = state.notice ?: stringResource(R.string.notice_tap_to_interrupt)
-        Text(
-            notice,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            maxLines = 1,
-            modifier = Modifier
-                .clip(RoundedCornerShape(50))
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(horizontal = 8.dp, vertical = 1.dp),
-        )
-    }
-    if (state.notice == null && !state.halfDuplex && parts.isNotEmpty()) {
-        Text(
-            parts.joinToString(" · "),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-        )
+    Box(Modifier.height(17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Crossfade(targetState = hint, label = "caption") { text ->
+            if (text != null) {
+                Text(
+                    text,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .padding(horizontal = 8.dp),
+                )
+            } else {
+                Text(meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+            }
+        }
     }
 }
 
@@ -253,31 +302,44 @@ private fun EmptyHint(state: ConversationUiState) {
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+        modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
     )
 }
 
+/**
+ * [latest]: part of the current exchange, shown brighter than what came before. [onSpokenLine]
+ * receives where the line being spoken starts, for the answer being spoken.
+ */
 @Composable
-private fun TurnLine(turn: UiTurn) {
+private fun TurnLine(turn: UiTurn, latest: Boolean, onSpokenLine: ((Float) -> Unit)? = null) {
     when (turn.role) {
         TurnRole.USER -> Text(
             turn.text,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (latest) MaterialTheme.colorScheme.onSurfaceVariant else ParleyColors.Faint,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
         )
         TurnRole.ASSISTANT -> {
             val spoken = turn.spokenChars.coerceIn(0, turn.text.length)
+            var top by remember { mutableFloatStateOf(0f) }
+            var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
+            if (onSpokenLine != null) {
+                layout?.let { l ->
+                    val line = l.getLineForOffset((spoken - 1).coerceIn(0, (turn.text.length - 1).coerceAtLeast(0)))
+                    onSpokenLine(top + l.getLineTop(line))
+                }
+            }
             Text(
                 buildAnnotatedString {
                     append(turn.text.substring(0, spoken))
                     withStyle(SpanStyle(color = ParleyColors.Faint)) { append(turn.text.substring(spoken)) }
                 },
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (latest) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
+                onTextLayout = { layout = it },
+                modifier = Modifier.fillMaxWidth().onPlaced { top = it.positionInParent().y },
             )
         }
         TurnRole.NOTE, TurnRole.TOOL -> Row(
@@ -289,16 +351,16 @@ private fun TurnLine(turn: UiTurn) {
                 Modifier
                     .clip(RoundedCornerShape(50))
                     .background(MaterialTheme.colorScheme.surfaceContainer)
-                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                    .padding(horizontal = 10.dp, vertical = 3.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painterResource(if (turn.role == TurnRole.NOTE) R.drawable.ic_sticky_note_2 else R.drawable.ic_check),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(13.dp),
                 )
-                Spacer(Modifier.width(6.dp))
+                Spacer(Modifier.width(5.dp))
                 Text(turn.text, style = MaterialTheme.typography.labelSmall, maxLines = 3)
             }
         }
@@ -325,7 +387,6 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
         actionIcon = if (fixable) R.drawable.ic_key else R.drawable.ic_refresh,
         onAction = if (fixable) onFixProvider else onRetry,
         extra = {
-            Spacer(Modifier.height(4.dp))
             Text(
                 stringResource(R.string.action_close),
                 style = MaterialTheme.typography.labelMedium,
@@ -337,6 +398,9 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
 }
 
 private const val FOLLOW_PAUSE_MS = 6_000L
+private val FADE = 14.dp
+/** How far above the spoken line the transcript keeps its top: one line of what was just said. */
+private val LEAD = 18.dp
 
 private fun formatElapsed(ms: Long): String {
     val seconds = ms / 1000

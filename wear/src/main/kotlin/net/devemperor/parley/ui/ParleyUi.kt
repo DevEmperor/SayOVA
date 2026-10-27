@@ -3,6 +3,7 @@ package net.devemperor.parley.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
@@ -89,11 +90,15 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 if (navController.currentDestination?.route != Routes.CONVERSATION) navController.navigate(Routes.CONVERSATION)
             }
 
-            val start = when {
-                launch == Launch.DEMO -> Routes.HOME
-                SessionHub.running -> Routes.CONVERSATION
-                !ready -> Routes.WELCOME
-                else -> Routes.HOME
+            // Decided once: recomputing it when a key arrives would rebuild the graph mid-setup and
+            // skip the "Connected" screen.
+            val start = remember {
+                when {
+                    launch == Launch.DEMO -> Routes.HOME
+                    SessionHub.running -> Routes.CONVERSATION
+                    !ready -> Routes.WELCOME
+                    else -> Routes.HOME
+                }
             }
 
             SwipeDismissableNavHost(navController = navController, startDestination = start) {
