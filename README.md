@@ -23,6 +23,8 @@ your own API key.
   whoever speaks. Tap the text button and both sides of the conversation appear as you
   talk; the part of an answer you have already heard is bright, the rest is still dim.
   Parley remembers your choice.
+- **Its own volume.** Turn the bezel or crown, or tap the volume button. Parley remembers
+  its volume and gives your media volume back when the conversation ends.
 - **Silent mode.** Answers as text only, with push-to-talk — for lectures, meetings or a
   quiet room.
 - **Does things on the watch.** Timers, alarms, notes, battery and time, and web search

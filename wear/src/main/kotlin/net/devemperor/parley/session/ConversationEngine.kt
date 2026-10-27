@@ -18,6 +18,7 @@ import net.devemperor.parley.audio.Haptics
 import net.devemperor.parley.audio.Headphones
 import net.devemperor.parley.audio.Microphone
 import net.devemperor.parley.audio.SpeechPlayer
+import net.devemperor.parley.audio.SpeechVolume
 import net.devemperor.parley.core.audio.BargeInDetector
 import net.devemperor.parley.core.audio.Pcm
 import net.devemperor.parley.core.conversation.Conversation
@@ -54,6 +55,8 @@ class ConversationEngine(
     private val haptics: Haptics,
     private val transport: StateFlow<Transport>,
     private val onSave: suspend (Conversation?, Double) -> Unit,
+    /** Parley's own volume at the end, to start the next conversation with. */
+    private val onVolume: suspend (Int) -> Unit,
     private val onFinished: () -> Unit,
 ) {
     data class Options(
@@ -63,6 +66,8 @@ class ConversationEngine(
         val autoEndSeconds: Int,
         val showCost: Boolean,
         val saveHistory: Boolean,
+        /** Parley's own volume from the last conversation; -1 before the first. */
+        val speechVolume: Int,
     )
 
     private class Record(val key: String, val role: Role, val at: Long) {
@@ -90,6 +95,7 @@ class ConversationEngine(
     private var finalError: SessionError? = null
 
     private val player: SpeechPlayer? = if (options.textOnly) null else SpeechPlayer(session.outputSampleRate)
+    private val volume: SpeechVolume? = if (options.textOnly) null else SpeechVolume(context)
     private val microphone = Microphone(session.inputSampleRate, ::onMicAudio, ::onMicLevel)
 
     // Touched by the microphone thread.
@@ -128,6 +134,7 @@ class ConversationEngine(
     private var noticeUntil = 0L
 
     fun start() {
+        volume?.begin(options.speechVolume)
         headphones.start()
         scope.launch { session.events.collect(::handle) }
         scope.launch {
@@ -170,6 +177,16 @@ class ConversationEngine(
     fun end() {
         if (finished) return
         session.close()
+    }
+
+    /**
+     * One volume step from the screen (+1 louder, -1 quieter); returns the volume now, null in silent
+     * mode. The answer's echo changes with it, so the barge-in detector learns it anew.
+     */
+    fun stepVolume(direction: Int): Int? {
+        val level = volume?.step(direction) ?: return null
+        bargeIn.startAnswer(SystemClock.elapsedRealtime())
+        return level
     }
 
     private fun setTalking(open: Boolean) {
@@ -447,6 +464,7 @@ class ConversationEngine(
         val finalTurns = uiTurns()
         microphone.stop()
         player?.release()
+        val ownVolume = volume?.end()
         session.close()
         if (error != null) haptics.error() else haptics.ended()
 
@@ -477,6 +495,7 @@ class ConversationEngine(
             saved = conversation != null,
         )
         scope.launch {
+            ownVolume?.let { onVolume(it) }
             onSave(conversation, usd)
             onFinished()
         }

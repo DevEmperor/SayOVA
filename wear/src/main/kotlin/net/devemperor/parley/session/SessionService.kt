@@ -113,6 +113,7 @@ class SessionService : LifecycleService() {
                 autoEndSeconds = settings.autoEndSeconds,
                 showCost = settings.showCost,
                 saveHistory = settings.historyDays != 0,
+                speechVolume = settings.speechVolume,
             ),
             toolRunner = ToolRunner(this@SessionService, search),
             haptics = Haptics(this@SessionService) { settings.haptics },
@@ -122,6 +123,7 @@ class SessionService : LifecycleService() {
                 if (!demo) app.settings.addCost(usd)
                 ParleyTileService.refresh(this@SessionService)
             },
+            onVolume = { level -> app.settings.update { it.copy(speechVolume = level) } },
             onFinished = { stopEverything() },
         )
         engine = newEngine

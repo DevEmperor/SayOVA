@@ -34,12 +34,7 @@ class SpeechPlayer(private val sampleRate: Int) {
     init {
         val minBuffer = AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT)
         track = AudioTrack.Builder()
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ASSISTANT)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build(),
-            )
+            .setAudioAttributes(ATTRIBUTES)
             .setAudioFormat(
                 AudioFormat.Builder()
                     .setSampleRate(sampleRate)
@@ -158,5 +153,16 @@ class SpeechPlayer(private val sampleRate: Int) {
         writer.join(500)
         runCatching { track.stop() }
         track.release()
+    }
+
+    companion object {
+        /**
+         * Speech played as media: the media volume is the one an app may set, which Parley's volume
+         * control needs (see SpeechVolume); the assistant volume of some watches is for system apps.
+         */
+        val ATTRIBUTES: AudioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+            .build()
     }
 }

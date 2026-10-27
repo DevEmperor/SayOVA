@@ -1,10 +1,15 @@
 package net.devemperor.parley.ui.conversation
 
 import android.os.SystemClock
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,15 +38,23 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -58,8 +72,8 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.rotary.RotaryScrollableDefaults
 import androidx.wear.compose.foundation.rotary.rotaryScrollable
 import androidx.wear.compose.material3.FilledIconButton
-import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
@@ -67,14 +81,17 @@ import androidx.wear.compose.material3.TimeText
 import androidx.wear.compose.material3.curvedText
 import androidx.wear.compose.material3.timeTextCurvedText
 import androidx.wear.compose.material3.timeTextSeparator
+import kotlin.math.abs
 import kotlinx.coroutines.delay
 import net.devemperor.parley.R
+import net.devemperor.parley.audio.SpeechVolume
 import net.devemperor.parley.core.conversation.Role as TurnRole
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.session.ErrorKind
 import net.devemperor.parley.net.Transport
 import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.Phase
+import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.session.UiTurn
 import net.devemperor.parley.ui.components.KeepScreenOn
 import net.devemperor.parley.ui.components.MessageScreen
@@ -84,10 +101,13 @@ import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
  * The live conversation: status on the bezel, the orb as the one control, one caption line under it,
- * the red end button at the bottom with the text button beside it. By default only the orb is shown,
- * large and centred, pulsing with whoever speaks; with the transcript on, the orb moves up and the
- * transcript scrolls below it, the part of an answer already heard bright, the rest dim. The last
- * choice is remembered ([showTranscript]); silent mode always shows the text, its only output.
+ * the red end button at the bottom between the text and the volume button. By default only the orb
+ * is shown, large and centred, pulsing with whoever speaks; with the transcript on, the orb moves up
+ * and the transcript scrolls below it, the part of an answer already heard bright, the rest dim. The
+ * last choice is remembered ([showTranscript]); silent mode always shows the text, its only output.
+ *
+ * Turning the bezel or crown sets Parley's volume and shows the same panel as the volume button.
+ * Silent mode has no voice, so there the bezel scrolls the transcript instead.
  *
  * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
  * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
@@ -119,6 +139,33 @@ fun ConversationScreen(
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
     val transcript = showTranscript || state.textOnly
+
+    val context = LocalContext.current
+    val volume = remember { SpeechVolume(context) }
+    var volumeLevel by remember { mutableIntStateOf(volume.current()) }
+    var volumeOpen by remember { mutableStateOf(false) }
+    var volumeTouchedAt by remember { mutableLongStateOf(0L) }
+    val showVolume = {
+        volumeLevel = volume.current()
+        volumeOpen = true
+        volumeTouchedAt = SystemClock.elapsedRealtime()
+    }
+    val changeVolume = { delta: Int ->
+        volumeLevel = SessionHub.stepVolume(delta) ?: volume.current()
+        volumeOpen = true
+        volumeTouchedAt = SystemClock.elapsedRealtime()
+    }
+    LaunchedEffect(volumeOpen, volumeTouchedAt) {
+        if (volumeOpen) {
+            delay(VOLUME_PANEL_MS)
+            volumeOpen = false
+        }
+    }
+    val bezelVolume = !state.textOnly
+    val focus = remember { FocusRequester() }
+    var rotary by remember { mutableFloatStateOf(0f) }
+    val stepPx = with(LocalDensity.current) { VOLUME_STEP.toPx() }
+    LaunchedEffect(bezelVolume) { if (bezelVolume) runCatching { focus.requestFocus() } }
     // No edge button: a small red hang-up button leaves the content most of the screen and is
     // recognisable at a glance, like the one on a phone call.
     ScreenScaffold(
@@ -132,59 +179,162 @@ fun ConversationScreen(
     ) { _ ->
         val width = screenWidth()
         val orbSize by animateDpAsState(if (transcript) width * 0.2f else width * 0.46f, label = "orb")
-        Column(
-            Modifier.fillMaxSize().padding(bottom = width * 0.03f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(Modifier.height(width * 0.12f))
-            // The orb keeps its place in the composition either way, so switching only resizes it.
-            if (!transcript) Spacer(Modifier.weight(1f))
-            val orbLabel = orbDescription(state)
-            Box(
-                Modifier
-                    .size(orbSize)
-                    .semantics { contentDescription = orbLabel }
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        role = Role.Button,
-                        enabled = state.active,
-                        onClick = onTapOrb,
-                    ),
+        val bezel = if (bezelVolume) {
+            Modifier
+                .onRotaryScrollEvent { event ->
+                    // One step per bezel click; a crown turned in the other direction starts over.
+                    val px = event.verticalScrollPixels
+                    rotary = if (rotary * px < 0f) px else rotary + px
+                    if (abs(rotary) >= stepPx) {
+                        changeVolume(if (rotary > 0f) 1 else -1)
+                        rotary = 0f
+                    }
+                    true
+                }
+                .focusRequester(focus)
+                .focusable()
+        } else {
+            Modifier
+        }
+        Box(Modifier.fillMaxSize().then(bezel)) {
+            Column(
+                Modifier.fillMaxSize().padding(bottom = width * 0.03f),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                val level = if (state.phase == Phase.SPEAKING) state.speechLevel else state.micLevel
-                Orb(
-                    phase = state.phase,
-                    level = level,
-                    muted = state.muted || (state.pushToTalk && !state.talking && state.phase == Phase.LISTENING),
-                    modifier = Modifier.fillMaxSize(),
+                Spacer(Modifier.height(width * 0.12f))
+                // The orb keeps its place in the composition either way, so switching only resizes it.
+                if (!transcript) Spacer(Modifier.weight(1f))
+                val orbLabel = orbDescription(state)
+                Box(
+                    Modifier
+                        .size(orbSize)
+                        .semantics { contentDescription = orbLabel }
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            role = Role.Button,
+                            enabled = state.active,
+                            onClick = onTapOrb,
+                        ),
+                ) {
+                    val level = if (state.phase == Phase.SPEAKING) state.speechLevel else state.micLevel
+                    Orb(
+                        phase = state.phase,
+                        level = level,
+                        muted = state.muted || (state.pushToTalk && !state.talking && state.phase == Phase.LISTENING),
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+                if (!transcript) Spacer(Modifier.height(6.dp))
+                Caption(state)
+                if (transcript) {
+                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth(), rotary = !bezelVolume)
+                } else {
+                    Spacer(Modifier.weight(1f))
+                }
+                Controls(
+                    state = state,
+                    width = width,
+                    transcript = transcript,
+                    onToggleTranscript = onToggleTranscript.takeUnless { state.textOnly },
+                    volumeIcon = volumeIcon(volumeLevel, volume.min, volume.max),
+                    onVolume = showVolume.takeUnless { state.textOnly },
+                    onEnd = onEnd,
                 )
             }
-            if (!transcript) Spacer(Modifier.height(6.dp))
-            Caption(state)
-            if (transcript) {
-                Transcript(state, width, Modifier.weight(1f).fillMaxWidth())
-            } else {
-                Spacer(Modifier.weight(1f))
+            AnimatedVisibility(volumeOpen, enter = fadeIn(), exit = fadeOut()) {
+                VolumePanel(
+                    level = volumeLevel,
+                    min = volume.min,
+                    max = volume.max,
+                    width = width,
+                    onChange = changeVolume,
+                    onClose = { volumeOpen = false },
+                )
             }
-            Controls(
-                state = state,
-                width = width,
-                transcript = transcript,
-                onToggleTranscript = onToggleTranscript.takeUnless { state.textOnly },
-                onEnd = onEnd,
-            )
         }
     }
 }
 
 /**
- * The red end button in the middle and, left of it, the text button: dim with the text hidden, lit
- * with it shown. [onToggleTranscript] is null in silent mode, where the text cannot be hidden. The
- * empty slot on the right keeps the end button centred.
+ * Parley's volume: an arc along the left of the bezel that fills upwards as the bezel turns
+ * clockwise, plus and minus for touch, the level in the middle. Closes by itself shortly after the
+ * last change, or with a tap beside the buttons.
  */
 @Composable
-private fun Controls(state: ConversationUiState, width: Dp, transcript: Boolean, onToggleTranscript: (() -> Unit)?, onEnd: () -> Unit) {
+private fun VolumePanel(level: Int, min: Int, max: Int, width: Dp, onChange: (Int) -> Unit, onClose: () -> Unit) {
+    val fraction by animateFloatAsState(if (max > min) (level - min).toFloat() / (max - min) else 0f, label = "volume")
+    val track = MaterialTheme.colorScheme.surfaceContainerHigh
+    val fill = MaterialTheme.colorScheme.primary
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClose)
+            .drawBehind {
+                val stroke = VOLUME_ARC.toPx()
+                val inset = stroke / 2f + 4.dp.toPx()
+                val topLeft = Offset(inset, inset)
+                val arc = Size(size.width - 2f * inset, size.height - 2f * inset)
+                val style = Stroke(stroke, cap = StrokeCap.Round)
+                drawArc(track, ARC_START, ARC_SWEEP, useCenter = false, topLeft = topLeft, size = arc, style = style)
+                if (fraction > 0.005f) {
+                    drawArc(fill, ARC_START, ARC_SWEEP * fraction, useCenter = false, topLeft = topLeft, size = arc, style = style)
+                }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(width * 0.03f),
+        ) {
+            VolumeStep(R.drawable.ic_add, stringResource(R.string.action_louder), enabled = level < max, width = width) { onChange(1) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(painterResource(volumeIcon(level, min, max)), contentDescription = null, modifier = Modifier.size(width * 0.09f))
+                Spacer(Modifier.width(6.dp))
+                Text("$level", style = MaterialTheme.typography.displaySmall)
+            }
+            VolumeStep(R.drawable.ic_remove, stringResource(R.string.action_quieter), enabled = level > min, width = width) { onChange(-1) }
+        }
+    }
+}
+
+@Composable
+private fun VolumeStep(icon: Int, label: String, enabled: Boolean, width: Dp, onClick: () -> Unit) {
+    FilledIconButton(
+        onClick = onClick,
+        enabled = enabled,
+        colors = IconButtonDefaults.filledIconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ),
+        modifier = Modifier.size(width * 0.16f),
+    ) {
+        Icon(painterResource(icon), contentDescription = label, modifier = Modifier.size(width * 0.08f))
+    }
+}
+
+private fun volumeIcon(level: Int, min: Int, max: Int): Int = when {
+    level <= min -> R.drawable.ic_volume_off
+    level < (min + max + 1) / 2 -> R.drawable.ic_volume_down
+    else -> R.drawable.ic_volume_up
+}
+
+/**
+ * The red end button in the middle; left of it the text button, dim with the text hidden and lit
+ * with it shown, right of it the volume button. Both are null in silent mode, which shows text only
+ * and has no voice; their places stay empty so the end button keeps the middle.
+ */
+@Composable
+private fun Controls(
+    state: ConversationUiState,
+    width: Dp,
+    transcript: Boolean,
+    onToggleTranscript: (() -> Unit)?,
+    volumeIcon: Int,
+    onVolume: (() -> Unit)?,
+    onEnd: () -> Unit,
+) {
     val side = width * 0.12f
     Row(
         horizontalArrangement = Arrangement.spacedBy(width * 0.04f),
@@ -223,7 +373,20 @@ private fun Controls(state: ConversationUiState, width: Dp, transcript: Boolean,
         ) {
             Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.085f))
         }
-        Spacer(Modifier.size(side))
+        Box(Modifier.size(side)) {
+            if (onVolume != null) {
+                FilledIconButton(
+                    onClick = onVolume,
+                    colors = IconButtonDefaults.filledIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Icon(painterResource(volumeIcon), contentDescription = stringResource(R.string.action_volume), modifier = Modifier.size(width * 0.07f))
+                }
+            }
+        }
     }
 }
 
@@ -235,7 +398,7 @@ private fun Controls(state: ConversationUiState, width: Dp, transcript: Boolean,
  * The top edge fades, so lines leave under the caption rather than being cut.
  */
 @Composable
-private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier) {
+private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier, rotary: Boolean) {
     val scroll = rememberScrollState()
     val focus = remember { FocusRequester() }
     var scrollingOurselves by remember { mutableStateOf(false) }
@@ -260,7 +423,7 @@ private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier
                 }
             }
     }
-    LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
+    LaunchedEffect(rotary) { if (rotary) runCatching { focus.requestFocus() } }
 
     Column(
         modifier
@@ -273,7 +436,7 @@ private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier
                     blendMode = BlendMode.DstIn,
                 )
             }
-            .rotaryScrollable(RotaryScrollableDefaults.behavior(scroll), focus)
+            .then(if (rotary) Modifier.rotaryScrollable(RotaryScrollableDefaults.behavior(scroll), focus) else Modifier)
             .verticalScroll(scroll)
             .padding(horizontal = width * 0.11f, vertical = 6.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -462,6 +625,13 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
 }
 
 private const val FOLLOW_PAUSE_MS = 6_000L
+private const val VOLUME_PANEL_MS = 2_500L
+/** Bezel or crown travel per volume step: one click of the Galaxy Watch bezel, a short crown turn. */
+private val VOLUME_STEP = 12.dp
+private val VOLUME_ARC = 6.dp
+/** The arc runs up the left edge, from about seven to eleven o'clock, clear of the clock at the top. */
+private const val ARC_START = 112f
+private const val ARC_SWEEP = 100f
 private val FADE = 14.dp
 /** How far above the spoken line the transcript keeps its top: one line of what was just said. */
 private val LEAD = 18.dp

@@ -67,6 +67,9 @@
     <string name="action_end">End</string>
     <string name="action_show_text">Show text</string>
     <string name="action_hide_text">Hide text</string>
+    <string name="action_volume">Volume</string>
+    <string name="action_louder">Louder</string>
+    <string name="action_quieter">Quieter</string>
     <string name="action_close">Close</string>
     <string name="action_try_again">Try again</string>
     <string name="action_connect">Connect</string>
