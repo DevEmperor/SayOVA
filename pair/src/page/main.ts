@@ -10,6 +10,7 @@ const ID_PATTERN = /^[A-Za-z0-9_-]{22}$/;
 interface Pairing {
   id: string;
   publicKey: Uint8Array;
+  provider: Payload["provider"] | null;
 }
 
 const $ = <T extends HTMLElement>(selector: string) => document.querySelector(selector) as T;
@@ -29,7 +30,9 @@ function readPairing(): Pairing | null {
   if (Number(params.get("v")) !== PAIRING_VERSION || !ID_PATTERN.test(id)) return null;
   try {
     const publicKey = base64UrlDecode(pk);
-    return publicKey.length === 32 ? { id, publicKey } : null;
+    const p = params.get("p");
+    const provider = p === "gemini" || p === "openai" ? p : null;
+    return publicKey.length === 32 ? { id, publicKey, provider } : null;
   } catch {
     return null;
   }
@@ -107,6 +110,9 @@ async function main() {
   }
 
   show("form");
+  if (pairing.provider) {
+    $<HTMLInputElement>(`input[name="provider"][value="${pairing.provider}"]`).checked = true;
+  }
   updateProviderHelp();
   document.querySelectorAll('input[name="provider"]').forEach((el) => el.addEventListener("change", updateProviderHelp));
 

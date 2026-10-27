@@ -109,8 +109,12 @@ object Base64Url {
     fun decode(text: String): ByteArray = Base64.getUrlDecoder().decode(text)
 }
 
-/** The address in the QR code. Everything after # stays in the browser: no server ever sees it. */
+/**
+ * The address in the QR code. Everything after # stays in the browser: no server ever sees it.
+ * [provider] only preselects the choice on the page.
+ */
 object PairingLink {
-    fun build(baseUrl: String, pairingId: String, publicKey: ByteArray): String =
-        "${baseUrl.trimEnd('/')}/#v=${PairingCrypto.VERSION}&id=$pairingId&pk=${Base64Url.encode(publicKey)}"
+    fun build(baseUrl: String, pairingId: String, publicKey: ByteArray, provider: String? = null): String =
+        "${baseUrl.trimEnd('/')}/#v=${PairingCrypto.VERSION}&id=$pairingId&pk=${Base64Url.encode(publicKey)}" +
+            (provider?.let { "&p=$it" } ?: "")
 }

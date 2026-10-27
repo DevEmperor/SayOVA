@@ -1,0 +1,289 @@
+package net.devemperor.parley.ui.setup
+
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.wear.compose.material3.ButtonDefaults
+import androidx.wear.compose.material3.EdgeButton
+import androidx.wear.compose.material3.EdgeButtonSize
+import androidx.wear.compose.material3.FilledTonalButton
+import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.OpenOnPhoneDialog
+import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
+import androidx.wear.compose.material3.ScreenScaffold
+import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.curvedText
+import net.devemperor.parley.R
+import net.devemperor.parley.core.provider.ProviderCatalog
+import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.ui.components.Hint
+import net.devemperor.parley.ui.components.ListScreen
+import net.devemperor.parley.ui.components.MenuButton
+import net.devemperor.parley.ui.components.MessageScreen
+import net.devemperor.parley.ui.components.EdgeButtonScaffold
+import net.devemperor.parley.ui.components.Orb
+import net.devemperor.parley.ui.components.QrCodeImage
+import net.devemperor.parley.ui.components.Header
+import net.devemperor.parley.ui.components.openOnPhone
+import net.devemperor.parley.ui.components.rememberTextInput
+import net.devemperor.parley.ui.theme.ParleyColors
+
+@Composable
+fun WelcomeScreen(onStart: () -> Unit) {
+    EdgeButtonScaffold(
+        edgeButton = {
+            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.Medium) { Text(stringResource(R.string.welcome_start)) }
+        },
+    ) { padding ->
+        Column(
+            Modifier.fillMaxSize().padding(padding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Orb(phase = null, level = 0f, modifier = Modifier.size(78.dp))
+            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleLarge)
+            Text(
+                stringResource(R.string.welcome_tagline),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 28.dp),
+            )
+        }
+    }
+}
+
+fun Context.hasMicrophone(): Boolean =
+    checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+
+/** Explains why the microphone is needed, then asks; leads to the app settings after a hard refusal. */
+@Composable
+fun PermissionScreen(onGranted: () -> Unit) {
+    val context = LocalContext.current
+    var denials by rememberSaveable { mutableIntStateOf(0) }
+    // Notifications ride along: without them the ongoing-conversation chip on the watch face is hidden.
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        if (results[Manifest.permission.RECORD_AUDIO] == true) onGranted() else denials++
+    }
+    val permissions = buildList {
+        add(Manifest.permission.RECORD_AUDIO)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) add(Manifest.permission.POST_NOTIFICATIONS)
+    }.toTypedArray()
+    LifecycleResumeEffect(Unit) {
+        if (context.hasMicrophone()) onGranted()
+        onPauseOrDispose { }
+    }
+    val blocked = denials >= 2
+    MessageScreen(
+        icon = R.drawable.ic_mic,
+        title = stringResource(R.string.permission_title),
+        text = stringResource(if (blocked) R.string.permission_blocked else R.string.permission_text),
+        actionLabel = stringResource(if (blocked) R.string.permission_settings else R.string.permission_allow),
+        onAction = {
+            if (blocked) {
+                context.startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null)),
+                )
+            } else {
+                launcher.launch(permissions)
+            }
+        },
+    )
+}
+
+@Composable
+fun ProviderChoiceScreen(connected: Set<ProviderId>, onChoose: (ProviderId) -> Unit) {
+    ListScreen { spec ->
+        item { Header(stringResource(R.string.provider_choose), spec) }
+        item { Hint(stringResource(R.string.provider_choose_hint), spec) }
+        item {
+            MenuButton(
+                label = ProviderCatalog.gemini.displayName,
+                secondaryLabel = if (ProviderId.GEMINI in connected) stringResource(R.string.provider_connected) else stringResource(R.string.provider_gemini_note),
+                icon = R.drawable.ic_bolt,
+                spec = spec,
+                highlighted = true,
+                onClick = { onChoose(ProviderId.GEMINI) },
+            )
+        }
+        item {
+            MenuButton(
+                label = ProviderCatalog.openAi.displayName,
+                secondaryLabel = if (ProviderId.OPENAI in connected) stringResource(R.string.provider_connected) else stringResource(R.string.provider_openai_note),
+                icon = R.drawable.ic_record_voice_over,
+                spec = spec,
+                onClick = { onChoose(ProviderId.OPENAI) },
+            )
+        }
+    }
+}
+
+/**
+ * Shows the QR code for the pairing page and walks through the handover. Everything after the code
+ * arrives (compare, check, done) happens on this one screen.
+ */
+@Composable
+fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () -> Unit) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(provider) { viewModel.start(provider) }
+    val typeKey = rememberTextInput(stringResource(R.string.pair_type_label, PairingViewModel.providerName(provider))) { text ->
+        if (text != null) viewModel.submitTyped(provider, text)
+    }
+
+    when (val s = state) {
+        PairingState.Preparing -> Busy(stringResource(R.string.pair_preparing))
+        is PairingState.Waiting -> QrContent(s, onTypeKey = typeKey)
+        is PairingState.Received -> MessageScreen(
+            icon = R.drawable.ic_lock,
+            title = stringResource(R.string.pair_compare_title),
+            text = stringResource(R.string.pair_compare_text, PairingViewModel.providerName(s.provider), s.hint),
+            actionLabel = stringResource(R.string.pair_compare_match),
+            actionIcon = R.drawable.ic_check,
+            onAction = viewModel::confirm,
+            extra = {
+                Text(
+                    s.code.chunked(3).joinToString(" "),
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 26.sp,
+                    color = ParleyColors.TealBright,
+                    modifier = Modifier.padding(vertical = 4.dp),
+                )
+                Text(
+                    stringResource(R.string.pair_compare_mismatch),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable { viewModel.start(provider) }.padding(6.dp),
+                )
+            },
+        )
+        is PairingState.Checking -> Busy(stringResource(R.string.pair_checking, PairingViewModel.providerName(s.provider)))
+        is PairingState.Connected -> MessageScreen(
+            icon = R.drawable.ic_check,
+            title = stringResource(R.string.pair_connected_title),
+            text = stringResource(
+                if (s.verified) R.string.pair_connected_text else R.string.pair_connected_unverified,
+                PairingViewModel.providerName(s.provider),
+            ),
+            actionLabel = stringResource(R.string.pair_connected_action),
+            onAction = onDone,
+        )
+        is PairingState.Failed -> MessageScreen(
+            icon = R.drawable.ic_error,
+            iconTint = ParleyColors.Coral,
+            title = stringResource(
+                when (s.reason) {
+                    PairingState.Reason.EXPIRED -> R.string.pair_failed_expired
+                    PairingState.Reason.REJECTED_KEY -> R.string.pair_failed_rejected
+                    PairingState.Reason.NO_CONNECTION -> R.string.pair_failed_offline
+                    PairingState.Reason.BROKEN -> R.string.pair_failed_broken
+                },
+            ),
+            text = s.detail,
+            actionLabel = stringResource(R.string.action_try_again),
+            actionIcon = R.drawable.ic_refresh,
+            onAction = { viewModel.start(provider) },
+        )
+    }
+}
+
+@Composable
+private fun QrContent(state: PairingState.Waiting, onTypeKey: () -> Unit) {
+    val context = LocalContext.current
+    var phoneOpened by remember { mutableStateOf(false) }
+    val continueOnPhone = stringResource(R.string.pair_continue_on_phone)
+    EdgeButtonScaffold(
+        edgeButton = {
+            EdgeButton(
+                onClick = { phoneOpened = openOnPhone(context, state.link) },
+                buttonSize = EdgeButtonSize.Small,
+                colors = ButtonDefaults.filledTonalButtonColors(),
+            ) {
+                Icon(painterResource(R.drawable.ic_smartphone), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(18.dp))
+                Text(stringResource(R.string.pair_open_on_phone))
+            }
+        },
+    ) { padding ->
+        Column(
+            Modifier.fillMaxSize().padding(top = 14.dp, bottom = padding.calculateBottomPadding()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                stringResource(if (state.offline) R.string.pair_waiting_offline else R.string.pair_scan),
+                style = MaterialTheme.typography.labelSmall,
+                color = if (state.offline) ParleyColors.Coral else MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(4.dp))
+            QrCodeImage(state.link, Modifier.fillMaxWidth(0.56f))
+            Text(
+                stringResource(R.string.pair_type_instead),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable(onClick = onTypeKey).padding(6.dp),
+            )
+        }
+    }
+    OpenOnPhoneDialog(
+        visible = phoneOpened,
+        onDismissRequest = { phoneOpened = false },
+        curvedText = { curvedText(continueOnPhone) },
+        content = { OpenOnPhoneDialogDefaults.Icon() },
+    )
+}
+
+@Composable
+private fun Busy(text: String) {
+    ScreenScaffold { _ ->
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Orb(phase = net.devemperor.parley.session.Phase.THINKING, level = 0f, modifier = Modifier.size(56.dp))
+                Spacer(Modifier.height(4.dp))
+                Text(text, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 28.dp))
+            }
+        }
+    }
+}
+
+/** A tonal button for secondary actions on full screens. */
+@Composable
+fun SecondaryAction(label: String, onClick: () -> Unit) {
+    FilledTonalButton(onClick = onClick, modifier = Modifier.fillMaxWidth(0.8f)) { Text(label) }
+}

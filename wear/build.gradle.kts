@@ -119,6 +119,7 @@ dependencies {
     implementation(libs.androidx.wear.protolayout)
     implementation(libs.androidx.wear.protolayout.material3)
     implementation(libs.androidx.wear.complications.data.source)
+    implementation(libs.androidx.wear.input)
     implementation(libs.androidx.wear.ongoing)
     implementation(libs.androidx.wear.remote.interactions)
 
