@@ -81,8 +81,12 @@ class SpeechPlayer(private val sampleRate: Int) {
         if (pcm.isNotEmpty()) queue.offer(Chunk(turnKey, pcm, Pcm.level(pcm)))
     }
 
+    @Volatile private var released = false
+
+    // After release() the native track is gone and every query on it throws; the conversation still
+    // reads these while it winds down, so they answer "nothing (more) to play" instead.
     private val framesPlayed: Long
-        get() = flushBase + (track.playbackHeadPosition.toLong() and 0xFFFFFFFFL)
+        get() = if (released) framesWritten else flushBase + (track.playbackHeadPosition.toLong() and 0xFFFFFFFFL)
 
     /** Milliseconds of [turnKey] the user has heard so far. */
     fun playedMs(turnKey: String): Long = synchronized(this) {
@@ -114,6 +118,7 @@ class SpeechPlayer(private val sampleRate: Int) {
 
     /** Stops the answer at once and drops everything still queued. */
     fun flush() {
+        if (released) return
         generation++
         queue.clear()
         synchronized(this) {
@@ -126,6 +131,8 @@ class SpeechPlayer(private val sampleRate: Int) {
     }
 
     fun release() {
+        if (released) return
+        released = true
         running = false
         queue.clear()
         writer.join(500)

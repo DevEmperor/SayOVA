@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.SystemClock
+import android.util.Log
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.audio.Haptics
 import net.devemperor.parley.audio.Microphone
 import net.devemperor.parley.audio.SpeechPlayer
@@ -183,6 +185,7 @@ class ConversationEngine(
 
     private fun handle(event: VoiceEvent) {
         if (finished) return
+        debugLog(event)
         when (event) {
             VoiceEvent.Ready -> {
                 if (!ready) {
@@ -325,6 +328,7 @@ class ConversationEngine(
             (!_state.value.pushToTalk || talking) &&
             !(halfDuplex && playing)
         if (micOpen && micLevel > SPEECH_LEVEL) touch()
+        if (BuildConfig.DEBUG) logMicPeak(now)
         if (playing) touch()
 
         // Gemini announces no end of speech; a pause after the user's words means an answer is due.
@@ -342,6 +346,7 @@ class ConversationEngine(
             else -> Phase.LISTENING
         }
         if (phase == Phase.SPEAKING && lastPhase != Phase.SPEAKING) haptics.answering()
+        if (phase != lastPhase && BuildConfig.DEBUG) Log.d(TAG, "phase ${lastPhase.name} -> ${phase.name} (mic ${if (micOpen) "open" else "closed"})")
         lastPhase = phase
 
         if (endAfterSpeech && !playing && pendingTools == 0) {
@@ -393,6 +398,7 @@ class ConversationEngine(
         finalError = error
         micOpen = false
         echoCheck?.cancel()
+        val finalTurns = uiTurns()
         microphone.stop()
         player?.release()
         session.close()
@@ -416,7 +422,7 @@ class ConversationEngine(
         }
         _state.value = _state.value.copy(
             phase = if (error != null) Phase.ERROR else Phase.ENDED,
-            turns = uiTurns(),
+            turns = finalTurns,
             micLevel = 0f,
             speechLevel = 0f,
             costUsd = usd,
@@ -430,7 +436,41 @@ class ConversationEngine(
         }
     }
 
+    /**
+     * Debug builds log the conversation as it happens (adb logcat -s ParleyEvent), so emulator tests
+     * can follow what was heard and answered. Release builds log only errors, without any content.
+     */
+    private fun debugLog(event: VoiceEvent) {
+        when (event) {
+            is VoiceEvent.Closed -> event.error?.let { Log.w(TAG, "closed: ${it.kind}") }
+            else -> Unit
+        }
+        if (!BuildConfig.DEBUG) return
+        val line = when (event) {
+            is VoiceEvent.AssistantAudio -> return
+            is VoiceEvent.UserTranscript -> "user[${event.turnKey}]${if (event.replace) "=" else "+"} ${event.text}"
+            is VoiceEvent.AssistantTranscript -> "assistant[${event.turnKey}]+ ${event.delta}"
+            is VoiceEvent.ToolCall -> "tool ${event.name} ${event.arguments}"
+            is VoiceEvent.Closed -> "closed ${event.error ?: "by request"}"
+            else -> event.toString()
+        }
+        Log.d(TAG, line)
+    }
+
+    private var micPeak = 0f
+    private var micPeakSince = 0L
+
+    /** Debug: once a second, how loud the microphone got — proves injected speech reaches the watch. */
+    private fun logMicPeak(now: Long) {
+        micPeak = maxOf(micPeak, if (micOpen) micLevel else 0f)
+        if (now - micPeakSince < 1_000) return
+        if (micPeak > 0.05f) Log.d(TAG, "mic peak %.2f".format(micPeak))
+        micPeak = 0f
+        micPeakSince = now
+    }
+
     private companion object {
+        const val TAG = "ParleyEvent"
         const val TICK_MS = 66L
         const val SPEECH_LEVEL = 0.45f
         const val ECHO_WINDOW_MS = 3_000L
