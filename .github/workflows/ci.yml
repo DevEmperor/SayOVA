@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  app:
+    name: Unit tests, lint and release build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools platforms;android-37.0 build-tools;37.0.0
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew :core:testDebugUnitTest :wear:testDebugUnitTest :wear:lintDebug :wear:assembleRelease --console=plain
+
+  pair:
+    name: Pairing page and relay
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pair
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm run build:page

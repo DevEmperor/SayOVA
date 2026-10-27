@@ -9,3 +9,7 @@ https://www.nayuki.io/page/qr-code-generator-library
 
 This product includes Tink by Google (Apache License 2.0),
 https://github.com/tink-crypto/tink-java
+
+The pairing page (pair/) includes hpke-js by Ajitomi Daisuke (MIT License),
+https://github.com/dajiaji/hpke-js, which contains code based on noble-curves and
+noble-hashes by Paul Miller (MIT License), https://github.com/paulmillr/noble-curves.

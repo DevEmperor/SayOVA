@@ -1,0 +1,33 @@
+Parley turns your Wear OS watch into a real conversation partner. Raise your wrist, talk naturally, interrupt whenever you like – and hear the answer while you read it along on your watch.
+
+<b>Real conversations, not commands</b>
+Parley streams your voice live to a speech-to-speech model – Google Gemini Live or OpenAI Realtime – and plays the answer as it is generated. Speak over it to interrupt, just like with a person, or tap the orb.
+
+<b>Hear it and read it</b>
+Both sides of the conversation appear on the screen as you talk. The part of the answer you have already heard is bright, the rest is still dim, so you never lose your place.
+
+<b>Silent mode</b>
+In a lecture, a meeting or a quiet room? Get the answers as text only, with push-to-talk.
+
+<b>Gets things done</b>
+Ask Parley to set a timer or an alarm, save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
+
+<b>Your provider, your key, your data</b>
+Parley works with your own API key from Google Gemini (from about a cent a minute; a free tier is available) or OpenAI. Your voice goes straight from the watch to the provider – there is no Parley server in between, no account, no tracking and no ads.
+
+<b>Setup in a minute</b>
+Scan the QR code on your watch with your phone, paste your key, compare a six-digit code, done. The key is encrypted in your browser for your watch alone – no companion app, no typing on a tiny keyboard.
+
+<b>Made for the watch</b>
+• Uses Wi-Fi or LTE during a conversation for smooth audio
+• Keeps talking with the screen off, with an icon on the watch face
+• Tile and complication to start talking with one tap
+• Works with Bluetooth headphones
+• Personalities (friendly, concise, tutor, language partner or your own), 40 voices, answer language
+• Running cost estimate and monthly total
+• History stored only on the watch, for as long as you choose
+
+<b>Open source</b>
+Parley is open source under the Apache License 2.0. You can read exactly what it does with your voice and your key: github.com/DevEmperor/Parley
+
+Requires a Wear OS 3 or newer watch with a microphone and an API key from Google Gemini or OpenAI. Usage is billed by your provider. The Gemini API is for users aged 18 and over.
