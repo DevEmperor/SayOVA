@@ -25,3 +25,4 @@ pair/node_modules/
 pair/.wrangler/
 pair/.dev.vars
 pair/public/app.js
+__pycache__/

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Headless Wear OS emulator shaped like a Galaxy Watch6 (round 432 × 432 px, 340 dpi, Wear OS 6), with a
+# Wear OS emulator shaped like a Galaxy Watch6 (round 432 × 432 px, 340 dpi, Wear OS 6), with a
 # silent audio loop: speech goes into the watch's microphone and Parley's voice is recorded, both over the
 # emulator's own gRPC bridge (tools/emu_audio.py), so a whole conversation can be tested without a sound in
 # the room and without touching the desktop's audio devices.
@@ -63,15 +63,16 @@ case "${1:-}" in
     # microphone and records through it. The host microphone stays off (no -allow-host-audio).
     if [ "${2:-}" = --headless ]; then
       # Headless qemu: no window at all, and no host audio driver either.
-      nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" -no-window -no-boot-anim \
+      setsid nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" -no-window -no-boot-anim \
         -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$STATE/emulator.log" 2>&1 &
     else
-      # In a window the emulator would open the desktop's sound devices, and its PulseAudio input
-      # failing ("pa_simple_read failed") went together with two emulator crashes. With the host audio
-      # driver set to none it touches no desktop audio at all; gRPC still carries both directions.
-      QEMU_AUDIO_DRV=none nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" \
+      # In a window the emulator would open the desktop's sound devices. With the host audio driver
+      # set to none it touches no desktop audio at all; gRPC still carries both directions.
+      QEMU_AUDIO_DRV=none setsid nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" \
         -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$STATE/emulator.log" 2>&1 &
     fi
+    # setsid: a `timeout` wrapped around this script or a test kills its whole process group, and
+    # the emulator has to outlive both.
     echo $! > "$STATE/emulator.pid"
     boot_wait
     "$ADB" -s "$SERIAL" shell dumpsys battery unplug   # otherwise the charging screen covers everything
@@ -104,7 +105,6 @@ case "${1:-}" in
   stop)
     "$ADB" -s "$SERIAL" emu kill > /dev/null 2>&1 || true
     [ -s "$STATE/emulator.pid" ] && { kill "$(cat "$STATE/emulator.pid")" 2>/dev/null || true; rm -f "$STATE/emulator.pid"; }
-    [ -s "$STATE/sink.module" ] && { pactl unload-module "$(cat "$STATE/sink.module")" 2>/dev/null || true; rm -f "$STATE/sink.module"; }
     echo "stopped"
     ;;
   remove)

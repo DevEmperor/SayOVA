@@ -7,6 +7,12 @@
 injectAudio and streamAudio are the emulator's own RPCs (emulator/lib/emulator_controller.proto), the same
 ones Android Studio's embedded emulator uses: nothing goes through the desktop's sound system, so nothing is
 heard in the room and no device of the desktop is touched.
+
+Emulator 37.2 with Wear OS 6 segfaults now and then while an audio stream is open (SIGSEGV in
+QemuAudioInputStream → AudioStreamCapturer, `coredumpctl list`), most likely when the watch opens or
+closes its microphone during an injection (apparently). Inject only while a conversation listens, let the call end
+before the conversation does, and expect to restart the emulator every few conversations. A single
+injection stream kept open for the whole boot crashed it at the first conversation, every time.
 """
 import os
 import sys
