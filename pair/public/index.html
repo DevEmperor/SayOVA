@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050608">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Parley · Connect your watch</title>
+  <meta name="description" content="Hand your AI provider's API key to Parley on your watch, encrypted end to end.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <div class="orb" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h1>Parley</h1>
+      <p class="tagline">Talk to AI from your wrist</p>
+    </header>
+
+    <!-- No code in the address: opened directly instead of from the watch. -->
+    <section class="card" data-state="missing" hidden>
+      <h2>Start on your watch</h2>
+      <p>Open Parley on your watch and choose <strong>Connect a provider</strong>. Then scan the QR code it shows with your phone's camera, or tap <strong>Open on phone</strong>.</p>
+      <p class="muted">This page only works with a code from your watch.</p>
+    </section>
+
+    <section class="card" data-state="expired" hidden>
+      <h2>Code no longer valid</h2>
+      <p id="expired-reason">This code has expired.</p>
+      <p class="muted">Go back to your watch and start the connection again to get a fresh code.</p>
+    </section>
+
+    <form class="card" id="pair-form" data-state="form" hidden novalidate>
+      <h2>Connect your watch</h2>
+      <p class="muted">Parley talks to the AI provider with your own API key, so you stay in control of cost and data.</p>
+
+      <fieldset class="providers">
+        <legend><span class="step">1</span>Choose a provider</legend>
+        <label class="provider">
+          <input type="radio" name="provider" value="gemini" checked>
+          <span class="provider-body">
+            <span class="provider-name">Google Gemini</span>
+            <span class="provider-note">Recommended · about 1–2 ¢ per minute</span>
+          </span>
+        </label>
+        <label class="provider">
+          <input type="radio" name="provider" value="openai">
+          <span class="provider-body">
+            <span class="provider-name">OpenAI</span>
+            <span class="provider-note">Realtime voices · about 2–11 ¢ per minute</span>
+          </span>
+        </label>
+      </fieldset>
+
+      <div class="field">
+        <label class="label" for="api-key"><span class="step">2</span>Paste your API key</label>
+        <div class="key-row">
+          <input id="api-key" name="api-key" type="password" inputmode="text" autocomplete="off" autocapitalize="off"
+                 autocorrect="off" spellcheck="false" placeholder="Your API key" required>
+          <button type="button" class="ghost" id="toggle-key" aria-pressed="false" aria-controls="api-key">Show</button>
+        </div>
+        <details class="help">
+          <summary>How do I get a key?</summary>
+          <ol data-provider="gemini">
+            <li>Sign in to Google AI Studio and open <em>API Keys</em>.</li>
+            <li>Choose <em>Create API key</em> and copy it.</li>
+            <li>In the EU, the UK and Switzerland, turn on billing: <em>Projects → Set up billing</em>. Prepay with $5 lasts for many hours of talking, and on the paid tier Google does not use your conversations to improve its products.</li>
+          </ol>
+          <ol data-provider="openai" hidden>
+            <li>Sign in to the OpenAI platform and open <em>API keys</em>.</li>
+            <li>Choose <em>Create new secret key</em> and copy it.</li>
+            <li>Make sure your account has credit under <em>Billing</em>.</li>
+          </ol>
+          <a id="key-link" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Open Google AI Studio</a>
+        </details>
+      </div>
+
+      <p class="error" id="form-error" role="alert"></p>
+      <button type="submit" class="primary" id="send">Send to watch</button>
+
+      <p class="privacy">
+        <!-- Material Symbols Rounded "lock", Apache License 2.0 -->
+        <svg viewBox="0 -960 960 960" aria-hidden="true"><path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z"/></svg>
+        Your key is encrypted in this browser for your watch alone. Our server only passes on data it cannot read and deletes it within ten minutes.
+      </p>
+    </form>
+
+    <section class="card sent" data-state="sent" hidden>
+      <h2>Check your watch</h2>
+      <p>Your watch now shows a code. Confirm it there if it matches:</p>
+      <p class="code" id="code" aria-live="polite">000 000</p>
+      <p class="status" id="pickup" aria-live="polite">Waiting for your watch…</p>
+    </section>
+
+    <footer>
+      <a href="https://github.com/DevEmperor/Parley/blob/main/PRIVACY_POLICY.md" target="_blank" rel="noopener noreferrer">Privacy</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/DevEmperor/Parley" target="_blank" rel="noopener noreferrer">Source code</a>
+    </footer>
+  </main>
+</body>
+</html>

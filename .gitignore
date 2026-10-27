@@ -1,0 +1,27 @@
+# Gradle / build output
+.gradle/
+.kotlin/
+build/
+/captures
+.externalNativeBuild
+.cxx
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Local configuration and secrets
+local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# Release artifacts stay local; GitHub releases link to Google Play instead
+/dist/
+
+# Pairing worker
+pair/node_modules/
+pair/.wrangler/
+pair/.dev.vars
+pair/public/app.js

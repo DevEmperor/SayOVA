@@ -1,0 +1,25 @@
+{
+  "name": "parley-pair",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Parley's pairing page and relay: hands an API key from a browser to the watch, end-to-end encrypted.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build:page": "esbuild src/page/main.ts --bundle --minify --format=esm --target=es2022 --outfile=public/app.js",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.page.json",
+    "vector": "node scripts/make-test-vector.mjs ../core/src/test/resources/pairing-vector.json"
+  },
+  "dependencies": {
+    "@hpke/core": "1.9.0",
+    "@hpke/dhkem-x25519": "1.8.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261027.1",
+    "esbuild": "0.28.2",
+    "typescript": "5.9.3",
+    "wrangler": "4.153.0"
+  }
+}

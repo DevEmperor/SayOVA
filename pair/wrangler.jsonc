@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "parley-pair",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-01",
+
+  // Reachable as parley-pair.<account>.workers.dev for now; a custom domain can be added later. The
+  // address is compiled into the watch app (parley.pairBaseUrl in gradle.properties).
+  "workers_dev": true,
+
+  // The page bundle is built before every deploy and dev run.
+  "build": { "command": "npm run build:page" },
+
+  // Static page from public/; only the API paths reach the Worker code.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/v1/*"]
+  },
+
+  "durable_objects": {
+    "bindings": [{ "name": "PAIR", "class_name": "PairSlot" }]
+  },
+
+  // Append only, never shorten: Cloudflare remembers the last tag it applied.
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["PairSlot"] }],
+
+  // No request logs: the pairing ids in the paths are nobody's business, not even ours.
+  "observability": { "enabled": false }
+}

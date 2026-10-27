@@ -1,0 +1,269 @@
+/* Parley design tokens – the same palette as the watch app (wear/.../ui/theme/Theme.kt). */
+:root {
+  --bg: #050608;
+  --surface: #101218;
+  --surface-high: #171a22;
+  --line: #242833;
+  --text: #f2f4f8;
+  --muted: #9aa2b3;
+  --teal: #2ec4b6;
+  --teal-dim: #1f8f85;
+  --on-teal: #03201d;
+  --violet: #8b5cf6;
+  --amber: #f5a524;
+  --coral: #ff7a6e;
+  --radius: 24px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(60rem 40rem at 50% -12rem, rgb(46 196 182 / 0.14), transparent 60%),
+    radial-gradient(40rem 30rem at 85% 10%, rgb(139 92 246 / 0.12), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  width: min(100%, 30rem);
+  margin: 0 auto;
+  padding: max(2.5rem, env(safe-area-inset-top)) 16px max(2rem, env(safe-area-inset-bottom));
+}
+
+/* Brand: the same orb as on the watch. */
+.brand { text-align: center; margin-bottom: 1.75rem; }
+
+.orb {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #7ff0e4, var(--teal) 38%, var(--violet) 100%);
+  box-shadow: 0 0 40px rgb(46 196 182 / 0.35), 0 0 80px rgb(139 92 246 / 0.25);
+  animation: breathe 4.5s ease-in-out infinite;
+}
+
+.orb span {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  border-radius: 3px;
+  background: #fff;
+  transform: translateY(-50%);
+}
+.orb span:nth-child(1) { left: 26px; height: 14px; }
+.orb span:nth-child(2) { left: 35px; height: 26px; }
+.orb span:nth-child(3) { left: 44px; height: 14px; }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none; }
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.tagline { margin: 0.25rem 0 0; color: var(--muted); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0 0 1rem; }
+.muted { color: var(--muted); }
+
+.step {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.6rem;
+  border-radius: 50%;
+  background: var(--surface-high);
+  border: 1px solid var(--line);
+  color: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+fieldset { border: 0; margin: 1.25rem 0 0; padding: 0; }
+
+legend, .label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.provider {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.6rem;
+  border-radius: 18px;
+  background: var(--surface-high);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.provider:has(input:checked) {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgb(46 196 182 / 0.15);
+}
+
+.provider input {
+  appearance: none;
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+  display: grid;
+  place-items: center;
+}
+.provider input:checked { border-color: var(--teal); }
+.provider input:checked::after {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--teal);
+}
+.provider input:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+.provider-body { display: flex; flex-direction: column; }
+.provider-name { font-weight: 600; }
+.provider-note { color: var(--muted); font-size: 0.875rem; }
+
+.field { margin-top: 1.25rem; }
+
+.key-row { display: flex; gap: 0.5rem; }
+
+input[type="password"], input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: 0.95rem/1.2 ui-monospace, "SF Mono", "Roboto Mono", monospace;
+}
+input:focus-visible { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgb(46 196 182 / 0.2); }
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 0;
+}
+
+.ghost {
+  padding: 0 1rem;
+  border-radius: 14px;
+  background: var(--surface-high);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-weight: 550;
+}
+.ghost:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border-radius: 999px;
+  background: var(--teal);
+  color: var(--on-teal);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, transform 0.1s;
+}
+.primary:hover { background: #3fd6c8; }
+.primary:active { transform: scale(0.98); }
+.primary:disabled { background: var(--teal-dim); cursor: progress; }
+.primary:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.help {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: var(--surface-high);
+  font-size: 0.925rem;
+}
+.help summary { cursor: pointer; color: var(--teal); font-weight: 600; }
+.help ol { margin: 0.75rem 0; padding-left: 1.25rem; color: var(--muted); }
+.help li { margin-bottom: 0.35rem; }
+.help em { color: var(--text); font-style: normal; font-weight: 550; }
+.help a { color: var(--teal); font-weight: 600; }
+
+.error { min-height: 1.5em; margin: 1rem 0 0; color: var(--coral); font-size: 0.925rem; }
+.error:empty { min-height: 0; margin: 0; }
+
+.privacy {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.privacy svg { flex: none; width: 1.1rem; height: 1.1rem; margin-top: 0.15rem; fill: var(--teal); }
+
+.sent { text-align: center; }
+
+.code {
+  margin: 1.25rem 0;
+  font: 700 2.75rem/1 ui-monospace, "SF Mono", "Roboto Mono", monospace;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, var(--teal), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.status { color: var(--muted); margin: 0; }
+.status.success { color: var(--teal); }
+.status.error { color: var(--coral); }
+
+footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+footer a { color: var(--muted); }
+footer a:hover { color: var(--text); }
+
+[hidden] { display: none !important; }
