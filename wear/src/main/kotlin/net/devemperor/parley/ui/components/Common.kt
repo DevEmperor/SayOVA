@@ -34,12 +34,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.wear.compose.foundation.ScrollInfoProvider
+import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.material3.EdgeButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.MaterialTheme
@@ -59,23 +64,38 @@ fun KeepScreenOn(enabled: Boolean) {
     }
 }
 
-/** A non-scrolling screen with an edge button; the scaffold still needs a scroll source to place it. */
+/**
+ * A screen that does not scroll, with an edge button. The scaffold sizes its edge button from the
+ * room the content leaves below its last item, and a plain ScrollState always reports none, which
+ * keeps the button at height zero. A static screen has all the room there is.
+ */
 @Composable
 fun EdgeButtonScaffold(
     edgeButton: @Composable BoxScope.() -> Unit,
     timeText: (@Composable () -> Unit)? = null,
     content: @Composable BoxScope.(PaddingValues) -> Unit,
 ) {
-    val scroll = rememberScrollState()
+    val screenHeight = LocalWindowInfo.current.containerSize.height.toFloat()
+    val info = remember(screenHeight) { StaticScrollInfo(screenHeight) }
     ScreenScaffold(
-        scrollInfoProvider = remember(scroll) { ScrollInfoProvider(scroll) },
+        scrollInfoProvider = info,
         edgeButton = edgeButton,
         timeText = timeText,
         content = content,
     )
 }
 
-/** A full screen with an icon, a title, some text and one action at the bottom edge. */
+private class StaticScrollInfo(override val lastItemOffset: Float) : ScrollInfoProvider {
+    override val isScrollAwayValid = false
+    override val isScrollable = false
+    override val isScrollInProgress = false
+    override val anchorItemOffset = 0f
+}
+
+/**
+ * A full screen with an icon, a title, some text and one action at the bottom edge. It is a list,
+ * so a long text scrolls on a small watch instead of being cut off; short content sits centred.
+ */
 @Composable
 fun MessageScreen(
     @DrawableRes icon: Int,
@@ -87,34 +107,39 @@ fun MessageScreen(
     @DrawableRes actionIcon: Int? = null,
     extra: (@Composable () -> Unit)? = null,
 ) {
-    val scroll = rememberScrollState()
+    val listState = rememberTransformingLazyColumnState()
     ScreenScaffold(
-        scrollInfoProvider = remember(scroll) { ScrollInfoProvider(scroll) },
+        scrollState = listState,
         edgeButton = {
             EdgeButton(onClick = onAction) {
-                actionIcon?.let { Icon(painterResource(it), contentDescription = null, modifier = Modifier.padding(end = 4.dp)) }
+                actionIcon?.let { Icon(painterResource(it), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(20.dp)) }
                 Text(actionLabel)
             }
         },
     ) { padding ->
-        Column(
-            Modifier.fillMaxSize().verticalScroll(scroll).padding(padding).padding(horizontal = 18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        TransformingLazyColumn(
+            state = listState,
+            contentPadding = padding,
+            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         ) {
-            Icon(painterResource(icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(28.dp))
-            Spacer(Modifier.height(6.dp))
-            Text(title, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
-            if (text != null) {
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
+            item { Icon(painterResource(icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(26.dp)) }
+            item {
+                Text(title, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 14.dp))
             }
-            extra?.invoke()
+            if (text != null) {
+                item {
+                    Text(
+                        text,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 18.dp),
+                    )
+                }
+            }
+            if (extra != null) {
+                item { Column(horizontalAlignment = Alignment.CenterHorizontally) { extra() } }
+            }
         }
     }
 }
@@ -170,6 +195,10 @@ fun rememberTextInput(label: String, onResult: (String?) -> Unit): () -> Unit {
 }
 
 private const val TEXT_INPUT_KEY = "parley_text"
+
+/** The watch's screen width, to size the orb and the QR code for small and large watches alike. */
+@Composable
+fun screenWidth(): Dp = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.width.toDp() }
 
 /** Section spacing used under titles on full-screen layouts. */
 val ScreenPadding = Modifier.fillMaxWidth().padding(horizontal = 16.dp)

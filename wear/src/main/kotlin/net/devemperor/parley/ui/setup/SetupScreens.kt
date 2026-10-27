@@ -62,6 +62,7 @@ import net.devemperor.parley.ui.components.Orb
 import net.devemperor.parley.ui.components.QrCodeImage
 import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.openOnPhone
+import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.components.rememberTextInput
 import net.devemperor.parley.ui.theme.ParleyColors
 
@@ -69,7 +70,7 @@ import net.devemperor.parley.ui.theme.ParleyColors
 fun WelcomeScreen(onStart: () -> Unit) {
     EdgeButtonScaffold(
         edgeButton = {
-            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.Medium) { Text(stringResource(R.string.welcome_start)) }
+            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.ExtraSmall) { Text(stringResource(R.string.welcome_start)) }
         },
     ) { padding ->
         Column(
@@ -77,14 +78,14 @@ fun WelcomeScreen(onStart: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Orb(phase = null, level = 0f, modifier = Modifier.size(78.dp))
-            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleLarge)
+            Orb(phase = null, level = 0f, modifier = Modifier.size(screenWidth() * 0.32f))
+            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleMedium)
             Text(
                 stringResource(R.string.welcome_tagline),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 28.dp),
+                modifier = Modifier.padding(horizontal = 20.dp),
             )
         }
     }
@@ -241,7 +242,7 @@ private fun QrContent(state: PairingState.Waiting, onTypeKey: () -> Unit) {
         },
     ) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(top = 14.dp, bottom = padding.calculateBottomPadding()),
+            Modifier.fillMaxSize().padding(top = 10.dp, bottom = padding.calculateBottomPadding()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -252,7 +253,7 @@ private fun QrContent(state: PairingState.Waiting, onTypeKey: () -> Unit) {
                 textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(4.dp))
-            QrCodeImage(state.link, Modifier.fillMaxWidth(0.56f))
+            QrCodeImage(state.link, Modifier.size(screenWidth() * 0.5f))
             Text(
                 stringResource(R.string.pair_type_instead),
                 style = MaterialTheme.typography.labelSmall,

@@ -4,7 +4,7 @@
 
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Talk to AI from your wrist.</string>
-    <string name="welcome_start">Get started</string>
+    <string name="welcome_start">Start</string>
     <string name="permission_title">Microphone</string>
     <string name="permission_text">Parley needs the microphone to hear you. Audio is only streamed while a conversation is open.</string>
     <string name="permission_blocked">The microphone is blocked. Allow it in the app settings to talk to Parley.</string>

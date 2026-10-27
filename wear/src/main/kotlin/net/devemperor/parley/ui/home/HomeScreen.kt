@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.EdgeButton
@@ -38,6 +39,7 @@ import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.Orb
+import net.devemperor.parley.ui.components.screenWidth
 
 /**
  * The start screen: the orb (tap it, or the edge button, to talk) and three small buttons for the
@@ -58,14 +60,15 @@ fun HomeScreen(
         edgeButton = {
             EdgeButton(
                 onClick = onTalk,
-                buttonSize = EdgeButtonSize.Medium,
+                buttonSize = EdgeButtonSize.ExtraSmall,
                 colors = ButtonDefaults.buttonColors(),
             ) {
-                Icon(painterResource(R.drawable.ic_mic), contentDescription = null, modifier = Modifier.padding(end = 6.dp))
+                Icon(painterResource(R.drawable.ic_mic), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(20.dp))
                 Text(stringResource(R.string.home_talk))
             }
         },
     ) { padding ->
+        val width = screenWidth()
         Column(
             Modifier.fillMaxSize().padding(padding),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -74,7 +77,7 @@ fun HomeScreen(
             val talkLabel = stringResource(R.string.home_talk)
             Box(
                 Modifier
-                    .size(84.dp)
+                    .size(width * 0.32f)
                     .semantics { contentDescription = talkLabel }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
@@ -95,19 +98,19 @@ fun HomeScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
             )
-            Spacer(Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SmallAction(R.drawable.ic_chat, stringResource(R.string.home_text_mode), onText)
-                SmallAction(R.drawable.ic_history, stringResource(R.string.home_history), onHistory)
-                SmallAction(R.drawable.ic_settings, stringResource(R.string.home_settings), onSettings)
+            Spacer(Modifier.height(6.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                SmallAction(R.drawable.ic_chat, stringResource(R.string.home_text_mode), width * 0.17f, onText)
+                SmallAction(R.drawable.ic_history, stringResource(R.string.home_history), width * 0.17f, onHistory)
+                SmallAction(R.drawable.ic_settings, stringResource(R.string.home_settings), width * 0.17f, onSettings)
             }
         }
     }
 }
 
 @Composable
-private fun SmallAction(icon: Int, label: String, onClick: () -> Unit) {
-    FilledTonalIconButton(onClick = onClick, modifier = Modifier.size(40.dp)) {
-        Icon(painterResource(icon), contentDescription = label, modifier = Modifier.size(20.dp))
+private fun SmallAction(icon: Int, label: String, size: Dp, onClick: () -> Unit) {
+    FilledTonalIconButton(onClick = onClick, modifier = Modifier.size(size)) {
+        Icon(painterResource(icon), contentDescription = label, modifier = Modifier.size(size * 0.5f))
     }
 }
