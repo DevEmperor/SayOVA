@@ -2,6 +2,7 @@ package net.devemperor.parley.core.prompt
 
 import net.devemperor.parley.core.conversation.Role
 import net.devemperor.parley.core.conversation.Turn
+import net.devemperor.parley.core.memory.Fact
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -58,6 +59,8 @@ object Instructions {
         canSearch: Boolean,
         /** A conversation from the history this one carries on; empty for a new one. */
         earlier: List<Turn> = emptyList(),
+        /** What Parley remembers about the user; null while the memory is turned off. */
+        memory: List<Fact>? = null,
     ): String = buildString {
         appendLine("You are Parley, a voice assistant running on the user's smartwatch.")
         appendLine()
@@ -79,7 +82,10 @@ object Instructions {
         appendLine()
         appendLine("Context: it is ${now.format(DATE_FORMAT)} (time zone ${now.zone.id}). Use this for anything time-related.")
         appendLine()
-        appendLine("Tools: you can set timers and alarms, save notes, check the watch's battery and time, and end the conversation.")
+        appendLine(
+            "Tools: you can set timers and alarms, save notes, check the watch's battery and time, " +
+                (if (memory != null) "remember facts about the user, " else "") + "and end the conversation.",
+        )
         if (canSearch) appendLine("For current information (news, weather, prices, opening hours, recent events) search the web before answering.")
         appendLine("After using a tool, confirm in a few words what you did. When the user says goodbye or wants to stop, say a short farewell and call end_conversation.")
         val style = if (persona == Persona.CUSTOM) customPersona.trim() else persona.prompt
@@ -87,6 +93,8 @@ object Instructions {
             appendLine()
             appendLine("Personality: $style")
         }
+        appendLine()
+        append(memorySection(memory))
         val transcript = transcriptOf(earlier)
         if (transcript.isNotEmpty()) {
             appendLine()
@@ -95,6 +103,26 @@ object Instructions {
             appendLine("Continue from there: the user may refer to any of it. Do not repeat or summarise it unless asked.")
         }
     }.trim()
+
+    private fun memorySection(memory: List<Fact>?): String = buildString {
+        if (memory == null) {
+            appendLine("Memory is off: nothing is kept between conversations. If the user asks you to remember something about them, say they can turn on the memory in Parley's settings, and offer to save a note instead.")
+            return@buildString
+        }
+        appendLine("Memory: Parley keeps lasting facts about the user, given to every conversation.")
+        appendLine("- Call remember_fact only when the user explicitly asks you to remember something lasting about them (name, home, family, preferences, diet, routines). Never save what they merely mention.")
+        appendLine("- Write a fact as a short statement in the language the user speaks, not in English unless they speak English.")
+        appendLine("- Things to read later or soon outdated (where they parked, a shopping list) are notes: use save_note.")
+        appendLine("- Never remember passwords, PINs, card or account numbers.")
+        appendLine("- When a fact updates one below, pass its number as replaces instead of saving it twice. When the user asks you to forget something, call forget_fact.")
+        appendLine("- Use the facts where they help, without reciting them. Tell the user what you remember only when asked.")
+        if (memory.isEmpty()) {
+            appendLine("You remember nothing about the user yet.")
+        } else {
+            appendLine("What you remember (number, fact):")
+            memory.forEach { appendLine("[${it.number}] ${it.text}") }
+        }
+    }
 
     /**
      * The earlier conversation as plain lines, the newest [EARLIER_LIMIT] characters of it: the

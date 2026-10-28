@@ -13,9 +13,11 @@ import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import net.devemperor.parley.R
+import net.devemperor.parley.core.memory.Memory
 import net.devemperor.parley.core.provider.openai.OpenAiWebSearch
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.tools.ParleyTools
+import net.devemperor.parley.data.MemoryStore
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,9 +28,20 @@ import java.time.format.DateTimeFormatter
 class ToolRunner(
     private val context: Context,
     private val webSearch: (suspend (String) -> String)?,
+    /** Null while the memory is turned off; the model is then offered no memory tools either. */
+    private val memory: MemoryStore?,
 ) {
-    /** [note] is shown in the transcript as what Parley did, e.g. "Timer · 5 min". */
-    data class Outcome(val result: JsonObject, val note: String? = null, val savedNote: String? = null, val endsConversation: Boolean = false)
+    /**
+     * [note] is shown in the transcript as what Parley did, e.g. "Timer · 5 min"; [notice] is the
+     * shorter text under the orb, the note itself when not given.
+     */
+    data class Outcome(
+        val result: JsonObject,
+        val note: String? = null,
+        val notice: String? = null,
+        val savedNote: String? = null,
+        val endsConversation: Boolean = false,
+    )
 
     suspend fun run(call: VoiceEvent.ToolCall): Outcome = when (call.name) {
         ParleyTools.DEVICE_STATUS -> deviceStatus()
@@ -37,6 +50,8 @@ class ToolRunner(
         ParleyTools.SAVE_NOTE -> saveNote(call.arguments)
         ParleyTools.END_CONVERSATION -> Outcome(ok(), endsConversation = true)
         ParleyTools.SEARCH_WEB -> search(call.arguments)
+        ParleyTools.REMEMBER_FACT -> remember(call.arguments)
+        ParleyTools.FORGET_FACT -> forget(call.arguments)
         else -> Outcome(error("Unknown tool ${call.name}"))
     }
 
@@ -86,9 +101,45 @@ class ToolRunner(
         val search = webSearch ?: return Outcome(error("Web search is turned off."))
         return try {
             val summary = withContext(Dispatchers.IO) { search(query) }
-            Outcome(buildJsonObject { put("summary", summary) }, note = "Searched the web")
+            Outcome(buildJsonObject { put("summary", summary) }, note = context.getString(R.string.note_searched))
         } catch (e: Exception) {
             Outcome(error("The search failed: ${e.message}"))
+        }
+    }
+
+    private suspend fun remember(args: JsonObject): Outcome {
+        val store = memory ?: return Outcome(error("The memory is turned off in Parley's settings."))
+        val text = args["fact"]?.jsonPrimitive?.contentOrNull.orEmpty()
+        val replaces = args["replaces"]?.jsonPrimitive?.intOrNull
+        return when (val change = store.remember(text, replaces)) {
+            is Memory.Change.Saved -> Outcome(
+                buildJsonObject {
+                    put("ok", true)
+                    put("number", change.fact.number)
+                },
+                note = context.getString(R.string.note_remembered, change.fact.text),
+                notice = context.getString(R.string.notice_remembered),
+            )
+            is Memory.Change.Known -> Outcome(buildJsonObject {
+                put("ok", true)
+                put("already_known", change.fact.number)
+            })
+            is Memory.Change.Refused -> Outcome(error(change.reason))
+            is Memory.Change.Forgotten -> Outcome(ok())
+        }
+    }
+
+    private suspend fun forget(args: JsonObject): Outcome {
+        val store = memory ?: return Outcome(error("The memory is turned off in Parley's settings."))
+        val number = args["number"]?.jsonPrimitive?.intOrNull ?: return Outcome(error("number is missing"))
+        return when (val change = store.forget(number)) {
+            is Memory.Change.Forgotten -> Outcome(
+                ok(),
+                note = context.getString(R.string.note_forgotten, change.fact.text),
+                notice = context.getString(R.string.notice_forgotten),
+            )
+            is Memory.Change.Refused -> Outcome(error(change.reason))
+            else -> Outcome(ok())
         }
     }
 

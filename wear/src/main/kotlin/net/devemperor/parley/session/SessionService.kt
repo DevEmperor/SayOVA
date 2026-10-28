@@ -82,6 +82,7 @@ class SessionService : LifecycleService() {
         if (!demo) app.network.acquire()
         val model = provider.model(settings.modelId())
         val canSearch = settings.webSearch
+        val memory = app.memory.takeIf { settings.memory }
         val config = SessionConfig(
             apiKey = apiKey,
             model = model.id,
@@ -94,8 +95,9 @@ class SessionService : LifecycleService() {
                 textOnly = textOnly,
                 canSearch = canSearch,
                 earlier = earlier?.turns.orEmpty(),
+                memory = memory?.current(),
             ),
-            tools = ParleyTools.standard,
+            tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()),
             webSearch = canSearch,
             textOnly = textOnly,
         )
@@ -124,7 +126,7 @@ class SessionService : LifecycleService() {
                 soundOff = settings.soundOff,
                 continues = earlier,
             ),
-            toolRunner = ToolRunner(this@SessionService, search),
+            toolRunner = ToolRunner(this@SessionService, search, memory),
             haptics = Haptics(this@SessionService) { settings.haptics },
             transport = app.network.transport,
             onSave = { conversation, usd, talkMs ->

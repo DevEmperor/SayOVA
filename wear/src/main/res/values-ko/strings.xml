@@ -244,4 +244,25 @@
     <string name="note_saved">메모 저장됨</string>
     <string name="error_no_key_for">아직 %1$s 키가 없습니다.</string>
     <string name="error_microphone_unavailable">마이크를 사용할 수 없습니다.</string>
+
+    <!-- Memory: facts Parley was asked to remember. -->
+    <string name="memory_title">기억</string>
+    <string name="memory_use">기억 사용</string>
+    <string name="memory_use_note">요청한 것만 기억: “…라고 기억해 줘”</string>
+    <string name="memory_off">꺼짐</string>
+    <string name="memory_none">아직 비어 있음</string>
+    <string name="memory_empty">아직 기억한 내용이 없습니다. 예: “나는 채식주의자라고 기억해 줘.”</string>
+    <string name="memory_count">기억 · %1$d/%2$d</string>
+    <string name="memory_forget_confirm">이 항목을 잊으시겠습니까?</string>
+    <string name="memory_forget_all">모두 잊기</string>
+    <string name="memory_forget_all_confirm">Parley가 알고 있는 내용을 모두 잊으시겠습니까?</string>
+    <string name="memory_privacy">이 시계에만 저장됩니다. Parley는 대화할 때마다 이 항목을 AI 제공업체에 전달합니다.</string>
+    <string name="notice_remembered">기억함</string>
+    <string name="notice_forgotten">잊음</string>
+    <string name="note_remembered">기억함: %1$s</string>
+    <string name="note_forgotten">잊음: %1$s</string>
+    <string name="note_searched">웹 검색함</string>
+    <plurals name="memory_facts">
+        <item quantity="other">%1$d개 항목</item>
+    </plurals>
 </resources>

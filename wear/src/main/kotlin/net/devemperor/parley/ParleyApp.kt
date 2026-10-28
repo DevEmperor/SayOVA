@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.HistoryStore
 import net.devemperor.parley.data.KeyVault
+import net.devemperor.parley.data.MemoryStore
 import net.devemperor.parley.data.SettingsRepository
 import net.devemperor.parley.data.UsageStore
 import net.devemperor.parley.net.NetworkSelector
@@ -24,6 +25,7 @@ class ParleyApp : Application() {
     val keys by lazy { KeyVault(this) }
     val history by lazy { HistoryStore(this) }
     val usage by lazy { UsageStore(this) }
+    val memory by lazy { MemoryStore(this) }
     val network by lazy { NetworkSelector(this) }
 
     val http: OkHttpClient by lazy {
@@ -39,6 +41,7 @@ class ParleyApp : Application() {
         super.onCreate()
         appScope.launch {
             history.load()
+            memory.load()
             usage.load(seed = {
                 var days = Usage.fromConversations(history.conversations.value, ZoneId.systemDefault())
                 // Cost counted in the month before the statistics, beyond what the history shows.

@@ -12,6 +12,9 @@ In a lecture, a meeting or a quiet room? Get the answers as text only, with push
 <b>Gets things done</b>
 Ask Parley to set a timer or an alarm, save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
 
+<b>Remembers what you ask it to</b>
+Say "Remember that I'm vegetarian" and every later conversation knows. Only what you ask for is kept, on the watch, and you can read or delete every fact in the settings.
+
 <b>Your provider, your key, your data</b>
 Parley works with your own API key from Google Gemini (from about a cent a minute; a free tier is available) or OpenAI. Your voice goes straight from the watch to the provider – there is no Parley server in between, no account, no tracking and no ads.
 

@@ -252,4 +252,28 @@
     <string name="note_saved">Zapisano notatkę</string>
     <string name="error_no_key_for">Brak jeszcze klucza dla %1$s.</string>
     <string name="error_microphone_unavailable">Mikrofon jest niedostępny.</string>
+
+    <!-- Memory: facts Parley was asked to remember. -->
+    <string name="memory_title">Pamięć</string>
+    <string name="memory_use">Używaj pamięci</string>
+    <string name="memory_use_note">Tylko to, o co poprosisz: „Zapamiętaj, że…”</string>
+    <string name="memory_off">Wyłączona</string>
+    <string name="memory_none">Na razie pusta</string>
+    <string name="memory_empty">Nic jeszcze nie zapamiętano. Powiedz na przykład: „Zapamiętaj, że jestem wegetarianinem”.</string>
+    <string name="memory_count">Zapamiętane · %1$d/%2$d</string>
+    <string name="memory_forget_confirm">Zapomnieć to?</string>
+    <string name="memory_forget_all">Zapomnij wszystko</string>
+    <string name="memory_forget_all_confirm">Zapomnieć wszystko, co Parley o tobie wie?</string>
+    <string name="memory_privacy">Przechowywane tylko na tym zegarku. Parley przekazuje te wpisy twojemu dostawcy AI w każdej rozmowie.</string>
+    <string name="notice_remembered">Zapamiętano</string>
+    <string name="notice_forgotten">Zapomniano</string>
+    <string name="note_remembered">Zapamiętano: %1$s</string>
+    <string name="note_forgotten">Zapomniano: %1$s</string>
+    <string name="note_searched">Wyszukano w sieci</string>
+    <plurals name="memory_facts">
+        <item quantity="one">%1$d wpis</item>
+        <item quantity="few">%1$d wpisy</item>
+        <item quantity="many">%1$d wpisów</item>
+        <item quantity="other">%1$d wpisu</item>
+    </plurals>
 </resources>

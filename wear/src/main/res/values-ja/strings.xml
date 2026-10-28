@@ -244,4 +244,25 @@
     <string name="note_saved">メモを保存しました</string>
     <string name="error_no_key_for">%1$s のキーがまだありません。</string>
     <string name="error_microphone_unavailable">マイクを使用できません。</string>
+
+    <!-- Memory: facts Parley was asked to remember. -->
+    <string name="memory_title">記憶</string>
+    <string name="memory_use">記憶を使う</string>
+    <string name="memory_use_note">頼んだことだけ：「〇〇を覚えておいて」</string>
+    <string name="memory_off">オフ</string>
+    <string name="memory_none">まだ空です</string>
+    <string name="memory_empty">まだ何も覚えていません。たとえば「私はベジタリアンだと覚えておいて」と話しかけてください。</string>
+    <string name="memory_count">記憶 · %1$d/%2$d</string>
+    <string name="memory_forget_confirm">これを忘れますか？</string>
+    <string name="memory_forget_all">すべて忘れる</string>
+    <string name="memory_forget_all_confirm">Parley があなたについて知っていることをすべて忘れますか？</string>
+    <string name="memory_privacy">このウォッチにのみ保存されます。Parley は会話のたびに、これらの項目を AI プロバイダに送ります。</string>
+    <string name="notice_remembered">覚えました</string>
+    <string name="notice_forgotten">忘れました</string>
+    <string name="note_remembered">覚えました：%1$s</string>
+    <string name="note_forgotten">忘れました：%1$s</string>
+    <string name="note_searched">ウェブを検索しました</string>
+    <plurals name="memory_facts">
+        <item quantity="other">%1$d 件</item>
+    </plurals>
 </resources>

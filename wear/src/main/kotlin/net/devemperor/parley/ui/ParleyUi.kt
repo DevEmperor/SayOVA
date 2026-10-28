@@ -28,6 +28,7 @@ import net.devemperor.parley.ui.history.ConversationDetailScreen
 import net.devemperor.parley.ui.history.HistoryScreen
 import net.devemperor.parley.ui.history.ReportScreen
 import net.devemperor.parley.ui.home.HomeScreen
+import net.devemperor.parley.ui.memory.MemoryScreen
 import net.devemperor.parley.ui.settings.Choice
 import net.devemperor.parley.ui.settings.ChoiceScreen
 import net.devemperor.parley.ui.settings.ProviderScreen
@@ -58,6 +59,7 @@ object Routes {
     const val ABOUT = "about"
     const val LICENSES = "licenses"
     const val USAGE = "usage"
+    const val MEMORY = "memory"
 
     fun pair(provider: ProviderId) = "pair/${provider.key}"
     fun detail(id: String) = "history/$id"
@@ -77,6 +79,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
     val connected by app.keys.connected.collectAsStateWithLifecycle()
     val conversations by app.history.conversations.collectAsStateWithLifecycle()
     val usage by app.usage.days.collectAsStateWithLifecycle()
+    val facts by app.memory.facts.collectAsStateWithLifecycle()
     val session by SessionHub.state.collectAsStateWithLifecycle()
     val navController = rememberSwipeDismissableNavController()
 
@@ -210,6 +213,8 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                         onOpenAbout = whenResumed { navController.navigate(Routes.ABOUT) },
                         monthUsage = Usage.month(usage, YearMonth.now()),
                         onOpenUsage = whenResumed { navController.navigate(Routes.USAGE) },
+                        memoryFacts = facts.size,
+                        onOpenMemory = whenResumed { navController.navigate(Routes.MEMORY) },
                     )
                 }
                 composable(Routes.PROVIDER) {
@@ -237,6 +242,16 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 composable(Routes.ABOUT) { AboutScreen(onLicenses = whenResumed { navController.navigate(Routes.LICENSES) }) }
                 composable(Routes.LICENSES) { LicensesScreen() }
                 composable(Routes.USAGE) { UsageScreen(usage) }
+                composable(Routes.MEMORY) {
+                    val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
+                    MemoryScreen(
+                        enabled = s.memory,
+                        facts = facts,
+                        onEnable = { on -> update { it.copy(memory = on) } },
+                        onForget = { fact -> scope.launch { app.memory.forget(fact.number) } },
+                        onForgetAll = { scope.launch { app.memory.forgetAll() } },
+                    )
+                }
             }
 
             LaunchedEffect(Unit) {

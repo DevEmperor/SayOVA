@@ -248,4 +248,26 @@
     <string name="note_saved">Note saved</string>
     <string name="error_no_key_for">No key for %1$s yet.</string>
     <string name="error_microphone_unavailable">The microphone is not available.</string>
+
+    <!-- Memory: facts Parley was asked to remember. -->
+    <string name="memory_title">Memory</string>
+    <string name="memory_use">Use memory</string>
+    <string name="memory_use_note">Only what you ask for: “Remember that …”</string>
+    <string name="memory_off">Off</string>
+    <string name="memory_none">Nothing yet</string>
+    <string name="memory_empty">Nothing remembered yet. Try saying: “Remember that I’m vegetarian.”</string>
+    <string name="memory_count">Remembered · %1$d/%2$d</string>
+    <string name="memory_forget_confirm">Forget this?</string>
+    <string name="memory_forget_all">Forget everything</string>
+    <string name="memory_forget_all_confirm">Forget everything Parley knows about you?</string>
+    <string name="memory_privacy">Stored only on this watch. Parley gives these facts to your AI provider in every conversation.</string>
+    <string name="notice_remembered">Remembered</string>
+    <string name="notice_forgotten">Forgotten</string>
+    <string name="note_remembered">Remembered: %1$s</string>
+    <string name="note_forgotten">Forgotten: %1$s</string>
+    <string name="note_searched">Searched the web</string>
+    <plurals name="memory_facts">
+        <item quantity="one">%1$d fact</item>
+        <item quantity="other">%1$d facts</item>
+    </plurals>
 </resources>

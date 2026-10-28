@@ -66,6 +66,8 @@ object ParleyTools {
     const val SAVE_NOTE = "save_note"
     const val END_CONVERSATION = "end_conversation"
     const val SEARCH_WEB = "search_web"
+    const val REMEMBER_FACT = "remember_fact"
+    const val FORGET_FACT = "forget_fact"
 
     val deviceStatus = ToolSpec(
         name = DEVICE_STATUS,
@@ -109,5 +111,24 @@ object ParleyTools {
         parameters = listOf(ToolParam("query", ParamType.STRING, "What to search for, as a short search query.")),
     )
 
+    /** Only while the memory is on; the facts themselves are in the instructions (see Instructions). */
+    val rememberFact = ToolSpec(
+        name = REMEMBER_FACT,
+        description = "Saves a lasting fact about the user to Parley's memory, which every future conversation is given. " +
+            "Call it only when the user explicitly asks you to remember something about them.",
+        parameters = listOf(
+            // No examples here: English ones made the model save German facts in English.
+            ToolParam("fact", ParamType.STRING, "The fact as a short statement about the user, in the language the user speaks to you, never translated. The user reads it in a list on the watch."),
+            ToolParam("replaces", ParamType.INTEGER, "Number of a remembered fact this one updates, e.g. a new home town.", required = false),
+        ),
+    )
+
+    val forgetFact = ToolSpec(
+        name = FORGET_FACT,
+        description = "Removes a fact from Parley's memory when the user asks you to forget it.",
+        parameters = listOf(ToolParam("number", ParamType.INTEGER, "Number of the remembered fact.")),
+    )
+
     val standard = listOf(deviceStatus, setTimer, setAlarm, saveNote, endConversation)
+    val memory = listOf(rememberFact, forgetFact)
 }

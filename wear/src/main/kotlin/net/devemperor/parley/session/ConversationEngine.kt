@@ -369,7 +369,7 @@ class ConversationEngine(
             outcome.note?.let { note ->
                 if (outcome.savedNote == null) record("tool-${call.callId}", Role.TOOL).text.append(note)
                 haptics.action()
-                showNotice(note, 2_500)
+                showNotice(outcome.notice ?: note, 2_500)
             }
             if (outcome.endsConversation) endAfterSpeech = true
         }
@@ -447,6 +447,9 @@ class ConversationEngine(
         } else if (options.autoEndSeconds > 0 && phase == Phase.LISTENING && now - lastActivityAt > options.autoEndSeconds * 1000L) {
             end()
         }
+        // The session reports its close at once, so end() may have finished the conversation right
+        // here; this tick's state would then overwrite the final one and leave the screen on "Listening".
+        if (finished) return
 
         if (notice != null && now > noticeUntil) notice = null
 

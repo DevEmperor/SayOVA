@@ -16,6 +16,8 @@ First version.
 - Usage statistics: cost and talk time this month, the last two weeks, every month and in total.
 - Silent mode (text answers, push-to-talk).
 - Tools: timers, alarms, notes, battery and time, web search.
+- Memory: "Remember that …" keeps a fact about you (up to 30) for every later conversation;
+  read, delete or turn it off under Settings → Memory.
 - QR pairing: the key is encrypted in the browser and relayed end to end to the watch.
 - Wi-Fi or LTE during conversations, resumed Gemini sessions after network changes.
 - History on the watch, tile, complication, ongoing-activity icon on the watch face; a conversation

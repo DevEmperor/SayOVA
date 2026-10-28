@@ -1,7 +1,7 @@
 # Privacy Policy for Parley
 
 **Effective date:** [date of the first Play release]
-**Last updated:** 27 October 2026
+**Last updated:** 28 October 2026
 
 This Privacy Policy explains how **Parley** (the "App", application ID
 `net.devemperor.parley`), a voice assistant for Wear OS watches, handles your
@@ -27,6 +27,9 @@ If you have any questions about this policy, contact us at
   minutes (section 2.3).
 - **Your conversation history stays on your watch**, for as long as you choose
   (default 30 days), and is never backed up to the cloud.
+- **What you ask Parley to remember stays on your watch** too. It is given to your
+  provider at the start of each conversation, and you can delete it at any time
+  (section 2.4).
 - **The provider you choose processes your audio and text under its own terms**
   (section 4). Read them, in particular what the free tiers allow the provider to do.
 - **The purchase is handled by Google Play** (section 5).
@@ -55,7 +58,8 @@ plays and shows on the watch.
 
 When you ask for it, the assistant can use a few functions on the watch: read the
 date, time, time zone and battery level; set a timer or an alarm in the watch's clock
-app; save a note in the App's history; end the conversation; and, if web search is on,
+app; save a note in the App's history; remember or forget a fact about you (section
+2.4); end the conversation; and, if web search is on,
 look something up. Each of these runs on the watch; the result (for example "timer
 set") is sent back to the provider as part of the conversation.
 
@@ -66,7 +70,7 @@ turn web search off in the settings.
 ### 2.3 Your API key and the pairing page
 
 To talk to a provider, the App needs an API key from your account with that provider.
-You can type it on the watch or use the pairing page:
+The App receives it through the pairing page:
 
 1. The watch creates a one-time key pair and shows a QR code containing the public
    half, the pairing code and the provider. This information is in the part of the
@@ -94,10 +98,19 @@ offering a convenient and secure way to set up the App (Art. 6(1)(f) GDPR).
   provider and model used and the estimated cost are stored in the App's private
   storage on the watch. You choose how long they are kept (not at all, 7 days, 30
   days or forever) and can delete single conversations or everything at any time.
-- **Settings:** your provider, model, voice, language, personality, behaviour options
-  and the estimated spending of the current month are stored on the watch.
+- **Memory:** facts you explicitly ask the assistant to remember ("Remember that I am
+  vegetarian") are stored in the App's private storage on the watch, at most 30 short
+  ones. While the memory is on, they are part of the instructions sent to your provider
+  at the start of every conversation, so that the assistant can use them. The assistant
+  is told never to remember passwords, PINs, card or account numbers. You can see every
+  fact in the settings, delete single ones or all of them, or ask the assistant to
+  forget one; turning the memory off stops sending them.
+- **Settings and statistics:** your provider, model, voice, language, personality,
+  behaviour options and the estimated cost and talk time per day are stored on the
+  watch.
 - **No backups:** the App opts out of Android's cloud backup and device transfer, so
-  neither your history nor your key nor your settings leave the watch that way.
+  neither your history nor your memory nor your key nor your settings leave the watch
+  that way.
 
 ### 2.5 Reporting a response
 

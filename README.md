@@ -28,6 +28,9 @@ your own API key.
   switches the voice off for quiet places, and the transcript shows instead.
 - **Pick up where you left off.** Continue any conversation from the history; Parley remembers what
   was said.
+- **Remembers what you ask it to.** Say "Remember that I'm vegetarian" and every later
+  conversation knows. Only what you ask for is kept, on the watch, and the settings show
+  every fact to read or delete.
 - **Speaks your language.** The app is translated into 12 languages besides English, and Parley
   answers in whatever language you talk to it.
 - **Know what it costs.** Usage statistics show cost and talk time per month and in total.
@@ -81,7 +84,8 @@ settings.
 ## Privacy
 
 Your voice and your conversations go only to the provider you chose. Your key is
-encrypted on the watch, the history never leaves it, and the pairing relay only ever
+encrypted on the watch, the history and memory never leave it except inside a
+conversation with your provider, and the pairing relay only ever
 sees data it cannot read. Details: [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
 
 ## Project layout

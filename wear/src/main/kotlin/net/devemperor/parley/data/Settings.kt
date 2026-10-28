@@ -36,6 +36,8 @@ data class ParleySettings(
     val persona: Persona = Persona.FRIENDLY,
     val customPersona: String = "",
     val webSearch: Boolean = true,
+    /** Whether Parley may remember facts the user asks it to, and gives them to every conversation. */
+    val memory: Boolean = true,
     val bargeIn: BargeIn = BargeIn.AUTO,
     val pushToTalk: Boolean = false,
     /** Seconds of silence after which a conversation ends by itself; 0 = never. */
@@ -87,6 +89,7 @@ class SettingsRepository(private val context: Context) {
         val persona = stringPreferencesKey("persona")
         val customPersona = stringPreferencesKey("custom_persona")
         val webSearch = booleanPreferencesKey("web_search")
+        val memory = booleanPreferencesKey("memory")
         val bargeIn = stringPreferencesKey("barge_in")
         val pushToTalk = booleanPreferencesKey("push_to_talk")
         val autoEnd = intPreferencesKey("auto_end_seconds")
@@ -127,6 +130,7 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.persona] = updated.persona.name
             prefs[Keys.customPersona] = updated.customPersona
             prefs[Keys.webSearch] = updated.webSearch
+            prefs[Keys.memory] = updated.memory
             prefs[Keys.bargeIn] = updated.bargeIn.name
             prefs[Keys.pushToTalk] = updated.pushToTalk
             prefs[Keys.autoEnd] = updated.autoEndSeconds
@@ -168,6 +172,7 @@ class SettingsRepository(private val context: Context) {
             persona = enumOr(prefs[Keys.persona], d.persona),
             customPersona = prefs[Keys.customPersona] ?: d.customPersona,
             webSearch = prefs[Keys.webSearch] ?: d.webSearch,
+            memory = prefs[Keys.memory] ?: d.memory,
             bargeIn = enumOr(prefs[Keys.bargeIn], d.bargeIn),
             pushToTalk = prefs[Keys.pushToTalk] ?: d.pushToTalk,
             autoEndSeconds = prefs[Keys.autoEnd]?.takeIf { it in ParleySettings.AUTO_END_OPTIONS } ?: d.autoEndSeconds,

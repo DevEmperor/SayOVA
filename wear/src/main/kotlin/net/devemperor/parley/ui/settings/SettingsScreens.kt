@@ -51,6 +51,8 @@ fun SettingsScreen(
     onOpenAbout: () -> Unit,
     monthUsage: UsageTotal,
     onOpenUsage: () -> Unit,
+    memoryFacts: Int,
+    onOpenMemory: () -> Unit,
 ) {
     val provider = settings.providerInfo
     var confirmDelete by remember { mutableStateOf(false) }
@@ -80,6 +82,14 @@ fun SettingsScreen(
             MenuButton(stringResource(R.string.settings_language), spec, { onOpenChoice(Choice.LANGUAGE) }, language, R.drawable.ic_translate)
         }
         item { MenuButton(stringResource(R.string.settings_persona), spec, { onOpenChoice(Choice.PERSONA) }, stringResource(settings.persona.labelRes()), R.drawable.ic_face) }
+        item {
+            val summary = when {
+                !settings.memory -> stringResource(R.string.memory_off)
+                memoryFacts == 0 -> stringResource(R.string.memory_none)
+                else -> pluralStringResource(R.plurals.memory_facts, memoryFacts, memoryFacts)
+            }
+            MenuButton(stringResource(R.string.memory_title), spec, onOpenMemory, summary, R.drawable.ic_psychology)
+        }
 
         item { SubHeader(stringResource(R.string.settings_conversation), spec) }
         item {

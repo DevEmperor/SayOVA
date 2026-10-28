@@ -249,4 +249,27 @@
     <string name="note_saved">Nota salva</string>
     <string name="error_no_key_for">Ainda sem chave para %1$s.</string>
     <string name="error_microphone_unavailable">O microfone não está disponível.</string>
+
+    <!-- Memory: facts Parley was asked to remember. -->
+    <string name="memory_title">Memória</string>
+    <string name="memory_use">Usar memória</string>
+    <string name="memory_use_note">Só o que você pedir: “Lembre que…”</string>
+    <string name="memory_off">Desativada</string>
+    <string name="memory_none">Vazia por enquanto</string>
+    <string name="memory_empty">Nada na memória ainda. Experimente dizer: “Lembre que eu sou vegetariano.”</string>
+    <string name="memory_count">Na memória · %1$d/%2$d</string>
+    <string name="memory_forget_confirm">Esquecer isto?</string>
+    <string name="memory_forget_all">Esquecer tudo</string>
+    <string name="memory_forget_all_confirm">Esquecer tudo o que o Parley sabe sobre você?</string>
+    <string name="memory_privacy">Fica salva só neste relógio. O Parley envia esses itens ao seu provedor de IA em cada conversa.</string>
+    <string name="notice_remembered">Memorizado</string>
+    <string name="notice_forgotten">Esquecido</string>
+    <string name="note_remembered">Memorizado: %1$s</string>
+    <string name="note_forgotten">Esquecido: %1$s</string>
+    <string name="note_searched">Pesquisado na web</string>
+    <plurals name="memory_facts">
+        <item quantity="one">%1$d item</item>
+        <item quantity="many">%1$d itens</item>
+        <item quantity="other">%1$d itens</item>
+    </plurals>
 </resources>

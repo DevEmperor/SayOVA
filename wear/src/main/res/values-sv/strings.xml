@@ -247,4 +247,26 @@
     <string name="note_saved">Anteckning sparad</string>
     <string name="error_no_key_for">Ingen nyckel för %1$s än.</string>
     <string name="error_microphone_unavailable">Mikrofonen är inte tillgänglig.</string>
+
+    <!-- Memory: facts Parley was asked to remember. -->
+    <string name="memory_title">Minne</string>
+    <string name="memory_use">Använd minnet</string>
+    <string name="memory_use_note">Bara det du ber om: ”Kom ihåg att …”</string>
+    <string name="memory_off">Av</string>
+    <string name="memory_none">Tomt än så länge</string>
+    <string name="memory_empty">Inget sparat än. Säg till exempel: ”Kom ihåg att jag är vegetarian.”</string>
+    <string name="memory_count">Sparat · %1$d/%2$d</string>
+    <string name="memory_forget_confirm">Glömma detta?</string>
+    <string name="memory_forget_all">Glöm allt</string>
+    <string name="memory_forget_all_confirm">Glömma allt Parley vet om dig?</string>
+    <string name="memory_privacy">Sparas bara på den här klockan. Parley skickar med posterna till din AI-leverantör i varje samtal.</string>
+    <string name="notice_remembered">Sparat</string>
+    <string name="notice_forgotten">Glömt</string>
+    <string name="note_remembered">Sparat: %1$s</string>
+    <string name="note_forgotten">Glömt: %1$s</string>
+    <string name="note_searched">Sökte på webben</string>
+    <plurals name="memory_facts">
+        <item quantity="one">%1$d post</item>
+        <item quantity="other">%1$d poster</item>
+    </plurals>
 </resources>
