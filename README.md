@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="pair/public/favicon.svg" alt="Parley" width="96">
+<img src="pair/public/apple-touch-icon.png" alt="Parley" width="96">
 
 # Parley
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The orb's outline for single-colour (themed) icons: a disc the size of the orb in the foreground. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
@@ -6,9 +7,5 @@
     android:viewportHeight="108">
     <path
         android:fillColor="#FFFFFFFF"
-        android:fillType="evenOdd"
-        android:pathData="M32.00,50.50 a23.50,23.50 0 1,1 47.00,0 a23.50,23.50 0 1,1 -47.00,0 z M45.04,47.56 a2.00,2.00 0 0,1 4.00,0 v5.87 a2.00,2.00 0 0,1 -4.00,0 z M53.50,43.10 a2.00,2.00 0 0,1 4.00,0 v14.80 a2.00,2.00 0 0,1 -4.00,0 z M61.96,47.56 a2.00,2.00 0 0,1 4.00,0 v5.87 a2.00,2.00 0 0,1 -4.00,0 z" />
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M36.70,61.08 L31.53,78.23 L48.45,71.65 z" />
+        android:pathData="M28.8,54 a25.2,25.2 0 1,1 50.4,0 a25.2,25.2 0 1,1 -50.4,0 z" />
 </vector>
