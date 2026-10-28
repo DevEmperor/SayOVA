@@ -13,8 +13,8 @@ browser ── GET  /v1/pair/:id/status ───────────►│ 
   browser. The watch side is `core/src/main/kotlin/…/pairing/Pairing.kt`; the test vector in
   `core/src/test/resources/pairing-vector.json` (made with `npm run vector`) proves both agree.
 - `public/orb.png` — a still of the watch's cloud orb (orb-ui Cloud theme, MIT), rendered offline;
-  `src/page/orb.ts` draws it live. `favicon.png` and `apple-touch-icon.png` are the app icon (the orb
-  in its glow on a dark disc), rendered from the same still.
+  `src/page/orb.ts` draws it live. `favicon.png`, `apple-touch-icon.png` and `icon.png` are the app
+  icon: the orb edge to edge, rendered from the same shader.
 - `src/page/main.ts`, `public/` — the page, built to `public/app.js` with esbuild. No third-party
   scripts; a strict Content-Security-Policy is set in `public/_headers`.
 - `src/worker.ts` — the relay. It sees only ciphertext and keeps no logs.

@@ -8,8 +8,8 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_launcher_foreground"
+        android:drawable="@drawable/orb_disc"
         android:gravity="center"
-        android:width="120dp"
-        android:height="120dp" />
+        android:width="96dp"
+        android:height="96dp" />
 </layer-list>
