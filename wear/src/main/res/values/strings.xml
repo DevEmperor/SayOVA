@@ -23,7 +23,6 @@
     <string name="pair_open_on_phone">On phone</string>
     <string name="pair_continue_on_phone">Continue on phone</string>
     <string name="pair_compare_title">Same code on your phone?</string>
-    <string name="pair_compare_text">%1$s key %2$s arrived encrypted. Use it only if your phone shows:</string>
     <string name="pair_compare_match">Matches</string>
     <string name="pair_compare_mismatch">Doesn’t match</string>
     <string name="pair_checking">Checking the key with %1$s…</string>

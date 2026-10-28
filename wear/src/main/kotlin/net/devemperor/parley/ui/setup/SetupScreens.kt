@@ -13,6 +13,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,10 +40,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.EdgeButton
 import androidx.wear.compose.material3.EdgeButtonSize
 import androidx.wear.compose.material3.FilledTonalButton
+import androidx.wear.compose.material3.FilledTonalIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.OpenOnPhoneDialog
@@ -168,28 +171,10 @@ fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () 
     when (val s = state) {
         PairingState.Preparing -> Busy(stringResource(R.string.pair_preparing))
         is PairingState.Waiting -> QrContent(s)
-        is PairingState.Received -> MessageScreen(
-            icon = R.drawable.ic_lock,
-            title = stringResource(R.string.pair_compare_title),
-            text = stringResource(R.string.pair_compare_text, PairingViewModel.providerName(s.provider), s.hint),
-            actionLabel = stringResource(R.string.pair_compare_match),
-            actionIcon = R.drawable.ic_check,
-            onAction = viewModel::confirm,
-            extra = {
-                Text(
-                    s.code.chunked(3).joinToString(" "),
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 26.sp,
-                    color = ParleyColors.TealBright,
-                    modifier = Modifier.padding(vertical = 4.dp),
-                )
-                Text(
-                    stringResource(R.string.pair_compare_mismatch),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable { viewModel.start(provider) }.padding(6.dp),
-                )
-            },
+        is PairingState.Received -> CompareCode(
+            code = s.code,
+            onMatch = viewModel::confirm,
+            onMismatch = { viewModel.start(provider) },
         )
         is PairingState.Checking -> Busy(stringResource(R.string.pair_checking, PairingViewModel.providerName(s.provider)))
         is PairingState.Connected -> MessageScreen(
@@ -215,7 +200,6 @@ fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () 
             ),
             text = s.detail,
             actionLabel = stringResource(R.string.action_try_again),
-            actionIcon = R.drawable.ic_refresh,
             onAction = { viewModel.start(provider) },
         )
     }
@@ -260,6 +244,53 @@ private fun QrContent(state: PairingState.Waiting) {
         curvedText = { curvedText(continueOnPhone) },
         content = { OpenOnPhoneDialogDefaults.Icon() },
     )
+}
+
+/**
+ * The phone shows a six-digit code when it sends the key; the watch derives the same code from what
+ * arrived. Equal codes prove the key came from the user's own phone and nobody in between, so this is
+ * one glance and one tap: the code fills the middle, "Matches" comes first and largest, and the small
+ * cross after it ("Doesn't match") starts over with a new QR code.
+ */
+@Composable
+private fun CompareCode(code: String, onMatch: () -> Unit, onMismatch: () -> Unit) {
+    val question = stringResource(R.string.pair_compare_title)
+    val questionColor = MaterialTheme.colorScheme.onSurfaceVariant
+    ScreenScaffold(
+        timeText = { TimeText(maxSweepAngle = 140f) { curvedText(question, color = questionColor, maxSweepAngle = 140f) } },
+    ) { _ ->
+        val width = screenWidth()
+        Column(
+            Modifier.fillMaxSize().padding(top = width * 0.08f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                code.chunked(3).joinToString(" "),
+                fontFamily = FontFamily.Monospace,
+                fontSize = 32.sp,
+                color = ParleyColors.TealBright,
+            )
+            Spacer(Modifier.height(width * 0.07f))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(width * 0.03f),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Button(
+                    onClick = onMatch,
+                    icon = { Icon(painterResource(R.drawable.ic_check), contentDescription = null) },
+                    label = { Text(stringResource(R.string.pair_compare_match), maxLines = 1) },
+                )
+                FilledTonalIconButton(onClick = onMismatch, modifier = Modifier.size(width * 0.14f)) {
+                    Icon(
+                        painterResource(R.drawable.ic_close),
+                        contentDescription = stringResource(R.string.pair_compare_mismatch),
+                        modifier = Modifier.size(width * 0.07f),
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable

@@ -661,7 +661,8 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
         title = title,
         text = text,
         actionLabel = stringResource(if (fixable) R.string.action_connect else R.string.action_try_again),
-        actionIcon = if (fixable) R.drawable.ic_key else R.drawable.ic_refresh,
+        // "Try again" fills the edge button by itself; with an icon beside it, it broke onto two lines.
+        actionIcon = if (fixable) R.drawable.ic_key else null,
         onAction = if (fixable) onFixProvider else onRetry,
         extra = {
             Text(

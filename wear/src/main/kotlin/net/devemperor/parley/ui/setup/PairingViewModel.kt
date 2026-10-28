@@ -21,7 +21,6 @@ import net.devemperor.parley.core.pairing.PairingRelay
 import net.devemperor.parley.core.provider.KeyCheck
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
-import net.devemperor.parley.data.KeyVault
 import net.devemperor.parley.parley
 import java.io.IOException
 
@@ -32,7 +31,7 @@ sealed interface PairingState {
     data class Waiting(val link: String, val provider: ProviderId, val offline: Boolean = false) : PairingState
 
     /** A key arrived; the user compares [code] with the phone before it is used. */
-    data class Received(val code: String, val provider: ProviderId, val hint: String) : PairingState
+    data class Received(val code: String, val provider: ProviderId) : PairingState
 
     data class Checking(val provider: ProviderId) : PairingState
 
@@ -121,7 +120,6 @@ class PairingViewModel(application: Application) : AndroidViewModel(application)
         _state.value = PairingState.Received(
             code = PairingCrypto.verificationCode(pair.publicKey, sealed),
             provider = provider,
-            hint = KeyVault.hintOf(payload.apiKey),
         )
         forget()
     }

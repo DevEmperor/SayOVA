@@ -1,12 +1,15 @@
 package net.devemperor.parley.core.session
 
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import java.io.IOException
 
 /** Maps what a provider says when it refuses or ends a session onto the few cases the UI explains. */
 object SessionErrors {
 
     fun fromHttp(code: Int, body: String?): SessionError {
-        val text = body.orEmpty()
+        val text = readableMessage(body.orEmpty())
         val kind = when {
             code == 401 || code == 403 -> ErrorKind.AUTH
             code == 402 -> ErrorKind.QUOTA
@@ -17,6 +20,14 @@ object SessionErrors {
         }
         return SessionError(kind, text.take(300).ifBlank { "HTTP $code" })
     }
+
+    /**
+     * The message inside a JSON error body (Google and OpenAI both answer {"error": {"message": …}}),
+     * or the body as it came: shown on the watch, raw JSON is unreadable.
+     */
+    fun readableMessage(body: String): String = runCatching {
+        Json.parseToJsonElement(body).jsonObject["error"]?.jsonObject?.get("message")?.jsonPrimitive?.content
+    }.getOrNull()?.takeIf { it.isNotBlank() } ?: body
 
     fun fromThrowable(t: Throwable): SessionError =
         SessionError(if (t is IOException) ErrorKind.NETWORK else ErrorKind.SERVER, t.message ?: t.javaClass.simpleName)

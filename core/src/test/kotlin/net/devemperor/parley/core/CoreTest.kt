@@ -74,6 +74,14 @@ class CoreTest {
         assertEquals(ErrorKind.AUTH, SessionErrors.fromHttp(401, "").kind)
         assertEquals(ErrorKind.QUOTA, SessionErrors.fromHttp(429, "You exceeded your current quota").kind)
         assertEquals(ErrorKind.RATE_LIMIT, SessionErrors.fromHttp(429, "slow down").kind)
+        // A rejected Gemini key: the watch shows the provider's sentence, not the JSON around it.
+        val gemini = SessionErrors.fromHttp(
+            400,
+            """{"error": {"code": 400, "message": "API key not valid. Please pass a valid API key.", "status": "INVALID_ARGUMENT"}}""",
+        )
+        assertEquals(ErrorKind.AUTH, gemini.kind)
+        assertEquals("API key not valid. Please pass a valid API key.", gemini.message)
+        assertEquals("Incorrect API key provided", SessionErrors.fromHttp(401, """{"error": {"message": "Incorrect API key provided", "type": "invalid_request_error"}}""").message)
         assertEquals(ErrorKind.AUTH, SessionErrors.fromText("API key not valid. Please pass a valid API key.")!!.kind)
         assertEquals(null, SessionErrors.fromText("bye"))
     }
