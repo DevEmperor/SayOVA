@@ -268,4 +268,34 @@
         <item quantity="one">%1$d item</item>
         <item quantity="other">%1$d items</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Horlogefuncties</string>
+    <string name="features_examples">Zo beantwoordt Parley vragen als “Wat voor weer is het hier?”, “Wat is mijn hartslag?” of “Wat staat er vandaag nog op de agenda?”</string>
+    <string name="features_hint">Parley gebruikt ze alleen als je vraag ze nodig heeft. De eerste keer vraagt het horloge om toestemming.</string>
+    <string name="features_privacy">Wat Parley leest, gaat alleen in het gesprek waarin je erom vraagt naar je AI-aanbieder.</string>
+    <string name="features_allow_now">Nu toestaan</string>
+    <string name="features_open_settings">Toestaan in instellingen</string>
+    <string name="features_none">Uit</string>
+    <string name="feature_location">Locatie</string>
+    <string name="feature_heart_rate">Hartslag</string>
+    <string name="feature_steps">Stappen</string>
+    <string name="feature_calendar">Agenda</string>
+    <string name="feature_allowed">Toegestaan</string>
+    <string name="feature_asks_first">Vraagt de eerste keer</string>
+    <string name="feature_blocked">Geblokkeerd in instellingen</string>
+    <string name="notice_location">Locatie bepalen…</string>
+    <string name="notice_heart_rate">Hartslag meten…</string>
+    <string name="notice_steps">Stappen ophalen…</string>
+    <string name="notice_calendar">Agenda lezen…</string>
+    <string name="notice_allow">Sta toe: %1$s</string>
+    <string name="note_location">Locatie · %1$s</string>
+    <string name="note_location_used">Locatie gebruikt</string>
+    <string name="note_heart_rate">Hartslag · %1$d bpm</string>
+    <string name="note_steps">Stappen vandaag · %1$s</string>
+    <string name="note_not_allowed">%1$s niet toegestaan</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Agenda · %1$d afspraak</item>
+        <item quantity="other">Agenda · %1$d afspraken</item>
+    </plurals>
 </resources>

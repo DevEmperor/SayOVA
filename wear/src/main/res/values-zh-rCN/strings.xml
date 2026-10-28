@@ -265,4 +265,33 @@
     <plurals name="memory_facts">
         <item quantity="other">%1$d 条</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">手表功能</string>
+    <string name="features_examples">这样 Parley 就能回答“这里天气怎么样？”“我的心率是多少？”“今天还有什么安排？”之类的问题。</string>
+    <string name="features_hint">仅在你的问题需要时使用。首次使用时，手表会请求你的授权。</string>
+    <string name="features_privacy">Parley 读取的内容只会在你提出请求的那次对话中发送给你的 AI 服务商。</string>
+    <string name="features_allow_now">立即授权</string>
+    <string name="features_open_settings">在手表设置中授权</string>
+    <string name="features_none">已关闭</string>
+    <string name="feature_location">位置</string>
+    <string name="feature_heart_rate">心率</string>
+    <string name="feature_steps">步数</string>
+    <string name="feature_calendar">日历</string>
+    <string name="feature_allowed">已授权</string>
+    <string name="feature_asks_first">首次使用时询问</string>
+    <string name="feature_blocked">已在手表设置中阻止</string>
+    <string name="notice_location">正在获取位置…</string>
+    <string name="notice_heart_rate">正在测量心率…</string>
+    <string name="notice_steps">正在读取步数…</string>
+    <string name="notice_calendar">正在读取日历…</string>
+    <string name="notice_allow">请授权：%1$s</string>
+    <string name="note_location">位置 · %1$s</string>
+    <string name="note_location_used">已使用位置</string>
+    <string name="note_heart_rate">心率 · %1$d 次/分</string>
+    <string name="note_steps">今日步数 · %1$s</string>
+    <string name="note_not_allowed">未授权：%1$s</string>
+    <plurals name="note_calendar">
+        <item quantity="other">日历 · %1$d 个日程</item>
+    </plurals>
 </resources>

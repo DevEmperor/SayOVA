@@ -30,6 +30,9 @@ If you have any questions about this policy, contact us at
 - **What you ask Parley to remember stays on your watch** too. It is given to your
   provider at the start of each conversation, and you can delete it at any time
   (section 2.4).
+- **Your location, heart rate, steps and calendar are read only when you ask for them
+  in a conversation**, and only after you allowed it. What is read goes to your provider
+  as part of that conversation; nothing is collected in the background (section 2.2).
 - **The provider you choose processes your audio and text under its own terms**
   (section 4). Read them, in particular what the free tiers allow the provider to do.
 - **The purchase is handled by Google Play** (section 5).
@@ -63,6 +66,33 @@ app; save a note in the App's history; remember or forget a fact about you (sect
 look something up. Each of these runs on the watch; the result (for example "timer
 set") is sent back to the provider as part of the conversation.
 
+**Watch features.** If you allow them, the assistant can also use the watch's own
+sensors and data, each only when your question needs it:
+
+- **Location** – the watch's current position (precise or approximate, as you choose
+  in Android's permission dialog), for example for "What's the weather here?". To
+  name the place, the App asks the watch's geocoder, which on Wear OS is provided by
+  Google Play services and sends the coordinates to Google.
+- **Heart rate** – measured for a few seconds with the watch's sensor through Android's
+  Health Services. A watch is no medical device; the assistant is told not to diagnose.
+- **Steps** – the number of steps the watch has counted today.
+- **Calendar** – the events from now up to at most 14 days ahead that are stored on
+  the watch: title, start, end and location.
+
+Each feature needs an Android permission, which the watch asks for when you switch the
+feature on under *Settings → Watch features* or when a conversation first needs it.
+You can switch every feature off there (the App then also hands the permission back)
+or withdraw the permission in the watch's system settings. The App reads these data
+only during the conversation in which you ask for them, never in the background, and
+keeps nothing of them except the short line the conversation shows (for example
+"Heart rate · 72 bpm" or "Location · Giessen"), which is part of the history
+(section 2.4). While a feature is in use, the conversation screen shows its icon.
+
+Your heart rate is health data, which the GDPR protects specially (Art. 9). It is read
+and sent to your provider only when you explicitly ask for it, after you have allowed
+the App to access it (Art. 9(2)(a) GDPR); the same applies to the other features
+under Art. 6(1)(a) GDPR. You can withdraw your consent at any time as described above.
+
 Web search is performed by the provider: with Google Gemini through Google Search, with
 OpenAI through a separate request to OpenAI's web search, made with your key. You can
 turn web search off in the settings.
@@ -95,6 +125,7 @@ offering a convenient and secure way to set up the App (Art. 6(1)(f) GDPR).
 ### 2.4 History and settings
 
 - **History:** the text of your conversations, the notes the assistant saved, the
+  lines naming what a watch feature returned (section 2.2), the
   provider and model used and the estimated cost are stored in the App's private
   storage on the watch. You choose how long they are kept (not at all, 7 days, 30
   days or forever) and can delete single conversations or everything at any time.

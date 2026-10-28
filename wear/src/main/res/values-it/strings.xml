@@ -272,4 +272,35 @@
         <item quantity="many">%1$d voci</item>
         <item quantity="other">%1$d voci</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Funzioni dell’orologio</string>
+    <string name="features_examples">Così Parley risponde a domande come «Che tempo fa qui?», «Com’è il mio battito?» o «Cosa ho in programma oggi?»</string>
+    <string name="features_hint">Parley le usa solo quando la tua domanda ne ha bisogno. La prima volta l’orologio ti chiede il permesso.</string>
+    <string name="features_privacy">Ciò che Parley legge arriva al tuo provider di IA solo nella conversazione in cui lo chiedi.</string>
+    <string name="features_allow_now">Consenti ora</string>
+    <string name="features_open_settings">Consenti nelle impostazioni</string>
+    <string name="features_none">Disattivate</string>
+    <string name="feature_location">Posizione</string>
+    <string name="feature_heart_rate">Battito</string>
+    <string name="feature_steps">Passi</string>
+    <string name="feature_calendar">Calendario</string>
+    <string name="feature_allowed">Consentito</string>
+    <string name="feature_asks_first">Chiede la prima volta</string>
+    <string name="feature_blocked">Bloccato nelle impostazioni</string>
+    <string name="notice_location">Rilevamento posizione…</string>
+    <string name="notice_heart_rate">Misurazione del battito…</string>
+    <string name="notice_steps">Lettura dei passi…</string>
+    <string name="notice_calendar">Lettura del calendario…</string>
+    <string name="notice_allow">Consenti l’accesso: %1$s</string>
+    <string name="note_location">Posizione · %1$s</string>
+    <string name="note_location_used">Posizione usata</string>
+    <string name="note_heart_rate">Battito · %1$d bpm</string>
+    <string name="note_steps">Passi oggi · %1$s</string>
+    <string name="note_not_allowed">Non consentito: %1$s</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Calendario · %1$d evento</item>
+        <item quantity="many">Calendario · %1$d eventi</item>
+        <item quantity="other">Calendario · %1$d eventi</item>
+    </plurals>
 </resources>

@@ -5,7 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
+import net.devemperor.parley.features.PermissionBroker
 import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.tile.ParleyTileService
 import net.devemperor.parley.ui.Launch
@@ -13,6 +19,15 @@ import net.devemperor.parley.ui.ParleyUi
 import net.devemperor.parley.ui.setup.hasMicrophone
 
 class MainActivity : ComponentActivity() {
+
+    /** The permission request of a conversation that Android's dialog is showing right now. */
+    private var asking: PermissionBroker.Request? = null
+
+    private val askPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        asking?.let { PermissionBroker.answer(it, results.values.any { granted -> granted }) }
+        asking = null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -25,6 +40,27 @@ class MainActivity : ComponentActivity() {
             emptyList()
         }
         setContent { ParleyUi(launch, routes) }
+        // A conversation needs a watch feature the user has not allowed yet (see PermissionBroker).
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                PermissionBroker.pending.collect { request ->
+                    if (request != null && request !== asking) {
+                        asking = request
+                        askPermission.launch(request.permissions.toTypedArray())
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        PermissionBroker.hostVisible = true
+    }
+
+    override fun onStop() {
+        PermissionBroker.hostVisible = false
+        super.onStop()
     }
 
     /** The tile or complication was tapped while Parley was already open. */

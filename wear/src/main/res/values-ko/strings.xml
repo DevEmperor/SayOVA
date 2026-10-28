@@ -265,4 +265,33 @@
     <plurals name="memory_facts">
         <item quantity="other">%1$d개 항목</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">시계 기능</string>
+    <string name="features_examples">“여기 날씨 어때?”, “내 심박수는?”, “오늘 일정 뭐 있어?” 같은 질문에 답할 수 있습니다.</string>
+    <string name="features_hint">질문에 필요할 때만 사용합니다. 처음에는 시계가 권한을 요청합니다.</string>
+    <string name="features_privacy">Parley가 읽은 내용은 요청한 대화에서만 AI 제공업체로 전송됩니다.</string>
+    <string name="features_allow_now">지금 허용</string>
+    <string name="features_open_settings">시계 설정에서 허용</string>
+    <string name="features_none">꺼짐</string>
+    <string name="feature_location">위치</string>
+    <string name="feature_heart_rate">심박수</string>
+    <string name="feature_steps">걸음 수</string>
+    <string name="feature_calendar">캘린더</string>
+    <string name="feature_allowed">허용됨</string>
+    <string name="feature_asks_first">처음 사용할 때 요청</string>
+    <string name="feature_blocked">시계 설정에서 차단됨</string>
+    <string name="notice_location">위치 확인 중…</string>
+    <string name="notice_heart_rate">심박수 측정 중…</string>
+    <string name="notice_steps">걸음 수 확인 중…</string>
+    <string name="notice_calendar">캘린더 읽는 중…</string>
+    <string name="notice_allow">허용해 주세요: %1$s</string>
+    <string name="note_location">위치 · %1$s</string>
+    <string name="note_location_used">위치 사용됨</string>
+    <string name="note_heart_rate">심박수 · %1$d bpm</string>
+    <string name="note_steps">오늘 걸음 수 · %1$s</string>
+    <string name="note_not_allowed">%1$s 허용 안 됨</string>
+    <plurals name="note_calendar">
+        <item quantity="other">캘린더 · 일정 %1$d개</item>
+    </plurals>
 </resources>

@@ -33,6 +33,7 @@ import net.devemperor.parley.ui.settings.Choice
 import net.devemperor.parley.ui.settings.ChoiceScreen
 import net.devemperor.parley.ui.settings.ProviderScreen
 import net.devemperor.parley.ui.settings.SettingsScreen
+import net.devemperor.parley.ui.settings.WatchFeaturesScreen
 import net.devemperor.parley.ui.setup.PairingScreen
 import net.devemperor.parley.ui.setup.PairingViewModel
 import net.devemperor.parley.ui.setup.PermissionScreen
@@ -60,6 +61,7 @@ object Routes {
     const val LICENSES = "licenses"
     const val USAGE = "usage"
     const val MEMORY = "memory"
+    const val FEATURES = "features"
 
     fun pair(provider: ProviderId) = "pair/${provider.key}"
     fun detail(id: String) = "history/$id"
@@ -215,6 +217,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                         onOpenUsage = whenResumed { navController.navigate(Routes.USAGE) },
                         memoryFacts = facts.size,
                         onOpenMemory = whenResumed { navController.navigate(Routes.MEMORY) },
+                        onOpenFeatures = whenResumed { navController.navigate(Routes.FEATURES) },
                     )
                 }
                 composable(Routes.PROVIDER) {
@@ -242,6 +245,10 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 composable(Routes.ABOUT) { AboutScreen(onLicenses = whenResumed { navController.navigate(Routes.LICENSES) }) }
                 composable(Routes.LICENSES) { LicensesScreen() }
                 composable(Routes.USAGE) { UsageScreen(usage) }
+                composable(Routes.FEATURES) {
+                    val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
+                    WatchFeaturesScreen(s, update)
+                }
                 composable(Routes.MEMORY) {
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     MemoryScreen(

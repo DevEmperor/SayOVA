@@ -1,5 +1,6 @@
 package net.devemperor.parley.ui
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -8,6 +9,7 @@ import net.devemperor.parley.core.prompt.AnswerLanguage
 import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.Model
 import net.devemperor.parley.core.provider.Voice
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.data.BargeIn
 import net.devemperor.parley.net.Transport
 
@@ -112,4 +114,30 @@ fun Transport.labelRes(): Int = when (this) {
     Transport.BLUETOOTH -> R.string.transport_bluetooth
     Transport.OTHER -> R.string.transport_other
     Transport.NONE -> R.string.transport_none
+}
+
+@StringRes
+fun WatchFeature.labelRes(): Int = when (this) {
+    WatchFeature.LOCATION -> R.string.feature_location
+    WatchFeature.HEART_RATE -> R.string.feature_heart_rate
+    WatchFeature.STEPS -> R.string.feature_steps
+    WatchFeature.CALENDAR -> R.string.feature_calendar
+}
+
+
+/** What the conversation shows while the feature is in use ("Finding your location…"). */
+@StringRes
+fun WatchFeature.workingRes(): Int = when (this) {
+    WatchFeature.LOCATION -> R.string.notice_location
+    WatchFeature.HEART_RATE -> R.string.notice_heart_rate
+    WatchFeature.STEPS -> R.string.notice_steps
+    WatchFeature.CALENDAR -> R.string.notice_calendar
+}
+
+@DrawableRes
+fun WatchFeature.iconRes(): Int = when (this) {
+    WatchFeature.LOCATION -> R.drawable.ic_location_on
+    WatchFeature.HEART_RATE -> R.drawable.ic_favorite
+    WatchFeature.STEPS -> R.drawable.ic_directions_walk
+    WatchFeature.CALENDAR -> R.drawable.ic_event
 }

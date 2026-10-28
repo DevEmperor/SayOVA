@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -21,6 +22,7 @@ import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.Provider
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.core.tools.WatchFeature
 import java.io.IOException
 
 /** How the user's voice may cut the answer short; named on screen by ui/Labels.kt. */
@@ -38,6 +40,10 @@ data class ParleySettings(
     val webSearch: Boolean = true,
     /** Whether Parley may remember facts the user asks it to, and gives them to every conversation. */
     val memory: Boolean = true,
+    /** Watch features the user switched off; all others are offered and ask for permission when first used. */
+    val featuresOff: Set<WatchFeature> = emptySet(),
+    /** Watch features whose permission was asked for at least once (tells "blocked" from "not asked yet"). */
+    val featuresAsked: Set<WatchFeature> = emptySet(),
     val bargeIn: BargeIn = BargeIn.AUTO,
     val pushToTalk: Boolean = false,
     /** Seconds of silence after which a conversation ends by itself; 0 = never. */
@@ -55,6 +61,9 @@ data class ParleySettings(
     val startOnLaunch: Boolean = false,
 ) {
     val providerInfo: Provider get() = ProviderCatalog.get(provider)
+
+    /** The watch features offered to the model. */
+    val features: Set<WatchFeature> get() = WatchFeature.entries.filter { it !in featuresOff }.toSet()
 
     fun modelId(id: ProviderId = provider): String = when (id) {
         ProviderId.GEMINI -> geminiModel
@@ -90,6 +99,8 @@ class SettingsRepository(private val context: Context) {
         val customPersona = stringPreferencesKey("custom_persona")
         val webSearch = booleanPreferencesKey("web_search")
         val memory = booleanPreferencesKey("memory")
+        val featuresOff = stringSetPreferencesKey("features_off")
+        val featuresAsked = stringSetPreferencesKey("features_asked")
         val bargeIn = stringPreferencesKey("barge_in")
         val pushToTalk = booleanPreferencesKey("push_to_talk")
         val autoEnd = intPreferencesKey("auto_end_seconds")
@@ -131,6 +142,8 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.customPersona] = updated.customPersona
             prefs[Keys.webSearch] = updated.webSearch
             prefs[Keys.memory] = updated.memory
+            prefs[Keys.featuresOff] = updated.featuresOff.map { it.name }.toSet()
+            prefs[Keys.featuresAsked] = updated.featuresAsked.map { it.name }.toSet()
             prefs[Keys.bargeIn] = updated.bargeIn.name
             prefs[Keys.pushToTalk] = updated.pushToTalk
             prefs[Keys.autoEnd] = updated.autoEndSeconds
@@ -173,6 +186,8 @@ class SettingsRepository(private val context: Context) {
             customPersona = prefs[Keys.customPersona] ?: d.customPersona,
             webSearch = prefs[Keys.webSearch] ?: d.webSearch,
             memory = prefs[Keys.memory] ?: d.memory,
+            featuresOff = prefs[Keys.featuresOff]?.mapNotNull(WatchFeature::fromName)?.toSet() ?: d.featuresOff,
+            featuresAsked = prefs[Keys.featuresAsked]?.mapNotNull(WatchFeature::fromName)?.toSet() ?: d.featuresAsked,
             bargeIn = enumOr(prefs[Keys.bargeIn], d.bargeIn),
             pushToTalk = prefs[Keys.pushToTalk] ?: d.pushToTalk,
             autoEndSeconds = prefs[Keys.autoEnd]?.takeIf { it in ParleySettings.AUTO_END_OPTIONS } ?: d.autoEndSeconds,

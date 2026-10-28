@@ -115,6 +115,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.service)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.datastore.preferences)
+    // Heart rate and daily steps from the watch's sensors (watch tools).
+    implementation(libs.androidx.health.services.client)
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.androidx.wear.tiles)

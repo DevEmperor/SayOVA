@@ -68,6 +68,10 @@ object ParleyTools {
     const val SEARCH_WEB = "search_web"
     const val REMEMBER_FACT = "remember_fact"
     const val FORGET_FACT = "forget_fact"
+    const val GET_LOCATION = "get_location"
+    const val MEASURE_HEART_RATE = "measure_heart_rate"
+    const val GET_STEPS_TODAY = "get_steps_today"
+    const val GET_CALENDAR_EVENTS = "get_calendar_events"
 
     val deviceStatus = ToolSpec(
         name = DEVICE_STATUS,
@@ -127,6 +131,32 @@ object ParleyTools {
         name = FORGET_FACT,
         description = "Removes a fact from Parley's memory when the user asks you to forget it.",
         parameters = listOf(ToolParam("number", ParamType.INTEGER, "Number of the remembered fact.")),
+    )
+
+    // The watch's own sensors and data, each behind a permission (see WatchFeature).
+    val getLocation = ToolSpec(
+        name = GET_LOCATION,
+        description = "Returns where the watch is now: latitude, longitude, accuracy in metres and, when known, the place name. " +
+            "Use it for the weather here, places nearby or the way somewhere, then search the web if needed.",
+    )
+
+    val measureHeartRate = ToolSpec(
+        name = MEASURE_HEART_RATE,
+        description = "Measures the user's heart rate now with the watch's sensor and returns beats per minute. " +
+            "It takes up to half a minute: first tell the user to keep the watch on and hold still.",
+    )
+
+    val getStepsToday = ToolSpec(
+        name = GET_STEPS_TODAY,
+        description = "Returns how many steps the watch has counted today.",
+    )
+
+    val getCalendarEvents = ToolSpec(
+        name = GET_CALENDAR_EVENTS,
+        description = "Returns the user's calendar events that have not ended yet: title, start, end, all-day and location.",
+        parameters = listOf(
+            ToolParam("days", ParamType.INTEGER, "How many days to cover, starting today: 1 is the rest of today, 2 adds tomorrow; at most 14.", required = false),
+        ),
     )
 
     val standard = listOf(deviceStatus, setTimer, setAlarm, saveNote, endConversation)

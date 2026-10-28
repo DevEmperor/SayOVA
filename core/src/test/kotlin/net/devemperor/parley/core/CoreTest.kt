@@ -12,6 +12,7 @@ import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.session.ErrorKind
 import net.devemperor.parley.core.session.SessionErrors
 import net.devemperor.parley.core.session.TokenUsage
+import net.devemperor.parley.core.tools.WatchFeature
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -122,5 +123,21 @@ class CoreTest {
         assertTrue(kept.length <= 6_000)
         assertTrue(kept.endsWith("Parley: Line number 400 of a long talk"))
         assertFalse("Line number 1 of" in kept)
+    }
+
+    @Test
+    fun `watch features are offered in the instructions only when on`() {
+        val now = ZonedDateTime.of(2026, 10, 28, 12, 0, 0, 0, ZoneId.of("Europe/Berlin"))
+        val with = Instructions.build(
+            Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = true,
+            features = setOf(WatchFeature.HEART_RATE, WatchFeature.LOCATION),
+        )
+        assertTrue("find out where the watch is, measure the user's heart rate, and end the conversation" in with)
+        assertTrue("never read out coordinates" in with)
+        assertTrue("never diagnose" in with)
+        val without = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = true)
+        assertFalse("watch's sensors" in without)
+        assertEquals(WatchFeature.CALENDAR, WatchFeature.forTool("get_calendar_events"))
+        assertEquals(null, WatchFeature.forTool("set_timer"))
     }
 }

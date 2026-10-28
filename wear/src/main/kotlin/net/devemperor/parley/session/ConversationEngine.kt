@@ -32,8 +32,12 @@ import net.devemperor.parley.core.session.SessionError
 import net.devemperor.parley.core.session.TokenUsage
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.session.VoiceSession
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.data.BargeIn
+import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.net.Transport
+import net.devemperor.parley.ui.labelRes
+import net.devemperor.parley.ui.workingRes
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 
@@ -146,6 +150,8 @@ class ConversationEngine(
     private var lastPhase = Phase.CONNECTING
     private var notice: String? = null
     private var noticeUntil = 0L
+    @Volatile private var activeFeature: WatchFeature? = null
+    @Volatile private var usedFeatures: List<WatchFeature> = emptyList()
 
     fun start() {
         volume?.begin(options.speechVolume)
@@ -361,10 +367,29 @@ class ConversationEngine(
         pendingTools++
         touch()
         if (call.name == net.devemperor.parley.core.tools.ParleyTools.SEARCH_WEB) showNotice(context.getString(R.string.notice_searching), 8_000)
+        // A watch feature shows itself while in use, like Android's own indicators: its icon and
+        // what it does, or that it waits for the user's permission.
+        val feature = WatchFeature.forTool(call.name)
+        if (feature != null) {
+            activeFeature = feature
+            if (feature !in usedFeatures) usedFeatures = usedFeatures + feature
+            val waiting = !WatchFeatures.granted(context, feature)
+            showNotice(
+                if (waiting) context.getString(R.string.notice_allow, context.getString(feature.labelRes())) else context.getString(feature.workingRes()),
+                FEATURE_NOTICE_MS,
+            )
+        }
         scope.launch {
-            val outcome = toolRunner.run(call)
+            val outcome = toolRunner.run(call) {
+                // Allowed just now: from asking for permission on to what the feature does.
+                if (feature != null) showNotice(context.getString(feature.workingRes()), FEATURE_NOTICE_MS)
+            }
             session.sendToolResult(call.callId, call.name, outcome.result)
             pendingTools--
+            if (feature != null) {
+                activeFeature = null
+                if (outcome.note == null) noticeUntil = 0
+            }
             outcome.savedNote?.let { record("note-${call.callId}", Role.NOTE).text.append(it) }
             outcome.note?.let { note ->
                 if (outcome.savedNote == null) record("tool-${call.callId}", Role.TOOL).text.append(note)
@@ -466,6 +491,8 @@ class ConversationEngine(
             talking = talking,
             halfDuplex = speaking && options.bargeIn == BargeIn.OFF && !options.textOnly,
             notice = notice,
+            activeFeature = activeFeature,
+            usedFeatures = usedFeatures,
         )
     }
 
@@ -586,6 +613,8 @@ class ConversationEngine(
          * room. The emulator's loop measured about 300 ms; watches are faster, but not all of them.
          */
         const val ECHO_WINDOW_MS = 600L
+        /** Long enough for a heart rate measurement or the permission dialog; the outcome replaces it. */
+        const val FEATURE_NOTICE_MS = 60_000L
         /**
          * 10 × 100 ms of microphone audio kept during an answer for when the user talks over it: when
          * the echo is loud the user is often recognised only in the answer's next pause.

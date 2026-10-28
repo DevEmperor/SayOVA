@@ -18,6 +18,10 @@ First version.
 - Tools: timers, alarms, notes, battery and time, web search.
 - Memory: "Remember that …" keeps a fact about you (up to 30) for every later conversation;
   read, delete or turn it off under Settings → Memory.
+- Watch features: location (weather and places nearby), heart rate, today's steps and the
+  calendar as tools. Each asks for its permission when switched on under Settings → Watch
+  features or when a conversation first needs it; its icon shows while it is in use and stays
+  in the caption for the rest of the conversation.
 - QR pairing: the key is encrypted in the browser and relayed end to end to the watch.
 - Wi-Fi or LTE during conversations, resumed Gemini sessions after network changes.
 - History on the watch, tile, complication, ongoing-activity icon on the watch face; a conversation

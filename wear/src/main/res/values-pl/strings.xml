@@ -276,4 +276,36 @@
         <item quantity="many">%1$d wpisów</item>
         <item quantity="other">%1$d wpisu</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Funkcje zegarka</string>
+    <string name="features_examples">Dzięki nim Parley odpowie na pytania typu „Jaka jest tu pogoda?”, „Jakie mam tętno?” albo „Co mam dziś w planie?”</string>
+    <string name="features_hint">Parley używa ich tylko wtedy, gdy wymaga tego twoje pytanie. Za pierwszym razem zegarek poprosi o zgodę.</string>
+    <string name="features_privacy">To, co Parley odczyta, trafia do dostawcy AI tylko w rozmowie, w której o to prosisz.</string>
+    <string name="features_allow_now">Zezwól teraz</string>
+    <string name="features_open_settings">Zezwól w ustawieniach</string>
+    <string name="features_none">Wyłączone</string>
+    <string name="feature_location">Lokalizacja</string>
+    <string name="feature_heart_rate">Tętno</string>
+    <string name="feature_steps">Kroki</string>
+    <string name="feature_calendar">Kalendarz</string>
+    <string name="feature_allowed">Dozwolone</string>
+    <string name="feature_asks_first">Pyta za pierwszym razem</string>
+    <string name="feature_blocked">Zablokowane w ustawieniach</string>
+    <string name="notice_location">Ustalanie lokalizacji…</string>
+    <string name="notice_heart_rate">Pomiar tętna…</string>
+    <string name="notice_steps">Odczyt kroków…</string>
+    <string name="notice_calendar">Odczyt kalendarza…</string>
+    <string name="notice_allow">Zezwól na dostęp: %1$s</string>
+    <string name="note_location">Lokalizacja · %1$s</string>
+    <string name="note_location_used">Użyto lokalizacji</string>
+    <string name="note_heart_rate">Tętno · %1$d bpm</string>
+    <string name="note_steps">Kroki dziś · %1$s</string>
+    <string name="note_not_allowed">Brak zgody: %1$s</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Kalendarz · %1$d wydarzenie</item>
+        <item quantity="few">Kalendarz · %1$d wydarzenia</item>
+        <item quantity="many">Kalendarz · %1$d wydarzeń</item>
+        <item quantity="other">Kalendarz · %1$d wydarzenia</item>
+    </plurals>
 </resources>

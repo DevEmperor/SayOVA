@@ -273,4 +273,35 @@
         <item quantity="many">%1$d entrées</item>
         <item quantity="other">%1$d entrées</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Fonctions de la montre</string>
+    <string name="features_examples">Parley peut ainsi répondre à des questions comme « Quel temps fait-il ici ? », « Quel est mon pouls ? » ou « Qu’ai-je de prévu aujourd’hui ? »</string>
+    <string name="features_hint">Parley ne les utilise que si votre question en a besoin. La première fois, la montre vous demande l’autorisation.</string>
+    <string name="features_privacy">Ce que Parley lit n’est transmis à votre fournisseur d’IA que dans la conversation où vous le demandez.</string>
+    <string name="features_allow_now">Autoriser maintenant</string>
+    <string name="features_open_settings">Autoriser dans les réglages</string>
+    <string name="features_none">Désactivées</string>
+    <string name="feature_location">Position</string>
+    <string name="feature_heart_rate">Pouls</string>
+    <string name="feature_steps">Pas</string>
+    <string name="feature_calendar">Agenda</string>
+    <string name="feature_allowed">Autorisé</string>
+    <string name="feature_asks_first">Demande la première fois</string>
+    <string name="feature_blocked">Bloqué dans les réglages</string>
+    <string name="notice_location">Localisation en cours…</string>
+    <string name="notice_heart_rate">Mesure du pouls…</string>
+    <string name="notice_steps">Lecture des pas…</string>
+    <string name="notice_calendar">Lecture de l’agenda…</string>
+    <string name="notice_allow">Autorisez : %1$s</string>
+    <string name="note_location">Position · %1$s</string>
+    <string name="note_location_used">Position utilisée</string>
+    <string name="note_heart_rate">Pouls · %1$d bpm</string>
+    <string name="note_steps">Pas aujourd’hui · %1$s</string>
+    <string name="note_not_allowed">Non autorisé : %1$s</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Agenda · %1$d rendez-vous</item>
+        <item quantity="many">Agenda · %1$d rendez-vous</item>
+        <item quantity="other">Agenda · %1$d rendez-vous</item>
+    </plurals>
 </resources>

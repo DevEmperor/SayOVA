@@ -100,6 +100,7 @@ import net.devemperor.parley.ui.components.KeepScreenOn
 import net.devemperor.parley.ui.components.MessageScreen
 import net.devemperor.parley.ui.components.Orb
 import net.devemperor.parley.ui.components.screenWidth
+import net.devemperor.parley.ui.iconRes
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.theme.ParleyColors
 
@@ -535,7 +536,9 @@ private fun orbDescription(state: ConversationUiState): String = when {
 
 /**
  * One fixed-height line under the orb: a notice when there is one ("Timer · 5 min"), the hint that a
- * tap interrupts while Parley speaks on the watch speaker, otherwise time, cost and network.
+ * tap interrupts while Parley speaks on the watch speaker, otherwise time, cost and network. Like
+ * Android's own privacy indicators, a watch feature shows its icon while in use, and the icons of
+ * those used so far stay in front of the time.
  */
 @Composable
 private fun Caption(state: ConversationUiState) {
@@ -550,19 +553,44 @@ private fun Caption(state: ConversationUiState) {
         else -> null
     }
     Box(Modifier.height(17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Crossfade(targetState = hint, label = "caption") { text ->
+        Crossfade(targetState = hint to state.activeFeature.takeIf { hint != null }, label = "caption") { (text, feature) ->
             if (text != null) {
-                FitText(
-                    text,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier
+                Row(
+                    Modifier
                         .clip(RoundedCornerShape(50))
                         .background(MaterialTheme.colorScheme.secondaryContainer)
                         .padding(horizontal = 8.dp),
-                )
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    if (feature != null) {
+                        Icon(
+                            painterResource(feature.iconRes()), contentDescription = null,
+                            modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
+                        Spacer(Modifier.width(4.dp))
+                    }
+                    FitText(
+                        text,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                }
             } else {
-                FitText(meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    state.usedFeatures.forEach { used ->
+                        Icon(
+                            painterResource(used.iconRes()), contentDescription = stringResource(used.labelRes()),
+                            modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.primary,
+                        )
+                        Spacer(Modifier.width(3.dp))
+                    }
+                    if (state.usedFeatures.isNotEmpty()) Spacer(Modifier.width(2.dp))
+                    FitText(
+                        meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                }
             }
         }
     }

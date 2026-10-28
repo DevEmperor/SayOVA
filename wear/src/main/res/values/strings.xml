@@ -270,4 +270,34 @@
         <item quantity="one">%1$d fact</item>
         <item quantity="other">%1$d facts</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Watch features</string>
+    <string name="features_examples">With these, Parley answers questions like “What’s the weather here?”, “What’s my heart rate?” or “What’s on today?”</string>
+    <string name="features_hint">Parley uses them only when your question needs them. The first time, the watch asks for your permission.</string>
+    <string name="features_privacy">What Parley reads goes to your AI provider only in the conversation where you ask for it.</string>
+    <string name="features_allow_now">Allow now</string>
+    <string name="features_open_settings">Allow in watch settings</string>
+    <string name="features_none">Off</string>
+    <string name="feature_location">Location</string>
+    <string name="feature_heart_rate">Heart rate</string>
+    <string name="feature_steps">Steps</string>
+    <string name="feature_calendar">Calendar</string>
+    <string name="feature_allowed">Allowed</string>
+    <string name="feature_asks_first">Asks the first time</string>
+    <string name="feature_blocked">Blocked in watch settings</string>
+    <string name="notice_location">Finding your location…</string>
+    <string name="notice_heart_rate">Measuring heart rate…</string>
+    <string name="notice_steps">Reading today’s steps…</string>
+    <string name="notice_calendar">Reading your calendar…</string>
+    <string name="notice_allow">Please allow: %1$s</string>
+    <string name="note_location">Location · %1$s</string>
+    <string name="note_location_used">Location used</string>
+    <string name="note_heart_rate">Heart rate · %1$d bpm</string>
+    <string name="note_steps">Steps today · %1$s</string>
+    <string name="note_not_allowed">%1$s not allowed</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Calendar · %1$d event</item>
+        <item quantity="other">Calendar · %1$d events</item>
+    </plurals>
 </resources>

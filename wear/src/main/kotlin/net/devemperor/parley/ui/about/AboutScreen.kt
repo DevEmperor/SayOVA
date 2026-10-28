@@ -73,7 +73,8 @@ fun AboutScreen(onLicenses: () -> Unit) {
 @Composable
 fun LicensesScreen() {
     val licenses = listOf(
-        "Jetpack Compose, AndroidX, Wear OS libraries" to "Apache License 2.0 · Google",
+        "Jetpack Compose, AndroidX, Wear OS libraries, Health Services" to "Apache License 2.0 · Google",
+        "Guava" to "Apache License 2.0 · Google",
         "Kotlin, kotlinx.coroutines, kotlinx.serialization" to "Apache License 2.0 · JetBrains",
         "OkHttp, Okio" to "Apache License 2.0 · Square",
         "Tink" to "Apache License 2.0 · Google",

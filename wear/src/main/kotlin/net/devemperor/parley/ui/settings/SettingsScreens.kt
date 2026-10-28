@@ -53,6 +53,7 @@ fun SettingsScreen(
     onOpenUsage: () -> Unit,
     memoryFacts: Int,
     onOpenMemory: () -> Unit,
+    onOpenFeatures: () -> Unit,
 ) {
     val provider = settings.providerInfo
     var confirmDelete by remember { mutableStateOf(false) }
@@ -97,6 +98,11 @@ fun SettingsScreen(
                 stringResource(R.string.settings_web_search), settings.webSearch, { v -> onUpdate { it.copy(webSearch = v) } }, spec,
                 stringResource(R.string.settings_web_search_note), R.drawable.ic_travel_explore,
             )
+        }
+        item {
+            val on = settings.features
+            val summary = if (on.isEmpty()) stringResource(R.string.features_none) else on.map { stringResource(it.labelRes()) }.joinToString(", ")
+            MenuButton(stringResource(R.string.features_title), spec, onOpenFeatures, summary, R.drawable.ic_watch)
         }
         item { MenuButton(stringResource(R.string.settings_barge_in), spec, { onOpenChoice(Choice.BARGE_IN) }, stringResource(settings.bargeIn.labelRes()), R.drawable.ic_front_hand) }
         item {

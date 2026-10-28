@@ -7,6 +7,8 @@ import android.provider.AlarmClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
@@ -17,9 +19,19 @@ import net.devemperor.parley.core.memory.Memory
 import net.devemperor.parley.core.provider.openai.OpenAiWebSearch
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.tools.ParleyTools
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.data.MemoryStore
+import net.devemperor.parley.features.PermissionBroker
+import net.devemperor.parley.features.WatchFeatures
+import net.devemperor.parley.features.WatchSensors
+import net.devemperor.parley.parley
+import net.devemperor.parley.ui.labelRes
+import java.text.NumberFormat
+import java.time.Instant
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Carries out the model's tool calls on the watch. Every call answers, also when it fails, so the
@@ -30,7 +42,13 @@ class ToolRunner(
     private val webSearch: (suspend (String) -> String)?,
     /** Null while the memory is turned off; the model is then offered no memory tools either. */
     private val memory: MemoryStore?,
+    /** The watch features the user left on; only these were offered to the model. */
+    private val features: Set<WatchFeature> = emptySet(),
+    /** Called when the user allowed a feature mid-conversation (the service widens its type). */
+    private val onAllowed: () -> Unit = {},
 ) {
+    private val sensors = WatchSensors(context)
+
     /**
      * [note] is shown in the transcript as what Parley did, e.g. "Timer · 5 min"; [notice] is the
      * shorter text under the orb, the note itself when not given.
@@ -43,7 +61,8 @@ class ToolRunner(
         val endsConversation: Boolean = false,
     )
 
-    suspend fun run(call: VoiceEvent.ToolCall): Outcome = when (call.name) {
+    /** [onGranted] runs when the user allows a watch feature during the call, before it is used. */
+    suspend fun run(call: VoiceEvent.ToolCall, onGranted: () -> Unit = {}): Outcome = when (call.name) {
         ParleyTools.DEVICE_STATUS -> deviceStatus()
         ParleyTools.SET_TIMER -> setTimer(call.arguments)
         ParleyTools.SET_ALARM -> setAlarm(call.arguments)
@@ -52,7 +71,101 @@ class ToolRunner(
         ParleyTools.SEARCH_WEB -> search(call.arguments)
         ParleyTools.REMEMBER_FACT -> remember(call.arguments)
         ParleyTools.FORGET_FACT -> forget(call.arguments)
-        else -> Outcome(error("Unknown tool ${call.name}"))
+        else -> WatchFeature.forTool(call.name)?.let { watchFeature(it, call.arguments, onGranted) } ?: Outcome(error("Unknown tool ${call.name}"))
+    }
+
+    /** A watch feature: asks for its permission the first time, then reads the sensor or data. */
+    private suspend fun watchFeature(feature: WatchFeature, args: JsonObject, onGranted: () -> Unit): Outcome {
+        val name = context.getString(feature.labelRes())
+        val where = "Parley's settings under ${setting(R.string.features_title)}"
+        if (feature !in features) return Outcome(error("The user turned this off in $where."))
+        if (!WatchFeatures.granted(context, feature)) {
+            context.parley.settings.update { it.copy(featuresAsked = it.featuresAsked + feature) }
+            when (PermissionBroker.request(feature)) {
+                PermissionBroker.Answer.GRANTED -> {
+                    onAllowed()
+                    onGranted()
+                }
+                PermissionBroker.Answer.DENIED -> return Outcome(
+                    error("The user did not allow it. They can allow it later in $where."),
+                    note = context.getString(R.string.note_not_allowed, name),
+                )
+                PermissionBroker.Answer.NOT_ON_SCREEN -> return Outcome(
+                    error("Parley needs the user's permission first, but the watch screen is off. Ask the user to look at the watch and ask again, or to allow it in $where."),
+                )
+            }
+        }
+        return try {
+            when (feature) {
+                WatchFeature.LOCATION -> location()
+                WatchFeature.HEART_RATE -> heartRate()
+                WatchFeature.STEPS -> steps()
+                WatchFeature.CALENDAR -> calendar(args)
+            }
+        } catch (e: WatchSensors.Unavailable) {
+            Outcome(error(e.message.orEmpty()))
+        } catch (e: SecurityException) {
+            Outcome(error("The watch did not allow access: ${e.message}"))
+        } catch (e: Exception) {
+            Outcome(error("It did not work: ${e.message}"))
+        }
+    }
+
+    private suspend fun location(): Outcome {
+        val place = sensors.location()
+        // Coarse permission gets a position blurred to a few kilometres; no more digits than it has.
+        val digits = if (place.precise) 4 else 2
+        return Outcome(
+            buildJsonObject {
+                put("latitude", "%.${digits}f".format(Locale.ROOT, place.latitude).toDouble())
+                put("longitude", "%.${digits}f".format(Locale.ROOT, place.longitude).toDouble())
+                place.accuracyM?.let { put("accuracy_m", it.toInt()) }
+                place.name?.let { put("place", it) }
+                put("precise", place.precise)
+                if (place.ageMinutes > 1) put("age_minutes", place.ageMinutes)
+            },
+            note = place.name?.let { context.getString(R.string.note_location, it) } ?: context.getString(R.string.note_location_used),
+        )
+    }
+
+    private suspend fun heartRate(): Outcome {
+        val bpm = sensors.heartRate()
+        return Outcome(buildJsonObject { put("bpm", bpm) }, note = context.getString(R.string.note_heart_rate, bpm))
+    }
+
+    private suspend fun steps(): Outcome {
+        val steps = sensors.stepsToday()
+        val formatted = NumberFormat.getIntegerInstance(context.resources.configuration.locales[0]).format(steps)
+        return Outcome(buildJsonObject { put("steps_today", steps) }, note = context.getString(R.string.note_steps, formatted))
+    }
+
+    private suspend fun calendar(args: JsonObject): Outcome {
+        val days = (args["days"]?.jsonPrimitive?.intOrNull ?: 1).coerceIn(1, 14)
+        val events = sensors.calendar(days)
+        val zone = ZoneId.systemDefault()
+        fun local(millis: Long, allDay: Boolean): String {
+            // All-day events are stored at midnight UTC.
+            val instant = Instant.ofEpochMilli(millis)
+            return if (allDay) instant.atZone(ZoneId.of("UTC")).toLocalDate().toString() else instant.atZone(zone).toLocalDateTime().withSecond(0).withNano(0).toString()
+        }
+        return Outcome(
+            buildJsonObject {
+                put("days", days)
+                put("count", events.size)
+                put("events", buildJsonArray {
+                    events.forEach { event ->
+                        add(buildJsonObject {
+                            put("title", event.title.take(120))
+                            put("start", local(event.begin, event.allDay))
+                            put("end", local(event.end, event.allDay))
+                            put("all_day", event.allDay)
+                            event.location?.let { put("location", it.take(120)) }
+                        })
+                    }
+                })
+            },
+            note = context.resources.getQuantityString(R.plurals.note_calendar, events.size, events.size),
+        )
     }
 
     private fun deviceStatus(): Outcome {
@@ -108,7 +221,7 @@ class ToolRunner(
     }
 
     private suspend fun remember(args: JsonObject): Outcome {
-        val store = memory ?: return Outcome(error("The memory is turned off in Parley's settings."))
+        val store = memory ?: return Outcome(error("The memory is turned off in Parley's settings under ${setting(R.string.memory_title)}."))
         val text = args["fact"]?.jsonPrimitive?.contentOrNull.orEmpty()
         val replaces = args["replaces"]?.jsonPrimitive?.intOrNull
         return when (val change = store.remember(text, replaces)) {
@@ -130,7 +243,7 @@ class ToolRunner(
     }
 
     private suspend fun forget(args: JsonObject): Outcome {
-        val store = memory ?: return Outcome(error("The memory is turned off in Parley's settings."))
+        val store = memory ?: return Outcome(error("The memory is turned off in Parley's settings under ${setting(R.string.memory_title)}."))
         val number = args["number"]?.jsonPrimitive?.intOrNull ?: return Outcome(error("number is missing"))
         return when (val change = store.forget(number)) {
             is Memory.Change.Forgotten -> Outcome(
@@ -155,6 +268,9 @@ class ToolRunner(
             Outcome(error("The watch did not allow it: ${e.message}"))
         }
     }
+
+    /** A settings page by the name the user sees, so the model can point them to it in their language. */
+    private fun setting(res: Int) = "\"${context.getString(res)}\""
 
     private fun ok() = buildJsonObject { put("ok", true) }
 

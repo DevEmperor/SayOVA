@@ -29,7 +29,9 @@ import net.devemperor.parley.core.session.SessionConfig
 import net.devemperor.parley.core.session.SessionError
 import net.devemperor.parley.core.session.Sessions
 import net.devemperor.parley.core.tools.ParleyTools
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.demo.DemoSession
+import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.parley
 import net.devemperor.parley.tile.ParleyTileService
 import net.devemperor.parley.ui.labelRes
@@ -43,6 +45,8 @@ import java.time.ZonedDateTime
 class SessionService : LifecycleService() {
 
     private var engine: ConversationEngine? = null
+    private var notification: Notification? = null
+    private var features: Set<WatchFeature> = emptySet()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -83,6 +87,8 @@ class SessionService : LifecycleService() {
         val model = provider.model(settings.modelId())
         val canSearch = settings.webSearch
         val memory = app.memory.takeIf { settings.memory }
+        features = if (demo) emptySet() else settings.features
+        widenForegroundType()
         val config = SessionConfig(
             apiKey = apiKey,
             model = model.id,
@@ -96,8 +102,9 @@ class SessionService : LifecycleService() {
                 canSearch = canSearch,
                 earlier = earlier?.turns.orEmpty(),
                 memory = memory?.current(),
+                features = features,
             ),
-            tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()),
+            tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.map { it.tool },
             webSearch = canSearch,
             textOnly = textOnly,
         )
@@ -126,7 +133,7 @@ class SessionService : LifecycleService() {
                 soundOff = settings.soundOff,
                 continues = earlier,
             ),
-            toolRunner = ToolRunner(this@SessionService, search, memory),
+            toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType),
             haptics = Haptics(this@SessionService) { settings.haptics },
             transport = app.network.transport,
             onSave = { conversation, usd, talkMs ->
@@ -186,7 +193,26 @@ class SessionService : LifecycleService() {
             .build()
             .apply(applicationContext)
         val notification: Notification = builder.build()
+        this.notification = notification
         ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+    }
+
+    /**
+     * With the screen off Parley runs in the background, where Android hands out the location and the
+     * body sensors only to a foreground service of that type. A type may be claimed only once its
+     * permission is granted, so this runs at the start and again whenever the user allows a feature.
+     */
+    private fun widenForegroundType() {
+        val notification = notification ?: return
+        var types = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+        if (WatchFeature.LOCATION in features && WatchFeatures.granted(this, WatchFeature.LOCATION)) {
+            types = types or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+        }
+        val health = listOf(WatchFeature.HEART_RATE, WatchFeature.STEPS).any { it in features && WatchFeatures.granted(this, it) }
+        if (health && android.os.Build.VERSION.SDK_INT >= 34) types = types or ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH
+        if (types == ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE) return
+        runCatching { ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, types) }
+            .onFailure { android.util.Log.w("Parley", "Foreground type $types refused", it) }
     }
 
     companion object {

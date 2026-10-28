@@ -269,4 +269,34 @@
         <item quantity="one">%1$d kayıt</item>
         <item quantity="other">%1$d kayıt</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Saat özellikleri</string>
+    <string name="features_examples">Böylece Parley “Burada hava nasıl?”, “Nabzım kaç?” ya da “Bugün neler var?” gibi soruları yanıtlar.</string>
+    <string name="features_hint">Parley bunları yalnızca sorunuz gerektirdiğinde kullanır. İlk seferde saat izninizi ister.</string>
+    <string name="features_privacy">Parley\'nin okudukları yalnızca sorduğunuz sohbette yapay zekâ sağlayıcınıza gider.</string>
+    <string name="features_allow_now">Şimdi izin ver</string>
+    <string name="features_open_settings">Ayarlardan izin ver</string>
+    <string name="features_none">Kapalı</string>
+    <string name="feature_location">Konum</string>
+    <string name="feature_heart_rate">Nabız</string>
+    <string name="feature_steps">Adımlar</string>
+    <string name="feature_calendar">Takvim</string>
+    <string name="feature_allowed">İzin verildi</string>
+    <string name="feature_asks_first">İlk seferde sorar</string>
+    <string name="feature_blocked">Ayarlarda engellendi</string>
+    <string name="notice_location">Konum bulunuyor…</string>
+    <string name="notice_heart_rate">Nabız ölçülüyor…</string>
+    <string name="notice_steps">Adımlar okunuyor…</string>
+    <string name="notice_calendar">Takvim okunuyor…</string>
+    <string name="notice_allow">Lütfen izin verin: %1$s</string>
+    <string name="note_location">Konum · %1$s</string>
+    <string name="note_location_used">Konum kullanıldı</string>
+    <string name="note_heart_rate">Nabız · %1$d bpm</string>
+    <string name="note_steps">Bugünkü adımlar · %1$s</string>
+    <string name="note_not_allowed">İzin yok: %1$s</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Takvim · %1$d etkinlik</item>
+        <item quantity="other">Takvim · %1$d etkinlik</item>
+    </plurals>
 </resources>

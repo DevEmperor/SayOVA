@@ -38,6 +38,11 @@ your own API key.
   quiet room.
 - **Does things on the watch.** Timers, alarms, notes, battery and time, and web search
   for anything current.
+- **Knows the watch it runs on – when you ask.** "What's the weather here?", "What's my
+  heart rate?", "How many steps today?", "What's on this afternoon?": Parley reads the
+  location, heart rate, steps or calendar only for that question, after you allowed it
+  once, and shows an icon while it does. Each one can be switched off under Settings →
+  Watch features.
 - **Your provider, your key, your data.** Choose Google Gemini (from about a cent a
   minute) or OpenAI. Audio goes straight from the watch to the provider; there is no
   Parley server in between.

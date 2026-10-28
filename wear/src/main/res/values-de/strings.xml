@@ -268,4 +268,34 @@
         <item quantity="one">%1$d Eintrag</item>
         <item quantity="other">%1$d Einträge</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Uhr-Funktionen</string>
+    <string name="features_examples">Damit beantwortet Parley Fragen wie „Wie wird das Wetter hier?“, „Wie ist mein Puls?“ oder „Was steht heute noch an?“</string>
+    <string name="features_hint">Parley nutzt sie nur, wenn deine Frage sie braucht. Beim ersten Mal fragt dich die Uhr um Erlaubnis.</string>
+    <string name="features_privacy">Was Parley liest, geht nur in dem Gespräch an deinen KI-Anbieter, in dem du danach fragst.</string>
+    <string name="features_allow_now">Jetzt erlauben</string>
+    <string name="features_open_settings">In den Uhreinstellungen erlauben</string>
+    <string name="features_none">Aus</string>
+    <string name="feature_location">Standort</string>
+    <string name="feature_heart_rate">Puls</string>
+    <string name="feature_steps">Schritte</string>
+    <string name="feature_calendar">Kalender</string>
+    <string name="feature_allowed">Erlaubt</string>
+    <string name="feature_asks_first">Fragt beim ersten Mal</string>
+    <string name="feature_blocked">In den Uhreinstellungen blockiert</string>
+    <string name="notice_location">Standort wird ermittelt…</string>
+    <string name="notice_heart_rate">Puls wird gemessen…</string>
+    <string name="notice_steps">Schritte werden abgerufen…</string>
+    <string name="notice_calendar">Kalender wird gelesen…</string>
+    <string name="notice_allow">Bitte erlauben: %1$s</string>
+    <string name="note_location">Standort · %1$s</string>
+    <string name="note_location_used">Standort genutzt</string>
+    <string name="note_heart_rate">Puls · %1$d bpm</string>
+    <string name="note_steps">Schritte heute · %1$s</string>
+    <string name="note_not_allowed">%1$s nicht erlaubt</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Kalender · %1$d Termin</item>
+        <item quantity="other">Kalender · %1$d Termine</item>
+    </plurals>
 </resources>

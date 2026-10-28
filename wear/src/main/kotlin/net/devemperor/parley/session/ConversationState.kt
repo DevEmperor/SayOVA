@@ -2,6 +2,7 @@ package net.devemperor.parley.session
 
 import net.devemperor.parley.core.conversation.Role
 import net.devemperor.parley.core.session.SessionError
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.net.Transport
 
 enum class Phase(val label: String) {
@@ -47,6 +48,10 @@ data class ConversationUiState(
     val providerLabel: String = "",
     /** A short, temporary hint ("Timer set", "Searching the web…"). */
     val notice: String? = null,
+    /** The watch feature in use right now (location, heart rate …), shown with its icon. */
+    val activeFeature: WatchFeature? = null,
+    /** Watch features used in this conversation so far, in order: their icons stay in the caption. */
+    val usedFeatures: List<WatchFeature> = emptyList(),
     val error: SessionError? = null,
     val saved: Boolean = false,
 ) {

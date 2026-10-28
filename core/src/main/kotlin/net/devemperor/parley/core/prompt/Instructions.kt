@@ -3,6 +3,7 @@ package net.devemperor.parley.core.prompt
 import net.devemperor.parley.core.conversation.Role
 import net.devemperor.parley.core.conversation.Turn
 import net.devemperor.parley.core.memory.Fact
+import net.devemperor.parley.core.tools.WatchFeature
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -61,6 +62,8 @@ object Instructions {
         earlier: List<Turn> = emptyList(),
         /** What Parley remembers about the user; null while the memory is turned off. */
         memory: List<Fact>? = null,
+        /** The watch's own sensors and data offered as tools. */
+        features: Set<WatchFeature> = emptySet(),
     ): String = buildString {
         appendLine("You are Parley, a voice assistant running on the user's smartwatch.")
         appendLine()
@@ -84,8 +87,16 @@ object Instructions {
         appendLine()
         appendLine(
             "Tools: you can set timers and alarms, save notes, check the watch's battery and time, " +
-                (if (memory != null) "remember facts about the user, " else "") + "and end the conversation.",
+                (if (memory != null) "remember facts about the user, " else "") +
+                WatchFeature.entries.filter { it in features }.joinToString("") { "${it.capability}, " } +
+                "and end the conversation.",
         )
+        if (features.isNotEmpty()) {
+            appendLine("Use the watch's sensors and data only when the user's request needs them. The first time, the watch asks the user to allow it; if a tool reports it is not allowed, tell the user briefly how to allow it.")
+            if (WatchFeature.LOCATION in features) appendLine("Name places, never read out coordinates.")
+            if (WatchFeature.HEART_RATE in features) appendLine("A heart rate from a watch is no medical measurement: never diagnose; if a value worries the user, suggest seeing a doctor.")
+        }
+        appendLine("For a reminder at a time, set an alarm with what to remember as its label.")
         if (canSearch) appendLine("For current information (news, weather, prices, opening hours, recent events) search the web before answering.")
         appendLine("After using a tool, confirm in a few words what you did. When the user says goodbye or wants to stop, say a short farewell and call end_conversation.")
         val style = if (persona == Persona.CUSTOM) customPersona.trim() else persona.prompt

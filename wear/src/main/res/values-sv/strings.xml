@@ -269,4 +269,34 @@
         <item quantity="one">%1$d post</item>
         <item quantity="other">%1$d poster</item>
     </plurals>
+
+    <!-- Watch features: the watch's own sensors and data as tools. -->
+    <string name="features_title">Klockfunktioner</string>
+    <string name="features_examples">Då kan Parley svara på frågor som ”Vad är det för väder här?”, ”Vad har jag för puls?” eller ”Vad har jag i dag?”</string>
+    <string name="features_hint">Parley använder dem bara när din fråga behöver dem. Första gången ber klockan om lov.</string>
+    <string name="features_privacy">Det Parley läser går bara till din AI-leverantör i samtalet där du frågar efter det.</string>
+    <string name="features_allow_now">Tillåt nu</string>
+    <string name="features_open_settings">Tillåt i inställningarna</string>
+    <string name="features_none">Av</string>
+    <string name="feature_location">Plats</string>
+    <string name="feature_heart_rate">Puls</string>
+    <string name="feature_steps">Steg</string>
+    <string name="feature_calendar">Kalender</string>
+    <string name="feature_allowed">Tillåten</string>
+    <string name="feature_asks_first">Frågar första gången</string>
+    <string name="feature_blocked">Blockerad i inställningarna</string>
+    <string name="notice_location">Hämtar din plats…</string>
+    <string name="notice_heart_rate">Mäter pulsen…</string>
+    <string name="notice_steps">Hämtar stegen…</string>
+    <string name="notice_calendar">Läser kalendern…</string>
+    <string name="notice_allow">Tillåt: %1$s</string>
+    <string name="note_location">Plats · %1$s</string>
+    <string name="note_location_used">Plats använd</string>
+    <string name="note_heart_rate">Puls · %1$d bpm</string>
+    <string name="note_steps">Steg i dag · %1$s</string>
+    <string name="note_not_allowed">%1$s inte tillåten</string>
+    <plurals name="note_calendar">
+        <item quantity="one">Kalender · %1$d händelse</item>
+        <item quantity="other">Kalender · %1$d händelser</item>
+    </plurals>
 </resources>
