@@ -74,6 +74,7 @@ import androidx.wear.compose.foundation.rotary.rotaryScrollable
 import androidx.wear.compose.material3.FilledIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
+import androidx.wear.compose.material3.LocalContentColor
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
@@ -101,13 +102,16 @@ import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
  * The live conversation: status on the bezel, the orb as the one control, one caption line under it,
- * the red end button at the bottom between the text and the volume button. By default only the orb
+ * the red end button at the bottom between the text and the sound button. By default only the orb
  * is shown, large and centred, pulsing with whoever speaks; with the transcript on, the orb moves up
  * and the transcript scrolls below it, the part of an answer already heard bright, the rest dim. The
- * last choice is remembered ([showTranscript]); silent mode always shows the text, its only output.
+ * last choice is remembered ([showTranscript]); silent mode always shows the text, its only output,
+ * and so does a conversation with the sound off.
  *
- * Turning the bezel or crown sets Parley's volume and shows the same panel as the volume button.
- * Silent mode has no voice, so there the bezel scrolls the transcript instead.
+ * The sound button switches Parley's voice off and on at a tap, for a place where nobody should hear
+ * it; a long press, or turning the bezel or crown, opens the volume panel. Turning it louder while
+ * the sound is off switches it back on. Silent mode has no voice, so there the bezel scrolls the
+ * transcript instead.
  *
  * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
  * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
@@ -117,6 +121,7 @@ fun ConversationScreen(
     state: ConversationUiState,
     showTranscript: Boolean,
     onToggleTranscript: () -> Unit,
+    onToggleSound: () -> Unit,
     onTapOrb: () -> Unit,
     onEnd: () -> Unit,
     onDone: () -> Unit,
@@ -138,7 +143,7 @@ fun ConversationScreen(
 
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
-    val transcript = showTranscript || state.textOnly
+    val transcript = showTranscript || state.textOnly || state.soundOff
 
     val context = LocalContext.current
     val volume = remember { SpeechVolume(context) }
@@ -151,6 +156,7 @@ fun ConversationScreen(
         volumeTouchedAt = SystemClock.elapsedRealtime()
     }
     val changeVolume = { delta: Int ->
+        if (state.soundOff && delta > 0) onToggleSound()
         volumeLevel = SessionHub.stepVolume(delta) ?: volume.current()
         volumeOpen = true
         volumeTouchedAt = SystemClock.elapsedRealtime()
@@ -238,7 +244,8 @@ fun ConversationScreen(
                     transcript = transcript,
                     onToggleTranscript = onToggleTranscript.takeUnless { state.textOnly },
                     volumeIcon = volumeIcon(volumeLevel, volume.min, volume.max),
-                    onVolume = showVolume.takeUnless { state.textOnly },
+                    onToggleSound = onToggleSound.takeUnless { state.textOnly },
+                    onVolume = showVolume,
                     onEnd = onEnd,
                 )
             }
@@ -247,8 +254,13 @@ fun ConversationScreen(
                     level = volumeLevel,
                     min = volume.min,
                     max = volume.max,
+                    soundOff = state.soundOff,
                     width = width,
                     onChange = changeVolume,
+                    onToggleSound = {
+                        onToggleSound()
+                        volumeTouchedAt = SystemClock.elapsedRealtime()
+                    },
                     onClose = { volumeOpen = false },
                 )
             }
@@ -258,14 +270,24 @@ fun ConversationScreen(
 
 /**
  * Parley's volume: an arc along the left of the bezel that fills upwards as the bezel turns
- * clockwise, plus and minus for touch, the level in the middle. Closes by itself shortly after the
- * last change, or with a tap beside the buttons.
+ * clockwise, plus and minus for touch, the level in the middle; tapping the level switches the sound
+ * off or on, and with the sound off the arc turns grey. Closes by itself shortly after the last
+ * change, or with a tap beside the buttons.
  */
 @Composable
-private fun VolumePanel(level: Int, min: Int, max: Int, width: Dp, onChange: (Int) -> Unit, onClose: () -> Unit) {
+private fun VolumePanel(
+    level: Int,
+    min: Int,
+    max: Int,
+    soundOff: Boolean,
+    width: Dp,
+    onChange: (Int) -> Unit,
+    onToggleSound: () -> Unit,
+    onClose: () -> Unit,
+) {
     val fraction by animateFloatAsState(if (max > min) (level - min).toFloat() / (max - min) else 0f, label = "volume")
     val track = MaterialTheme.colorScheme.surfaceContainerHigh
-    val fill = MaterialTheme.colorScheme.primary
+    val fill = if (soundOff) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary
     Box(
         Modifier
             .fillMaxSize()
@@ -289,10 +311,21 @@ private fun VolumePanel(level: Int, min: Int, max: Int, width: Dp, onChange: (In
             verticalArrangement = Arrangement.spacedBy(width * 0.03f),
         ) {
             VolumeStep(R.drawable.ic_add, stringResource(R.string.action_louder), enabled = level < max, width = width) { onChange(1) }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(painterResource(volumeIcon(level, min, max)), contentDescription = null, modifier = Modifier.size(width * 0.09f))
+            Row(
+                Modifier
+                    .clip(RoundedCornerShape(50))
+                    .clickable(onClick = onToggleSound, onClickLabel = stringResource(if (soundOff) R.string.action_sound_on else R.string.action_sound_off))
+                    .padding(horizontal = 10.dp, vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painterResource(if (soundOff) R.drawable.ic_volume_off else volumeIcon(level, min, max)),
+                    contentDescription = null,
+                    tint = if (soundOff) ParleyColors.Coral else LocalContentColor.current,
+                    modifier = Modifier.size(width * 0.09f),
+                )
                 Spacer(Modifier.width(6.dp))
-                Text("$level", style = MaterialTheme.typography.displaySmall)
+                Text("$level", style = MaterialTheme.typography.displaySmall, color = if (soundOff) MaterialTheme.colorScheme.outline else Color.Unspecified)
             }
             VolumeStep(R.drawable.ic_remove, stringResource(R.string.action_quieter), enabled = level > min, width = width) { onChange(-1) }
         }
@@ -322,8 +355,10 @@ private fun volumeIcon(level: Int, min: Int, max: Int): Int = when {
 
 /**
  * The red end button in the middle; left of it the text button, dim with the text hidden and lit
- * with it shown, right of it the volume button. Both are null in silent mode, which shows text only
- * and has no voice; their places stay empty so the end button keeps the middle.
+ * with it shown (and resting while the sound is off, which shows the text anyway), right of it the
+ * sound button: a tap switches Parley's voice off, coral, and on again, a long press opens [onVolume].
+ * Both are null in silent mode, which shows text only and has no voice; their places stay empty so
+ * the end button keeps the middle.
  */
 @Composable
 private fun Controls(
@@ -332,7 +367,8 @@ private fun Controls(
     transcript: Boolean,
     onToggleTranscript: (() -> Unit)?,
     volumeIcon: Int,
-    onVolume: (() -> Unit)?,
+    onToggleSound: (() -> Unit)?,
+    onVolume: () -> Unit,
     onEnd: () -> Unit,
 ) {
     val side = width * 0.12f
@@ -344,6 +380,7 @@ private fun Controls(
             if (onToggleTranscript != null) {
                 FilledIconButton(
                     onClick = onToggleTranscript,
+                    enabled = !state.soundOff,
                     colors = if (transcript) {
                         IconButtonDefaults.filledIconButtonColors(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -374,16 +411,29 @@ private fun Controls(
             Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.085f))
         }
         Box(Modifier.size(side)) {
-            if (onVolume != null) {
+            if (onToggleSound != null) {
                 FilledIconButton(
-                    onClick = onVolume,
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
+                    onClick = onToggleSound,
+                    onLongClick = onVolume,
+                    onLongClickLabel = stringResource(R.string.action_volume),
+                    colors = if (state.soundOff) {
+                        IconButtonDefaults.filledIconButtonColors(
+                            containerColor = ParleyColors.Coral.copy(alpha = 0.22f),
+                            contentColor = ParleyColors.Coral,
+                        )
+                    } else {
+                        IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    },
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    Icon(painterResource(volumeIcon), contentDescription = stringResource(R.string.action_volume), modifier = Modifier.size(width * 0.07f))
+                    Icon(
+                        painterResource(if (state.soundOff) R.drawable.ic_volume_off else volumeIcon),
+                        contentDescription = stringResource(if (state.soundOff) R.string.action_sound_on else R.string.action_sound_off),
+                        modifier = Modifier.size(width * 0.07f),
+                    )
                 }
             }
         }

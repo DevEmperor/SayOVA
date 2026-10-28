@@ -6,11 +6,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.HistoryStore
 import net.devemperor.parley.data.KeyVault
 import net.devemperor.parley.data.SettingsRepository
+import net.devemperor.parley.data.UsageStore
 import net.devemperor.parley.net.NetworkSelector
 import okhttp3.OkHttpClient
+import java.time.YearMonth
+import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 class ParleyApp : Application() {
@@ -19,6 +23,7 @@ class ParleyApp : Application() {
     val settings by lazy { SettingsRepository(this) }
     val keys by lazy { KeyVault(this) }
     val history by lazy { HistoryStore(this) }
+    val usage by lazy { UsageStore(this) }
     val network by lazy { NetworkSelector(this) }
 
     val http: OkHttpClient by lazy {
@@ -34,6 +39,16 @@ class ParleyApp : Application() {
         super.onCreate()
         appScope.launch {
             history.load()
+            usage.load(seed = {
+                var days = Usage.fromConversations(history.conversations.value, ZoneId.systemDefault())
+                // Cost counted in the month before the statistics, beyond what the history shows.
+                settings.takeLegacyMonthCost()?.let { (month, usd) ->
+                    val start = YearMonth.parse(month).atDay(1)
+                    val known = Usage.month(days, YearMonth.parse(month)).costUsd
+                    if (usd - known > 0.0005) days = Usage.add(days, start, usd - known, 0, conversations = 0)
+                }
+                days
+            })
             history.prune(settings.current().historyDays)
         }
     }

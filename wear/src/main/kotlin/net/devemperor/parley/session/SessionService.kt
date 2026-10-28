@@ -17,7 +17,7 @@ import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import net.devemperor.parley.BuildConfig
+import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.MainActivity
 import net.devemperor.parley.R
 import net.devemperor.parley.audio.Haptics
@@ -56,7 +56,7 @@ class SessionService : LifecycleService() {
                     stopSelf()
                     return START_NOT_STICKY
                 }
-                begin(textOnly = intent.getBooleanExtra(EXTRA_TEXT_ONLY, false), demo = BuildConfig.DEBUG && intent.getBooleanExtra(EXTRA_DEMO, false))
+                begin(textOnly = intent.getBooleanExtra(EXTRA_TEXT_ONLY, false), demo = Diagnostics.enabled && intent.getBooleanExtra(EXTRA_DEMO, false))
             }
             ACTION_STOP -> engine?.end() ?: stopEverything()
         }
@@ -114,13 +114,16 @@ class SessionService : LifecycleService() {
                 showCost = settings.showCost,
                 saveHistory = settings.historyDays != 0,
                 speechVolume = settings.speechVolume,
+                soundOff = settings.soundOff,
             ),
             toolRunner = ToolRunner(this@SessionService, search),
             haptics = Haptics(this@SessionService) { settings.haptics },
             transport = app.network.transport,
-            onSave = { conversation, usd ->
+            onSave = { conversation, usd, talkMs ->
                 conversation?.let { app.history.save(it) }
-                if (!demo) app.settings.addCost(usd)
+                // Demo conversations count too: only adb can start them (see Diagnostics), and tests
+                // check the statistics with them.
+                app.usage.record(usd, talkMs)
                 ParleyTileService.refresh(this@SessionService)
             },
             onVolume = { level -> app.settings.update { it.copy(speechVolume = level) } },

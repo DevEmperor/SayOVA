@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import net.devemperor.parley.BuildConfig
+import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.audio.Haptics
 import net.devemperor.parley.audio.Headphones
 import net.devemperor.parley.audio.Microphone
@@ -54,7 +54,8 @@ class ConversationEngine(
     private val toolRunner: ToolRunner,
     private val haptics: Haptics,
     private val transport: StateFlow<Transport>,
-    private val onSave: suspend (Conversation?, Double) -> Unit,
+    /** The conversation to keep (null when not saved), its cost and its talk time. */
+    private val onSave: suspend (Conversation?, Double, Long) -> Unit,
     /** Parley's own volume at the end, to start the next conversation with. */
     private val onVolume: suspend (Int) -> Unit,
     private val onFinished: () -> Unit,
@@ -68,6 +69,8 @@ class ConversationEngine(
         val saveHistory: Boolean,
         /** Parley's own volume from the last conversation; -1 before the first. */
         val speechVolume: Int,
+        /** Start with Parley's voice switched off (see [setSoundOff]). */
+        val soundOff: Boolean,
     )
 
     private class Record(val key: String, val role: Role, val at: Long) {
@@ -94,6 +97,8 @@ class ConversationEngine(
     private var finished = false
     private var finalError: SessionError? = null
 
+    /** Read once: whether this conversation is logged (see Diagnostics). */
+    private val diagnostics = Diagnostics.enabled
     private val player: SpeechPlayer? = if (options.textOnly) null else SpeechPlayer(session.outputSampleRate)
     private val volume: SpeechVolume? = if (options.textOnly) null else SpeechVolume(context)
     private val microphone = Microphone(session.inputSampleRate, ::onMicAudio, ::onMicLevel)
@@ -117,6 +122,7 @@ class ConversationEngine(
     @Volatile private var keepPreRoll = false
 
     private var muted = false
+    private var soundOff = options.soundOff && !options.textOnly
     private var talking = false
     private var currentAnswerKey: String? = null
     private var answerStreaming = false
@@ -135,6 +141,7 @@ class ConversationEngine(
 
     fun start() {
         volume?.begin(options.speechVolume)
+        player?.setMuted(soundOff)
         headphones.start()
         scope.launch { session.events.collect(::handle) }
         scope.launch {
@@ -180,6 +187,21 @@ class ConversationEngine(
     }
 
     /**
+     * Switches Parley's voice off or on. Answers keep playing silently, so the transcript still lights
+     * up at the pace of the voice and talking over an answer still interrupts it. The echo comes and
+     * goes with the sound, so the barge-in detector learns it anew.
+     */
+    fun setSoundOff(off: Boolean) {
+        if (player == null || soundOff == off) return
+        soundOff = off
+        player.setMuted(off)
+        bargeIn.startAnswer(SystemClock.elapsedRealtime())
+        // One short line under the orb: the speaker icon already tells that the sound is back.
+        showNotice(if (off) "Sound off" else "Turn the bezel for volume", 2_500)
+        tick()
+    }
+
+    /**
      * One volume step from the screen (+1 louder, -1 quieter); returns the volume now, null in silent
      * mode. The answer's echo changes with it, so the barge-in detector learns it anew.
      */
@@ -219,12 +241,12 @@ class ConversationEngine(
 
     private fun onMicLevel(level: Float) {
         micLevel = if (micOpen) level else 0f
-        if (BuildConfig.DEBUG && listeningForBargeIn) echoPeak = maxOf(echoPeak, level)
+        if (diagnostics && listeningForBargeIn) echoPeak = maxOf(echoPeak, level)
         if (listeningForBargeIn && !bargeInHeard) {
             val played = player?.recentLevel(ECHO_WINDOW_MS) ?: 0f
             if (bargeIn.onFrame(level, played, SystemClock.elapsedRealtime())) {
                 bargeInHeard = true
-                if (BuildConfig.DEBUG) Log.d(TAG, "barge-in: mic %.2f, played %.2f, coupling %.2f".format(level, played, bargeIn.learnedCoupling))
+                if (diagnostics) Log.d(TAG, "barge-in: mic %.2f, played %.2f, coupling %.2f".format(level, played, bargeIn.learnedCoupling))
             }
         }
     }
@@ -387,7 +409,7 @@ class ConversationEngine(
         if (!listeningForBargeIn && !keepPreRoll) synchronized(preRoll) { preRoll.clear() }
         micOpen = listening && !gated
         if (micOpen && micLevel > SPEECH_LEVEL) touch()
-        if (BuildConfig.DEBUG) logMicPeak(now)
+        if (diagnostics) logMicPeak(now)
         if (speaking) touch()
 
         // Gemini announces no end of speech; a pause after the user's words means an answer is due.
@@ -409,7 +431,7 @@ class ConversationEngine(
             bargeIn.startAnswer(now)
             haptics.answering()
         }
-        if (phase != lastPhase && BuildConfig.DEBUG) Log.d(TAG, "phase ${lastPhase.name} -> ${phase.name} (mic ${if (micOpen) "open" else "closed"})")
+        if (phase != lastPhase && diagnostics) Log.d(TAG, "phase ${lastPhase.name} -> ${phase.name} (mic ${if (micOpen) "open" else "closed"})")
         lastPhase = phase
 
         if (endAfterSpeech && !speaking && pendingTools == 0) {
@@ -429,6 +451,7 @@ class ConversationEngine(
             costUsd = cost(),
             transport = transport.value,
             muted = muted,
+            soundOff = soundOff,
             talking = talking,
             halfDuplex = speaking && options.bargeIn == BargeIn.OFF && !options.textOnly,
             notice = notice,
@@ -469,6 +492,7 @@ class ConversationEngine(
         if (error != null) haptics.error() else haptics.ended()
 
         val usd = cost()
+        val talkMs = if (readyAt > 0) SystemClock.elapsedRealtime() - readyAt else 0L
         val turns = records.filter { it.text.isNotBlank() }.map { Turn(it.role, it.text.toString().trim(), it.at, it.interrupted) }
         val worthKeeping = turns.any { it.role == Role.USER || it.role == Role.ASSISTANT }
         val conversation = if (options.saveHistory && worthKeeping) {
@@ -496,21 +520,22 @@ class ConversationEngine(
         )
         scope.launch {
             ownVolume?.let { onVolume(it) }
-            onSave(conversation, usd)
+            onSave(conversation, usd, talkMs)
             onFinished()
         }
     }
 
     /**
-     * Debug builds log the conversation as it happens (adb logcat -s ParleyEvent), so emulator tests
-     * can follow what was heard and answered. Release builds log only errors, without any content.
+     * With diagnostics on (see Diagnostics) the conversation is logged as it happens (adb logcat -s
+     * ParleyEvent), so tests can follow what was heard and answered. Otherwise only errors are logged,
+     * without any content.
      */
     private fun debugLog(event: VoiceEvent) {
         when (event) {
             is VoiceEvent.Closed -> event.error?.let { Log.w(TAG, "closed: ${it.kind}") }
             else -> Unit
         }
-        if (!BuildConfig.DEBUG) return
+        if (!diagnostics) return
         val line = when (event) {
             is VoiceEvent.AssistantAudio -> return
             is VoiceEvent.UserTranscript -> "user[${event.turnKey}]${if (event.replace) "=" else "+"} ${event.text}"

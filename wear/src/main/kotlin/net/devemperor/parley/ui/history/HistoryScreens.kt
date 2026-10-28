@@ -23,7 +23,6 @@ import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.curvedText
-import androidx.wear.compose.material3.lazy.transformedHeight
 import net.devemperor.parley.R
 import net.devemperor.parley.core.conversation.Conversation
 import net.devemperor.parley.core.conversation.Role
@@ -33,6 +32,7 @@ import net.devemperor.parley.ui.components.Hint
 import net.devemperor.parley.ui.components.ListScreen
 import net.devemperor.parley.ui.components.MenuButton
 import net.devemperor.parley.ui.components.openOnPhone
+import net.devemperor.parley.ui.components.transformedContent
 
 @Composable
 fun HistoryScreen(conversations: List<Conversation>, historyOff: Boolean, showCost: Boolean, onOpen: (String) -> Unit) {
@@ -84,7 +84,7 @@ fun ConversationDetailScreen(conversation: Conversation, onReport: () -> Unit, o
                     style = style,
                     color = color,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 3.dp).transformedHeight(this, spec),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 3.dp).transformedContent(this, spec),
                 )
             }
         }

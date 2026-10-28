@@ -22,7 +22,6 @@ import net.devemperor.parley.core.provider.Provider
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
 import java.io.IOException
-import java.time.YearMonth
 
 /** Whether the user's voice may cut the answer short. */
 enum class BargeIn(val label: String, val description: String) {
@@ -51,11 +50,11 @@ data class ParleySettings(
     val showTranscript: Boolean = false,
     /** Parley's own volume on the media scale, set for each conversation; -1 until first chosen. */
     val speechVolume: Int = -1,
+    /** Parley's voice switched off in conversations, for quiet places; the transcript shows instead. */
+    val soundOff: Boolean = false,
     /** Days conversations are kept; 0 = not saved, -1 = forever. */
     val historyDays: Int = 30,
     val startOnLaunch: Boolean = false,
-    val costMonth: String = "",
-    val costMonthUsd: Double = 0.0,
 ) {
     val providerInfo: Provider get() = ProviderCatalog.get(provider)
 
@@ -68,9 +67,6 @@ data class ParleySettings(
         ProviderId.GEMINI -> geminiVoice
         ProviderId.OPENAI -> openAiVoice
     }
-
-    /** Spend of the current calendar month (the stored figure belongs to another month otherwise). */
-    fun monthUsd(now: YearMonth = YearMonth.now()): Double = if (costMonth == now.toString()) costMonthUsd else 0.0
 
     companion object {
         val AUTO_END_OPTIONS = listOf(10, 20, 30, 60, 0)
@@ -102,10 +98,12 @@ class SettingsRepository(private val context: Context) {
         val showCost = booleanPreferencesKey("show_cost")
         val showTranscript = booleanPreferencesKey("show_transcript")
         val speechVolume = intPreferencesKey("speech_volume")
+        val soundOff = booleanPreferencesKey("sound_off")
         val historyDays = intPreferencesKey("history_days")
         val startOnLaunch = booleanPreferencesKey("start_on_launch")
-        val costMonth = stringPreferencesKey("cost_month")
-        val costMonthUsd = doublePreferencesKey("cost_month_usd")
+        // Before the statistics (UsageStore), only the current month's cost was kept here.
+        val legacyCostMonth = stringPreferencesKey("cost_month")
+        val legacyCostMonthUsd = doublePreferencesKey("cost_month_usd")
     }
 
     val settings: Flow<ParleySettings> = context.dataStore.data
@@ -140,16 +138,26 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.showCost] = updated.showCost
             prefs[Keys.showTranscript] = updated.showTranscript
             prefs[Keys.speechVolume] = updated.speechVolume
+            prefs[Keys.soundOff] = updated.soundOff
             prefs[Keys.historyDays] = updated.historyDays
             prefs[Keys.startOnLaunch] = updated.startOnLaunch
-            prefs[Keys.costMonth] = updated.costMonth
-            prefs[Keys.costMonthUsd] = updated.costMonthUsd
         }
     }
 
-    suspend fun addCost(usd: Double) = update { s ->
-        val month = YearMonth.now().toString()
-        s.copy(costMonth = month, costMonthUsd = s.monthUsd() + usd)
+    /**
+     * The month's cost counted before Parley kept statistics, as (yyyy-MM, USD), removed as it is
+     * read: the statistics take it over once.
+     */
+    suspend fun takeLegacyMonthCost(): Pair<String, Double>? {
+        var taken: Pair<String, Double>? = null
+        context.dataStore.edit { prefs ->
+            val month = prefs[Keys.legacyCostMonth]
+            val usd = prefs[Keys.legacyCostMonthUsd]
+            if (month != null && usd != null) taken = month to usd
+            prefs.remove(Keys.legacyCostMonth)
+            prefs.remove(Keys.legacyCostMonthUsd)
+        }
+        return taken
     }
 
     private fun fromPreferences(prefs: Preferences): ParleySettings {
@@ -171,10 +179,9 @@ class SettingsRepository(private val context: Context) {
             showCost = prefs[Keys.showCost] ?: d.showCost,
             showTranscript = prefs[Keys.showTranscript] ?: d.showTranscript,
             speechVolume = prefs[Keys.speechVolume] ?: d.speechVolume,
+            soundOff = prefs[Keys.soundOff] ?: d.soundOff,
             historyDays = prefs[Keys.historyDays]?.takeIf { it in ParleySettings.HISTORY_OPTIONS } ?: d.historyDays,
             startOnLaunch = prefs[Keys.startOnLaunch] ?: d.startOnLaunch,
-            costMonth = prefs[Keys.costMonth] ?: d.costMonth,
-            costMonthUsd = prefs[Keys.costMonthUsd] ?: d.costMonthUsd,
         )
     }
 

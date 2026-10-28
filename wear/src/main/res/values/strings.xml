@@ -21,8 +21,6 @@
     <string name="pair_scan">Scan with your phone</string>
     <string name="pair_waiting_offline">No connection – check Wi-Fi</string>
     <string name="pair_open_on_phone">On phone</string>
-    <string name="pair_type_instead">Type the key instead</string>
-    <string name="pair_type_label">%1$s API key</string>
     <string name="pair_continue_on_phone">Continue on phone</string>
     <string name="pair_compare_title">Same code on your phone?</string>
     <string name="pair_compare_text">%1$s key %2$s arrived encrypted. Use it only if your phone shows:</string>
@@ -68,6 +66,8 @@
     <string name="action_show_text">Show text</string>
     <string name="action_hide_text">Hide text</string>
     <string name="action_volume">Volume</string>
+    <string name="action_sound_off">Sound off</string>
+    <string name="action_sound_on">Sound on</string>
     <string name="action_louder">Louder</string>
     <string name="action_quieter">Quieter</string>
     <string name="action_close">Close</string>
@@ -111,7 +111,7 @@
     <string name="settings_persona">Personality</string>
     <string name="settings_conversation">Conversation</string>
     <string name="settings_web_search">Web search</string>
-    <string name="settings_web_search_note">For news, weather and other current facts</string>
+    <string name="settings_web_search_note">News, weather and more</string>
     <string name="settings_barge_in">Interrupt by voice</string>
     <string name="settings_push_to_talk">Push to talk</string>
     <string name="settings_push_to_talk_note">Tap the orb to speak</string>
@@ -120,7 +120,15 @@
     <string name="settings_start_on_launch_note">Useful with a button shortcut</string>
     <string name="settings_haptics">Vibration</string>
     <string name="settings_show_cost">Show cost</string>
-    <string name="settings_cost_month">This month %1$s</string>
+    <string name="settings_show_cost_note">While talking and in history</string>
+    <string name="settings_usage">Usage &amp; costs</string>
+    <string name="settings_usage_summary">This month %1$s · %2$s</string>
+    <string name="usage_title">Usage</string>
+    <string name="usage_earlier">Earlier months</string>
+    <string name="usage_all_time">All time</string>
+    <string name="usage_recent">%1$s – today · top %2$s</string>
+    <string name="usage_average">%1$s per conversation · %2$s per minute</string>
+    <string name="usage_estimate">Estimated from the usage your provider reports and its published prices. Your provider\'s bill is what counts.</string>
     <string name="settings_privacy">Privacy</string>
     <string name="settings_history">Keep history</string>
     <string name="settings_delete_history">Delete all history</string>
@@ -130,6 +138,10 @@
     <string name="barge_in_hint">How you cut an answer short. Automatic tells your voice apart from Parley’s own, which the microphone hears on the watch speaker.</string>
     <string name="history_hint">Conversations are stored only on this watch.</string>
     <string name="history_keep_off">Don’t save</string>
+    <plurals name="usage_conversations">
+        <item quantity="one">%1$d conversation</item>
+        <item quantity="other">%1$d conversations</item>
+    </plurals>
     <plurals name="history_keep_days">
         <item quantity="one">%1$d day</item>
         <item quantity="other">%1$d days</item>

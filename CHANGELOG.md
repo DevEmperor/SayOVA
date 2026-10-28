@@ -10,8 +10,10 @@ First version.
   microphone on the watch during an answer and tells your voice from its own echo.
 - Orb-only conversation view by default; a text button shows the live transcript of both sides,
   with the heard part of the answer highlighted, and the choice is remembered.
-- Parley's own volume, set with the bezel, the crown or the volume button and remembered between
-  conversations; the media volume is handed back when a conversation ends.
+- Parley's own volume, set with the bezel or the crown (or a long press on the sound button) and
+  remembered between conversations; the media volume is handed back when a conversation ends.
+- Sound button: switches Parley's voice off for quiet places; the transcript shows instead.
+- Usage statistics: cost and talk time this month, the last two weeks, every month and in total.
 - Silent mode (text answers, push-to-talk).
 - Tools: timers, alarms, notes, battery and time, web search.
 - QR pairing: the key is encrypted in the browser and relayed end to end to the watch.

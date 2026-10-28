@@ -21,7 +21,6 @@ import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.curvedText
-import androidx.wear.compose.material3.lazy.transformedHeight
 import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.R
 import net.devemperor.parley.ui.components.Header
@@ -30,6 +29,7 @@ import net.devemperor.parley.ui.components.ListScreen
 import net.devemperor.parley.ui.components.MenuButton
 import net.devemperor.parley.ui.components.Orb
 import net.devemperor.parley.ui.components.openOnPhone
+import net.devemperor.parley.ui.components.transformedContent
 
 private const val REPOSITORY = "https://github.com/DevEmperor/Parley"
 private const val PRIVACY = "$REPOSITORY/blob/main/PRIVACY_POLICY.md"
@@ -43,7 +43,7 @@ fun AboutScreen(onLicenses: () -> Unit) {
     ListScreen { spec ->
         item {
             Column(
-                Modifier.fillMaxWidth().transformedHeight(this, spec),
+                Modifier.fillMaxWidth().transformedContent(this, spec),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
@@ -85,7 +85,7 @@ fun LicensesScreen() {
         item { Header(stringResource(R.string.about_licenses), spec) }
         licenses.forEach { (name, license) ->
             item(key = name) {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp).transformedHeight(this, spec)) {
+                Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp).transformedContent(this, spec)) {
                     Text(name, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                     Text(
                         license,

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,12 +69,22 @@ fun TransformingLazyColumnItemScope.SubHeader(text: String, spec: Transformation
     }
 }
 
+/**
+ * For list items that are no Material surface (text, a column of text): shrinks at the list's edges
+ * like the buttons do, and draws shrunk too. transformedHeight alone only reports the smaller height;
+ * the text inside kept its full size and slid over its neighbours while scrolling.
+ */
+fun Modifier.transformedContent(scope: TransformingLazyColumnItemScope, spec: TransformationSpec): Modifier =
+    transformedHeight(scope, spec).graphicsLayer {
+        with(scope) { with(spec) { applyContainerTransformation(scrollProgress) } }
+    }
+
 /** Explanatory text inside a list, centred and muted. */
 @Composable
 fun TransformingLazyColumnItemScope.Hint(text: String, spec: TransformationSpec) {
     Text(
         text,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp).transformedHeight(this, spec),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp).transformedContent(this, spec),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
@@ -88,7 +99,7 @@ fun TransformingLazyColumnItemScope.MenuButton(
     secondaryLabel: String? = null,
     @DrawableRes icon: Int? = null,
     highlighted: Boolean = false,
-    secondaryLines: Int = 2,
+    secondaryLines: Int = 3,
 ) {
     Button(
         onClick = onClick,
@@ -116,7 +127,7 @@ fun TransformingLazyColumnItemScope.SwitchItem(
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
-        secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 2) } },
+        secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 3, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
     )
 }
@@ -134,7 +145,7 @@ fun TransformingLazyColumnItemScope.RadioItem(
         onSelect = onSelect,
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
-        secondaryLabel = secondaryLabel?.takeIf { it.isNotEmpty() }?.let { text -> { Text(text, maxLines = 2, overflow = TextOverflow.Ellipsis) } },
+        secondaryLabel = secondaryLabel?.takeIf { it.isNotEmpty() }?.let { text -> { Text(text, maxLines = 3, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
     )
 }

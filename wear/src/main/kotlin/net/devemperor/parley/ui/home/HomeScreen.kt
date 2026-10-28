@@ -43,11 +43,14 @@ import net.devemperor.parley.ui.components.screenWidth
 
 /**
  * The start screen: the orb (tap it, or the edge button, to talk) and three small buttons for the
- * silent text mode, the history and the settings.
+ * silent text mode, the history and the settings. The line under the orb names provider and model
+ * and the month's cost; a tap on it opens the usage statistics.
  */
 @Composable
 fun HomeScreen(
     settings: ParleySettings,
+    monthUsd: Double,
+    onUsage: () -> Unit,
     onTalk: () -> Unit,
     onText: () -> Unit,
     onHistory: () -> Unit,
@@ -90,13 +93,13 @@ fun HomeScreen(
             }
             Text(
                 "${provider.displayName.substringAfterLast(' ')} · ${model.label}" +
-                    if (settings.showCost && settings.monthUsd() > 0) " · ${CostMeter.format(settings.monthUsd())}" else "",
+                    if (settings.showCost && monthUsd > 0) " · ${CostMeter.format(monthUsd)}" else "",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).clickable(onClick = onUsage).padding(vertical = 3.dp),
             )
             Spacer(Modifier.height(6.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {

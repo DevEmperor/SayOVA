@@ -59,9 +59,10 @@ class CostMeter(private val pricing: Pricing) {
 
     companion object {
         /** "~3 ¢" below a dollar, "~$1.20" above; the tilde because it is an estimate. */
+        // A no-break space keeps the figure and its unit on one line on the narrow watch screen.
         fun format(usd: Double): String = when {
-            usd < 0.005 -> "<1 ¢"
-            usd < 1.0 -> "~${Math.round(usd * 100)} ¢"
+            usd < 0.005 -> "<1\u00A0¢"
+            usd < 1.0 -> "~${Math.round(usd * 100)}\u00A0¢"
             else -> "~$" + String.format(java.util.Locale.US, "%.2f", usd)
         }
     }

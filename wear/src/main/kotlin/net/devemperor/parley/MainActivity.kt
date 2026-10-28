@@ -17,9 +17,9 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         val launch = if (savedInstanceState == null) launchOf(intent) else Launch.OPEN
-        // Debug builds accept a chain of routes to open, for store screenshots on the emulator, e.g.
-        // `adb shell am start -n net.devemperor.parley.debug/net.devemperor.parley.MainActivity --es routes settings`.
-        val routes = if (BuildConfig.DEBUG) {
+        // With diagnostics on (see Diagnostics), a chain of routes to open, for tests and store
+        // screenshots: `adb shell am start -n net.devemperor.parley/.MainActivity --es routes settings`.
+        val routes = if (Diagnostics.enabled) {
             intent.getStringExtra(EXTRA_ROUTES)?.split(',')?.filter(String::isNotBlank).orEmpty()
         } else {
             emptyList()
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
     private fun launchOf(intent: Intent?): Launch {
         val action = intent?.getStringExtra(ParleyTileService.EXTRA_ACTION) ?: intent?.action
         return when {
-            BuildConfig.DEBUG && intent?.getBooleanExtra(EXTRA_DEMO, false) == true -> Launch.DEMO
+            Diagnostics.enabled && intent?.getBooleanExtra(EXTRA_DEMO, false) == true -> Launch.DEMO
             action == ACTION_TALK -> Launch.TALK
             action == ACTION_TEXT -> Launch.TEXT
             else -> Launch.OPEN

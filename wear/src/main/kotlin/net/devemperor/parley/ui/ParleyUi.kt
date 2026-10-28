@@ -17,6 +17,7 @@ import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import kotlinx.coroutines.launch
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.parley
 import net.devemperor.parley.session.SessionHub
@@ -38,6 +39,8 @@ import net.devemperor.parley.ui.setup.ProviderChoiceScreen
 import net.devemperor.parley.ui.setup.WelcomeScreen
 import net.devemperor.parley.ui.setup.hasMicrophone
 import net.devemperor.parley.ui.theme.ParleyTheme
+import net.devemperor.parley.ui.usage.UsageScreen
+import java.time.YearMonth
 
 object Routes {
     const val HOME = "home"
@@ -54,6 +57,7 @@ object Routes {
     const val CHOICE = "choice/{choice}"
     const val ABOUT = "about"
     const val LICENSES = "licenses"
+    const val USAGE = "usage"
 
     fun pair(provider: ProviderId) = "pair/${provider.key}"
     fun detail(id: String) = "history/$id"
@@ -72,6 +76,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
     val settings by app.settings.settings.collectAsStateWithLifecycle(initialValue = null)
     val connected by app.keys.connected.collectAsStateWithLifecycle()
     val conversations by app.history.conversations.collectAsStateWithLifecycle()
+    val usage by app.usage.days.collectAsStateWithLifecycle()
     val session by SessionHub.state.collectAsStateWithLifecycle()
     val navController = rememberSwipeDismissableNavController()
 
@@ -106,6 +111,8 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     HomeScreen(
                         settings = s,
+                        monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
+                        onUsage = whenResumed { navController.navigate(Routes.USAGE) },
                         onTalk = whenResumed { startConversation(textOnly = false) },
                         onText = whenResumed { startConversation(textOnly = true) },
                         onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
@@ -122,6 +129,11 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                             state = state,
                             showTranscript = s.showTranscript,
                             onToggleTranscript = { update { it.copy(showTranscript = !it.showTranscript) } },
+                            onToggleSound = {
+                                val off = !state.soundOff
+                                SessionHub.setSoundOff(off)
+                                update { it.copy(soundOff = off) }
+                            },
                             onTapOrb = SessionHub::tapOrb,
                             onEnd = { SessionHub.end(context) },
                             onDone = {
@@ -195,6 +207,8 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                         onOpenChoice = whenResumed { choice: Choice -> navController.navigate(Routes.choice(choice)) },
                         onDeleteHistory = { scope.launch { app.history.deleteAll() } },
                         onOpenAbout = whenResumed { navController.navigate(Routes.ABOUT) },
+                        monthUsage = Usage.month(usage, YearMonth.now()),
+                        onOpenUsage = whenResumed { navController.navigate(Routes.USAGE) },
                     )
                 }
                 composable(Routes.PROVIDER) {
@@ -221,6 +235,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 }
                 composable(Routes.ABOUT) { AboutScreen(onLicenses = whenResumed { navController.navigate(Routes.LICENSES) }) }
                 composable(Routes.LICENSES) { LicensesScreen() }
+                composable(Routes.USAGE) { UsageScreen(usage) }
             }
 
             LaunchedEffect(Unit) {

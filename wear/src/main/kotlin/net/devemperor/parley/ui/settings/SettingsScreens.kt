@@ -19,6 +19,8 @@ import net.devemperor.parley.core.prompt.AnswerLanguage
 import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.core.usage.Usage
+import net.devemperor.parley.core.usage.UsageTotal
 import net.devemperor.parley.data.BargeIn
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.ui.components.Header
@@ -44,6 +46,8 @@ fun SettingsScreen(
     onOpenChoice: (Choice) -> Unit,
     onDeleteHistory: () -> Unit,
     onOpenAbout: () -> Unit,
+    monthUsage: UsageTotal,
+    onOpenUsage: () -> Unit,
 ) {
     val provider = settings.providerInfo
     var confirmDelete by remember { mutableStateOf(false) }
@@ -94,7 +98,14 @@ fun SettingsScreen(
         item {
             SwitchItem(
                 stringResource(R.string.settings_show_cost), settings.showCost, { v -> onUpdate { it.copy(showCost = v) } }, spec,
-                stringResource(R.string.settings_cost_month, CostMeter.format(settings.monthUsd())), R.drawable.ic_payments,
+                stringResource(R.string.settings_show_cost_note), R.drawable.ic_payments,
+            )
+        }
+        item {
+            MenuButton(
+                stringResource(R.string.settings_usage), spec, onOpenUsage,
+                stringResource(R.string.settings_usage_summary, CostMeter.format(monthUsage.costUsd), Usage.formatDuration(monthUsage.talkMs)),
+                R.drawable.ic_bar_chart,
             )
         }
 

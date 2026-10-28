@@ -29,6 +29,7 @@ object SessionHub {
 
     fun tapOrb() = engine?.tapOrb()
     fun stepVolume(direction: Int): Int? = engine?.stepVolume(direction)
+    fun setSoundOff(off: Boolean) = engine?.setSoundOff(off)
     fun toggleMute() = engine?.toggleMute()
 
     fun end(context: Context) {

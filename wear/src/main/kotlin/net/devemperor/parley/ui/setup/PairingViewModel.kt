@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.devemperor.parley.BuildConfig
+import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.core.pairing.PairingCrypto
 import net.devemperor.parley.core.pairing.PairingIds
 import net.devemperor.parley.core.pairing.PairingLink
@@ -68,7 +69,7 @@ class PairingViewModel(application: Application) : AndroidViewModel(application)
             val id = PairingIds.newId()
             val link = PairingLink.build(BuildConfig.PAIR_BASE_URL, id, pair.publicKey, provider.key)
             // Lets an emulator be paired without scanning its screen. The link holds only public data.
-            if (BuildConfig.DEBUG) android.util.Log.d("ParleyPair", link)
+            if (Diagnostics.enabled) android.util.Log.d("ParleyPair", link)
             var failures = 0
             // Announce the code; keep trying while offline, the QR code is shown either way.
             _state.value = PairingState.Waiting(link, provider)
@@ -130,13 +131,6 @@ class PairingViewModel(application: Application) : AndroidViewModel(application)
         val payload = pending ?: return
         val provider = ProviderId.fromKey(payload.provider) ?: return
         save(provider, payload.apiKey.trim())
-    }
-
-    /** The user typed the key on the watch instead. */
-    fun submitTyped(provider: ProviderId, apiKey: String) {
-        job?.cancel()
-        forget()
-        save(provider, apiKey.trim())
     }
 
     private fun save(provider: ProviderId, apiKey: String) {

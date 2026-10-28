@@ -64,8 +64,8 @@ class CoreTest {
 
     @Test
     fun `cost format`() {
-        assertEquals("<1 ¢", CostMeter.format(0.001))
-        assertEquals("~12 ¢", CostMeter.format(0.12))
+        assertEquals("<1\u00A0¢", CostMeter.format(0.001))
+        assertEquals("~12\u00A0¢", CostMeter.format(0.12))
         assertEquals("~$1.25", CostMeter.format(1.25))
     }
 

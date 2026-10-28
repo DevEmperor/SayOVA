@@ -64,7 +64,6 @@ import net.devemperor.parley.ui.components.QrCodeImage
 import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.openOnPhone
 import net.devemperor.parley.ui.components.screenWidth
-import net.devemperor.parley.ui.components.rememberTextInput
 import net.devemperor.parley.ui.theme.ParleyColors
 
 @Composable
@@ -165,13 +164,10 @@ fun ProviderChoiceScreen(connected: Set<ProviderId>, onChoose: (ProviderId) -> U
 fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(provider) { viewModel.start(provider) }
-    val typeKey = rememberTextInput(stringResource(R.string.pair_type_label, PairingViewModel.providerName(provider))) { text ->
-        if (text != null) viewModel.submitTyped(provider, text)
-    }
 
     when (val s = state) {
         PairingState.Preparing -> Busy(stringResource(R.string.pair_preparing))
-        is PairingState.Waiting -> QrContent(s, onTypeKey = typeKey)
+        is PairingState.Waiting -> QrContent(s)
         is PairingState.Received -> MessageScreen(
             icon = R.drawable.ic_lock,
             title = stringResource(R.string.pair_compare_title),
@@ -226,7 +222,7 @@ fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () 
 }
 
 @Composable
-private fun QrContent(state: PairingState.Waiting, onTypeKey: () -> Unit) {
+private fun QrContent(state: PairingState.Waiting) {
     val context = LocalContext.current
     var phoneOpened by remember { mutableStateOf(false) }
     val continueOnPhone = stringResource(R.string.pair_continue_on_phone)
@@ -245,19 +241,17 @@ private fun QrContent(state: PairingState.Waiting, onTypeKey: () -> Unit) {
                 Text(stringResource(R.string.pair_open_on_phone), maxLines = 1)
             }
         },
-    ) { padding ->
-        Column(
-            Modifier.fillMaxSize().padding(top = screenWidth() * 0.15f, bottom = padding.calculateBottomPadding()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+    ) { _ ->
+        // As large as the round screen allows between the curved instruction and the button, sitting
+        // on the button so its top corners stay clear of the text: a phone camera at arm's length
+        // reads it at once. Typing a 40-character key on a watch was never a real alternative, so
+        // the code has the screen to itself.
+        // The scaffold's bottom padding leaves room for a larger button than this extra-small one.
+        Box(
+            Modifier.fillMaxSize().padding(bottom = screenWidth() * 0.265f),
+            contentAlignment = Alignment.BottomCenter,
         ) {
-            QrCodeImage(state.link, Modifier.size(screenWidth() * 0.4f))
-            Text(
-                stringResource(R.string.pair_type_instead),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable(onClick = onTypeKey).padding(horizontal = 8.dp, vertical = 5.dp),
-            )
+            QrCodeImage(state.link, Modifier.size(screenWidth() * 0.5f))
         }
     }
     OpenOnPhoneDialog(

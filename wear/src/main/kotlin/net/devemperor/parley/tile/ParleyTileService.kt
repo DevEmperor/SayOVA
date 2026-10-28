@@ -85,9 +85,15 @@ class ParleyTileService : Material3TileService(allowDynamicTheme = false, defaul
             onSurfaceVariant = 0xFFA7AEBD.toInt().argb,
         )
 
-        /** Asks the system to redraw the tile, e.g. after a conversation was saved. */
+        /**
+         * Asks the system to redraw the tile, e.g. after a conversation was saved. The updater binds
+         * to the system with the context it is given and unbinds later on a thread of its own; with
+         * the conversation service's context, which stops right after, that unbind threw ("Service
+         * not registered") where nothing could catch it and took the whole app down after every
+         * conversation. The application context outlives it.
+         */
         fun refresh(context: Context) {
-            runCatching { TileService.getUpdater(context).requestUpdate(ParleyTileService::class.java) }
+            runCatching { TileService.getUpdater(context.applicationContext).requestUpdate(ParleyTileService::class.java) }
         }
     }
 }

@@ -155,6 +155,11 @@ class SpeechPlayer(private val sampleRate: Int) {
         track.release()
     }
 
+    /** Silent playback: the answer keeps its pace (and the play head moves) without being heard. */
+    fun setMuted(muted: Boolean) {
+        if (!released) track.setVolume(if (muted) 0f else 1f)
+    }
+
     companion object {
         /**
          * Speech played as media: the media volume is the one an app may set, which Parley's volume

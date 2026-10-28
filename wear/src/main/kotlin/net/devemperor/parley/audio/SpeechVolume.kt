@@ -4,7 +4,7 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.util.Log
-import net.devemperor.parley.BuildConfig
+import net.devemperor.parley.Diagnostics
 
 /**
  * How loud Parley speaks. Its voice plays as media ([SpeechPlayer.ATTRIBUTES]), the one stream any app
@@ -49,7 +49,7 @@ class SpeechVolume(context: Context) {
     private fun set(index: Int) {
         runCatching { audio.setStreamVolume(STREAM, index.coerceIn(min, max), 0) }
             .onFailure { Log.w("Parley", "Media volume not changeable: ${it.message}") }
-        if (BuildConfig.DEBUG) Log.d("ParleyEvent", "volume ${current()} of $min..$max")
+        if (Diagnostics.enabled) Log.d("ParleyEvent", "volume ${current()} of $min..$max")
     }
 
     /** The assistant's volume on the media scale; null where it is the media volume anyway or unreadable. */
