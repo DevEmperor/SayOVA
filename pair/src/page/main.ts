@@ -4,6 +4,7 @@
  */
 
 import { PAIRING_VERSION, base64UrlDecode, base64UrlEncode, seal, type Payload } from "./crypto.ts";
+import { startOrb } from "./orb.ts";
 
 const ID_PATTERN = /^[A-Za-z0-9_-]{22}$/;
 
@@ -166,4 +167,5 @@ async function main() {
   });
 }
 
+startOrb($<HTMLElement>(".orb"));
 void main();

@@ -7,7 +7,7 @@ https://github.com/google/material-design-icons
 This product includes QR Code generator library by Project Nayuki (MIT License),
 https://www.nayuki.io/page/qr-code-generator-library
 
-The orb (wear/.../CloudOrbView.kt, pair/public/orb.png) is adapted from the Cloud theme of
+The orb (wear/.../CloudOrbView.kt, pair/src/page/orb.ts, pair/public/orb.png) is adapted from the Cloud theme of
 orb-ui by Alexander Chen (MIT License), https://github.com/exprmntl/orb-ui
 
 This product includes Tink by Google (Apache License 2.0),
