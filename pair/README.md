@@ -41,3 +41,10 @@ Then build the watch app against that address:
 
 The free Workers plan is enough: one pairing costs a handful of requests and a few seconds of a
 Durable Object.
+
+## Languages
+
+The page speaks the watch app's languages: `src/page/locales/*.json`, one flat file per language, picked
+from the browser's preferred languages (English otherwise; `?lang=de` overrides, for testing). Every new
+text goes into all of them; `{name}` marks a highlighted part that `i18n.ts` fills in as an element, and
+`watch_*` keys must read exactly like the watch's own buttons.

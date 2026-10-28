@@ -4,6 +4,7 @@
  */
 
 import { PAIRING_VERSION, base64UrlDecode, base64UrlEncode, seal, type Payload } from "./crypto.ts";
+import { t, translatePage, type Key } from "./i18n.ts";
 import { startOrb } from "./orb.ts";
 
 const ID_PATTERN = /^[A-Za-z0-9_-]{22}$/;
@@ -45,9 +46,9 @@ async function slotState(id: string): Promise<string> {
   return ((await response.json()) as { state: string }).state;
 }
 
-const providerHelp: Record<Payload["provider"], { url: string; label: string }> = {
-  gemini: { url: "https://aistudio.google.com/apikey", label: "Open Google AI Studio" },
-  openai: { url: "https://platform.openai.com/api-keys", label: "Open the OpenAI dashboard" },
+const providerHelp: Record<Payload["provider"], { url: string; label: Key }> = {
+  gemini: { url: "https://aistudio.google.com/apikey", label: "link_gemini" },
+  openai: { url: "https://platform.openai.com/api-keys", label: "link_openai" },
 };
 
 function selectedProvider(): Payload["provider"] {
@@ -61,7 +62,7 @@ function updateProviderHelp() {
   });
   const link = $<HTMLAnchorElement>("#key-link");
   link.href = providerHelp[provider].url;
-  link.textContent = providerHelp[provider].label;
+  link.textContent = t(providerHelp[provider].label);
 }
 
 function formatCode(code: string) {
@@ -76,7 +77,7 @@ async function waitForPickup(id: string) {
     try {
       const state = await slotState(id);
       if (state === "done") {
-        status.textContent = "Your watch received the key. Confirm the code there – then you can close this page.";
+        status.textContent = t("sent_received");
         status.classList.add("success");
         return;
       }
@@ -85,7 +86,7 @@ async function waitForPickup(id: string) {
       // Keep trying; a phone switching networks is not an error.
     }
   }
-  status.textContent = "The watch did not pick up the key in time. Start again on your watch.";
+  status.textContent = t("sent_timeout");
   status.classList.add("error");
 }
 
@@ -99,10 +100,7 @@ async function main() {
   try {
     const state = await slotState(pairing.id);
     if (state !== "open") {
-      $<HTMLElement>("#expired-reason").textContent =
-        state === "unknown"
-          ? "This code has expired. Codes are valid for ten minutes."
-          : "This code has already been used.";
+      $<HTMLElement>("#expired-reason").textContent = t(state === "unknown" ? "expired_reason_timeout" : "expired_reason_used");
       show("expired");
       return;
     }
@@ -122,7 +120,7 @@ async function main() {
     const button = event.currentTarget as HTMLButtonElement;
     const visible = keyInput.type === "text";
     keyInput.type = visible ? "password" : "text";
-    button.textContent = visible ? "Show" : "Hide";
+    button.textContent = t(visible ? "key_show" : "key_hide");
     button.setAttribute("aria-pressed", String(!visible));
   });
 
@@ -135,12 +133,12 @@ async function main() {
     error.textContent = "";
     const apiKey = keyInput.value.trim();
     if (apiKey.length < 20 || /\s/.test(apiKey)) {
-      error.textContent = "That does not look like a complete API key. Copy it again from your provider.";
+      error.textContent = t("error_key_incomplete");
       keyInput.focus();
       return;
     }
     submit.disabled = true;
-    submit.textContent = "Encrypting…";
+    submit.textContent = t("encrypting");
     try {
       const { sealed, code } = await seal(pairing.publicKey, pairing.id, {
         v: PAIRING_VERSION,
@@ -152,20 +150,21 @@ async function main() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ sealed: base64UrlEncode(sealed) }),
       });
-      if (response.status === 410) throw new Error("This code has expired. Start again on your watch.");
-      if (response.status === 409) throw new Error("This code has already been used. Start again on your watch.");
-      if (!response.ok) throw new Error(`Sending failed (${response.status}). Please try again.`);
+      if (response.status === 410) throw new Error(t("error_send_expired"));
+      if (response.status === 409) throw new Error(t("error_send_used"));
+      if (!response.ok) throw new Error(t("error_send_status", { status: String(response.status) }));
       keyInput.value = "";
       $<HTMLElement>("#code").textContent = formatCode(code);
       show("sent");
       void waitForPickup(pairing.id);
     } catch (e) {
-      error.textContent = e instanceof Error && e.message ? e.message : "Sending failed. Please try again.";
+      error.textContent = e instanceof Error && e.message ? e.message : t("error_send");
       submit.disabled = false;
-      submit.textContent = "Send to watch";
+      submit.textContent = t("send");
     }
   });
 }
 
+translatePage();
 startOrb($<HTMLElement>(".orb"));
 void main();
