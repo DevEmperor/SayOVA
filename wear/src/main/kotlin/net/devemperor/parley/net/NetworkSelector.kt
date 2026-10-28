@@ -16,13 +16,8 @@ import java.net.InetAddress
 import java.net.Socket
 import javax.net.SocketFactory
 
-enum class Transport(val label: String) {
-    WIFI("Wi-Fi"),
-    CELLULAR("LTE"),
-    BLUETOOTH("via phone"),
-    OTHER("Online"),
-    NONE("Offline"),
-}
+/** How the watch is online; named on screen by ui/Labels.kt. */
+enum class Transport { WIFI, CELLULAR, BLUETOOTH, OTHER, NONE }
 
 /**
  * Streaming audio needs more bandwidth than the Bluetooth link to the phone reliably gives, and Wear

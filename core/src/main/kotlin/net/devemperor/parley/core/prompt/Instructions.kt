@@ -1,5 +1,7 @@
 package net.devemperor.parley.core.prompt
 
+import net.devemperor.parley.core.conversation.Role
+import net.devemperor.parley.core.conversation.Turn
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -54,6 +56,8 @@ object Instructions {
         now: ZonedDateTime,
         textOnly: Boolean,
         canSearch: Boolean,
+        /** A conversation from the history this one carries on; empty for a new one. */
+        earlier: List<Turn> = emptyList(),
     ): String = buildString {
         appendLine("You are Parley, a voice assistant running on the user's smartwatch.")
         appendLine()
@@ -83,7 +87,41 @@ object Instructions {
             appendLine()
             appendLine("Personality: $style")
         }
+        val transcript = transcriptOf(earlier)
+        if (transcript.isNotEmpty()) {
+            appendLine()
+            appendLine("This conversation carries on an earlier one with the user. What was said so far, oldest first:")
+            appendLine(transcript)
+            appendLine("Continue from there: the user may refer to any of it. Do not repeat or summarise it unless asked.")
+        }
     }.trim()
+
+    /**
+     * The earlier conversation as plain lines, the newest [EARLIER_LIMIT] characters of it: the
+     * provider is paid by the token for every word, and what was said last matters most.
+     */
+    internal fun transcriptOf(turns: List<Turn>): String {
+        val lines = turns.mapNotNull { turn ->
+            val text = turn.text.trim().replace(Regex("\\s+"), " ")
+            if (text.isEmpty()) return@mapNotNull null
+            when (turn.role) {
+                Role.USER -> "User: $text"
+                Role.ASSISTANT -> "Parley: $text"
+                Role.NOTE -> "(Note saved: $text)"
+                Role.TOOL -> "(Done: $text)"
+            }
+        }
+        val kept = ArrayDeque<String>()
+        var length = 0
+        for (line in lines.asReversed()) {
+            if (length + line.length + 1 > EARLIER_LIMIT) break
+            kept.addFirst(line)
+            length += line.length + 1
+        }
+        return kept.joinToString("\n")
+    }
+
+    private const val EARLIER_LIMIT = 6_000
 
     private val DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy, HH:mm", Locale.ENGLISH)
 }

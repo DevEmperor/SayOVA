@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Welcome and setup -->
+    <string name="welcome_tagline">Fale com a IA pelo pulso.</string>
+    <string name="welcome_start">Começar</string>
+    <string name="permission_title">Microfone</string>
+    <string name="permission_text">O Parley precisa do microfone para ouvir você. O áudio só é transmitido durante uma conversa.</string>
+    <string name="permission_blocked">O microfone está bloqueado. Permita o acesso nas configurações do app para falar com o Parley.</string>
+    <string name="permission_allow">Permitir</string>
+    <string name="permission_settings">Configurações</string>
+    <string name="provider_choose">Escolha um provedor</string>
+    <string name="provider_choose_hint">O Parley usa sua própria chave de API, então você controla custos e dados.</string>
+    <string name="provider_gemini_note">Recomendado · cerca de 1–2 ¢ por minuto</string>
+    <string name="provider_openai_note">Cerca de 2–11 ¢ por minuto</string>
+    <string name="provider_connected">Conectado</string>
+
+    <!-- Pairing -->
+    <string name="pair_preparing">Preparando um código seguro…</string>
+    <string name="pair_scan">Escaneie com o celular</string>
+    <string name="pair_waiting_offline">Sem conexão – verifique o Wi-Fi</string>
+    <string name="pair_open_on_phone">No celular</string>
+    <string name="pair_continue_on_phone">Continuar no celular</string>
+    <string name="pair_compare_title">Mesmo código no celular?</string>
+    <string name="pair_compare_match">É igual</string>
+    <string name="pair_compare_mismatch">É diferente</string>
+    <string name="pair_checking">Verificando a chave com %1$s…</string>
+    <string name="pair_connected_title">Conectado</string>
+    <string name="pair_connected_text">%1$s aceitou a chave. Ela fica criptografada só neste relógio.</string>
+    <string name="pair_connected_unverified">A chave foi salva, mas não foi possível contatar %1$s para verificá-la. O Parley vai tentar quando você falar.</string>
+    <string name="pair_connected_action">Começar</string>
+    <string name="pair_failed_expired">O código expirou</string>
+    <string name="pair_failed_rejected">O provedor recusou esta chave</string>
+    <string name="pair_failed_offline">Sem conexão</string>
+    <string name="pair_failed_broken">Não foi possível ler a chave</string>
+
+    <!-- Home -->
+    <string name="home_talk">Falar</string>
+    <string name="home_text_mode">Modo silencioso</string>
+    <string name="home_history">Histórico</string>
+    <string name="home_settings">Configurações</string>
+
+    <!-- Conversation -->
+    <string name="status_connecting">Conectando</string>
+    <string name="status_listening">Ouvindo</string>
+    <string name="status_thinking">Pensando</string>
+    <string name="status_speaking">Falando</string>
+    <string name="status_writing">Respondendo</string>
+    <string name="status_reconnecting">Reconectando</string>
+    <string name="status_ended">Salvo</string>
+    <string name="status_problem">Problema</string>
+    <string name="status_muted">Silenciado</string>
+    <string name="status_tap_to_talk">Toque para falar</string>
+    <string name="hint_connecting">Conectando com %1$s…</string>
+    <string name="hint_ask_anything">Pergunte o que quiser.</string>
+    <string name="hint_push_to_talk">Toque na esfera, fale e toque de novo.</string>
+    <string name="notice_tap_to_interrupt">Toque para interromper</string>
+    <string name="orb_interrupt">Interromper</string>
+    <string name="orb_mute">Desativar microfone</string>
+    <string name="orb_unmute">Ativar microfone</string>
+    <string name="orb_start_talking">Começar a falar</string>
+    <string name="orb_stop_talking">Terminei de falar</string>
+    <string name="action_end">Encerrar</string>
+    <string name="action_show_text">Mostrar texto</string>
+    <string name="action_hide_text">Ocultar texto</string>
+    <string name="action_volume">Volume</string>
+    <string name="action_sound_off">Desativar som</string>
+    <string name="action_sound_on">Ativar som</string>
+    <string name="action_louder">Mais alto</string>
+    <string name="action_quieter">Mais baixo</string>
+    <string name="action_try_again">Tentar de novo</string>
+    <string name="action_connect">Conectar</string>
+
+    <!-- Errors -->
+    <string name="error_auth_title">Chave recusada</string>
+    <string name="error_auth_text">O provedor recusou a chave de API. Conecte uma nova.</string>
+    <string name="error_quota_title">Sem crédito</string>
+    <string name="error_quota_text">Sua conta no provedor está sem crédito, sem faturamento configurado ou atingiu o limite de gastos.</string>
+    <string name="error_rate_title">Muitas solicitações</string>
+    <string name="error_rate_text">O provedor pediu para ir mais devagar. Tente de novo em um minuto.</string>
+    <string name="error_network_title">Conexão perdida</string>
+    <string name="error_network_text">Verifique o Wi-Fi ou os dados móveis e tente de novo.</string>
+    <string name="error_rejected_title">Pedido recusado</string>
+    <string name="error_server_title">O provedor encerrou a chamada</string>
+    <string name="error_no_microphone">O Parley precisa do microfone. Abra o app para permitir.</string>
+    <string name="error_server_text">Isso pode acontecer após uma conversa muito longa ou por um problema no provedor.</string>
+
+    <!-- History -->
+    <string name="history_title">Histórico</string>
+    <string name="history_empty">Suas conversas vão aparecer aqui.</string>
+    <string name="history_off">O histórico está desativado nas configurações.</string>
+    <string name="history_untitled">Conversa</string>
+    <string name="history_report">Denunciar resposta</string>
+    <string name="history_continue">Continuar</string>
+    <string name="history_delete">Excluir</string>
+    <string name="history_delete_confirm">Excluir esta conversa?</string>
+    <string name="report_title">Denunciar</string>
+    <string name="report_hint">Escolha a resposta ofensiva ou errada. Um e-mail será aberto no celular.</string>
+    <string name="report_no_phone">Nenhum celular conectado. Escreva para contact@devemperor.net.</string>
+    <string name="report_continue">Continuar no celular</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Configurações</string>
+    <string name="settings_provider_connected">Chave neste relógio</string>
+    <string name="settings_provider_missing">Não conectado</string>
+    <string name="settings_model">Modelo</string>
+    <string name="settings_voice">Voz</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_persona">Personalidade</string>
+    <string name="settings_conversation">Conversa</string>
+    <string name="settings_web_search">Pesquisa na web</string>
+    <string name="settings_web_search_note">Notícias, clima e mais</string>
+    <string name="settings_barge_in">Interromper por voz</string>
+    <string name="settings_push_to_talk">Toque para falar</string>
+    <string name="settings_push_to_talk_note">Toque na esfera para falar</string>
+    <string name="settings_auto_end">Encerrar após silêncio</string>
+    <string name="settings_start_on_launch">Falar ao abrir</string>
+    <string name="settings_start_on_launch_note">Útil com atalho de botão</string>
+    <string name="settings_haptics">Vibração</string>
+    <string name="settings_show_cost">Mostrar custo</string>
+    <string name="settings_show_cost_note">Na conversa e no histórico</string>
+    <string name="settings_usage">Uso e custos</string>
+    <string name="settings_usage_summary">Este mês %1$s · %2$s</string>
+    <string name="usage_title">Uso</string>
+    <string name="usage_earlier">Meses anteriores</string>
+    <string name="usage_all_time">Desde o início</string>
+    <string name="usage_recent">%1$s – hoje · máx. %2$s</string>
+    <string name="usage_average">%1$s por conversa · %2$s por minuto</string>
+    <string name="usage_estimate">Estimativa baseada no uso informado pelo provedor e nos preços publicados. O que vale é a fatura do provedor.</string>
+    <string name="settings_privacy">Privacidade</string>
+    <string name="settings_history">Manter histórico</string>
+    <string name="settings_delete_history">Excluir histórico</string>
+    <string name="settings_delete_history_confirm">Excluir todas as conversas?</string>
+    <string name="settings_about">Sobre</string>
+    <string name="language_hint">No automático, responde no idioma em que você fala.</string>
+    <string name="barge_in_hint">Como você interrompe uma resposta. O automático distingue sua voz da voz do Parley, que o microfone capta pelo alto-falante do relógio.</string>
+    <string name="history_hint">As conversas ficam salvas só neste relógio.</string>
+    <string name="history_keep_off">Não salvar</string>
+    <plurals name="usage_conversations">
+        <item quantity="one">%1$d conversa</item>
+        <item quantity="many">%1$d conversas</item>
+        <item quantity="other">%1$d conversas</item>
+    </plurals>
+    <plurals name="history_keep_days">
+        <item quantity="one">%1$d dia</item>
+        <item quantity="many">%1$d dias</item>
+        <item quantity="other">%1$d dias</item>
+    </plurals>
+    <string name="history_keep_forever">Para sempre</string>
+    <plurals name="auto_end_seconds">
+        <item quantity="one">%1$d segundo</item>
+        <item quantity="many">%1$d segundos</item>
+        <item quantity="other">%1$d segundos</item>
+    </plurals>
+    <string name="auto_end_never">Nunca</string>
+    <string name="persona_custom_label">Como o Parley deve agir?</string>
+    <string name="provider_title">Provedor</string>
+    <string name="provider_keys">Chaves</string>
+    <string name="provider_key_hint">Chave %1$s</string>
+    <string name="provider_not_connected">Ainda não conectado</string>
+    <string name="provider_connect">Conectar %1$s</string>
+    <string name="provider_replace_key">Nova chave para %1$s</string>
+    <string name="provider_remove_key">Remover chave %1$s</string>
+    <string name="provider_remove_confirm">Remover esta chave do relógio?</string>
+    <string name="provider_keys_note">As chaves ficam criptografadas neste relógio e nunca saem dele.</string>
+
+    <!-- About -->
+    <string name="about_version">Versão %1$s</string>
+    <string name="about_privacy_summary">Sua voz vai direto deste relógio para o provedor escolhido, com sua própria chave. O Parley não tem servidor que veja suas conversas.</string>
+    <string name="about_privacy">Política de Privacidade</string>
+    <string name="about_on_phone">Abre no celular</string>
+    <string name="about_source">Código-fonte</string>
+    <string name="about_license">Licença Apache 2.0</string>
+    <string name="about_licenses">Licenças de código aberto</string>
+    <string name="about_contact">Contato</string>
+    <string name="about_continue_on_phone">Continuar no celular</string>
+
+    <!-- Service, tile, complication -->
+    <string name="notification_channel">Conversa</string>
+    <string name="notification_text">Ouvindo e respondendo</string>
+    <string name="ongoing_status">Em conversa</string>
+    <string name="tile_label">Parley</string>
+    <string name="tile_description">Fale com o Parley com um toque</string>
+    <string name="tile_text_mode">Modo silencioso</string>
+    <string name="tile_hint">Respostas em texto, sem som</string>
+    <string name="complication_label">Falar com o Parley</string>
+    <string name="complication_short">Falar</string>
+    <string name="complication_description">Iniciar uma conversa com o Parley</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">Amigável</string>
+    <string name="persona_friendly_description">Caloroso e prestativo</string>
+    <string name="persona_concise">Conciso</string>
+    <string name="persona_concise_description">O mais breve possível</string>
+    <string name="persona_tutor">Tutor</string>
+    <string name="persona_tutor_description">Explica passo a passo</string>
+    <string name="persona_language_partner">Parceiro de idiomas</string>
+    <string name="persona_language_partner_description">Pratique conversação</string>
+    <string name="persona_custom">Personalizado</string>
+    <string name="persona_custom_description">Sua própria instrução</string>
+    <string name="language_auto">Automático</string>
+    <string name="barge_in_auto">Automático</string>
+    <string name="barge_in_auto_description">Fale por cima do Parley para interrompê-lo</string>
+    <string name="barge_in_on">Microfone aberto</string>
+    <string name="barge_in_on_description">Para fones de ouvido; o alto-falante pode se interromper</string>
+    <string name="barge_in_off">Só com toque</string>
+    <string name="barge_in_off_description">Toque na esfera para interromper</string>
+    <string name="model_fast">Rápido</string>
+    <string name="model_thorough">Minucioso</string>
+    <string name="model_best">Melhor</string>
+    <string name="model_gemini_fast_description">Respostas rápidas e naturais</string>
+    <string name="model_gemini_thorough_description">Pensa mais antes de responder</string>
+    <string name="model_openai_fast_description">Rápido e econômico</string>
+    <string name="model_openai_best_description">O modelo de voz mais potente da OpenAI</string>
+    <string name="voice_recommended">Recomendada</string>
+    <string name="voice_firm">Firme</string>
+    <string name="voice_upbeat">Animada</string>
+    <string name="voice_informative">Informativa</string>
+    <string name="voice_bright">Brilhante</string>
+    <string name="voice_excitable">Empolgada</string>
+    <string name="voice_youthful">Jovem</string>
+    <string name="voice_breezy">Leve</string>
+    <string name="voice_easy_going">Descontraída</string>
+    <string name="voice_breathy">Sussurrada</string>
+    <string name="voice_clear">Clara</string>
+    <string name="voice_smooth">Suave</string>
+    <string name="voice_gravelly">Rouca</string>
+    <string name="voice_soft">Macia</string>
+    <string name="voice_even">Equilibrada</string>
+    <string name="voice_mature">Madura</string>
+    <string name="voice_forward">Direta</string>
+    <string name="voice_friendly">Simpática</string>
+    <string name="voice_casual">Casual</string>
+    <string name="voice_gentle">Delicada</string>
+    <string name="voice_lively">Vibrante</string>
+    <string name="voice_knowledgeable">Experiente</string>
+    <string name="voice_warm">Calorosa</string>
+    <string name="transport_wifi">Wi-Fi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">via celular</string>
+    <string name="transport_other">On-line</string>
+    <string name="transport_none">Off-line</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">Som desativado</string>
+    <string name="notice_bezel_volume">Volume: gire o bisel</string>
+    <string name="notice_searching">Pesquisando na web…</string>
+    <string name="note_timer">Timer · %1$s</string>
+    <string name="note_alarm">Alarme · %1$s</string>
+    <string name="note_saved">Nota salva</string>
+    <string name="error_no_key_for">Ainda sem chave para %1$s.</string>
+    <string name="error_microphone_unavailable">O microfone não está disponível.</string>
+</resources>

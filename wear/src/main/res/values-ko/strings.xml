@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome and setup -->
+    <string name="welcome_tagline">손목에서 AI와 대화하세요.</string>
+    <string name="welcome_start">시작</string>
+    <string name="permission_title">마이크</string>
+    <string name="permission_text">Parley가 사용자의 말을 들으려면 마이크가 필요합니다. 오디오는 대화 중에만 전송됩니다.</string>
+    <string name="permission_blocked">마이크가 차단되어 있습니다. Parley와 대화하려면 앱 설정에서 허용하세요.</string>
+    <string name="permission_allow">허용</string>
+    <string name="permission_settings">설정</string>
+    <string name="provider_choose">제공업체 선택</string>
+    <string name="provider_choose_hint">Parley는 사용자 본인의 API 키를 사용하므로 비용과 데이터를 직접 관리할 수 있습니다.</string>
+    <string name="provider_gemini_note">추천 · 분당 약 1–2센트</string>
+    <string name="provider_openai_note">분당 약 2–11센트</string>
+    <string name="provider_connected">연결됨</string>
+
+    <!-- Pairing -->
+    <string name="pair_preparing">보안 코드 준비 중…</string>
+    <string name="pair_scan">휴대전화로 스캔하세요</string>
+    <string name="pair_waiting_offline">연결 없음 – Wi-Fi를 확인하세요</string>
+    <string name="pair_open_on_phone">휴대전화에서</string>
+    <string name="pair_continue_on_phone">휴대전화에서 계속</string>
+    <string name="pair_compare_title">휴대전화의 코드와 같나요?</string>
+    <string name="pair_compare_match">일치함</string>
+    <string name="pair_compare_mismatch">일치하지 않음</string>
+    <string name="pair_checking">%1$s에서 키 확인 중…</string>
+    <string name="pair_connected_title">연결됨</string>
+    <string name="pair_connected_text">%1$s에서 키를 승인했습니다. 키는 이 시계에만 암호화되어 저장됩니다.</string>
+    <string name="pair_connected_unverified">키는 저장되었지만 %1$s에 연결할 수 없어 확인하지 못했습니다. 대화를 시작하면 Parley가 다시 확인합니다.</string>
+    <string name="pair_connected_action">시작</string>
+    <string name="pair_failed_expired">코드가 만료되었습니다</string>
+    <string name="pair_failed_rejected">제공업체에서 이 키를 거부했습니다</string>
+    <string name="pair_failed_offline">연결 없음</string>
+    <string name="pair_failed_broken">키를 읽을 수 없습니다</string>
+
+    <!-- Home -->
+    <string name="home_talk">대화하기</string>
+    <string name="home_text_mode">무음 모드</string>
+    <string name="home_history">기록</string>
+    <string name="home_settings">설정</string>
+
+    <!-- Conversation -->
+    <string name="status_connecting">연결 중</string>
+    <string name="status_listening">듣는 중</string>
+    <string name="status_thinking">생각 중</string>
+    <string name="status_speaking">말하는 중</string>
+    <string name="status_writing">답변 중</string>
+    <string name="status_reconnecting">다시 연결 중</string>
+    <string name="status_ended">저장됨</string>
+    <string name="status_problem">문제 발생</string>
+    <string name="status_muted">음소거됨</string>
+    <string name="status_tap_to_talk">탭하여 말하기</string>
+    <string name="hint_connecting">%1$s에 연결 중…</string>
+    <string name="hint_ask_anything">무엇이든 물어보세요.</string>
+    <string name="hint_push_to_talk">원을 탭하고 말한 다음 다시 탭하세요.</string>
+    <string name="notice_tap_to_interrupt">탭하여 중단</string>
+    <string name="orb_interrupt">중단</string>
+    <string name="orb_mute">마이크 음소거</string>
+    <string name="orb_unmute">마이크 음소거 해제</string>
+    <string name="orb_start_talking">말하기 시작</string>
+    <string name="orb_stop_talking">말하기 완료</string>
+    <string name="action_end">종료</string>
+    <string name="action_show_text">텍스트 표시</string>
+    <string name="action_hide_text">텍스트 숨기기</string>
+    <string name="action_volume">볼륨</string>
+    <string name="action_sound_off">소리 끄기</string>
+    <string name="action_sound_on">소리 켜기</string>
+    <string name="action_louder">크게</string>
+    <string name="action_quieter">작게</string>
+    <string name="action_try_again">다시 시도</string>
+    <string name="action_connect">연결</string>
+
+    <!-- Errors -->
+    <string name="error_auth_title">키가 거부됨</string>
+    <string name="error_auth_text">제공업체에서 API 키를 거부했습니다. 새 키를 연결하세요.</string>
+    <string name="error_quota_title">크레딧 없음</string>
+    <string name="error_quota_text">제공업체 계정에 크레딧이 없거나, 결제가 설정되지 않았거나, 지출 한도에 도달했습니다.</string>
+    <string name="error_rate_title">요청이 너무 많음</string>
+    <string name="error_rate_text">제공업체에서 요청 속도를 줄여 달라고 합니다. 1분 후에 다시 시도하세요.</string>
+    <string name="error_network_title">연결 끊김</string>
+    <string name="error_network_text">Wi-Fi 또는 모바일 데이터를 확인하고 다시 시도하세요.</string>
+    <string name="error_rejected_title">요청 거부됨</string>
+    <string name="error_server_title">제공업체에서 대화를 종료함</string>
+    <string name="error_no_microphone">Parley에 마이크가 필요합니다. 앱을 열어 허용하세요.</string>
+    <string name="error_server_text">대화가 매우 길어졌거나 제공업체 측에 문제가 있으면 발생할 수 있습니다.</string>
+
+    <!-- History -->
+    <string name="history_title">기록</string>
+    <string name="history_empty">대화가 여기에 표시됩니다.</string>
+    <string name="history_off">설정에서 기록이 꺼져 있습니다.</string>
+    <string name="history_untitled">대화</string>
+    <string name="history_report">응답 신고</string>
+    <string name="history_continue">이어서 대화</string>
+    <string name="history_delete">삭제</string>
+    <string name="history_delete_confirm">이 대화를 삭제하시겠습니까?</string>
+    <string name="report_title">신고</string>
+    <string name="report_hint">불쾌하거나 잘못된 응답을 선택하세요. 휴대전화에서 이메일이 열립니다.</string>
+    <string name="report_no_phone">연결된 휴대전화가 없습니다. 대신 contact@devemperor.net으로 메일을 보내 주세요.</string>
+    <string name="report_continue">휴대전화에서 계속</string>
+
+    <!-- Settings -->
+    <string name="settings_title">설정</string>
+    <string name="settings_provider_connected">이 시계에 키 저장됨</string>
+    <string name="settings_provider_missing">연결되지 않음</string>
+    <string name="settings_model">모델</string>
+    <string name="settings_voice">음성</string>
+    <string name="settings_language">언어</string>
+    <string name="settings_persona">성격</string>
+    <string name="settings_conversation">대화</string>
+    <string name="settings_web_search">웹 검색</string>
+    <string name="settings_web_search_note">뉴스, 날씨 등</string>
+    <string name="settings_barge_in">음성으로 중단</string>
+    <string name="settings_push_to_talk">눌러서 말하기</string>
+    <string name="settings_push_to_talk_note">원을 탭하여 말하기</string>
+    <string name="settings_auto_end">침묵 시 종료</string>
+    <string name="settings_start_on_launch">열면 바로 대화</string>
+    <string name="settings_start_on_launch_note">버튼 바로가기와 함께 쓰면 편리함</string>
+    <string name="settings_haptics">진동</string>
+    <string name="settings_show_cost">비용 표시</string>
+    <string name="settings_show_cost_note">대화 중 및 기록에서</string>
+    <string name="settings_usage">사용량 및 비용</string>
+    <string name="settings_usage_summary">이번 달 %1$s · %2$s</string>
+    <string name="usage_title">사용량</string>
+    <string name="usage_earlier">이전 달</string>
+    <string name="usage_all_time">전체 기간</string>
+    <string name="usage_recent">%1$s~오늘 · 최대 %2$s</string>
+    <string name="usage_average">대화당 %1$s · 분당 %2$s</string>
+    <string name="usage_estimate">제공업체가 보고한 사용량과 공개된 가격을 기준으로 추정한 값입니다. 실제 금액은 제공업체 청구서를 따릅니다.</string>
+    <string name="settings_privacy">개인정보 보호</string>
+    <string name="settings_history">기록 보관</string>
+    <string name="settings_delete_history">모든 기록 삭제</string>
+    <string name="settings_delete_history_confirm">모든 대화를 삭제하시겠습니까?</string>
+    <string name="settings_about">정보</string>
+    <string name="language_hint">자동으로 설정하면 사용자가 말하는 언어로 답변합니다.</string>
+    <string name="barge_in_hint">답변을 중간에 끊는 방법입니다. 자동은 시계 스피커에서 나와 마이크에 들리는 Parley의 음성과 사용자의 음성을 구별합니다.</string>
+    <string name="history_hint">대화는 이 시계에만 저장됩니다.</string>
+    <string name="history_keep_off">저장 안 함</string>
+    <plurals name="usage_conversations">
+        <item quantity="other">대화 %1$d회</item>
+    </plurals>
+    <plurals name="history_keep_days">
+        <item quantity="other">%1$d일</item>
+    </plurals>
+    <string name="history_keep_forever">영구 보관</string>
+    <plurals name="auto_end_seconds">
+        <item quantity="other">%1$d초</item>
+    </plurals>
+    <string name="auto_end_never">안 함</string>
+    <string name="persona_custom_label">Parley가 어떻게 행동할까요?</string>
+    <string name="provider_title">제공업체</string>
+    <string name="provider_keys">키</string>
+    <string name="provider_key_hint">키 %1$s</string>
+    <string name="provider_not_connected">아직 연결되지 않음</string>
+    <string name="provider_connect">%1$s 연결</string>
+    <string name="provider_replace_key">%1$s용 새 키</string>
+    <string name="provider_remove_key">%1$s 키 삭제</string>
+    <string name="provider_remove_confirm">시계에서 이 키를 삭제하시겠습니까?</string>
+    <string name="provider_keys_note">키는 이 시계에 암호화되어 저장되며 시계를 벗어나지 않습니다.</string>
+
+    <!-- About -->
+    <string name="about_version">버전 %1$s</string>
+    <string name="about_privacy_summary">음성은 사용자 본인의 키로 이 시계에서 선택한 제공업체로 바로 전송됩니다. Parley에는 대화 내용을 볼 수 있는 서버가 없습니다.</string>
+    <string name="about_privacy">개인정보처리방침</string>
+    <string name="about_on_phone">휴대전화에서 열림</string>
+    <string name="about_source">소스 코드</string>
+    <string name="about_license">Apache 라이선스 2.0</string>
+    <string name="about_licenses">오픈소스 라이선스</string>
+    <string name="about_contact">문의</string>
+    <string name="about_continue_on_phone">휴대전화에서 계속</string>
+
+    <!-- Service, tile, complication -->
+    <string name="notification_channel">대화</string>
+    <string name="notification_text">듣고 답변하는 중</string>
+    <string name="ongoing_status">대화 중</string>
+    <string name="tile_label">Parley</string>
+    <string name="tile_description">탭 한 번으로 Parley와 대화</string>
+    <string name="tile_text_mode">무음 모드</string>
+    <string name="tile_hint">소리 없이 텍스트로 답변</string>
+    <string name="complication_label">Parley와 대화</string>
+    <string name="complication_short">대화</string>
+    <string name="complication_description">Parley와 대화 시작</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">친근함</string>
+    <string name="persona_friendly_description">따뜻하고 친절한 도우미</string>
+    <string name="persona_concise">간결함</string>
+    <string name="persona_concise_description">최대한 짧게</string>
+    <string name="persona_tutor">튜터</string>
+    <string name="persona_tutor_description">단계별로 설명</string>
+    <string name="persona_language_partner">언어 파트너</string>
+    <string name="persona_language_partner_description">회화 연습</string>
+    <string name="persona_custom">사용자 지정</string>
+    <string name="persona_custom_description">직접 입력한 지침</string>
+    <string name="language_auto">자동</string>
+    <string name="barge_in_auto">자동</string>
+    <string name="barge_in_auto_description">Parley가 말할 때 말하면 중단됨</string>
+    <string name="barge_in_on">마이크 항상 켜기</string>
+    <string name="barge_in_on_description">헤드폰용. 스피커 소리로 스스로 중단될 수 있음</string>
+    <string name="barge_in_off">탭만 사용</string>
+    <string name="barge_in_off_description">원을 탭하여 중단</string>
+    <string name="model_fast">빠름</string>
+    <string name="model_thorough">심층</string>
+    <string name="model_best">최고</string>
+    <string name="model_gemini_fast_description">빠르고 자연스러운 답변</string>
+    <string name="model_gemini_thorough_description">더 오래 생각한 후 답변</string>
+    <string name="model_openai_fast_description">빠르고 저렴함</string>
+    <string name="model_openai_best_description">OpenAI의 가장 강력한 음성 모델</string>
+    <string name="voice_recommended">추천</string>
+    <string name="voice_firm">단호함</string>
+    <string name="voice_upbeat">경쾌함</string>
+    <string name="voice_informative">정보 전달형</string>
+    <string name="voice_bright">밝음</string>
+    <string name="voice_excitable">열정적</string>
+    <string name="voice_youthful">젊음</string>
+    <string name="voice_breezy">산뜻함</string>
+    <string name="voice_easy_going">느긋함</string>
+    <string name="voice_breathy">숨결 섞임</string>
+    <string name="voice_clear">또렷함</string>
+    <string name="voice_smooth">매끄러움</string>
+    <string name="voice_gravelly">걸걸함</string>
+    <string name="voice_soft">부드러움</string>
+    <string name="voice_even">담담함</string>
+    <string name="voice_mature">성숙함</string>
+    <string name="voice_forward">적극적</string>
+    <string name="voice_friendly">친근함</string>
+    <string name="voice_casual">편안함</string>
+    <string name="voice_gentle">온화함</string>
+    <string name="voice_lively">활기참</string>
+    <string name="voice_knowledgeable">박식함</string>
+    <string name="voice_warm">따뜻함</string>
+    <string name="transport_wifi">Wi-Fi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">휴대전화 경유</string>
+    <string name="transport_other">온라인</string>
+    <string name="transport_none">오프라인</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">소리 꺼짐</string>
+    <string name="notice_bezel_volume">베젤을 돌려 볼륨 조절</string>
+    <string name="notice_searching">웹 검색 중…</string>
+    <string name="note_timer">타이머 · %1$s</string>
+    <string name="note_alarm">알람 · %1$s</string>
+    <string name="note_saved">메모 저장됨</string>
+    <string name="error_no_key_for">아직 %1$s 키가 없습니다.</string>
+    <string name="error_microphone_unavailable">마이크를 사용할 수 없습니다.</string>
+</resources>

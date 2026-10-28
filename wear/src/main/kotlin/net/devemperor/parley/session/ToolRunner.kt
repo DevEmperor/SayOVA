@@ -12,6 +12,7 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
+import net.devemperor.parley.R
 import net.devemperor.parley.core.provider.openai.OpenAiWebSearch
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.tools.ParleyTools
@@ -58,7 +59,7 @@ class ToolRunner(
             .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
             .putExtra(AlarmClock.EXTRA_SKIP_UI, true)
             .apply { label?.let { putExtra(AlarmClock.EXTRA_MESSAGE, it) } }
-        return launch(intent, "Timer · ${formatDuration(seconds)}", "No timer app on this watch.")
+        return launch(intent, context.getString(R.string.note_timer, formatDuration(seconds)), "No timer app on this watch.")
     }
 
     private fun setAlarm(args: JsonObject): Outcome {
@@ -70,13 +71,13 @@ class ToolRunner(
             .putExtra(AlarmClock.EXTRA_MINUTES, minute)
             .putExtra(AlarmClock.EXTRA_SKIP_UI, true)
             .apply { label?.let { putExtra(AlarmClock.EXTRA_MESSAGE, it) } }
-        return launch(intent, "Alarm · %02d:%02d".format(hour, minute), "No alarm app on this watch.")
+        return launch(intent, context.getString(R.string.note_alarm, "%02d:%02d".format(hour, minute)), "No alarm app on this watch.")
     }
 
     private fun saveNote(args: JsonObject): Outcome {
         val text = args["text"]?.jsonPrimitive?.contentOrNull?.trim()?.take(2_000)
         if (text.isNullOrEmpty()) return Outcome(error("text is empty"))
-        return Outcome(ok(), note = "Note saved", savedNote = text)
+        return Outcome(ok(), note = context.getString(R.string.note_saved), savedNote = text)
     }
 
     private suspend fun search(args: JsonObject): Outcome {

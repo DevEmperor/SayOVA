@@ -31,6 +31,9 @@ import net.devemperor.parley.ui.components.RadioItem
 import net.devemperor.parley.ui.components.SubHeader
 import net.devemperor.parley.ui.components.SwitchItem
 import net.devemperor.parley.ui.components.rememberTextInput
+import net.devemperor.parley.ui.descriptionRes
+import net.devemperor.parley.ui.labelRes
+import net.devemperor.parley.ui.stringOr
 
 typealias Update = ((ParleySettings) -> ParleySettings) -> Unit
 
@@ -64,14 +67,19 @@ fun SettingsScreen(
         }
         item {
             val model = provider.model(settings.modelId())
-            MenuButton(stringResource(R.string.settings_model), spec, { onOpenChoice(Choice.MODEL) }, "${model.label} · ${model.description}", R.drawable.ic_bolt)
+            val label = stringOr(model.labelRes(), model.label)
+            val description = stringOr(model.descriptionRes(), model.description)
+            MenuButton(stringResource(R.string.settings_model), spec, { onOpenChoice(Choice.MODEL) }, "$label · $description", R.drawable.ic_bolt)
         }
         item {
             val voice = provider.voice(settings.voiceId())
             MenuButton(stringResource(R.string.settings_voice), spec, { onOpenChoice(Choice.VOICE) }, voice.id.replaceFirstChar(Char::uppercase), R.drawable.ic_record_voice_over)
         }
-        item { MenuButton(stringResource(R.string.settings_language), spec, { onOpenChoice(Choice.LANGUAGE) }, settings.language.label, R.drawable.ic_translate) }
-        item { MenuButton(stringResource(R.string.settings_persona), spec, { onOpenChoice(Choice.PERSONA) }, settings.persona.label, R.drawable.ic_face) }
+        item {
+            val language = stringOr(settings.language.labelRes(), settings.language.label)
+            MenuButton(stringResource(R.string.settings_language), spec, { onOpenChoice(Choice.LANGUAGE) }, language, R.drawable.ic_translate)
+        }
+        item { MenuButton(stringResource(R.string.settings_persona), spec, { onOpenChoice(Choice.PERSONA) }, stringResource(settings.persona.labelRes()), R.drawable.ic_face) }
 
         item { SubHeader(stringResource(R.string.settings_conversation), spec) }
         item {
@@ -80,7 +88,7 @@ fun SettingsScreen(
                 stringResource(R.string.settings_web_search_note), R.drawable.ic_travel_explore,
             )
         }
-        item { MenuButton(stringResource(R.string.settings_barge_in), spec, { onOpenChoice(Choice.BARGE_IN) }, settings.bargeIn.label, R.drawable.ic_front_hand) }
+        item { MenuButton(stringResource(R.string.settings_barge_in), spec, { onOpenChoice(Choice.BARGE_IN) }, stringResource(settings.bargeIn.labelRes()), R.drawable.ic_front_hand) }
         item {
             SwitchItem(
                 stringResource(R.string.settings_push_to_talk), settings.pushToTalk, { v -> onUpdate { it.copy(pushToTalk = v) } }, spec,
@@ -144,9 +152,9 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                 item { Header(stringResource(R.string.settings_model), spec) }
                 provider.models.forEach { model ->
                     item(key = model.id) {
-                        RadioItem(model.label, settings.modelId() == model.id, {
+                        RadioItem(stringOr(model.labelRes(), model.label), settings.modelId() == model.id, {
                             select { if (provider.id == ProviderId.GEMINI) it.copy(geminiModel = model.id) else it.copy(openAiModel = model.id) }
-                        }, spec, model.description)
+                        }, spec, stringOr(model.descriptionRes(), model.description))
                     }
                 }
             }
@@ -156,7 +164,7 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                     item(key = voice.id) {
                         RadioItem(voice.id.replaceFirstChar(Char::uppercase), settings.voiceId() == voice.id, {
                             select { if (provider.id == ProviderId.GEMINI) it.copy(geminiVoice = voice.id) else it.copy(openAiVoice = voice.id) }
-                        }, spec, voice.description)
+                        }, spec, stringOr(voice.descriptionRes(), voice.description))
                     }
                 }
             }
@@ -165,7 +173,7 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                 item { Hint(stringResource(R.string.language_hint), spec) }
                 AnswerLanguage.entries.forEach { language ->
                     item(key = language.name) {
-                        RadioItem(language.label, settings.language == language, { select { it.copy(language = language) } }, spec)
+                        RadioItem(stringOr(language.labelRes(), language.label), settings.language == language, { select { it.copy(language = language) } }, spec)
                     }
                 }
             }
@@ -173,8 +181,8 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                 item { Header(stringResource(R.string.settings_persona), spec) }
                 Persona.entries.forEach { persona ->
                     item(key = persona.name) {
-                        val secondary = if (persona == Persona.CUSTOM && settings.customPersona.isNotBlank()) settings.customPersona else persona.description
-                        RadioItem(persona.label, settings.persona == persona, {
+                        val secondary = if (persona == Persona.CUSTOM && settings.customPersona.isNotBlank()) settings.customPersona else stringResource(persona.descriptionRes())
+                        RadioItem(stringResource(persona.labelRes()), settings.persona == persona, {
                             if (persona == Persona.CUSTOM) customInput() else select { it.copy(persona = persona) }
                         }, spec, secondary)
                     }
@@ -185,7 +193,7 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                 item { Hint(stringResource(R.string.barge_in_hint), spec) }
                 BargeIn.entries.forEach { option ->
                     item(key = option.name) {
-                        RadioItem(option.label, settings.bargeIn == option, { select { it.copy(bargeIn = option) } }, spec, option.description)
+                        RadioItem(stringResource(option.labelRes()), settings.bargeIn == option, { select { it.copy(bargeIn = option) } }, spec, stringResource(option.descriptionRes()))
                     }
                 }
             }

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome and setup -->
+    <string name="welcome_tagline">Bileğinizden yapay zekayla konuşun.</string>
+    <string name="welcome_start">Başla</string>
+    <string name="permission_title">Mikrofon</string>
+    <string name="permission_text">Parley\'nin sizi duyması için mikrofon gerekir. Ses yalnızca bir sohbet açıkken aktarılır.</string>
+    <string name="permission_blocked">Mikrofon engellendi. Parley ile konuşmak için uygulama ayarlarından izin verin.</string>
+    <string name="permission_allow">İzin ver</string>
+    <string name="permission_settings">Ayarlar</string>
+    <string name="provider_choose">Sağlayıcı seçin</string>
+    <string name="provider_choose_hint">Parley kendi API anahtarınızı kullanır; maliyet ve veriler sizin kontrolünüzde kalır.</string>
+    <string name="provider_gemini_note">Önerilen · dakikada yaklaşık 1–2 ¢</string>
+    <string name="provider_openai_note">Dakikada yaklaşık 2–11 ¢</string>
+    <string name="provider_connected">Bağlandı</string>
+
+    <!-- Pairing -->
+    <string name="pair_preparing">Güvenli kod hazırlanıyor…</string>
+    <string name="pair_scan">Telefonla tarayın</string>
+    <string name="pair_waiting_offline">Bağlantı yok – Wi-Fi\'a bakın</string>
+    <string name="pair_open_on_phone">Telefonda</string>
+    <string name="pair_continue_on_phone">Telefonda devam edin</string>
+    <string name="pair_compare_title">Telefondaki kod aynı mı?</string>
+    <string name="pair_compare_match">Eşleşiyor</string>
+    <string name="pair_compare_mismatch">Eşleşmiyor</string>
+    <string name="pair_checking">Anahtar %1$s ile kontrol ediliyor…</string>
+    <string name="pair_connected_title">Bağlandı</string>
+    <string name="pair_connected_text">%1$s anahtarı kabul etti. Anahtar şifrelenmiş olarak yalnızca bu saatte saklanır.</string>
+    <string name="pair_connected_unverified">Anahtar kaydedildi ancak kontrol için %1$s ile bağlantı kurulamadı. Parley, konuştuğunuzda tekrar dener.</string>
+    <string name="pair_connected_action">Başla</string>
+    <string name="pair_failed_expired">Kodun süresi doldu</string>
+    <string name="pair_failed_rejected">Sağlayıcı bu anahtarı reddetti</string>
+    <string name="pair_failed_offline">Bağlantı yok</string>
+    <string name="pair_failed_broken">Anahtar okunamadı</string>
+
+    <!-- Home -->
+    <string name="home_talk">Konuş</string>
+    <string name="home_text_mode">Sessiz mod</string>
+    <string name="home_history">Geçmiş</string>
+    <string name="home_settings">Ayarlar</string>
+
+    <!-- Conversation -->
+    <string name="status_connecting">Bağlanıyor</string>
+    <string name="status_listening">Dinliyor</string>
+    <string name="status_thinking">Düşünüyor</string>
+    <string name="status_speaking">Konuşuyor</string>
+    <string name="status_writing">Yanıtlıyor</string>
+    <string name="status_reconnecting">Yeniden bağlanıyor</string>
+    <string name="status_ended">Kaydedildi</string>
+    <string name="status_problem">Sorun</string>
+    <string name="status_muted">Sessize alındı</string>
+    <string name="status_tap_to_talk">Konuşmak için dokunun</string>
+    <string name="hint_connecting">%1$s bağlantısı kuruluyor…</string>
+    <string name="hint_ask_anything">İstediğinizi sorun.</string>
+    <string name="hint_push_to_talk">Küreye dokunun, konuşun, tekrar dokunun.</string>
+    <string name="notice_tap_to_interrupt">Kesmek için dokunun</string>
+    <string name="orb_interrupt">Yanıtı kes</string>
+    <string name="orb_mute">Mikrofonu kapat</string>
+    <string name="orb_unmute">Mikrofonu aç</string>
+    <string name="orb_start_talking">Konuşmaya başla</string>
+    <string name="orb_stop_talking">Konuşmayı bitir</string>
+    <string name="action_end">Bitir</string>
+    <string name="action_show_text">Metni göster</string>
+    <string name="action_hide_text">Metni gizle</string>
+    <string name="action_volume">Ses düzeyi</string>
+    <string name="action_sound_off">Sesi kapat</string>
+    <string name="action_sound_on">Sesi aç</string>
+    <string name="action_louder">Sesi artır</string>
+    <string name="action_quieter">Sesi azalt</string>
+    <string name="action_try_again">Tekrar dene</string>
+    <string name="action_connect">Bağlan</string>
+
+    <!-- Errors -->
+    <string name="error_auth_title">Anahtar kabul edilmedi</string>
+    <string name="error_auth_text">Sağlayıcı API anahtarını reddetti. Yeni bir anahtar bağlayın.</string>
+    <string name="error_quota_title">Kredi kalmadı</string>
+    <string name="error_quota_text">Sağlayıcı hesabınızda kredi yok, faturalandırma ayarlanmamış veya harcama sınırına ulaşıldı.</string>
+    <string name="error_rate_title">Çok fazla istek</string>
+    <string name="error_rate_text">Sağlayıcı yavaşlamanızı istiyor. Bir dakika sonra tekrar deneyin.</string>
+    <string name="error_network_title">Bağlantı kesildi</string>
+    <string name="error_network_text">Wi-Fi\'ı veya mobil veriyi kontrol edip tekrar deneyin.</string>
+    <string name="error_rejected_title">İstek reddedildi</string>
+    <string name="error_server_title">Sağlayıcı görüşmeyi sonlandırdı</string>
+    <string name="error_no_microphone">Parley\'nin mikrofona ihtiyacı var. İzin vermek için uygulamayı açın.</string>
+    <string name="error_server_text">Bu, çok uzun bir sohbetten sonra veya sağlayıcı tarafındaki bir sorun nedeniyle olabilir.</string>
+
+    <!-- History -->
+    <string name="history_title">Geçmiş</string>
+    <string name="history_empty">Sohbetleriniz burada görünür.</string>
+    <string name="history_off">Geçmiş, ayarlarda kapalı.</string>
+    <string name="history_untitled">Sohbet</string>
+    <string name="history_report">Yanıtı bildir</string>
+    <string name="history_continue">Devam et</string>
+    <string name="history_delete">Sil</string>
+    <string name="history_delete_confirm">Bu sohbet silinsin mi?</string>
+    <string name="report_title">Bildir</string>
+    <string name="report_hint">Rahatsız edici veya yanlış olan yanıtı seçin. Telefonunuzda bir e-posta açılır.</string>
+    <string name="report_no_phone">Bağlı telefon yok. Bunun yerine contact@devemperor.net adresine yazın.</string>
+    <string name="report_continue">Telefonda devam edin</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_provider_connected">Anahtar bu saatte</string>
+    <string name="settings_provider_missing">Bağlı değil</string>
+    <string name="settings_model">Model</string>
+    <string name="settings_voice">Ses</string>
+    <string name="settings_language">Dil</string>
+    <string name="settings_persona">Kişilik</string>
+    <string name="settings_conversation">Sohbet</string>
+    <string name="settings_web_search">Web araması</string>
+    <string name="settings_web_search_note">Haberler, hava durumu ve dahası</string>
+    <string name="settings_barge_in">Sesle sözünü kes</string>
+    <string name="settings_push_to_talk">Bas-konuş</string>
+    <string name="settings_push_to_talk_note">Konuşmak için küreye dokunun</string>
+    <string name="settings_auto_end">Sessizlikte bitir</string>
+    <string name="settings_start_on_launch">Açılışta konuş</string>
+    <string name="settings_start_on_launch_note">Düğme kısayoluyla kullanışlı</string>
+    <string name="settings_haptics">Titreşim</string>
+    <string name="settings_show_cost">Maliyeti göster</string>
+    <string name="settings_show_cost_note">Konuşurken ve geçmişte</string>
+    <string name="settings_usage">Kullanım ve maliyet</string>
+    <string name="settings_usage_summary">Bu ay %1$s · %2$s</string>
+    <string name="usage_title">Kullanım</string>
+    <string name="usage_earlier">Önceki aylar</string>
+    <string name="usage_all_time">Tüm zamanlar</string>
+    <string name="usage_recent">%1$s – bugün · en fazla %2$s</string>
+    <string name="usage_average">Sohbet başına %1$s · dakika başına %2$s</string>
+    <string name="usage_estimate">Sağlayıcınızın bildirdiği kullanım ve yayımladığı fiyatlarla tahmin edilir. Geçerli olan, sağlayıcınızın faturasıdır.</string>
+    <string name="settings_privacy">Gizlilik</string>
+    <string name="settings_history">Geçmişi sakla</string>
+    <string name="settings_delete_history">Tüm geçmişi sil</string>
+    <string name="settings_delete_history_confirm">Tüm sohbetler silinsin mi?</string>
+    <string name="settings_about">Hakkında</string>
+    <string name="language_hint">Otomatik, konuştuğunuz dilde yanıt verir.</string>
+    <string name="barge_in_hint">Bir yanıtı nasıl keseceğiniz. Otomatik, sesinizi mikrofonun saat hoparlöründen duyduğu Parley sesinden ayırt eder.</string>
+    <string name="history_hint">Sohbetler yalnızca bu saatte saklanır.</string>
+    <string name="history_keep_off">Kaydetme</string>
+    <plurals name="usage_conversations">
+        <item quantity="one">%1$d sohbet</item>
+        <item quantity="other">%1$d sohbet</item>
+    </plurals>
+    <plurals name="history_keep_days">
+        <item quantity="one">%1$d gün</item>
+        <item quantity="other">%1$d gün</item>
+    </plurals>
+    <string name="history_keep_forever">Süresiz</string>
+    <plurals name="auto_end_seconds">
+        <item quantity="one">%1$d saniye</item>
+        <item quantity="other">%1$d saniye</item>
+    </plurals>
+    <string name="auto_end_never">Hiçbir zaman</string>
+    <string name="persona_custom_label">Parley nasıl davranmalı?</string>
+    <string name="provider_title">Sağlayıcı</string>
+    <string name="provider_keys">Anahtarlar</string>
+    <string name="provider_key_hint">Anahtar %1$s</string>
+    <string name="provider_not_connected">Henüz bağlı değil</string>
+    <string name="provider_connect">%1$s ile bağlan</string>
+    <string name="provider_replace_key">Yeni %1$s anahtarı</string>
+    <string name="provider_remove_key">%1$s anahtarını kaldır</string>
+    <string name="provider_remove_confirm">Bu anahtar saatten kaldırılsın mı?</string>
+    <string name="provider_keys_note">Anahtarlar bu saatte şifrelenir ve saatten hiç çıkmaz.</string>
+
+    <!-- About -->
+    <string name="about_version">Sürüm %1$s</string>
+    <string name="about_privacy_summary">Sesiniz kendi anahtarınızla doğrudan bu saatten seçtiğiniz sağlayıcıya gider. Parley\'nin sohbetlerinizi gören bir sunucusu yoktur.</string>
+    <string name="about_privacy">Gizlilik politikası</string>
+    <string name="about_on_phone">Telefonunuzda açılır</string>
+    <string name="about_source">Kaynak kodu</string>
+    <string name="about_license">Apache Lisansı 2.0</string>
+    <string name="about_licenses">Açık kaynak lisansları</string>
+    <string name="about_contact">İletişim</string>
+    <string name="about_continue_on_phone">Telefonda devam edin</string>
+
+    <!-- Service, tile, complication -->
+    <string name="notification_channel">Sohbet</string>
+    <string name="notification_text">Dinliyor ve yanıtlıyor</string>
+    <string name="ongoing_status">Sohbette</string>
+    <string name="tile_label">Parley</string>
+    <string name="tile_description">Tek dokunuşla Parley ile konuşun</string>
+    <string name="tile_text_mode">Sessiz mod</string>
+    <string name="tile_hint">Sessizce, metin olarak yanıtlar</string>
+    <string name="complication_label">Parley ile konuş</string>
+    <string name="complication_short">Konuş</string>
+    <string name="complication_description">Parley ile sohbet başlatın</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">Samimi</string>
+    <string name="persona_friendly_description">Sıcak ve yardımsever</string>
+    <string name="persona_concise">Kısa ve öz</string>
+    <string name="persona_concise_description">Olabildiğince kısa</string>
+    <string name="persona_tutor">Öğretmen</string>
+    <string name="persona_tutor_description">Adım adım açıklar</string>
+    <string name="persona_language_partner">Dil partneri</string>
+    <string name="persona_language_partner_description">Konuşma pratiği</string>
+    <string name="persona_custom">Özel</string>
+    <string name="persona_custom_description">Kendi talimatınız</string>
+    <string name="language_auto">Otomatik</string>
+    <string name="barge_in_auto">Otomatik</string>
+    <string name="barge_in_auto_description">Parley konuşurken araya girin</string>
+    <string name="barge_in_on">Açık mikrofon</string>
+    <string name="barge_in_on_description">Kulaklık için; hoparlör kendini kesebilir</string>
+    <string name="barge_in_off">Yalnızca dokunma</string>
+    <string name="barge_in_off_description">Kesmek için küreye dokunun</string>
+    <string name="model_fast">Hızlı</string>
+    <string name="model_thorough">Kapsamlı</string>
+    <string name="model_best">En iyi</string>
+    <string name="model_gemini_fast_description">Hızlı, doğal yanıtlar</string>
+    <string name="model_gemini_thorough_description">Yanıtlamadan önce daha uzun düşünür</string>
+    <string name="model_openai_fast_description">Hızlı ve uygun fiyatlı</string>
+    <string name="model_openai_best_description">OpenAI\'ın en güçlü ses modeli</string>
+    <string name="voice_recommended">Önerilen</string>
+    <string name="voice_firm">Kararlı</string>
+    <string name="voice_upbeat">Neşeli</string>
+    <string name="voice_informative">Bilgilendirici</string>
+    <string name="voice_bright">Parlak</string>
+    <string name="voice_excitable">Heyecanlı</string>
+    <string name="voice_youthful">Genç</string>
+    <string name="voice_breezy">Ferah</string>
+    <string name="voice_easy_going">Rahat</string>
+    <string name="voice_breathy">Nefesli</string>
+    <string name="voice_clear">Net</string>
+    <string name="voice_smooth">Akıcı</string>
+    <string name="voice_gravelly">Boğuk</string>
+    <string name="voice_soft">Yumuşak</string>
+    <string name="voice_even">Dengeli</string>
+    <string name="voice_mature">Olgun</string>
+    <string name="voice_forward">Girişken</string>
+    <string name="voice_friendly">Cana yakın</string>
+    <string name="voice_casual">Gündelik</string>
+    <string name="voice_gentle">Nazik</string>
+    <string name="voice_lively">Canlı</string>
+    <string name="voice_knowledgeable">Bilgili</string>
+    <string name="voice_warm">Sıcak</string>
+    <string name="transport_wifi">Wi-Fi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">Telefon üzerinden</string>
+    <string name="transport_other">Çevrimiçi</string>
+    <string name="transport_none">Çevrimdışı</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">Ses kapalı</string>
+    <string name="notice_bezel_volume">Ses için çerçeveyi çevirin</string>
+    <string name="notice_searching">Web\'de aranıyor…</string>
+    <string name="note_timer">Zamanlayıcı · %1$s</string>
+    <string name="note_alarm">Alarm · %1$s</string>
+    <string name="note_saved">Not kaydedildi</string>
+    <string name="error_no_key_for">Henüz %1$s anahtarı yok.</string>
+    <string name="error_microphone_unavailable">Mikrofon kullanılamıyor.</string>
+</resources>

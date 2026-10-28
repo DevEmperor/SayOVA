@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -94,10 +95,12 @@ import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.Phase
 import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.session.UiTurn
+import net.devemperor.parley.ui.components.FitText
 import net.devemperor.parley.ui.components.KeepScreenOn
 import net.devemperor.parley.ui.components.MessageScreen
 import net.devemperor.parley.ui.components.Orb
 import net.devemperor.parley.ui.components.screenWidth
+import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
@@ -131,7 +134,7 @@ fun ConversationScreen(
     KeepScreenOn(state.active)
 
     if (state.phase == Phase.ERROR && state.error != null) {
-        ErrorContent(state, onRetry = onRetry, onFixProvider = onFixProvider, onClose = onDone)
+        ErrorContent(state, onRetry = onRetry, onFixProvider = onFixProvider)
         return
     }
     if (state.phase == Phase.ENDED) {
@@ -176,7 +179,8 @@ fun ConversationScreen(
     // recognisable at a glance, like the one on a phone call.
     ScreenScaffold(
         timeText = {
-            TimeText { time ->
+            // Room for longer status words in other languages ("Zum Sprechen tippen").
+            TimeText(maxSweepAngle = 120f) { time ->
                 timeTextCurvedText(time)
                 timeTextSeparator()
                 curvedText(status, color = statusColor)
@@ -538,7 +542,7 @@ private fun Caption(state: ConversationUiState) {
     val meta = buildList {
         if (state.elapsedMs > 0) add(formatElapsed(state.elapsedMs))
         if (state.showCost && state.costUsd > 0) add(CostMeter.format(state.costUsd))
-        if (state.transport != Transport.NONE && state.phase != Phase.CONNECTING) add(state.transport.label)
+        if (state.transport != Transport.NONE && state.phase != Phase.CONNECTING) add(stringResource(state.transport.labelRes()))
     }.joinToString(" · ")
     val hint = when {
         state.notice != null -> state.notice
@@ -548,19 +552,17 @@ private fun Caption(state: ConversationUiState) {
     Box(Modifier.height(17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
         Crossfade(targetState = hint, label = "caption") { text ->
             if (text != null) {
-                Text(
+                FitText(
                     text,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .clip(RoundedCornerShape(50))
                         .background(MaterialTheme.colorScheme.secondaryContainer)
                         .padding(horizontal = 8.dp),
                 )
             } else {
-                Text(meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+                FitText(meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -644,9 +646,15 @@ private fun TurnLine(turn: UiTurn, latest: Boolean, onSpokenLine: ((Float) -> Un
     }
 }
 
+/**
+ * What went wrong and the one thing to do about it, as the edge button. Closing is the usual swipe to
+ * the right; a "Close" link here pushed the button below the screen's end, out of sight.
+ */
 @Composable
-private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixProvider: () -> Unit, onClose: () -> Unit) {
+private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixProvider: () -> Unit) {
     val error = state.error ?: return
+    // Swiped away: the ended conversation is done with.
+    DisposableEffect(Unit) { onDispose(SessionHub::dismiss) }
     val (title, text, fixable) = when (error.kind) {
         ErrorKind.AUTH -> Triple(stringResource(R.string.error_auth_title), stringResource(R.string.error_auth_text), true)
         ErrorKind.QUOTA -> Triple(stringResource(R.string.error_quota_title), stringResource(R.string.error_quota_text), false)
@@ -664,14 +672,6 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
         // "Try again" fills the edge button by itself; with an icon beside it, it broke onto two lines.
         actionIcon = if (fixable) R.drawable.ic_key else null,
         onAction = if (fixable) onFixProvider else onRetry,
-        extra = {
-            Text(
-                stringResource(R.string.action_close),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable(onClick = onClose).padding(8.dp),
-            )
-        },
     )
 }
 

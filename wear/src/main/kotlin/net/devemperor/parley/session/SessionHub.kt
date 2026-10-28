@@ -20,11 +20,14 @@ object SessionHub {
 
     val running: Boolean get() = _state.value?.active == true
 
-    /** Starts a conversation unless one is already running. Call only while an activity is visible. */
-    fun start(context: Context, textOnly: Boolean, demo: Boolean = false) {
+    /**
+     * Starts a conversation unless one is already running; [continueId] carries on that one from the
+     * history. Call only while an activity is visible.
+     */
+    fun start(context: Context, textOnly: Boolean, demo: Boolean = false, continueId: String? = null) {
         if (running) return
         _state.value = ConversationUiState(textOnly = textOnly)
-        ContextCompat.startForegroundService(context, SessionService.startIntent(context, textOnly, demo))
+        ContextCompat.startForegroundService(context, SessionService.startIntent(context, textOnly, demo, continueId))
     }
 
     fun tapOrb() = engine?.tapOrb()

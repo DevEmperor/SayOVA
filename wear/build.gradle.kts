@@ -84,8 +84,10 @@ android {
     }
 
     androidResources {
-        // English only for 1.0; German follows once the wording has settled.
-        localeFilters += listOf("en")
+        // The languages Parley is translated into; every new string gets all of them. The generated
+        // locale config lets the user pick Parley's language apart from the watch's.
+        localeFilters += listOf("en", "de", "fr", "es", "it", "pt-rBR", "nl", "pl", "sv", "tr", "ja", "ko", "zh-rCN")
+        generateLocaleConfig = true
     }
 
     testOptions {

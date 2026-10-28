@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Welcome and setup -->
+    <string name="welcome_tagline">Praat met AI vanaf je pols.</string>
+    <string name="welcome_start">Starten</string>
+    <string name="permission_title">Microfoon</string>
+    <string name="permission_text">Parley heeft de microfoon nodig om je te horen. Audio wordt alleen gestreamd als er een gesprek open is.</string>
+    <string name="permission_blocked">De microfoon is geblokkeerd. Sta deze toe in de app-instellingen om met Parley te praten.</string>
+    <string name="permission_allow">Toestaan</string>
+    <string name="permission_settings">Instellingen</string>
+    <string name="provider_choose">Kies een aanbieder</string>
+    <string name="provider_choose_hint">Parley gebruikt je eigen API-sleutel, zodat jij de kosten en gegevens in de hand houdt.</string>
+    <string name="provider_gemini_note">Aanbevolen · ca. 1–2 ¢ per minuut</string>
+    <string name="provider_openai_note">Ca. 2–11 ¢ per minuut</string>
+    <string name="provider_connected">Verbonden</string>
+
+    <!-- Pairing -->
+    <string name="pair_preparing">Veilige code maken…</string>
+    <string name="pair_scan">Scan met je telefoon</string>
+    <string name="pair_waiting_offline">Geen verbinding – controleer wifi</string>
+    <string name="pair_open_on_phone">Op telefoon</string>
+    <string name="pair_continue_on_phone">Doorgaan op telefoon</string>
+    <string name="pair_compare_title">Zelfde code op je telefoon?</string>
+    <string name="pair_compare_match">Komt overeen</string>
+    <string name="pair_compare_mismatch">Komt niet overeen</string>
+    <string name="pair_checking">Sleutel controleren bij %1$s…</string>
+    <string name="pair_connected_title">Verbonden</string>
+    <string name="pair_connected_text">%1$s heeft de sleutel geaccepteerd. Deze wordt versleuteld en alleen op dit horloge opgeslagen.</string>
+    <string name="pair_connected_unverified">De sleutel is opgeslagen, maar %1$s was niet bereikbaar om hem te controleren. Parley probeert het als je praat.</string>
+    <string name="pair_connected_action">Starten</string>
+    <string name="pair_failed_expired">De code is verlopen</string>
+    <string name="pair_failed_rejected">De aanbieder heeft deze sleutel geweigerd</string>
+    <string name="pair_failed_offline">Geen verbinding</string>
+    <string name="pair_failed_broken">De sleutel kon niet worden gelezen</string>
+
+    <!-- Home -->
+    <string name="home_talk">Praten</string>
+    <string name="home_text_mode">Stille modus</string>
+    <string name="home_history">Geschiedenis</string>
+    <string name="home_settings">Instellingen</string>
+
+    <!-- Conversation -->
+    <string name="status_connecting">Verbinden</string>
+    <string name="status_listening">Luisteren</string>
+    <string name="status_thinking">Nadenken</string>
+    <string name="status_speaking">Spreken</string>
+    <string name="status_writing">Antwoorden</string>
+    <string name="status_reconnecting">Opnieuw verbinden</string>
+    <string name="status_ended">Opgeslagen</string>
+    <string name="status_problem">Probleem</string>
+    <string name="status_muted">Gedempt</string>
+    <string name="status_tap_to_talk">Tik om te praten</string>
+    <string name="hint_connecting">Verbinden met %1$s…</string>
+    <string name="hint_ask_anything">Vraag wat je wilt.</string>
+    <string name="hint_push_to_talk">Tik op de bol, spreek, tik opnieuw.</string>
+    <string name="notice_tap_to_interrupt">Tik om te onderbreken</string>
+    <string name="orb_interrupt">Onderbreken</string>
+    <string name="orb_mute">Microfoon dempen</string>
+    <string name="orb_unmute">Microfoon aanzetten</string>
+    <string name="orb_start_talking">Begin met praten</string>
+    <string name="orb_stop_talking">Klaar met praten</string>
+    <string name="action_end">Beëindigen</string>
+    <string name="action_show_text">Tekst tonen</string>
+    <string name="action_hide_text">Tekst verbergen</string>
+    <string name="action_volume">Volume</string>
+    <string name="action_sound_off">Geluid uit</string>
+    <string name="action_sound_on">Geluid aan</string>
+    <string name="action_louder">Harder</string>
+    <string name="action_quieter">Zachter</string>
+    <string name="action_try_again">Opnieuw proberen</string>
+    <string name="action_connect">Verbinden</string>
+
+    <!-- Errors -->
+    <string name="error_auth_title">Sleutel geweigerd</string>
+    <string name="error_auth_text">De aanbieder heeft de API-sleutel geweigerd. Verbind een nieuwe.</string>
+    <string name="error_quota_title">Geen tegoed meer</string>
+    <string name="error_quota_text">Je account bij de aanbieder heeft geen tegoed, geen betaling ingesteld of heeft de bestedingslimiet bereikt.</string>
+    <string name="error_rate_title">Te veel verzoeken</string>
+    <string name="error_rate_text">De aanbieder vraagt om het rustiger aan te doen. Probeer het over een minuut opnieuw.</string>
+    <string name="error_network_title">Verbinding verbroken</string>
+    <string name="error_network_text">Controleer wifi of mobiele data en probeer het opnieuw.</string>
+    <string name="error_rejected_title">Verzoek geweigerd</string>
+    <string name="error_server_title">De aanbieder heeft het gesprek beëindigd</string>
+    <string name="error_no_microphone">Parley heeft de microfoon nodig. Open de app om toegang te geven.</string>
+    <string name="error_server_text">Dit kan gebeuren na een heel lang gesprek of door een probleem bij de aanbieder.</string>
+
+    <!-- History -->
+    <string name="history_title">Geschiedenis</string>
+    <string name="history_empty">Je gesprekken verschijnen hier.</string>
+    <string name="history_off">Geschiedenis staat uit in de instellingen.</string>
+    <string name="history_untitled">Gesprek</string>
+    <string name="history_report">Antwoord melden</string>
+    <string name="history_continue">Doorgaan</string>
+    <string name="history_delete">Verwijderen</string>
+    <string name="history_delete_confirm">Dit gesprek verwijderen?</string>
+    <string name="report_title">Melden</string>
+    <string name="report_hint">Kies het antwoord dat beledigend of onjuist was. Er opent een e-mail op je telefoon.</string>
+    <string name="report_no_phone">Geen telefoon verbonden. Mail in plaats daarvan naar contact@devemperor.net.</string>
+    <string name="report_continue">Doorgaan op telefoon</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Instellingen</string>
+    <string name="settings_provider_connected">Sleutel op dit horloge</string>
+    <string name="settings_provider_missing">Niet verbonden</string>
+    <string name="settings_model">Model</string>
+    <string name="settings_voice">Stem</string>
+    <string name="settings_language">Taal</string>
+    <string name="settings_persona">Persoonlijkheid</string>
+    <string name="settings_conversation">Gesprek</string>
+    <string name="settings_web_search">Online zoeken</string>
+    <string name="settings_web_search_note">Nieuws, weer en meer</string>
+    <string name="settings_barge_in">Onderbreken met stem</string>
+    <string name="settings_push_to_talk">Druk om te praten</string>
+    <string name="settings_push_to_talk_note">Tik op de bol om te spreken</string>
+    <string name="settings_auto_end">Stoppen na stilte</string>
+    <string name="settings_start_on_launch">Praten bij openen</string>
+    <string name="settings_start_on_launch_note">Handig met een sneltoets</string>
+    <string name="settings_haptics">Trillen</string>
+    <string name="settings_show_cost">Kosten tonen</string>
+    <string name="settings_show_cost_note">Tijdens het praten en in geschiedenis</string>
+    <string name="settings_usage">Gebruik &amp; kosten</string>
+    <string name="settings_usage_summary">Deze maand %1$s · %2$s</string>
+    <string name="usage_title">Gebruik</string>
+    <string name="usage_earlier">Eerdere maanden</string>
+    <string name="usage_all_time">Totaal</string>
+    <string name="usage_recent">%1$s – vandaag · top %2$s</string>
+    <string name="usage_average">%1$s per gesprek · %2$s per minuut</string>
+    <string name="usage_estimate">Geschat op basis van het gebruik dat je aanbieder meldt en diens gepubliceerde prijzen. De factuur van je aanbieder is leidend.</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_history">Geschiedenis bewaren</string>
+    <string name="settings_delete_history">Alle geschiedenis wissen</string>
+    <string name="settings_delete_history_confirm">Alle gesprekken verwijderen?</string>
+    <string name="settings_about">Over</string>
+    <string name="language_hint">Automatisch: antwoord in de taal die je spreekt.</string>
+    <string name="barge_in_hint">Hoe je een antwoord onderbreekt. Automatisch onderscheidt je stem van die van Parley, die de microfoon via de horlogespeaker hoort.</string>
+    <string name="history_hint">Gesprekken worden alleen op dit horloge opgeslagen.</string>
+    <string name="history_keep_off">Niet opslaan</string>
+    <plurals name="usage_conversations">
+        <item quantity="one">%1$d gesprek</item>
+        <item quantity="other">%1$d gesprekken</item>
+    </plurals>
+    <plurals name="history_keep_days">
+        <item quantity="one">%1$d dag</item>
+        <item quantity="other">%1$d dagen</item>
+    </plurals>
+    <string name="history_keep_forever">Altijd</string>
+    <plurals name="auto_end_seconds">
+        <item quantity="one">%1$d seconde</item>
+        <item quantity="other">%1$d seconden</item>
+    </plurals>
+    <string name="auto_end_never">Nooit</string>
+    <string name="persona_custom_label">Hoe moet Parley zich gedragen?</string>
+    <string name="provider_title">Aanbieder</string>
+    <string name="provider_keys">Sleutels</string>
+    <string name="provider_key_hint">Sleutel %1$s</string>
+    <string name="provider_not_connected">Nog niet verbonden</string>
+    <string name="provider_connect">%1$s verbinden</string>
+    <string name="provider_replace_key">Nieuwe sleutel voor %1$s</string>
+    <string name="provider_remove_key">%1$s-sleutel verwijderen</string>
+    <string name="provider_remove_confirm">Deze sleutel van het horloge verwijderen?</string>
+    <string name="provider_keys_note">Sleutels zijn versleuteld op dit horloge en verlaten het nooit.</string>
+
+    <!-- About -->
+    <string name="about_version">Versie %1$s</string>
+    <string name="about_privacy_summary">Je stem gaat rechtstreeks van dit horloge naar de gekozen aanbieder, met je eigen sleutel. Parley heeft geen server die je gesprekken ziet.</string>
+    <string name="about_privacy">Privacybeleid</string>
+    <string name="about_on_phone">Opent op je telefoon</string>
+    <string name="about_source">Broncode</string>
+    <string name="about_license">Apache License 2.0</string>
+    <string name="about_licenses">Opensource-licenties</string>
+    <string name="about_contact">Contact</string>
+    <string name="about_continue_on_phone">Doorgaan op telefoon</string>
+
+    <!-- Service, tile, complication -->
+    <string name="notification_channel">Gesprek</string>
+    <string name="notification_text">Luistert en antwoordt</string>
+    <string name="ongoing_status">In gesprek</string>
+    <string name="tile_label">Parley</string>
+    <string name="tile_description">Met één tik met Parley praten</string>
+    <string name="tile_text_mode">Stille modus</string>
+    <string name="tile_hint">Antwoordt in tekst, zonder geluid</string>
+    <string name="complication_label">Praat met Parley</string>
+    <string name="complication_short">Praat</string>
+    <string name="complication_description">Start een gesprek met Parley</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">Vriendelijk</string>
+    <string name="persona_friendly_description">Warm en behulpzaam</string>
+    <string name="persona_concise">Beknopt</string>
+    <string name="persona_concise_description">Zo kort mogelijk</string>
+    <string name="persona_tutor">Docent</string>
+    <string name="persona_tutor_description">Legt stap voor stap uit</string>
+    <string name="persona_language_partner">Taalmaatje</string>
+    <string name="persona_language_partner_description">Gesprekken oefenen</string>
+    <string name="persona_custom">Aangepast</string>
+    <string name="persona_custom_description">Je eigen instructie</string>
+    <string name="language_auto">Automatisch</string>
+    <string name="barge_in_auto">Automatisch</string>
+    <string name="barge_in_auto_description">Praat door Parley heen om te onderbreken</string>
+    <string name="barge_in_on">Open microfoon</string>
+    <string name="barge_in_on_description">Voor koptelefoon; de speaker kan zichzelf onderbreken</string>
+    <string name="barge_in_off">Alleen tikken</string>
+    <string name="barge_in_off_description">Tik op de bol om te onderbreken</string>
+    <string name="model_fast">Snel</string>
+    <string name="model_thorough">Grondig</string>
+    <string name="model_best">Beste</string>
+    <string name="model_gemini_fast_description">Snelle, natuurlijke antwoorden</string>
+    <string name="model_gemini_thorough_description">Denkt langer na voor een antwoord</string>
+    <string name="model_openai_fast_description">Snel en voordelig</string>
+    <string name="model_openai_best_description">Sterkste spraakmodel van OpenAI</string>
+    <string name="voice_recommended">Aanbevolen</string>
+    <string name="voice_firm">Stevig</string>
+    <string name="voice_upbeat">Opgewekt</string>
+    <string name="voice_informative">Informatief</string>
+    <string name="voice_bright">Helder</string>
+    <string name="voice_excitable">Enthousiast</string>
+    <string name="voice_youthful">Jeugdig</string>
+    <string name="voice_breezy">Luchtig</string>
+    <string name="voice_easy_going">Ontspannen</string>
+    <string name="voice_breathy">Ademig</string>
+    <string name="voice_clear">Duidelijk</string>
+    <string name="voice_smooth">Vloeiend</string>
+    <string name="voice_gravelly">Rauw</string>
+    <string name="voice_soft">Zacht</string>
+    <string name="voice_even">Gelijkmatig</string>
+    <string name="voice_mature">Volwassen</string>
+    <string name="voice_forward">Direct</string>
+    <string name="voice_friendly">Vriendelijk</string>
+    <string name="voice_casual">Informeel</string>
+    <string name="voice_gentle">Zachtaardig</string>
+    <string name="voice_lively">Levendig</string>
+    <string name="voice_knowledgeable">Deskundig</string>
+    <string name="voice_warm">Warm</string>
+    <string name="transport_wifi">Wifi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">via telefoon</string>
+    <string name="transport_other">Online</string>
+    <string name="transport_none">Offline</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">Geluid uit</string>
+    <string name="notice_bezel_volume">Draai de rand voor volume</string>
+    <string name="notice_searching">Online zoeken…</string>
+    <string name="note_timer">Timer · %1$s</string>
+    <string name="note_alarm">Wekker · %1$s</string>
+    <string name="note_saved">Notitie opgeslagen</string>
+    <string name="error_no_key_for">Nog geen sleutel voor %1$s.</string>
+    <string name="error_microphone_unavailable">De microfoon is niet beschikbaar.</string>
+</resources>

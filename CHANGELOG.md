@@ -18,4 +18,8 @@ First version.
 - Tools: timers, alarms, notes, battery and time, web search.
 - QR pairing: the key is encrypted in the browser and relayed end to end to the watch.
 - Wi-Fi or LTE during conversations, resumed Gemini sessions after network changes.
-- History on the watch, tile, complication, ongoing-activity icon on the watch face.
+- History on the watch, tile, complication, ongoing-activity icon on the watch face; a conversation
+  from the history can be continued where it left off.
+- In 13 languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Dutch, Polish,
+  Swedish, Turkish, Japanese, Korean and Chinese (simplified); Parley's language can be set apart from
+  the watch's.

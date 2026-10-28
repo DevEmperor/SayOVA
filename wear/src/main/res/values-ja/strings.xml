@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome and setup -->
+    <string name="welcome_tagline">手首から AI と話そう。</string>
+    <string name="welcome_start">開始</string>
+    <string name="permission_title">マイク</string>
+    <string name="permission_text">Parley が音声を聞き取るにはマイクが必要です。音声は会話中にのみ送信されます。</string>
+    <string name="permission_blocked">マイクがブロックされています。Parley と話すには、アプリの設定で許可してください。</string>
+    <string name="permission_allow">許可</string>
+    <string name="permission_settings">設定</string>
+    <string name="provider_choose">プロバイダを選択</string>
+    <string name="provider_choose_hint">Parley はご自身の API キーを使うため、費用とデータを自分で管理できます。</string>
+    <string name="provider_gemini_note">おすすめ · 1 分あたり約 1～2 セント</string>
+    <string name="provider_openai_note">1 分あたり約 2～11 セント</string>
+    <string name="provider_connected">接続済み</string>
+
+    <!-- Pairing -->
+    <string name="pair_preparing">安全なコードを準備しています…</string>
+    <string name="pair_scan">スマートフォンでスキャン</string>
+    <string name="pair_waiting_offline">接続なし – Wi-Fi を確認してください</string>
+    <string name="pair_open_on_phone">スマホで</string>
+    <string name="pair_continue_on_phone">スマートフォンで続行</string>
+    <string name="pair_compare_title">スマートフォンと同じコードですか？</string>
+    <string name="pair_compare_match">一致しています</string>
+    <string name="pair_compare_mismatch">一致しません</string>
+    <string name="pair_checking">%1$s でキーを確認しています…</string>
+    <string name="pair_connected_title">接続しました</string>
+    <string name="pair_connected_text">%1$s がキーを承認しました。キーは暗号化され、このウォッチにのみ保存されます。</string>
+    <string name="pair_connected_unverified">キーは保存されましたが、%1$s に接続できず確認できませんでした。会話時に Parley が再確認します。</string>
+    <string name="pair_connected_action">開始</string>
+    <string name="pair_failed_expired">コードの有効期限が切れました</string>
+    <string name="pair_failed_rejected">プロバイダがこのキーを拒否しました</string>
+    <string name="pair_failed_offline">接続されていません</string>
+    <string name="pair_failed_broken">キーを読み取れませんでした</string>
+
+    <!-- Home -->
+    <string name="home_talk">話す</string>
+    <string name="home_text_mode">サイレント モード</string>
+    <string name="home_history">履歴</string>
+    <string name="home_settings">設定</string>
+
+    <!-- Conversation -->
+    <string name="status_connecting">接続中</string>
+    <string name="status_listening">聞き取り中</string>
+    <string name="status_thinking">考え中</string>
+    <string name="status_speaking">発話中</string>
+    <string name="status_writing">回答中</string>
+    <string name="status_reconnecting">再接続中</string>
+    <string name="status_ended">保存済み</string>
+    <string name="status_problem">問題が発生</string>
+    <string name="status_muted">ミュート中</string>
+    <string name="status_tap_to_talk">タップして話す</string>
+    <string name="hint_connecting">%1$s に接続しています…</string>
+    <string name="hint_ask_anything">何でも聞いてください。</string>
+    <string name="hint_push_to_talk">オーブをタップして話し、もう一度タップします。</string>
+    <string name="notice_tap_to_interrupt">タップして中断</string>
+    <string name="orb_interrupt">中断</string>
+    <string name="orb_mute">マイクをミュート</string>
+    <string name="orb_unmute">マイクのミュートを解除</string>
+    <string name="orb_start_talking">発話を開始</string>
+    <string name="orb_stop_talking">発話を終了</string>
+    <string name="action_end">終了</string>
+    <string name="action_show_text">テキストを表示</string>
+    <string name="action_hide_text">テキストを非表示</string>
+    <string name="action_volume">音量</string>
+    <string name="action_sound_off">音声オフ</string>
+    <string name="action_sound_on">音声オン</string>
+    <string name="action_louder">音量を上げる</string>
+    <string name="action_quieter">音量を下げる</string>
+    <string name="action_try_again">再試行</string>
+    <string name="action_connect">接続</string>
+
+    <!-- Errors -->
+    <string name="error_auth_title">キーが拒否されました</string>
+    <string name="error_auth_text">プロバイダが API キーを拒否しました。新しいキーを接続してください。</string>
+    <string name="error_quota_title">クレジットがありません</string>
+    <string name="error_quota_text">プロバイダのアカウントにクレジットがないか、お支払い情報が未設定か、利用上限に達しています。</string>
+    <string name="error_rate_title">リクエストが多すぎます</string>
+    <string name="error_rate_text">プロバイダから頻度を下げるよう求められました。1 分後にもう一度お試しください。</string>
+    <string name="error_network_title">接続が切断されました</string>
+    <string name="error_network_text">Wi-Fi またはモバイル データを確認して、もう一度お試しください。</string>
+    <string name="error_rejected_title">リクエストが拒否されました</string>
+    <string name="error_server_title">プロバイダが会話を終了しました</string>
+    <string name="error_no_microphone">Parley にはマイクが必要です。アプリを開いて許可してください。</string>
+    <string name="error_server_text">非常に長い会話の後や、プロバイダ側の問題で発生することがあります。</string>
+
+    <!-- History -->
+    <string name="history_title">履歴</string>
+    <string name="history_empty">会話はここに表示されます。</string>
+    <string name="history_off">履歴は設定でオフになっています。</string>
+    <string name="history_untitled">会話</string>
+    <string name="history_report">回答を報告</string>
+    <string name="history_continue">続ける</string>
+    <string name="history_delete">削除</string>
+    <string name="history_delete_confirm">この会話を削除しますか？</string>
+    <string name="report_title">報告</string>
+    <string name="report_hint">不適切または誤った回答を選択してください。スマートフォンでメールが開きます。</string>
+    <string name="report_no_phone">スマートフォンが接続されていません。contact@devemperor.net までご連絡ください。</string>
+    <string name="report_continue">スマートフォンで続行</string>
+
+    <!-- Settings -->
+    <string name="settings_title">設定</string>
+    <string name="settings_provider_connected">キー保存済み</string>
+    <string name="settings_provider_missing">未接続</string>
+    <string name="settings_model">モデル</string>
+    <string name="settings_voice">音声</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_persona">パーソナリティ</string>
+    <string name="settings_conversation">会話</string>
+    <string name="settings_web_search">ウェブ検索</string>
+    <string name="settings_web_search_note">ニュース、天気など</string>
+    <string name="settings_barge_in">音声で中断</string>
+    <string name="settings_push_to_talk">タップで発話</string>
+    <string name="settings_push_to_talk_note">オーブをタップして話す</string>
+    <string name="settings_auto_end">無音時に自動終了</string>
+    <string name="settings_start_on_launch">起動時に会話を開始</string>
+    <string name="settings_start_on_launch_note">ボタンのショートカットに便利</string>
+    <string name="settings_haptics">バイブレーション</string>
+    <string name="settings_show_cost">費用を表示</string>
+    <string name="settings_show_cost_note">会話中と履歴で表示</string>
+    <string name="settings_usage">使用量と費用</string>
+    <string name="settings_usage_summary">今月 %1$s · %2$s</string>
+    <string name="usage_title">使用量</string>
+    <string name="usage_earlier">過去の月</string>
+    <string name="usage_all_time">全期間</string>
+    <string name="usage_recent">%1$s～今日 · 最大 %2$s</string>
+    <string name="usage_average">会話あたり %1$s · 1 分あたり %2$s</string>
+    <string name="usage_estimate">プロバイダが報告した使用量と公開価格に基づく推定値です。実際の金額はプロバイダの請求をご確認ください。</string>
+    <string name="settings_privacy">プライバシー</string>
+    <string name="settings_history">履歴を保存</string>
+    <string name="settings_delete_history">履歴をすべて削除</string>
+    <string name="settings_delete_history_confirm">すべての会話を削除しますか？</string>
+    <string name="settings_about">アプリについて</string>
+    <string name="language_hint">「自動」では、話した言語で回答します。</string>
+    <string name="barge_in_hint">回答を途中で止める方法です。「自動」では、ウォッチのスピーカーから流れてマイクが拾う Parley の声とユーザーの声を区別します。</string>
+    <string name="history_hint">会話はこのウォッチにのみ保存されます。</string>
+    <string name="history_keep_off">保存しない</string>
+    <plurals name="usage_conversations">
+        <item quantity="other">%1$d 件の会話</item>
+    </plurals>
+    <plurals name="history_keep_days">
+        <item quantity="other">%1$d 日</item>
+    </plurals>
+    <string name="history_keep_forever">無期限</string>
+    <plurals name="auto_end_seconds">
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <string name="auto_end_never">しない</string>
+    <string name="persona_custom_label">Parley にどう振る舞ってほしいですか？</string>
+    <string name="provider_title">プロバイダ</string>
+    <string name="provider_keys">キー</string>
+    <string name="provider_key_hint">キー %1$s</string>
+    <string name="provider_not_connected">まだ接続されていません</string>
+    <string name="provider_connect">%1$s を接続</string>
+    <string name="provider_replace_key">%1$s の新しいキー</string>
+    <string name="provider_remove_key">%1$s のキーを削除</string>
+    <string name="provider_remove_confirm">このキーをウォッチから削除しますか？</string>
+    <string name="provider_keys_note">キーはこのウォッチ内で暗号化され、外部に出ることはありません。</string>
+
+    <!-- About -->
+    <string name="about_version">バージョン %1$s</string>
+    <string name="about_privacy_summary">音声は、ご自身のキーを使ってこのウォッチから選択したプロバイダへ直接送信されます。Parley には会話を閲覧できるサーバーはありません。</string>
+    <string name="about_privacy">プライバシー ポリシー</string>
+    <string name="about_on_phone">スマートフォンで開きます</string>
+    <string name="about_source">ソースコード</string>
+    <string name="about_license">Apache License 2.0</string>
+    <string name="about_licenses">オープンソース ライセンス</string>
+    <string name="about_contact">お問い合わせ</string>
+    <string name="about_continue_on_phone">スマートフォンで続行</string>
+
+    <!-- Service, tile, complication -->
+    <string name="notification_channel">会話</string>
+    <string name="notification_text">音声を聞き取って応答しています</string>
+    <string name="ongoing_status">会話中</string>
+    <string name="tile_label">Parley</string>
+    <string name="tile_description">ワンタップで Parley と話す</string>
+    <string name="tile_text_mode">サイレント モード</string>
+    <string name="tile_hint">音声なし、テキストで回答</string>
+    <string name="complication_label">Parley と話す</string>
+    <string name="complication_short">話す</string>
+    <string name="complication_description">Parley との会話を開始</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">フレンドリー</string>
+    <string name="persona_friendly_description">温かく親切</string>
+    <string name="persona_concise">簡潔</string>
+    <string name="persona_concise_description">できるだけ短く</string>
+    <string name="persona_tutor">家庭教師</string>
+    <string name="persona_tutor_description">順を追って説明</string>
+    <string name="persona_language_partner">語学パートナー</string>
+    <string name="persona_language_partner_description">会話の練習</string>
+    <string name="persona_custom">カスタム</string>
+    <string name="persona_custom_description">独自の指示</string>
+    <string name="language_auto">自動</string>
+    <string name="barge_in_auto">自動</string>
+    <string name="barge_in_auto_description">Parley に話しかけて中断</string>
+    <string name="barge_in_on">マイク常時オン</string>
+    <string name="barge_in_on_description">ヘッドホン向け。スピーカーでは自分の声で中断することがあります</string>
+    <string name="barge_in_off">タップのみ</string>
+    <string name="barge_in_off_description">オーブをタップして中断</string>
+    <string name="model_fast">高速</string>
+    <string name="model_thorough">熟考</string>
+    <string name="model_best">最高性能</string>
+    <string name="model_gemini_fast_description">速く自然な回答</string>
+    <string name="model_gemini_thorough_description">回答前にじっくり考える</string>
+    <string name="model_openai_fast_description">高速で低コスト</string>
+    <string name="model_openai_best_description">OpenAI の最も高性能な音声モデル</string>
+    <string name="voice_recommended">おすすめ</string>
+    <string name="voice_firm">力強い</string>
+    <string name="voice_upbeat">快活</string>
+    <string name="voice_informative">解説調</string>
+    <string name="voice_bright">明るい</string>
+    <string name="voice_excitable">エネルギッシュ</string>
+    <string name="voice_youthful">若々しい</string>
+    <string name="voice_breezy">さわやか</string>
+    <string name="voice_easy_going">おおらか</string>
+    <string name="voice_breathy">吐息まじり</string>
+    <string name="voice_clear">クリア</string>
+    <string name="voice_smooth">なめらか</string>
+    <string name="voice_gravelly">ハスキー</string>
+    <string name="voice_soft">柔らかい</string>
+    <string name="voice_even">落ち着いた</string>
+    <string name="voice_mature">大人びた</string>
+    <string name="voice_forward">積極的</string>
+    <string name="voice_friendly">フレンドリー</string>
+    <string name="voice_casual">カジュアル</string>
+    <string name="voice_gentle">優しい</string>
+    <string name="voice_lively">活発</string>
+    <string name="voice_knowledgeable">博識</string>
+    <string name="voice_warm">温かい</string>
+    <string name="transport_wifi">Wi-Fi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">スマートフォン経由</string>
+    <string name="transport_other">オンライン</string>
+    <string name="transport_none">オフライン</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">音声オフ</string>
+    <string name="notice_bezel_volume">ベゼルを回して音量を調整</string>
+    <string name="notice_searching">ウェブを検索しています…</string>
+    <string name="note_timer">タイマー · %1$s</string>
+    <string name="note_alarm">アラーム · %1$s</string>
+    <string name="note_saved">メモを保存しました</string>
+    <string name="error_no_key_for">%1$s のキーがまだありません。</string>
+    <string name="error_microphone_unavailable">マイクを使用できません。</string>
+</resources>

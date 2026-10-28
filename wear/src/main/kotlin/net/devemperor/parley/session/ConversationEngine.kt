@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import net.devemperor.parley.Diagnostics
+import net.devemperor.parley.R
 import net.devemperor.parley.audio.Haptics
 import net.devemperor.parley.audio.Headphones
 import net.devemperor.parley.audio.Microphone
@@ -71,6 +72,8 @@ class ConversationEngine(
         val speechVolume: Int,
         /** Start with Parley's voice switched off (see [setSoundOff]). */
         val soundOff: Boolean,
+        /** A conversation from the history this one carries on: shown first, saved into the same entry. */
+        val continues: Conversation? = null,
     )
 
     private class Record(val key: String, val role: Role, val at: Long) {
@@ -88,9 +91,14 @@ class ConversationEngine(
     )
     val state: StateFlow<ConversationUiState> = _state.asStateFlow()
 
-    private val records = mutableListOf<Record>()
-    private val conversationId = UUID.randomUUID().toString()
-    private val startedAtWall = System.currentTimeMillis()
+    private val records = options.continues?.turns.orEmpty().mapIndexedTo(mutableListOf()) { index, turn ->
+        Record("earlier-$index", turn.role, turn.at).apply {
+            text.append(turn.text)
+            interrupted = turn.interrupted
+        }
+    }
+    private val conversationId = options.continues?.id ?: UUID.randomUUID().toString()
+    private val startedAtWall = options.continues?.startedAt ?: System.currentTimeMillis()
     private var readyAt = 0L
     private var ready = false
     private var reconnecting = false
@@ -153,7 +161,7 @@ class ConversationEngine(
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
             !microphone.start()
         ) {
-            finish(SessionError(ErrorKind.REJECTED, "The microphone is not available."))
+            finish(SessionError(ErrorKind.REJECTED, context.getString(R.string.error_microphone_unavailable)))
             return
         }
         session.connect()
@@ -197,7 +205,7 @@ class ConversationEngine(
         player.setMuted(off)
         bargeIn.startAnswer(SystemClock.elapsedRealtime())
         // One short line under the orb: the speaker icon already tells that the sound is back.
-        showNotice(if (off) "Sound off" else "Turn the bezel for volume", 2_500)
+        showNotice(context.getString(if (off) R.string.notice_sound_off else R.string.notice_bezel_volume), 2_500)
         tick()
     }
 
@@ -352,7 +360,7 @@ class ConversationEngine(
     private fun runTool(call: VoiceEvent.ToolCall) {
         pendingTools++
         touch()
-        if (call.name == net.devemperor.parley.core.tools.ParleyTools.SEARCH_WEB) showNotice("Searching the web…", 8_000)
+        if (call.name == net.devemperor.parley.core.tools.ParleyTools.SEARCH_WEB) showNotice(context.getString(R.string.notice_searching), 8_000)
         scope.launch {
             val outcome = toolRunner.run(call)
             session.sendToolResult(call.callId, call.name, outcome.result)
@@ -503,7 +511,7 @@ class ConversationEngine(
                 provider = providerKey,
                 model = model.id,
                 turns = turns,
-                costUsd = usd,
+                costUsd = usd + (options.continues?.costUsd ?: 0.0),
             )
         } else {
             null

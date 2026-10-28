@@ -86,12 +86,12 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
             val ready = connected.isNotEmpty() && context.hasMicrophone()
             val update: ((ParleySettings) -> ParleySettings) -> Unit = { transform -> scope.launch { app.settings.update(transform) } }
 
-            fun startConversation(textOnly: Boolean, demo: Boolean = false) {
+            fun startConversation(textOnly: Boolean, demo: Boolean = false, continueId: String? = null) {
                 if (!context.hasMicrophone()) {
                     navController.navigate(Routes.PERMISSION)
                     return
                 }
-                SessionHub.start(context, textOnly, demo)
+                SessionHub.start(context, textOnly, demo, continueId)
                 if (navController.currentDestination?.route != Routes.CONVERSATION) navController.navigate(Routes.CONVERSATION)
             }
 
@@ -185,6 +185,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     if (conversation != null) {
                         ConversationDetailScreen(
                             conversation,
+                            onContinue = whenResumed { startConversation(textOnly = false, continueId = conversation.id) },
                             onReport = whenResumed { navController.navigate(Routes.report(conversation.id)) },
                             onDelete = {
                                 scope.launch { app.history.delete(conversation.id) }

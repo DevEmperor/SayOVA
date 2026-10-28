@@ -2,6 +2,8 @@ package net.devemperor.parley.core
 
 import net.devemperor.parley.core.audio.AudioGate
 import net.devemperor.parley.core.audio.Pcm
+import net.devemperor.parley.core.conversation.Role
+import net.devemperor.parley.core.conversation.Turn
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.prompt.AnswerLanguage
 import net.devemperor.parley.core.prompt.Instructions
@@ -100,5 +102,25 @@ class CoreTest {
         assertTrue("language the user speaks" in custom)
         assertFalse("search the web" in custom)
         assertFalse("spoken aloud" in custom)
+        assertFalse("carries on an earlier" in custom)
+    }
+
+    @Test
+    fun `a continued conversation brings what was said, newest kept`() {
+        val now = ZonedDateTime.of(2026, 10, 28, 12, 0, 0, 0, ZoneId.of("Europe/Berlin"))
+        val earlier = listOf(
+            Turn(Role.USER, "What is   the capital\nof Peru?", 1),
+            Turn(Role.ASSISTANT, "Lima.", 2),
+            Turn(Role.NOTE, "Buy pisco", 3),
+        )
+        val prompt = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false, earlier = earlier)
+        assertTrue("carries on an earlier one" in prompt)
+        assertTrue("User: What is the capital of Peru?\nParley: Lima.\n(Note saved: Buy pisco)" in prompt)
+        // A long history keeps its end: the last turns, not the first.
+        val long = (1..400).map { Turn(if (it % 2 == 0) Role.ASSISTANT else Role.USER, "Line number $it of a long talk", it.toLong()) }
+        val kept = Instructions.transcriptOf(long)
+        assertTrue(kept.length <= 6_000)
+        assertTrue(kept.endsWith("Parley: Line number 400 of a long talk"))
+        assertFalse("Line number 1 of" in kept)
     }
 }

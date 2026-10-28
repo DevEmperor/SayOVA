@@ -127,7 +127,8 @@ fun TransformingLazyColumnItemScope.SwitchItem(
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
-        secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 3, overflow = TextOverflow.Ellipsis) } },
+        // The switch leaves the text a narrow column: four lines for longer translations.
+        secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
     )
 }
@@ -145,7 +146,7 @@ fun TransformingLazyColumnItemScope.RadioItem(
         onSelect = onSelect,
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
-        secondaryLabel = secondaryLabel?.takeIf { it.isNotEmpty() }?.let { text -> { Text(text, maxLines = 3, overflow = TextOverflow.Ellipsis) } },
+        secondaryLabel = secondaryLabel?.takeIf { it.isNotEmpty() }?.let { text -> { Text(text, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
     )
 }

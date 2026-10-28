@@ -69,7 +69,6 @@
     <string name="action_sound_on">Sound on</string>
     <string name="action_louder">Louder</string>
     <string name="action_quieter">Quieter</string>
-    <string name="action_close">Close</string>
     <string name="action_try_again">Try again</string>
     <string name="action_connect">Connect</string>
 
@@ -93,6 +92,7 @@
     <string name="history_off">History is turned off in the settings.</string>
     <string name="history_untitled">Conversation</string>
     <string name="history_report">Report a response</string>
+    <string name="history_continue">Continue</string>
     <string name="history_delete">Delete</string>
     <string name="history_delete_confirm">Delete this conversation?</string>
     <string name="report_title">Report</string>
@@ -184,4 +184,68 @@
     <string name="complication_label">Talk to Parley</string>
     <string name="complication_short">Talk</string>
     <string name="complication_description">Start a conversation with Parley</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">Friendly</string>
+    <string name="persona_friendly_description">Warm and helpful</string>
+    <string name="persona_concise">Concise</string>
+    <string name="persona_concise_description">As short as possible</string>
+    <string name="persona_tutor">Tutor</string>
+    <string name="persona_tutor_description">Explains step by step</string>
+    <string name="persona_language_partner">Language partner</string>
+    <string name="persona_language_partner_description">Practice conversation</string>
+    <string name="persona_custom">Custom</string>
+    <string name="persona_custom_description">Your own instruction</string>
+    <string name="language_auto">Automatic</string>
+    <string name="barge_in_auto">Automatic</string>
+    <string name="barge_in_auto_description">Talk over Parley to interrupt it</string>
+    <string name="barge_in_on">Open microphone</string>
+    <string name="barge_in_on_description">For headphones; the speaker may interrupt itself</string>
+    <string name="barge_in_off">Tap only</string>
+    <string name="barge_in_off_description">Tap the orb to interrupt</string>
+    <string name="model_fast">Fast</string>
+    <string name="model_thorough">Thorough</string>
+    <string name="model_best">Best</string>
+    <string name="model_gemini_fast_description">Quick, natural answers</string>
+    <string name="model_gemini_thorough_description">Thinks longer before answering</string>
+    <string name="model_openai_fast_description">Quick and affordable</string>
+    <string name="model_openai_best_description">OpenAI\'s strongest voice model</string>
+    <string name="voice_recommended">Recommended</string>
+    <string name="voice_firm">Firm</string>
+    <string name="voice_upbeat">Upbeat</string>
+    <string name="voice_informative">Informative</string>
+    <string name="voice_bright">Bright</string>
+    <string name="voice_excitable">Excitable</string>
+    <string name="voice_youthful">Youthful</string>
+    <string name="voice_breezy">Breezy</string>
+    <string name="voice_easy_going">Easy-going</string>
+    <string name="voice_breathy">Breathy</string>
+    <string name="voice_clear">Clear</string>
+    <string name="voice_smooth">Smooth</string>
+    <string name="voice_gravelly">Gravelly</string>
+    <string name="voice_soft">Soft</string>
+    <string name="voice_even">Even</string>
+    <string name="voice_mature">Mature</string>
+    <string name="voice_forward">Forward</string>
+    <string name="voice_friendly">Friendly</string>
+    <string name="voice_casual">Casual</string>
+    <string name="voice_gentle">Gentle</string>
+    <string name="voice_lively">Lively</string>
+    <string name="voice_knowledgeable">Knowledgeable</string>
+    <string name="voice_warm">Warm</string>
+    <string name="transport_wifi">Wi-Fi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">via phone</string>
+    <string name="transport_other">Online</string>
+    <string name="transport_none">Offline</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">Sound off</string>
+    <string name="notice_bezel_volume">Turn the bezel for volume</string>
+    <string name="notice_searching">Searching the web…</string>
+    <string name="note_timer">Timer · %1$s</string>
+    <string name="note_alarm">Alarm · %1$s</string>
+    <string name="note_saved">Note saved</string>
+    <string name="error_no_key_for">No key for %1$s yet.</string>
+    <string name="error_microphone_unavailable">The microphone is not available.</string>
 </resources>

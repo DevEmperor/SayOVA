@@ -3,7 +3,10 @@ package net.devemperor.parley.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material3.ColorScheme
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.Hyphens
 import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.Typography
 import net.devemperor.parley.session.Phase
 
 /**
@@ -69,7 +72,30 @@ private val ParleyColorScheme = ColorScheme(
     onErrorContainer = Color(0xFFFFDAD6),
 )
 
+/**
+ * Wear's type scale with hyphenation: on the narrow watch screen a long compound word ("Sprechtaste",
+ * "Gesprächsverlauf") otherwise breaks wherever the line ends, without a hyphen.
+ */
+private val ParleyTypography = Typography().let { t ->
+    fun TextStyle.hyphenated() = copy(hyphens = Hyphens.Auto)
+    t.copy(
+        displayLarge = t.displayLarge.hyphenated(),
+        displayMedium = t.displayMedium.hyphenated(),
+        displaySmall = t.displaySmall.hyphenated(),
+        titleLarge = t.titleLarge.hyphenated(),
+        titleMedium = t.titleMedium.hyphenated(),
+        titleSmall = t.titleSmall.hyphenated(),
+        labelLarge = t.labelLarge.hyphenated(),
+        labelMedium = t.labelMedium.hyphenated(),
+        labelSmall = t.labelSmall.hyphenated(),
+        bodyLarge = t.bodyLarge.hyphenated(),
+        bodyMedium = t.bodyMedium.hyphenated(),
+        bodySmall = t.bodySmall.hyphenated(),
+        bodyExtraSmall = t.bodyExtraSmall.hyphenated(),
+    )
+}
+
 @Composable
 fun ParleyTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = ParleyColorScheme, content = content)
+    MaterialTheme(colorScheme = ParleyColorScheme, typography = ParleyTypography, content = content)
 }

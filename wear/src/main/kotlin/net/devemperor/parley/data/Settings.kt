@@ -23,12 +23,8 @@ import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
 import java.io.IOException
 
-/** Whether the user's voice may cut the answer short. */
-enum class BargeIn(val label: String, val description: String) {
-    AUTO("Automatic", "Talk over Parley to interrupt it"),
-    ON("Open microphone", "For headphones; the speaker may interrupt itself"),
-    OFF("Tap only", "Tap the orb to interrupt"),
-}
+/** How the user's voice may cut the answer short; named on screen by ui/Labels.kt. */
+enum class BargeIn { AUTO, ON, OFF }
 
 data class ParleySettings(
     val provider: ProviderId = ProviderId.GEMINI,

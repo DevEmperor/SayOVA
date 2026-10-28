@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome and setup -->
+    <string name="welcome_tagline">Prata med AI från handleden.</string>
+    <string name="welcome_start">Starta</string>
+    <string name="permission_title">Mikrofon</string>
+    <string name="permission_text">Parley behöver mikrofonen för att höra dig. Ljud strömmas bara medan ett samtal är öppet.</string>
+    <string name="permission_blocked">Mikrofonen är blockerad. Tillåt den i appinställningarna för att prata med Parley.</string>
+    <string name="permission_allow">Tillåt</string>
+    <string name="permission_settings">Inställningar</string>
+    <string name="provider_choose">Välj leverantör</string>
+    <string name="provider_choose_hint">Parley använder din egen API-nyckel, så du har kontroll över kostnad och data.</string>
+    <string name="provider_gemini_note">Rekommenderas · ca 1–2 ¢ per minut</string>
+    <string name="provider_openai_note">Ca 2–11 ¢ per minut</string>
+    <string name="provider_connected">Ansluten</string>
+
+    <!-- Pairing -->
+    <string name="pair_preparing">Förbereder en säker kod…</string>
+    <string name="pair_scan">Skanna med telefonen</string>
+    <string name="pair_waiting_offline">Ingen anslutning – kontrollera wifi</string>
+    <string name="pair_open_on_phone">På telefonen</string>
+    <string name="pair_continue_on_phone">Fortsätt på telefonen</string>
+    <string name="pair_compare_title">Samma kod på telefonen?</string>
+    <string name="pair_compare_match">Stämmer</string>
+    <string name="pair_compare_mismatch">Stämmer inte</string>
+    <string name="pair_checking">Kontrollerar nyckeln med %1$s…</string>
+    <string name="pair_connected_title">Ansluten</string>
+    <string name="pair_connected_text">%1$s godkände nyckeln. Den lagras krypterad bara på den här klockan.</string>
+    <string name="pair_connected_unverified">Nyckeln har sparats, men %1$s gick inte att nå för kontroll. Parley försöker igen när du pratar.</string>
+    <string name="pair_connected_action">Starta</string>
+    <string name="pair_failed_expired">Koden har gått ut</string>
+    <string name="pair_failed_rejected">Leverantören avvisade nyckeln</string>
+    <string name="pair_failed_offline">Ingen anslutning</string>
+    <string name="pair_failed_broken">Nyckeln kunde inte läsas</string>
+
+    <!-- Home -->
+    <string name="home_talk">Prata</string>
+    <string name="home_text_mode">Tyst läge</string>
+    <string name="home_history">Historik</string>
+    <string name="home_settings">Inställningar</string>
+
+    <!-- Conversation -->
+    <string name="status_connecting">Ansluter</string>
+    <string name="status_listening">Lyssnar</string>
+    <string name="status_thinking">Tänker</string>
+    <string name="status_speaking">Talar</string>
+    <string name="status_writing">Svarar</string>
+    <string name="status_reconnecting">Återansluter</string>
+    <string name="status_ended">Sparat</string>
+    <string name="status_problem">Problem</string>
+    <string name="status_muted">Mikrofon av</string>
+    <string name="status_tap_to_talk">Tryck för att prata</string>
+    <string name="hint_connecting">Ansluter till %1$s…</string>
+    <string name="hint_ask_anything">Fråga vad som helst.</string>
+    <string name="hint_push_to_talk">Tryck på klotet, prata, tryck igen.</string>
+    <string name="notice_tap_to_interrupt">Tryck för att avbryta</string>
+    <string name="orb_interrupt">Avbryt</string>
+    <string name="orb_mute">Stäng av mikrofonen</string>
+    <string name="orb_unmute">Slå på mikrofonen</string>
+    <string name="orb_start_talking">Börja prata</string>
+    <string name="orb_stop_talking">Sluta prata</string>
+    <string name="action_end">Avsluta</string>
+    <string name="action_show_text">Visa text</string>
+    <string name="action_hide_text">Dölj text</string>
+    <string name="action_volume">Volym</string>
+    <string name="action_sound_off">Ljud av</string>
+    <string name="action_sound_on">Ljud på</string>
+    <string name="action_louder">Högre</string>
+    <string name="action_quieter">Lägre</string>
+    <string name="action_try_again">Försök igen</string>
+    <string name="action_connect">Anslut</string>
+
+    <!-- Errors -->
+    <string name="error_auth_title">Nyckel avvisad</string>
+    <string name="error_auth_text">Leverantören avvisade API-nyckeln. Anslut en ny.</string>
+    <string name="error_quota_title">Inget saldo kvar</string>
+    <string name="error_quota_text">Ditt leverantörskonto saknar saldo eller betalning, eller har nått sin utgiftsgräns.</string>
+    <string name="error_rate_title">För många anrop</string>
+    <string name="error_rate_text">Leverantören ber dig sakta ner. Försök igen om en minut.</string>
+    <string name="error_network_title">Anslutningen bröts</string>
+    <string name="error_network_text">Kontrollera wifi eller mobildata och försök igen.</string>
+    <string name="error_rejected_title">Begäran nekades</string>
+    <string name="error_server_title">Leverantören avslutade samtalet</string>
+    <string name="error_no_microphone">Parley behöver mikrofonen. Öppna appen för att tillåta den.</string>
+    <string name="error_server_text">Det kan hända efter ett mycket långt samtal eller vid problem hos leverantören.</string>
+
+    <!-- History -->
+    <string name="history_title">Historik</string>
+    <string name="history_empty">Dina samtal visas här.</string>
+    <string name="history_off">Historiken är avstängd i inställningarna.</string>
+    <string name="history_untitled">Samtal</string>
+    <string name="history_report">Rapportera ett svar</string>
+    <string name="history_continue">Fortsätt</string>
+    <string name="history_delete">Ta bort</string>
+    <string name="history_delete_confirm">Ta bort samtalet?</string>
+    <string name="report_title">Rapportera</string>
+    <string name="report_hint">Välj svaret som var stötande eller fel. Ett mejl öppnas på telefonen.</string>
+    <string name="report_no_phone">Ingen telefon ansluten. Skriv till contact@devemperor.net i stället.</string>
+    <string name="report_continue">Fortsätt på telefonen</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Inställningar</string>
+    <string name="settings_provider_connected">Nyckel på klockan</string>
+    <string name="settings_provider_missing">Inte ansluten</string>
+    <string name="settings_model">Modell</string>
+    <string name="settings_voice">Röst</string>
+    <string name="settings_language">Språk</string>
+    <string name="settings_persona">Personlighet</string>
+    <string name="settings_conversation">Samtal</string>
+    <string name="settings_web_search">Webbsökning</string>
+    <string name="settings_web_search_note">Nyheter, väder med mera</string>
+    <string name="settings_barge_in">Avbryt med rösten</string>
+    <string name="settings_push_to_talk">Tryck för att tala</string>
+    <string name="settings_push_to_talk_note">Tryck på klotet för att tala</string>
+    <string name="settings_auto_end">Avsluta vid tystnad</string>
+    <string name="settings_start_on_launch">Prata vid start</string>
+    <string name="settings_start_on_launch_note">Bra med en knappgenväg</string>
+    <string name="settings_haptics">Vibration</string>
+    <string name="settings_show_cost">Visa kostnad</string>
+    <string name="settings_show_cost_note">Under samtal och i historiken</string>
+    <string name="settings_usage">Användning &amp; kostnad</string>
+    <string name="settings_usage_summary">Denna månad %1$s · %2$s</string>
+    <string name="usage_title">Användning</string>
+    <string name="usage_earlier">Tidigare månader</string>
+    <string name="usage_all_time">Totalt</string>
+    <string name="usage_recent">%1$s – i dag · max %2$s</string>
+    <string name="usage_average">%1$s per samtal · %2$s per minut</string>
+    <string name="usage_estimate">Uppskattat utifrån den användning som leverantören rapporterar och dess publicerade priser. Det är leverantörens faktura som gäller.</string>
+    <string name="settings_privacy">Integritet</string>
+    <string name="settings_history">Spara historik</string>
+    <string name="settings_delete_history">Ta bort all historik</string>
+    <string name="settings_delete_history_confirm">Ta bort alla samtal?</string>
+    <string name="settings_about">Om</string>
+    <string name="language_hint">Med Automatiskt får du svar på det språk du talar.</string>
+    <string name="barge_in_hint">Hur du avbryter ett svar. Automatiskt skiljer din röst från Parleys egen, som mikrofonen hör i klockans högtalare.</string>
+    <string name="history_hint">Samtal sparas bara på den här klockan.</string>
+    <string name="history_keep_off">Spara inte</string>
+    <plurals name="usage_conversations">
+        <item quantity="one">%1$d samtal</item>
+        <item quantity="other">%1$d samtal</item>
+    </plurals>
+    <plurals name="history_keep_days">
+        <item quantity="one">%1$d dag</item>
+        <item quantity="other">%1$d dagar</item>
+    </plurals>
+    <string name="history_keep_forever">För alltid</string>
+    <plurals name="auto_end_seconds">
+        <item quantity="one">%1$d sekund</item>
+        <item quantity="other">%1$d sekunder</item>
+    </plurals>
+    <string name="auto_end_never">Aldrig</string>
+    <string name="persona_custom_label">Hur ska Parley bete sig?</string>
+    <string name="provider_title">Leverantör</string>
+    <string name="provider_keys">Nycklar</string>
+    <string name="provider_key_hint">Nyckel %1$s</string>
+    <string name="provider_not_connected">Inte ansluten än</string>
+    <string name="provider_connect">Anslut %1$s</string>
+    <string name="provider_replace_key">Ny nyckel för %1$s</string>
+    <string name="provider_remove_key">Ta bort %1$s-nyckeln</string>
+    <string name="provider_remove_confirm">Ta bort nyckeln från klockan?</string>
+    <string name="provider_keys_note">Nycklarna är krypterade på klockan och lämnar den aldrig.</string>
+
+    <!-- About -->
+    <string name="about_version">Version %1$s</string>
+    <string name="about_privacy_summary">Din röst går direkt från klockan till den leverantör du valt, med din egen nyckel. Parley har ingen server som ser dina samtal.</string>
+    <string name="about_privacy">Integritetspolicy</string>
+    <string name="about_on_phone">Öppnas på telefonen</string>
+    <string name="about_source">Källkod</string>
+    <string name="about_license">Apache License 2.0</string>
+    <string name="about_licenses">Licenser för öppen källkod</string>
+    <string name="about_contact">Kontakt</string>
+    <string name="about_continue_on_phone">Fortsätt på telefonen</string>
+
+    <!-- Service, tile, complication -->
+    <string name="notification_channel">Samtal</string>
+    <string name="notification_text">Lyssnar och svarar</string>
+    <string name="ongoing_status">Pratar</string>
+    <string name="tile_label">Parley</string>
+    <string name="tile_description">Prata med Parley med ett tryck</string>
+    <string name="tile_text_mode">Tyst läge</string>
+    <string name="tile_hint">Svar som text, utan ljud</string>
+    <string name="complication_label">Prata med Parley</string>
+    <string name="complication_short">Prata</string>
+    <string name="complication_description">Starta ett samtal med Parley</string>
+
+    <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
+    <string name="persona_friendly">Vänlig</string>
+    <string name="persona_friendly_description">Varm och hjälpsam</string>
+    <string name="persona_concise">Koncis</string>
+    <string name="persona_concise_description">Så kort som möjligt</string>
+    <string name="persona_tutor">Lärare</string>
+    <string name="persona_tutor_description">Förklarar steg för steg</string>
+    <string name="persona_language_partner">Språkpartner</string>
+    <string name="persona_language_partner_description">Samtalsövning</string>
+    <string name="persona_custom">Anpassad</string>
+    <string name="persona_custom_description">Din egen instruktion</string>
+    <string name="language_auto">Automatiskt</string>
+    <string name="barge_in_auto">Automatiskt</string>
+    <string name="barge_in_auto_description">Prata över Parley för att avbryta</string>
+    <string name="barge_in_on">Öppen mikrofon</string>
+    <string name="barge_in_on_description">För hörlurar; högtalaren kan avbryta sig själv</string>
+    <string name="barge_in_off">Bara tryck</string>
+    <string name="barge_in_off_description">Tryck på klotet för att avbryta</string>
+    <string name="model_fast">Snabb</string>
+    <string name="model_thorough">Grundlig</string>
+    <string name="model_best">Bäst</string>
+    <string name="model_gemini_fast_description">Snabba, naturliga svar</string>
+    <string name="model_gemini_thorough_description">Tänker längre innan den svarar</string>
+    <string name="model_openai_fast_description">Snabb och prisvärd</string>
+    <string name="model_openai_best_description">OpenAI:s starkaste röstmodell</string>
+    <string name="voice_recommended">Rekommenderas</string>
+    <string name="voice_firm">Bestämd</string>
+    <string name="voice_upbeat">Pigg</string>
+    <string name="voice_informative">Informativ</string>
+    <string name="voice_bright">Ljus</string>
+    <string name="voice_excitable">Ivrig</string>
+    <string name="voice_youthful">Ungdomlig</string>
+    <string name="voice_breezy">Lättsam</string>
+    <string name="voice_easy_going">Avslappnad</string>
+    <string name="voice_breathy">Luftig</string>
+    <string name="voice_clear">Tydlig</string>
+    <string name="voice_smooth">Len</string>
+    <string name="voice_gravelly">Raspig</string>
+    <string name="voice_soft">Mjuk</string>
+    <string name="voice_even">Jämn</string>
+    <string name="voice_mature">Mogen</string>
+    <string name="voice_forward">Framåt</string>
+    <string name="voice_friendly">Vänlig</string>
+    <string name="voice_casual">Vardaglig</string>
+    <string name="voice_gentle">Mild</string>
+    <string name="voice_lively">Livlig</string>
+    <string name="voice_knowledgeable">Kunnig</string>
+    <string name="voice_warm">Varm</string>
+    <string name="transport_wifi">Wifi</string>
+    <string name="transport_cellular">LTE</string>
+    <string name="transport_bluetooth">via telefon</string>
+    <string name="transport_other">Online</string>
+    <string name="transport_none">Offline</string>
+
+    <!-- Short notes during a conversation, under the orb or in the transcript. -->
+    <string name="notice_sound_off">Ljud av</string>
+    <string name="notice_bezel_volume">Vrid ramen för volym</string>
+    <string name="notice_searching">Söker på webben…</string>
+    <string name="note_timer">Timer · %1$s</string>
+    <string name="note_alarm">Alarm · %1$s</string>
+    <string name="note_saved">Anteckning sparad</string>
+    <string name="error_no_key_for">Ingen nyckel för %1$s än.</string>
+    <string name="error_microphone_unavailable">Mikrofonen är inte tillgänglig.</string>
+</resources>

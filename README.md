@@ -26,6 +26,10 @@ your own API key.
 - **Its own volume, and quiet at a tap.** Turn the bezel or crown to set Parley's volume; it
   remembers it and gives your media volume back when the conversation ends. The sound button
   switches the voice off for quiet places, and the transcript shows instead.
+- **Pick up where you left off.** Continue any conversation from the history; Parley remembers what
+  was said.
+- **Speaks your language.** The app is translated into 12 languages besides English, and Parley
+  answers in whatever language you talk to it.
 - **Know what it costs.** Usage statistics show cost and talk time per month and in total.
 - **Silent mode.** Answers as text only, with push-to-talk — for lectures, meetings or a
   quiet room.

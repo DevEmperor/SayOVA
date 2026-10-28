@@ -57,9 +57,9 @@ fun HistoryScreen(conversations: List<Conversation>, historyOff: Boolean, showCo
     }
 }
 
-/** The transcript of one conversation, with reporting and deleting at the end. */
+/** The transcript of one conversation: carrying it on comes first, reporting and deleting at the end. */
 @Composable
-fun ConversationDetailScreen(conversation: Conversation, onReport: () -> Unit, onDelete: () -> Unit) {
+fun ConversationDetailScreen(conversation: Conversation, onContinue: () -> Unit, onReport: () -> Unit, onDelete: () -> Unit) {
     var confirmDelete by remember { mutableStateOf(false) }
     ListScreen { spec ->
         item {
@@ -69,6 +69,15 @@ fun ConversationDetailScreen(conversation: Conversation, onReport: () -> Unit, o
                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_ABBREV_MONTH,
                 ),
                 spec,
+            )
+        }
+        item {
+            MenuButton(
+                label = stringResource(R.string.history_continue),
+                icon = R.drawable.ic_mic,
+                highlighted = true,
+                spec = spec,
+                onClick = onContinue,
             )
         }
         conversation.turns.forEachIndexed { index, turn ->

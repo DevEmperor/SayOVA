@@ -57,14 +57,15 @@ import androidx.wear.compose.material3.curvedText
 import net.devemperor.parley.R
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.ui.components.EdgeButtonScaffold
+import net.devemperor.parley.ui.components.FitText
+import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.Hint
 import net.devemperor.parley.ui.components.ListScreen
 import net.devemperor.parley.ui.components.MenuButton
 import net.devemperor.parley.ui.components.MessageScreen
-import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.Orb
 import net.devemperor.parley.ui.components.QrCodeImage
-import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.openOnPhone
 import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.theme.ParleyColors
@@ -73,7 +74,7 @@ import net.devemperor.parley.ui.theme.ParleyColors
 fun WelcomeScreen(onStart: () -> Unit) {
     EdgeButtonScaffold(
         edgeButton = {
-            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.ExtraSmall) { Text(stringResource(R.string.welcome_start)) }
+            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.ExtraSmall) { FitText(stringResource(R.string.welcome_start)) }
         },
     ) { padding ->
         Column(
@@ -215,14 +216,15 @@ private fun QrContent(state: PairingState.Waiting) {
     val instruction = stringResource(if (state.offline) R.string.pair_waiting_offline else R.string.pair_scan)
     val instructionColor = if (state.offline) ParleyColors.Coral else MaterialTheme.colorScheme.onSurfaceVariant
     EdgeButtonScaffold(
-        timeText = { TimeText(maxSweepAngle = 130f) { curvedText(instruction, color = instructionColor, maxSweepAngle = 130f) } },
+        // Wide enough for the longest translations; the QR code sits low enough to leave the sides free.
+        timeText = { TimeText(maxSweepAngle = 170f) { curvedText(instruction, color = instructionColor, maxSweepAngle = 170f) } },
         edgeButton = {
             EdgeButton(
                 onClick = { phoneOpened = openOnPhone(context, state.link) },
                 buttonSize = EdgeButtonSize.ExtraSmall,
                 colors = ButtonDefaults.filledTonalButtonColors(),
             ) {
-                Text(stringResource(R.string.pair_open_on_phone), maxLines = 1)
+                FitText(stringResource(R.string.pair_open_on_phone))
             }
         },
     ) { _ ->
@@ -257,7 +259,7 @@ private fun CompareCode(code: String, onMatch: () -> Unit, onMismatch: () -> Uni
     val question = stringResource(R.string.pair_compare_title)
     val questionColor = MaterialTheme.colorScheme.onSurfaceVariant
     ScreenScaffold(
-        timeText = { TimeText(maxSweepAngle = 140f) { curvedText(question, color = questionColor, maxSweepAngle = 140f) } },
+        timeText = { TimeText(maxSweepAngle = 170f) { curvedText(question, color = questionColor, maxSweepAngle = 170f) } },
     ) { _ ->
         val width = screenWidth()
         Column(
@@ -279,7 +281,7 @@ private fun CompareCode(code: String, onMatch: () -> Unit, onMismatch: () -> Uni
                 Button(
                     onClick = onMatch,
                     icon = { Icon(painterResource(R.drawable.ic_check), contentDescription = null) },
-                    label = { Text(stringResource(R.string.pair_compare_match), maxLines = 1) },
+                    label = { FitText(stringResource(R.string.pair_compare_match)) },
                 )
                 FilledTonalIconButton(onClick = onMismatch, modifier = Modifier.size(width * 0.14f)) {
                     Icon(

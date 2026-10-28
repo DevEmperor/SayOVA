@@ -38,8 +38,11 @@ import net.devemperor.parley.R
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.ui.components.EdgeButtonScaffold
+import net.devemperor.parley.ui.components.FitText
 import net.devemperor.parley.ui.components.Orb
 import net.devemperor.parley.ui.components.screenWidth
+import net.devemperor.parley.ui.labelRes
+import net.devemperor.parley.ui.stringOr
 
 /**
  * The start screen: the orb (tap it, or the edge button, to talk) and three small buttons for the
@@ -67,7 +70,7 @@ fun HomeScreen(
                 colors = ButtonDefaults.buttonColors(),
             ) {
                 Icon(painterResource(R.drawable.ic_mic), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(20.dp))
-                Text(stringResource(R.string.home_talk))
+                FitText(stringResource(R.string.home_talk))
             }
         },
     ) { padding ->
@@ -91,13 +94,13 @@ fun HomeScreen(
             ) {
                 Orb(phase = null, level = 0f, modifier = Modifier.fillMaxSize())
             }
-            Text(
-                "${provider.displayName.substringAfterLast(' ')} · ${model.label}" +
+            // One line that shrinks for languages whose model names run long ("Gründlich", "Minucioso"):
+            // a second line pushed the buttons below off their size.
+            FitText(
+                "${provider.displayName.substringAfterLast(' ')} · ${stringOr(model.labelRes(), model.label)}" +
                     if (settings.showCost && monthUsd > 0) " · ${CostMeter.format(monthUsd)}" else "",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).clickable(onClick = onUsage).padding(vertical = 3.dp),
             )
