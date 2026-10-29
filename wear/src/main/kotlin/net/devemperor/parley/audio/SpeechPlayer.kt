@@ -149,7 +149,11 @@ class SpeechPlayer(private val sampleRate: Int, call: Boolean = false) {
         if (released) return
         released = true
         running = false
+        generation++
         queue.clear()
+        // Silent at once, not only once the writer has noticed: what it still had went on playing for
+        // a moment while the conversation ended.
+        synchronized(this) { runCatching { track.pause(); track.flush() } }
         writer.join(500)
         runCatching { track.stop() }
         track.release()

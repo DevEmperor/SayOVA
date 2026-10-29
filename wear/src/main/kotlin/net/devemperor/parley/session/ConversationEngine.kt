@@ -605,14 +605,18 @@ class ConversationEngine(
     private fun finish(error: SessionError?) {
         if (finished) return
         tick()
+        // Hung up during an answer: as with an interruption, only what was heard of it stays.
+        if (speaking) interruptAnswer()
         finished = true
         finalError = error
         micOpen = false
+        val finalTurns = uiTurns()
+        // Silent before the call mode ends: leaving it with the answer still playing sent the rest to
+        // the media output for a moment, louder and sounding different, before it stopped.
+        player?.release()
         headphones.stop()
         callAudio?.end()
-        val finalTurns = uiTurns()
         microphone.stop()
-        player?.release()
         val ownVolume = volume?.end()
         session.close()
         if (error != null) haptics.error() else haptics.ended()
