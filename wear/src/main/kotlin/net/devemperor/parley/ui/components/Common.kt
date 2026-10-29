@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.foundation.text.modifiers.TextAutoSizeLayoutScope
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -41,11 +42,16 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.wear.compose.foundation.ScrollInfoProvider
@@ -227,6 +233,67 @@ fun FitText(
         overflow = TextOverflow.Ellipsis,
         autoSize = TextAutoSize.StepBased(minFontSize = size * minScale, maxFontSize = size, stepSize = 0.5.sp),
     )
+}
+
+/**
+ * Text over a few lines that keeps its words whole. Next to an icon and a switch the line is narrow,
+ * and a long word ("Sprechtaste") was hyphenated; now the text gets smaller, down to [minScale], until
+ * every line ends between words. A word too wide even then ("Benachrichtigungen" would need 60 %) is
+ * hyphenated at that smaller size, in fewer pieces than before.
+ */
+@Composable
+fun WordFitText(
+    text: String,
+    maxLines: Int,
+    modifier: Modifier = Modifier,
+    style: TextStyle = LocalTextStyle.current,
+    color: Color = Color.Unspecified,
+    minScale: Float = 0.75f,
+) {
+    val size = style.fontSize.takeIf { it.isSp } ?: 14.sp
+    // The line height shrinks with the text, so smaller lines do not drift apart.
+    val lineHeight = style.lineHeight.takeIf { it.isSp }?.let { (it.value / size.value).em } ?: style.lineHeight
+    BasicText(
+        text,
+        modifier = modifier,
+        // The theme's hyphenation stays on: it only splits a word that does not fit its line, which
+        // the sizing below avoids where it can, and it marks the split where it cannot.
+        style = style.merge(
+            color = color.takeOrElse { style.color.takeOrElse { LocalContentColor.current } },
+            lineHeight = lineHeight,
+        ),
+        maxLines = maxLines,
+        overflow = TextOverflow.Ellipsis,
+        autoSize = WholeWords(size * minScale, size),
+    )
+}
+
+/** The largest size, in half-sp steps, at which the text fits and every line ends between words. */
+private data class WholeWords(val min: TextUnit, val max: TextUnit) : TextAutoSize {
+    override fun TextAutoSizeLayoutScope.getFontSize(constraints: Constraints, text: AnnotatedString): TextUnit {
+        var size = max.value
+        while (size > min.value) {
+            val layout = performLayout(constraints, text, size.sp)
+            if (!layout.hasVisualOverflow && breaksBetweenWords(layout, text.text)) return size.sp
+            size -= 0.5f
+        }
+        return min
+    }
+
+    private fun breaksBetweenWords(layout: TextLayoutResult, text: String): Boolean = (0 until layout.lineCount - 1).all { line ->
+        val end = layout.getLineEnd(line)
+        end !in 1 until text.length || !text[end - 1].isLetterOrDigit() || !text[end].isLetterOrDigit() || breaksAnywhere(text[end])
+    }
+
+    /** Chinese, Japanese and Korean lines may end between any two characters; that is no split word. */
+    private fun breaksAnywhere(char: Char): Boolean = Character.UnicodeScript.of(char.code) in WIDE_SCRIPTS
+
+    private companion object {
+        val WIDE_SCRIPTS = setOf(
+            Character.UnicodeScript.HAN, Character.UnicodeScript.HIRAGANA,
+            Character.UnicodeScript.KATAKANA, Character.UnicodeScript.HANGUL,
+        )
+    }
 }
 
 /** The watch's screen width, to size the orb and the QR code for small and large watches alike. */
