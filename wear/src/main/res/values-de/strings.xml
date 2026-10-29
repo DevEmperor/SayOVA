@@ -109,15 +109,9 @@
     <string name="app_language_system">Wie die Uhr</string>
     <string name="settings_persona">Persönlichkeit</string>
     <string name="settings_conversation">Gespräch</string>
-    <string name="settings_web_search">Websuche</string>
-    <string name="settings_web_search_note">Nachrichten, Wetter und mehr</string>
-    <string name="settings_barge_in">Per Stimme unterbrechen</string>
-    <string name="settings_push_to_talk">Sprechtaste</string>
-    <string name="settings_push_to_talk_note">Zum Sprechen Kugel antippen</string>
-    <string name="settings_auto_end">Nach Stille beenden</string>
-    <string name="settings_start_on_launch">Beim Öffnen sprechen</string>
-    <string name="settings_start_on_launch_note">Praktisch mit Tastenkürzel</string>
-    <string name="settings_haptics">Vibration</string>
+    <string name="settings_web_search">Websuche</string>    <string name="settings_barge_in">Per Stimme unterbrechen</string>
+    <string name="settings_push_to_talk">Sprechtaste</string>    <string name="settings_auto_end">Nach Stille beenden</string>
+    <string name="settings_start_on_launch">Beim Öffnen sprechen</string>    <string name="settings_haptics">Vibration</string>
     <string name="settings_show_cost">Kosten anzeigen</string>
     <string name="settings_show_cost_note">Im Gespräch und im Verlauf</string>
     <string name="settings_usage">Nutzung &amp; Kosten</string>

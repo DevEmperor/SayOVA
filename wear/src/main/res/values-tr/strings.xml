@@ -110,15 +110,9 @@
     <string name="app_language_system">Saatle aynı</string>
     <string name="settings_persona">Kişilik</string>
     <string name="settings_conversation">Sohbet</string>
-    <string name="settings_web_search">Web araması</string>
-    <string name="settings_web_search_note">Haberler, hava durumu ve dahası</string>
-    <string name="settings_barge_in">Sesle sözünü kes</string>
-    <string name="settings_push_to_talk">Bas-konuş</string>
-    <string name="settings_push_to_talk_note">Konuşmak için küreye dokunun</string>
-    <string name="settings_auto_end">Sessizlikte bitir</string>
-    <string name="settings_start_on_launch">Açılışta konuş</string>
-    <string name="settings_start_on_launch_note">Düğme kısayoluyla kullanışlı</string>
-    <string name="settings_haptics">Titreşim</string>
+    <string name="settings_web_search">Web araması</string>    <string name="settings_barge_in">Sesle sözünü kes</string>
+    <string name="settings_push_to_talk">Bas-konuş</string>    <string name="settings_auto_end">Sessizlikte bitir</string>
+    <string name="settings_start_on_launch">Açılışta konuş</string>    <string name="settings_haptics">Titreşim</string>
     <string name="settings_show_cost">Maliyeti göster</string>
     <string name="settings_show_cost_note">Konuşurken ve geçmişte</string>
     <string name="settings_usage">Kullanım ve maliyet</string>

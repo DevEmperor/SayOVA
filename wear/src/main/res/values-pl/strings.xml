@@ -109,15 +109,9 @@
     <string name="app_language_system">Jak w zegarku</string>
     <string name="settings_persona">Osobowość</string>
     <string name="settings_conversation">Rozmowa</string>
-    <string name="settings_web_search">Wyszukiwanie w sieci</string>
-    <string name="settings_web_search_note">Wiadomości, pogoda i inne</string>
-    <string name="settings_barge_in">Przerywanie głosem</string>
-    <string name="settings_push_to_talk">Naciśnij i mów</string>
-    <string name="settings_push_to_talk_note">Kliknij kulę, by mówić</string>
-    <string name="settings_auto_end">Koniec po ciszy</string>
-    <string name="settings_start_on_launch">Rozmowa od razu</string>
-    <string name="settings_start_on_launch_note">Przydatne ze skrótem na przycisku</string>
-    <string name="settings_haptics">Wibracje</string>
+    <string name="settings_web_search">Wyszukiwanie w sieci</string>    <string name="settings_barge_in">Przerywanie głosem</string>
+    <string name="settings_push_to_talk">Naciśnij i mów</string>    <string name="settings_auto_end">Koniec po ciszy</string>
+    <string name="settings_start_on_launch">Rozmowa od razu</string>    <string name="settings_haptics">Wibracje</string>
     <string name="settings_show_cost">Pokazuj koszt</string>
     <string name="settings_show_cost_note">Podczas rozmowy i w historii</string>
     <string name="settings_usage">Użycie i koszty</string>

@@ -110,15 +110,9 @@
     <string name="app_language_system">与手表相同</string>
     <string name="settings_persona">个性</string>
     <string name="settings_conversation">对话</string>
-    <string name="settings_web_search">网络搜索</string>
-    <string name="settings_web_search_note">新闻、天气等</string>
-    <string name="settings_barge_in">语音打断</string>
-    <string name="settings_push_to_talk">点按说话</string>
-    <string name="settings_push_to_talk_note">点按光球即可说话</string>
-    <string name="settings_auto_end">静默后自动结束</string>
-    <string name="settings_start_on_launch">打开即开始对话</string>
-    <string name="settings_start_on_launch_note">适合搭配按钮快捷方式</string>
-    <string name="settings_haptics">振动</string>
+    <string name="settings_web_search">网络搜索</string>    <string name="settings_barge_in">语音打断</string>
+    <string name="settings_push_to_talk">点按说话</string>    <string name="settings_auto_end">静默后自动结束</string>
+    <string name="settings_start_on_launch">打开即开始对话</string>    <string name="settings_haptics">振动</string>
     <string name="settings_show_cost">显示费用</string>
     <string name="settings_show_cost_note">对话时和历史记录中</string>
     <string name="settings_usage">用量和费用</string>

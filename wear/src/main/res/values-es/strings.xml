@@ -109,15 +109,9 @@
     <string name="app_language_system">Como el reloj</string>
     <string name="settings_persona">Personalidad</string>
     <string name="settings_conversation">Conversación</string>
-    <string name="settings_web_search">Búsqueda web</string>
-    <string name="settings_web_search_note">Noticias, tiempo y más</string>
-    <string name="settings_barge_in">Interrumpir con la voz</string>
-    <string name="settings_push_to_talk">Pulsar para hablar</string>
-    <string name="settings_push_to_talk_note">Toca el orbe para hablar</string>
-    <string name="settings_auto_end">Fin tras silencio</string>
-    <string name="settings_start_on_launch">Hablar al abrir</string>
-    <string name="settings_start_on_launch_note">Útil si lo asignas a un botón</string>
-    <string name="settings_haptics">Vibración</string>
+    <string name="settings_web_search">Búsqueda web</string>    <string name="settings_barge_in">Interrumpir con la voz</string>
+    <string name="settings_push_to_talk">Pulsar para hablar</string>    <string name="settings_auto_end">Fin tras silencio</string>
+    <string name="settings_start_on_launch">Hablar al abrir</string>    <string name="settings_haptics">Vibración</string>
     <string name="settings_show_cost">Mostrar coste</string>
     <string name="settings_show_cost_note">Al hablar y en el historial</string>
     <string name="settings_usage">Uso y costes</string>

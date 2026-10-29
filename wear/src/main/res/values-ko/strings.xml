@@ -110,15 +110,9 @@
     <string name="app_language_system">시계와 동일</string>
     <string name="settings_persona">성격</string>
     <string name="settings_conversation">대화</string>
-    <string name="settings_web_search">웹 검색</string>
-    <string name="settings_web_search_note">뉴스, 날씨 등</string>
-    <string name="settings_barge_in">음성으로 중단</string>
-    <string name="settings_push_to_talk">눌러서 말하기</string>
-    <string name="settings_push_to_talk_note">원을 탭하여 말하기</string>
-    <string name="settings_auto_end">침묵 시 종료</string>
-    <string name="settings_start_on_launch">열면 바로 대화</string>
-    <string name="settings_start_on_launch_note">버튼 바로가기와 함께 쓰면 편리함</string>
-    <string name="settings_haptics">진동</string>
+    <string name="settings_web_search">웹 검색</string>    <string name="settings_barge_in">음성으로 중단</string>
+    <string name="settings_push_to_talk">눌러서 말하기</string>    <string name="settings_auto_end">침묵 시 종료</string>
+    <string name="settings_start_on_launch">열면 바로 대화</string>    <string name="settings_haptics">진동</string>
     <string name="settings_show_cost">비용 표시</string>
     <string name="settings_show_cost_note">대화 중 및 기록에서</string>
     <string name="settings_usage">사용량 및 비용</string>

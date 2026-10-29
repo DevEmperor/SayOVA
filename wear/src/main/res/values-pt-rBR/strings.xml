@@ -109,15 +109,9 @@
     <string name="app_language_system">Igual ao relógio</string>
     <string name="settings_persona">Personalidade</string>
     <string name="settings_conversation">Conversa</string>
-    <string name="settings_web_search">Pesquisa na web</string>
-    <string name="settings_web_search_note">Notícias, clima e mais</string>
-    <string name="settings_barge_in">Interromper por voz</string>
-    <string name="settings_push_to_talk">Toque para falar</string>
-    <string name="settings_push_to_talk_note">Toque na esfera para falar</string>
-    <string name="settings_auto_end">Encerrar após silêncio</string>
-    <string name="settings_start_on_launch">Falar ao abrir</string>
-    <string name="settings_start_on_launch_note">Útil com atalho de botão</string>
-    <string name="settings_haptics">Vibração</string>
+    <string name="settings_web_search">Pesquisa na web</string>    <string name="settings_barge_in">Interromper por voz</string>
+    <string name="settings_push_to_talk">Toque para falar</string>    <string name="settings_auto_end">Encerrar após silêncio</string>
+    <string name="settings_start_on_launch">Falar ao abrir</string>    <string name="settings_haptics">Vibração</string>
     <string name="settings_show_cost">Mostrar custo</string>
     <string name="settings_show_cost_note">Na conversa e no histórico</string>
     <string name="settings_usage">Uso e custos</string>

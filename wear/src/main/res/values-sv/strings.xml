@@ -110,15 +110,9 @@
     <string name="app_language_system">Som klockan</string>
     <string name="settings_persona">Personlighet</string>
     <string name="settings_conversation">Samtal</string>
-    <string name="settings_web_search">Webbsökning</string>
-    <string name="settings_web_search_note">Nyheter, väder med mera</string>
-    <string name="settings_barge_in">Avbryt med rösten</string>
-    <string name="settings_push_to_talk">Tryck för att tala</string>
-    <string name="settings_push_to_talk_note">Tryck på klotet för att tala</string>
-    <string name="settings_auto_end">Avsluta vid tystnad</string>
-    <string name="settings_start_on_launch">Prata vid start</string>
-    <string name="settings_start_on_launch_note">Bra med en knappgenväg</string>
-    <string name="settings_haptics">Vibration</string>
+    <string name="settings_web_search">Webbsökning</string>    <string name="settings_barge_in">Avbryt med rösten</string>
+    <string name="settings_push_to_talk">Tryck för att tala</string>    <string name="settings_auto_end">Avsluta vid tystnad</string>
+    <string name="settings_start_on_launch">Prata vid start</string>    <string name="settings_haptics">Vibration</string>
     <string name="settings_show_cost">Visa kostnad</string>
     <string name="settings_show_cost_note">Under samtal och i historiken</string>
     <string name="settings_usage">Användning &amp; kostnad</string>

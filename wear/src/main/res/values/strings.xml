@@ -111,15 +111,9 @@
     <string name="app_language_system">Same as watch</string>
     <string name="settings_persona">Personality</string>
     <string name="settings_conversation">Conversation</string>
-    <string name="settings_web_search">Web search</string>
-    <string name="settings_web_search_note">News, weather and more</string>
-    <string name="settings_barge_in">Interrupt by voice</string>
-    <string name="settings_push_to_talk">Push to talk</string>
-    <string name="settings_push_to_talk_note">Tap the orb to speak</string>
-    <string name="settings_auto_end">End after silence</string>
-    <string name="settings_start_on_launch">Talk when opened</string>
-    <string name="settings_start_on_launch_note">Useful with a button shortcut</string>
-    <string name="settings_haptics">Vibration</string>
+    <string name="settings_web_search">Web search</string>    <string name="settings_barge_in">Interrupt by voice</string>
+    <string name="settings_push_to_talk">Push to talk</string>    <string name="settings_auto_end">End after silence</string>
+    <string name="settings_start_on_launch">Talk when opened</string>    <string name="settings_haptics">Vibration</string>
     <string name="settings_show_cost">Show cost</string>
     <string name="settings_show_cost_note">While talking and in history</string>
     <string name="settings_usage">Usage &amp; costs</string>

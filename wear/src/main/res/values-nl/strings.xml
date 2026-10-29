@@ -109,15 +109,9 @@
     <string name="app_language_system">Zoals het horloge</string>
     <string name="settings_persona">Persoonlijkheid</string>
     <string name="settings_conversation">Gesprek</string>
-    <string name="settings_web_search">Online zoeken</string>
-    <string name="settings_web_search_note">Nieuws, weer en meer</string>
-    <string name="settings_barge_in">Onderbreken met stem</string>
-    <string name="settings_push_to_talk">Druk om te praten</string>
-    <string name="settings_push_to_talk_note">Tik op de bol om te spreken</string>
-    <string name="settings_auto_end">Stoppen na stilte</string>
-    <string name="settings_start_on_launch">Praten bij openen</string>
-    <string name="settings_start_on_launch_note">Handig met een sneltoets</string>
-    <string name="settings_haptics">Trillen</string>
+    <string name="settings_web_search">Online zoeken</string>    <string name="settings_barge_in">Onderbreken met stem</string>
+    <string name="settings_push_to_talk">Druk om te praten</string>    <string name="settings_auto_end">Stoppen na stilte</string>
+    <string name="settings_start_on_launch">Praten bij openen</string>    <string name="settings_haptics">Trillen</string>
     <string name="settings_show_cost">Kosten tonen</string>
     <string name="settings_show_cost_note">Tijdens het praten en in geschiedenis</string>
     <string name="settings_usage">Gebruik &amp; kosten</string>

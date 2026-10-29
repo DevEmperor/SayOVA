@@ -110,15 +110,9 @@
     <string name="app_language_system">ウォッチと同じ</string>
     <string name="settings_persona">パーソナリティ</string>
     <string name="settings_conversation">会話</string>
-    <string name="settings_web_search">ウェブ検索</string>
-    <string name="settings_web_search_note">ニュース、天気など</string>
-    <string name="settings_barge_in">音声で中断</string>
-    <string name="settings_push_to_talk">タップで発話</string>
-    <string name="settings_push_to_talk_note">オーブをタップして話す</string>
-    <string name="settings_auto_end">無音時に自動終了</string>
-    <string name="settings_start_on_launch">起動時に会話を開始</string>
-    <string name="settings_start_on_launch_note">ボタンのショートカットに便利</string>
-    <string name="settings_haptics">バイブレーション</string>
+    <string name="settings_web_search">ウェブ検索</string>    <string name="settings_barge_in">音声で中断</string>
+    <string name="settings_push_to_talk">タップで発話</string>    <string name="settings_auto_end">無音時に自動終了</string>
+    <string name="settings_start_on_launch">起動時に会話を開始</string>    <string name="settings_haptics">バイブレーション</string>
     <string name="settings_show_cost">費用を表示</string>
     <string name="settings_show_cost_note">会話中と履歴で表示</string>
     <string name="settings_usage">使用量と費用</string>

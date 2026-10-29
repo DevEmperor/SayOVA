@@ -107,7 +107,7 @@ fun SettingsScreen(
         item {
             SwitchItem(
                 stringResource(R.string.settings_web_search), settings.webSearch, { v -> onUpdate { it.copy(webSearch = v) } }, spec,
-                stringResource(R.string.settings_web_search_note), R.drawable.ic_travel_explore,
+                icon = R.drawable.ic_travel_explore,
             )
         }
         item {
@@ -122,14 +122,14 @@ fun SettingsScreen(
         item {
             SwitchItem(
                 stringResource(R.string.settings_push_to_talk), settings.pushToTalk, { v -> onUpdate { it.copy(pushToTalk = v) } }, spec,
-                stringResource(R.string.settings_push_to_talk_note), R.drawable.ic_touch_app,
+                icon = R.drawable.ic_touch_app,
             )
         }
         item { MenuButton(stringResource(R.string.settings_auto_end), spec, { onOpenChoice(Choice.AUTO_END) }, autoEndLabel(settings.autoEndSeconds), R.drawable.ic_timer) }
         item {
             SwitchItem(
                 stringResource(R.string.settings_start_on_launch), settings.startOnLaunch, { v -> onUpdate { it.copy(startOnLaunch = v) } }, spec,
-                stringResource(R.string.settings_start_on_launch_note), R.drawable.ic_mic,
+                icon = R.drawable.ic_mic,
             )
         }
         item { SwitchItem(stringResource(R.string.settings_haptics), settings.haptics, { v -> onUpdate { it.copy(haptics = v) } }, spec, icon = R.drawable.ic_vibration) }
