@@ -88,7 +88,8 @@ its own prices — roughly:
 | OpenAI | `gpt-realtime-2.1` (Best) | 6–11 ¢ per minute |
 
 Parley shows a running estimate during the conversation and the month's total in the
-settings.
+settings. Thorough answers at once and then thinks in the background before it gives its
+considered answer; that thinking adds about half a cent to a hard question.
 
 ## Privacy
 

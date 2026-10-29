@@ -313,7 +313,7 @@
     </plurals>
     <string name="feature_allowed">許可済み</string>
     <string name="feature_asks_first">初回に確認</string>
-    <string name="feature_blocked">ウォッチの設定でブロック中</string>
+    <string name="feature_not_allowed">許可されていません</string>
     <string name="notice_location">現在地を取得しています…</string>
     <string name="notice_heart_rate">心拍数を測定しています…</string>
     <string name="notice_steps">歩数を取得しています…</string>

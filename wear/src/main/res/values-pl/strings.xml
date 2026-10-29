@@ -327,7 +327,7 @@
     </plurals>
     <string name="feature_allowed">Dozwolone</string>
     <string name="feature_asks_first">Pyta za pierwszym razem</string>
-    <string name="feature_blocked">Zablokowane w ustawieniach</string>
+    <string name="feature_not_allowed">Niedozwolone</string>
     <string name="notice_location">Ustalanie lokalizacji…</string>
     <string name="notice_heart_rate">Pomiar tętna…</string>
     <string name="notice_steps">Odczyt kroków…</string>

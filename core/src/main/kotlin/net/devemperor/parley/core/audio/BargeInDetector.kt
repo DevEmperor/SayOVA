@@ -18,6 +18,12 @@ package net.devemperor.parley.core.audio
  * It reports the user once the microphone is clearly louder than the coupling predicts, for long
  * enough not to be a click.
  *
+ * The coupling belongs to the watch, not to one answer, so from the second answer on the first second
+ * is no longer blind: users often talk over the very start of an answer, and that voice, far above the
+ * coupling already known, used to be learned as echo; every interruption after it then went unheard.
+ * Only a change of volume or sound ([relearn]) starts blind again, since the echo canceller may then
+ * leave more of the answer.
+ *
  * Levels are [Pcm.level] values (0 = -60 dBFS, 1 = 0 dBFS, so 0.1 is 6 dB); one call per microphone
  * frame of about 20 ms. Thread-safe: frames come from the microphone thread, answers start on the main
  * thread.
@@ -34,6 +40,8 @@ class BargeInDetector(
 ) {
     private var coupling = 0f
     private var learned = false
+    /** The coupling was known before the current answer began, so its first second listens too. */
+    private var known = false
     private var answerStartedAt = -1L
     private var above = 0
 
@@ -49,6 +57,14 @@ class BargeInDetector(
     fun startAnswer(nowMs: Long) {
         answerStartedAt = nowMs
         above = 0
+        known = learned
+    }
+
+    /** The volume or the sound changed: the echo is learned anew, blind for a second. */
+    @Synchronized
+    fun relearn(nowMs: Long) {
+        startAnswer(nowMs)
+        known = false
     }
 
     /** @return true when the user talks over the answer; the caller then interrupts it. */
@@ -59,11 +75,13 @@ class BargeInDetector(
         val measured = micLevel - playbackLevel
         if (nowMs - answerStartedAt < learnMs) {
             // The echo may not have arrived in the first frames; the loudest one sets the coupling.
-            if (audible) {
+            // Known from earlier answers, it takes only what could be echo: a frame far above it is
+            // the user, and is judged as such below.
+            if (audible && (!known || measured <= coupling + margin)) {
                 coupling = (if (learned) maxOf(coupling, measured) else measured).coerceIn(MIN_COUPLING, MAX_COUPLING)
                 learned = true
             }
-            return false
+            if (!known) return false
         }
         val expected = if (audible) playbackLevel + coupling else 0f
         val excess = micLevel - expected

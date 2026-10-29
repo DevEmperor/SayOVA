@@ -60,13 +60,15 @@ fun Orb(
 }
 
 /**
- * Hands the home screen's orb over to the conversation: where it was when a conversation started from
- * it, so the conversation's orb can grow out of it (Wear's navigation has no shared elements).
+ * Hands the home screen's orb over to the conversation and back: where it was when a conversation
+ * started from it, so the conversation's orb can grow out of it, and that the conversation's orb has
+ * shrunk back onto it at the end (Wear's navigation has no shared elements).
  */
 object OrbHandoff {
     /** The home orb's bounds in the window, kept current while the home screen shows it. */
     @Volatile var homeBounds: Rect? = null
     private var pending: Rect? = null
+    private var landed = false
 
     /** A conversation starts from the home screen now. */
     fun launch() {
@@ -75,4 +77,12 @@ object OrbHandoff {
 
     /** Where to grow from, once; null when the conversation did not start from the home orb. */
     fun take(): Rect? = pending.also { pending = null }
+
+    /** The ended conversation's orb now sits where the home orb is. */
+    fun land() {
+        landed = true
+    }
+
+    /** Whether the home screen comes back under a landed orb, once. */
+    fun takeLanded(): Boolean = landed.also { landed = false }
 }

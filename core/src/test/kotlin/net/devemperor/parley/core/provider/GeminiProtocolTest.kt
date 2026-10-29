@@ -11,6 +11,7 @@ import kotlinx.serialization.json.buildJsonObject
 import net.devemperor.parley.core.provider.gemini.GeminiProtocol
 import net.devemperor.parley.core.provider.gemini.GeminiTranslator
 import net.devemperor.parley.core.session.SessionConfig
+import net.devemperor.parley.core.session.TokenUsage
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.tools.ParleyTools
 import org.junit.Assert.assertArrayEquals
@@ -130,6 +131,21 @@ class GeminiProtocolTest {
         // The next exchange gets new keys.
         assertEquals("u2", (t.translate("""{"serverContent":{"inputTranscription":{"text":"Again"}}}""")[0] as VoiceEvent.UserTranscript).turnKey)
         assertEquals("m2", (t.translate("""{"serverContent":{"outputTranscription":{"text":"Sure"}}}""")[0] as VoiceEvent.AssistantTranscript).turnKey)
+    }
+
+    @Test
+    fun `background reasoning and thinking tokens`() {
+        // As the extended-thinking model sent them on 2026-10-29: a first turn while it still thinks,
+        // its thoughts counted per message.
+        val t = GeminiTranslator()
+        assertEquals(
+            listOf(VoiceEvent.TurnComplete, VoiceEvent.Reasoning(active = true), VoiceEvent.Usage(TokenUsage(outputTextTokens = 94))),
+            t.translate("""{"serverContent":{"turnComplete":true,"interactionStatus":"IN_PROGRESS"},"usageMetadata":{"totalTokenCount":5120,"thoughtsTokenCount":94}}"""),
+        )
+        assertEquals(
+            listOf(VoiceEvent.TurnComplete, VoiceEvent.Reasoning(active = false)),
+            t.translate("""{"serverContent":{"turnComplete":true,"interactionStatus":"IDLE"},"usageMetadata":{"totalTokenCount":5300}}"""),
+        )
     }
 
     @Test

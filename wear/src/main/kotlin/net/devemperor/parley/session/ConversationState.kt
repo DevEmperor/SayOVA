@@ -50,8 +50,6 @@ data class ConversationUiState(
     val notice: String? = null,
     /** The watch feature in use right now (location, heart rate …), shown with its icon. */
     val activeFeature: WatchFeature? = null,
-    /** Watch features used in this conversation so far, in order: their icons stay in the caption. */
-    val usedFeatures: List<WatchFeature> = emptyList(),
     /** Parley speaks as a call (see CallAudio): its volume is the call volume. */
     val callAudio: Boolean = false,
     val error: SessionError? = null,

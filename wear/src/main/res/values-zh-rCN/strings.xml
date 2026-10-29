@@ -313,7 +313,7 @@
     </plurals>
     <string name="feature_allowed">已授权</string>
     <string name="feature_asks_first">首次使用时询问</string>
-    <string name="feature_blocked">已在手表设置中阻止</string>
+    <string name="feature_not_allowed">未授权</string>
     <string name="notice_location">正在获取位置…</string>
     <string name="notice_heart_rate">正在测量心率…</string>
     <string name="notice_steps">正在读取步数…</string>

@@ -106,6 +106,7 @@ class ConversationEngine(
     }
     private val conversationId = options.continues?.id ?: UUID.randomUUID().toString()
     private val startedAtWall = options.continues?.startedAt ?: System.currentTimeMillis()
+    private val createdAt = SystemClock.elapsedRealtime()
     private var readyAt = 0L
     private var ready = false
     private var reconnecting = false
@@ -157,6 +158,9 @@ class ConversationEngine(
     private var answerHapticKey: String? = null
     private var awaitingAnswer = false
     private var awaitingSince = 0L
+    /** The model reasons on in the background after an answer (see VoiceEvent.Reasoning). */
+    private var reasoning = false
+    private var reasoningSince = 0L
     /** A tool's result went to the model, whose answer to it has not begun yet. */
     private var resultSent = false
     private var lastUserTextAt = 0L
@@ -171,8 +175,8 @@ class ConversationEngine(
     /** What a tool left to do once the conversation has ended (see ToolRunner.Outcome.afterEnd). */
     private var afterEnd: (() -> Unit)? = null
     @Volatile private var activeFeature: WatchFeature? = null
-    @Volatile private var usedFeatures: List<WatchFeature> = emptyList()
 
+    /** Sound and microphone; the microphone already listens, see [connect]. */
     fun start() {
         callAudio?.begin()
         volume?.begin(if (callMode) options.callVolume else options.speechVolume)
@@ -189,9 +193,15 @@ class ConversationEngine(
             !microphone.start()
         ) {
             finish(SessionError(ErrorKind.REJECTED, context.getString(R.string.error_microphone_unavailable)))
-            return
         }
-        session.connect()
+    }
+
+    /**
+     * Opens the connection, once the network is there. Whatever the user says in the meantime waits in
+     * the session until the provider is ready, so they can start talking at once.
+     */
+    fun connect() {
+        if (!finished) session.connect()
     }
 
     // ── Controls ────────────────────────────────────────────────────────────────────────────────
@@ -212,13 +222,23 @@ class ConversationEngine(
     fun toggleMute() {
         touch()
         muted = !muted
-        if (muted) session.endOfUserAudio()
+        // Before the provider is ready its connection takes no messages but the audio it holds.
+        if (muted && ready) session.endOfUserAudio()
         tick()
     }
 
     fun end() {
         if (finished) return
         session.close()
+    }
+
+    /** Diagnostics only (see MainActivity): a question typed in instead of spoken. */
+    fun say(text: String) {
+        if (!ready || finished) return
+        touch()
+        record("typed-${records.size}", Role.USER).text.append(text)
+        session.sendText(text)
+        awaitAnswer()
     }
 
     /**
@@ -230,7 +250,7 @@ class ConversationEngine(
         if (player == null || soundOff == off) return
         soundOff = off
         player.setMuted(off)
-        bargeIn.startAnswer(SystemClock.elapsedRealtime())
+        bargeIn.relearn(SystemClock.elapsedRealtime())
         // One short line under the orb: the speaker icon already tells that the sound is back.
         showNotice(context.getString(if (off) R.string.notice_sound_off else R.string.notice_bezel_volume), 2_500)
         tick()
@@ -242,14 +262,14 @@ class ConversationEngine(
      */
     fun stepVolume(direction: Int): Int? {
         val level = volume?.step(direction) ?: return null
-        bargeIn.startAnswer(SystemClock.elapsedRealtime())
+        bargeIn.relearn(SystemClock.elapsedRealtime())
         return level
     }
 
     private fun setTalking(open: Boolean) {
         if (talking == open) return
         talking = open
-        if (!open) {
+        if (!open && ready) {
             session.endOfUserAudio()
             awaitAnswer()
         }
@@ -302,6 +322,7 @@ class ConversationEngine(
                     ready = true
                     readyAt = SystemClock.elapsedRealtime()
                     haptics.listening()
+                    if (diagnostics) Log.d(TAG, "ready ${readyAt - createdAt} ms after the start")
                 }
                 reconnecting = false
                 touch()
@@ -344,6 +365,12 @@ class ConversationEngine(
                 answerStreaming = false
                 // The turn that only called a tool ends before the answer to its result begins.
                 if (!resultSent) awaitingAnswer = false
+            }
+            // The thorough model goes on thinking after its first answer: "Thinking" rather than
+            // "Listening" until it is done, and no automatic end meanwhile.
+            is VoiceEvent.Reasoning -> {
+                reasoning = event.active
+                reasoningSince = SystemClock.elapsedRealtime()
             }
             is VoiceEvent.ToolCall -> runTool(event)
             is VoiceEvent.ToolCallsCancelled -> Unit
@@ -417,7 +444,6 @@ class ConversationEngine(
         val feature = WatchFeature.forTool(call.name)
         if (feature != null) {
             activeFeature = feature
-            if (feature !in usedFeatures) usedFeatures = usedFeatures + feature
             val waiting = !WatchFeatures.granted(context, feature)
             showNotice(
                 if (waiting) context.getString(R.string.notice_allow, context.getString(feature.labelRes())) else context.getString(feature.workingRes()),
@@ -485,7 +511,9 @@ class ConversationEngine(
             lastAudibleAt = 0
             keepPreRoll = true
         }
-        val listening = ready && !muted && (!_state.value.pushToTalk || talking)
+        // Open from the start, also while connecting (see connect); push-to-talk waits for the
+        // provider, which must hear the end of what was said.
+        val listening = !muted && if (_state.value.pushToTalk) ready && talking else true
         if (!listening) keepPreRoll = false
         val gated = (speaking || echoTail) && !streamWhileSpeaking()
         listeningForBargeIn = listening && gated && options.bargeIn == BargeIn.AUTO && !options.textOnly
@@ -505,6 +533,7 @@ class ConversationEngine(
         }
         // The provider heard noise, not a question, and does not answer: back to listening.
         if (awaitingAnswer && pendingTools == 0 && !answerStreaming && now - awaitingSince > ANSWER_WAIT_MS) awaitingAnswer = false
+        if (reasoning && now - reasoningSince > ANSWER_WAIT_MS) reasoning = false
 
         val phase = when {
             reconnecting -> Phase.RECONNECTING
@@ -512,6 +541,7 @@ class ConversationEngine(
             speaking -> Phase.SPEAKING
             pendingTools > 0 -> Phase.THINKING
             awaitingAnswer -> Phase.THINKING
+            reasoning -> Phase.THINKING
             else -> Phase.LISTENING
         }
         // One tap on the wrist per answer, not one per burst of audio.
@@ -549,7 +579,6 @@ class ConversationEngine(
             halfDuplex = speaking && options.bargeIn == BargeIn.OFF && !options.textOnly,
             notice = notice,
             activeFeature = activeFeature,
-            usedFeatures = usedFeatures,
             callAudio = callMode,
         )
     }

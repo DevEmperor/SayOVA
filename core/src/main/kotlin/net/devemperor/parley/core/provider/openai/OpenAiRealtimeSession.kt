@@ -33,7 +33,8 @@ class OpenAiRealtimeSession(
     override val outputSampleRate = OpenAiProtocol.RATE
 
     private val translator = OpenAiTranslator()
-    private val gate = AudioGate(maxBufferedBytes = Pcm.bytesFor(2_000, OpenAiProtocol.RATE))
+    // The user may start talking while the session connects; that much of it waits for the handshake.
+    private val gate = AudioGate(maxBufferedBytes = Pcm.bytesFor(AudioGate.HOLD_MS, OpenAiProtocol.RATE))
 
     @Volatile private var socket: WebSocket? = null
     @Volatile private var closed = false

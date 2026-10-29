@@ -322,7 +322,7 @@
     </plurals>
     <string name="feature_allowed">Permitido</string>
     <string name="feature_asks_first">Pergunta na primeira vez</string>
-    <string name="feature_blocked">Bloqueado nas configurações</string>
+    <string name="feature_not_allowed">Não permitido</string>
     <string name="notice_location">Buscando sua localização…</string>
     <string name="notice_heart_rate">Medindo os batimentos…</string>
     <string name="notice_steps">Lendo os passos…</string>

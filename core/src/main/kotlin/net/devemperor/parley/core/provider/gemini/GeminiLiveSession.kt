@@ -39,8 +39,9 @@ class GeminiLiveSession(
     override val outputSampleRate = GeminiProtocol.OUTPUT_RATE
 
     private val translator = GeminiTranslator()
-    // Two seconds of speech survive the handshake (and a reconnect) instead of being cut off.
-    private val gate = AudioGate(maxBufferedBytes = Pcm.bytesFor(2_000, GeminiProtocol.INPUT_RATE))
+    // Speech while the session connects (the user may start talking at once) or reconnects survives
+    // the handshake instead of being cut off.
+    private val gate = AudioGate(maxBufferedBytes = Pcm.bytesFor(AudioGate.HOLD_MS, GeminiProtocol.INPUT_RATE))
     private val scheduler = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "gemini-session").apply { isDaemon = true } }
 
     @Volatile private var socket: WebSocket? = null

@@ -86,6 +86,46 @@ class BargeInDetectorTest {
     }
 
     @Test
+    fun `talking over the start of a later answer is noticed and teaches nothing`() {
+        val detector = BargeInDetector()
+        // A first answer teaches the coupling.
+        detector.startAnswer(0)
+        for (frame in 0 until 400) assertFalse(detector.onFrame(echo(frame, -0.3f, 15), reference(frame), frame * 20L))
+        val couplingBefore = detector.learnedCoupling
+        // The next answer: the user is already speaking when it starts, at about -9 dBFS.
+        val start = 500
+        detector.startAnswer(start * 20L)
+        var noticedAt = -1
+        for (frame in start until start + 100) {
+            val mic = maxOf(echo(frame - start, -0.3f, 15), 0.85f)
+            if (detector.onFrame(mic, reference(frame - start), frame * 20L)) {
+                noticedAt = frame - start
+                break
+            }
+        }
+        assertTrue("noticed at frame $noticedAt of the answer", noticedAt in 0..12)
+        assertTrue("coupling rose from $couplingBefore to ${detector.learnedCoupling}", detector.learnedCoupling <= couplingBefore + 0.02f)
+        // And its own echo still never counts in a later answer.
+        val third = 700
+        detector.startAnswer(third * 20L)
+        for (frame in third until third + 1_500) {
+            assertFalse("frame $frame", detector.onFrame(echo(frame - third, -0.3f, 15), reference(frame - third), frame * 20L))
+        }
+    }
+
+    @Test
+    fun `after a change of volume the echo is learned blind again`() {
+        val detector = BargeInDetector()
+        detector.startAnswer(0)
+        for (frame in 0 until 400) detector.onFrame(echo(frame, -0.4f, 15), reference(frame), frame * 20L)
+        // Louder now, and the canceller leaves much more of it: not the user.
+        detector.relearn(400 * 20L)
+        for (frame in 400 until 1_400) {
+            assertFalse("frame $frame", detector.onFrame(echo(frame, -0.1f, 15), reference(frame), frame * 20L))
+        }
+    }
+
+    @Test
     fun `nothing triggers while the coupling is being learned`() {
         val detector = BargeInDetector()
         detector.startAnswer(0)

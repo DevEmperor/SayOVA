@@ -94,4 +94,12 @@ class AudioGate(private val maxBufferedBytes: Int) {
     fun hold() {
         sink = null
     }
+
+    companion object {
+        /**
+         * How much audio a session holds back: a question asked while it connects. Waking the watch's
+         * Wi-Fi and the handshake can take some seconds; beyond this the oldest audio goes.
+         */
+        const val HOLD_MS = 8_000L
+    }
 }

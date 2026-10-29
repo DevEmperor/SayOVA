@@ -318,7 +318,7 @@
     </plurals>
     <string name="feature_allowed">İzin verildi</string>
     <string name="feature_asks_first">İlk seferde sorar</string>
-    <string name="feature_blocked">Ayarlarda engellendi</string>
+    <string name="feature_not_allowed">İzin verilmedi</string>
     <string name="notice_location">Konum bulunuyor…</string>
     <string name="notice_heart_rate">Nabız ölçülüyor…</string>
     <string name="notice_steps">Adımlar okunuyor…</string>

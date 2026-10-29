@@ -323,7 +323,7 @@
     </plurals>
     <string name="feature_allowed">Autorisé</string>
     <string name="feature_asks_first">Demande la première fois</string>
-    <string name="feature_blocked">Bloqué dans les réglages</string>
+    <string name="feature_not_allowed">Non autorisé</string>
     <string name="notice_location">Localisation en cours…</string>
     <string name="notice_heart_rate">Mesure du pouls…</string>
     <string name="notice_steps">Lecture des pas…</string>

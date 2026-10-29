@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -123,12 +124,13 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 }
             }
 
-            /** The conversation, on its own page or in place of the home screen; [onDone] leaves it. */
+            /** The conversation, on its own page or in place of the home screen ([onHome]); [onDone] leaves it. */
             @Composable
-            fun Conversation(state: ConversationUiState, s: ParleySettings, onDone: () -> Unit) {
+            fun Conversation(state: ConversationUiState, s: ParleySettings, onHome: Boolean, onDone: () -> Unit) {
                 ConversationScreen(
                     state = state,
                     showTranscript = s.showTranscript,
+                    onHome = onHome,
                     onToggleTranscript = { update { it.copy(showTranscript = !it.showTranscript) } },
                     onToggleSound = {
                         val off = !state.soundOff
@@ -171,13 +173,23 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     BackHandler(enabled = homeTalk) { homeTalk = false }
                     AnimatedContent(
                         targetState = homeTalk && session != null,
-                        transitionSpec = { fadeIn(tween(HOME_FADE_MS)) togetherWith fadeOut(tween(HOME_FADE_MS)) },
+                        transitionSpec = {
+                            // The ended conversation's orb has landed on the home orb: the conversation
+                            // goes only once the home screen has come in, so the orb never dims.
+                            val landed = !targetState && OrbHandoff.takeLanded()
+                            fadeIn(tween(HOME_FADE_MS)) togetherWith fadeOut(tween(HOME_FADE_MS, delayMillis = if (landed) HOME_FADE_MS else 0))
+                        },
                         label = "home",
                     ) { talking ->
                         val state = session
                         if (talking && state != null) {
-                            Conversation(state, s, onDone = { homeTalk = false })
+                            Conversation(state, s, onHome = true, onDone = { homeTalk = false })
                         } else {
+                            // A conversation is likely to start from here: wake the Wi-Fi already.
+                            LifecycleResumeEffect(Unit) {
+                                app.network.prewarm()
+                                onPauseOrDispose { }
+                            }
                             HomeScreen(
                                 settings = s,
                                 monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
@@ -196,7 +208,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     if (state == null) {
                         LaunchedEffect(Unit) { if (!navController.popBackStack(Routes.HOME, inclusive = false)) navController.navigateHome() }
                     } else {
-                        Conversation(state, s, onDone = {
+                        Conversation(state, s, onHome = false, onDone = {
                             if (!navController.popBackStack(Routes.HOME, inclusive = false)) navController.navigateHome()
                         })
                     }

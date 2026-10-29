@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -64,7 +63,6 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInParent
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -79,7 +77,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.rotary.RotaryScrollableDefaults
 import androidx.wear.compose.foundation.rotary.rotaryScrollable
@@ -115,7 +112,6 @@ import net.devemperor.parley.ui.iconRes
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.theme.ParleyColors
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
  * The live conversation: status on the bezel, the orb as the one control, one caption line under it,
@@ -132,11 +128,15 @@ import kotlin.math.roundToInt
  *
  * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
  * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
+ *
+ * [onHome]: shown in place of the home screen, whose orb this one grew out of and shrinks back onto
+ * at the end (see OrbHandoff).
  */
 @Composable
 fun ConversationScreen(
     state: ConversationUiState,
     showTranscript: Boolean,
+    onHome: Boolean,
     onToggleTranscript: () -> Unit,
     onToggleSound: () -> Unit,
     onTapOrb: () -> Unit,
@@ -151,12 +151,31 @@ fun ConversationScreen(
         ErrorContent(state, onRetry = onRetry, onFixProvider = onFixProvider)
         return
     }
+
+    // Started from the home screen, its orb grows into this one while the rest fades in; ended there,
+    // this orb shrinks back onto the home orb while the rest fades out, and the home screen comes in
+    // under it. Both move the orb itself, so it keeps its motion throughout.
+    val origin = remember { OrbHandoff.take() }
+    val grow = remember { Animatable(if (origin != null) 0f else 1f) }
+    LaunchedEffect(Unit) { if (origin != null) grow.animateTo(1f, tween(ORB_GROW_MS, easing = FastOutSlowInEasing)) }
+    val home = remember { if (onHome) OrbHandoff.homeBounds else null }
+    val leave = remember { Animatable(0f) }
+    var leaving by remember { mutableStateOf(false) }
+    var orbBounds by remember { mutableStateOf<Rect?>(null) }
     if (state.phase == Phase.ENDED) {
         LaunchedEffect(Unit) {
-            delay(1_400)
+            delay(ENDED_PAUSE_MS)
+            if (home != null && orbBounds != null) {
+                leaving = true
+                leave.animateTo(1f, tween(ORB_GROW_MS, easing = FastOutSlowInEasing))
+                OrbHandoff.land()
+            } else {
+                delay(ORB_GROW_MS.toLong())
+            }
             onDone()
         }
     }
+    val rest = Modifier.graphicsLayer { alpha = grow.value * (1f - leave.value) }
 
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
@@ -189,12 +208,6 @@ fun ConversationScreen(
     var rotary by remember { mutableFloatStateOf(0f) }
     val stepPx = with(LocalDensity.current) { VOLUME_STEP.toPx() }
     LaunchedEffect(bezelVolume) { if (bezelVolume) runCatching { focus.requestFocus() } }
-    // Started from the home screen: its orb grows into this one (see OrbHandoff) while the rest fades in.
-    val origin = remember { OrbHandoff.take() }
-    val grow = remember { Animatable(if (origin != null) 0f else 1f) }
-    LaunchedEffect(Unit) { if (origin != null) grow.animateTo(1f, tween(ORB_GROW_MS, easing = FastOutSlowInEasing)) }
-    var orbBounds by remember { mutableStateOf<Rect?>(null) }
-    var screenOffset by remember { mutableStateOf(Offset.Zero) }
     // No edge button: a small red hang-up button leaves the content most of the screen and is
     // recognisable at a glance, like the one on a phone call.
     ScreenScaffold(
@@ -226,9 +239,9 @@ fun ConversationScreen(
         } else {
             Modifier
         }
-        Box(Modifier.fillMaxSize().then(bezel).onGloballyPositioned { screenOffset = it.positionInWindow() }) {
+        Box(Modifier.fillMaxSize().then(bezel)) {
             Column(
-                Modifier.fillMaxSize().padding(bottom = width * 0.03f).graphicsLayer { alpha = grow.value },
+                Modifier.fillMaxSize().padding(bottom = width * 0.03f),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(Modifier.height(width * 0.12f))
@@ -239,7 +252,23 @@ fun ConversationScreen(
                     Modifier
                         .size(orbSize)
                         .onGloballyPositioned { orbBounds = it.boundsInWindow() }
-                        .graphicsLayer { alpha = if (grow.value < 1f) 0f else 1f }
+                        .graphicsLayer {
+                            val own = orbBounds
+                            if (own == null || own.width <= 0f) {
+                                // Not placed yet: wait for the first frame rather than flash at full size.
+                                if (grow.value < 1f) alpha = 0f
+                                return@graphicsLayer
+                            }
+                            val shown = when {
+                                leave.value > 0f && home != null -> lerp(own, home, leave.value)
+                                grow.value < 1f && origin != null -> lerp(origin, own, grow.value)
+                                else -> return@graphicsLayer
+                            }
+                            translationX = shown.center.x - own.center.x
+                            translationY = shown.center.y - own.center.y
+                            scaleX = shown.width / own.width
+                            scaleY = shown.height / own.height
+                        }
                         .semantics { contentDescription = orbLabel }
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
@@ -251,16 +280,17 @@ fun ConversationScreen(
                 ) {
                     val level = if (state.phase == Phase.SPEAKING) state.speechLevel else state.micLevel
                     Orb(
-                        phase = state.phase,
+                        // On its way back it calms down to the home orb's look.
+                        phase = if (leaving) null else state.phase,
                         level = level,
                         muted = state.muted || (state.pushToTalk && !state.talking && state.phase == Phase.LISTENING),
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
                 if (!transcript) Spacer(Modifier.height(6.dp))
-                Caption(state)
+                Caption(state, rest)
                 if (transcript) {
-                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth(), rotary = !bezelVolume)
+                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth().then(rest), rotary = !bezelVolume)
                 } else {
                     Spacer(Modifier.weight(1f))
                 }
@@ -273,18 +303,7 @@ fun ConversationScreen(
                     onToggleSound = onToggleSound.takeUnless { state.textOnly },
                     onVolume = showVolume,
                     onEnd = onEnd,
-                )
-            }
-            val target = orbBounds
-            if (origin != null && target != null && grow.value < 1f) {
-                val bounds = lerp(origin, target, grow.value).translate(-screenOffset)
-                val density = LocalDensity.current
-                Orb(
-                    phase = null,
-                    level = 0f,
-                    modifier = Modifier
-                        .offset { IntOffset(bounds.left.roundToInt(), bounds.top.roundToInt()) }
-                        .size(with(density) { bounds.width.toDp() }, with(density) { bounds.height.toDp() }),
+                    modifier = rest,
                 )
             }
             AnimatedVisibility(volumeOpen, enter = fadeIn(), exit = fadeOut()) {
@@ -397,6 +416,9 @@ private fun volumeIcon(level: Int, min: Int, max: Int): Int = when {
  * sound button: a tap switches Parley's voice off, coral, and on again, a long press opens [onVolume].
  * Both are null in silent mode, which shows text only and has no voice; their places stay empty so
  * the end button keeps the middle.
+ *
+ * The three follow the round edge: the end button sits lowest, the two beside it higher up, where the
+ * screen is wider. In one straight row, buttons of a size to hit were cut off by the edge.
  */
 @Composable
 private fun Controls(
@@ -408,13 +430,16 @@ private fun Controls(
     onToggleSound: (() -> Unit)?,
     onVolume: () -> Unit,
     onEnd: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val side = width * 0.12f
+    val side = width * 0.155f
+    val raised = Modifier.padding(bottom = width * 0.06f).size(side)
     Row(
-        horizontalArrangement = Arrangement.spacedBy(width * 0.04f),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier,
+        horizontalArrangement = Arrangement.spacedBy(width * 0.035f),
+        verticalAlignment = Alignment.Bottom,
     ) {
-        Box(Modifier.size(side)) {
+        Box(raised) {
             if (onToggleTranscript != null) {
                 FilledIconButton(
                     onClick = onToggleTranscript,
@@ -435,7 +460,7 @@ private fun Controls(
                     Icon(
                         painterResource(if (transcript) R.drawable.ic_subtitles else R.drawable.ic_subtitles_off),
                         contentDescription = stringResource(if (transcript) R.string.action_hide_text else R.string.action_show_text),
-                        modifier = Modifier.size(width * 0.07f),
+                        modifier = Modifier.size(width * 0.08f),
                     )
                 }
             }
@@ -444,11 +469,11 @@ private fun Controls(
             onClick = onEnd,
             enabled = state.active,
             colors = IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.HangUp, contentColor = Color.White),
-            modifier = Modifier.size(width * 0.15f),
+            modifier = Modifier.size(width * 0.19f),
         ) {
-            Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.085f))
+            Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.1f))
         }
-        Box(Modifier.size(side)) {
+        Box(raised) {
             if (onToggleSound != null) {
                 FilledIconButton(
                     onClick = onToggleSound,
@@ -470,7 +495,7 @@ private fun Controls(
                     Icon(
                         painterResource(if (state.soundOff) R.drawable.ic_volume_off else volumeIcon),
                         contentDescription = stringResource(if (state.soundOff) R.string.action_sound_on else R.string.action_sound_off),
-                        modifier = Modifier.size(width * 0.07f),
+                        modifier = Modifier.size(width * 0.08f),
                     )
                 }
             }
@@ -571,11 +596,11 @@ private fun orbDescription(state: ConversationUiState): String = when {
 /**
  * One fixed-height line under the orb: a notice when there is one ("Timer · 5 min"), the hint that a
  * tap interrupts while Parley speaks on the watch speaker, otherwise time, cost and network. Like
- * Android's own privacy indicators, a watch feature shows its icon while in use, and the icons of
- * those used so far stay in front of the time.
+ * Android's own privacy indicators, a watch feature shows its icon while in use, and only then: the
+ * icons of all features used so far piled up in front of the time.
  */
 @Composable
-private fun Caption(state: ConversationUiState) {
+private fun Caption(state: ConversationUiState, modifier: Modifier = Modifier) {
     val meta = buildList {
         if (state.elapsedMs > 0) add(formatElapsed(state.elapsedMs))
         if (state.showCost && state.costUsd > 0) add(CostMeter.format(state.costUsd))
@@ -589,7 +614,7 @@ private fun Caption(state: ConversationUiState) {
     // Shown at once, without an animation: a hint sliding or fading in drew the eye away from the orb.
     // A long one (a remembered fact) wraps onto up to three lines inside the round screen instead of
     // running off its edges.
-    Box(Modifier.heightIn(min = 17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
+    Box(modifier.heightIn(min = 17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
         if (hint != null) {
             val feature = state.activeFeature
             Row(
@@ -618,20 +643,7 @@ private fun Caption(state: ConversationUiState) {
                 )
             }
         } else {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                state.usedFeatures.forEach { used ->
-                    Icon(
-                        painterResource(used.iconRes()), contentDescription = stringResource(used.labelRes()),
-                        modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(Modifier.width(3.dp))
-                }
-                if (state.usedFeatures.isNotEmpty()) Spacer(Modifier.width(2.dp))
-                FitText(
-                    meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(1f, fill = false),
-                )
-            }
+            FitText(meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
@@ -757,6 +769,8 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
 
 private const val FOLLOW_PAUSE_MS = 6_000L
 private const val ORB_GROW_MS = 450
+/** How long an ended conversation shows "Saved" before it goes. */
+private const val ENDED_PAUSE_MS = 950L
 private const val VOLUME_PANEL_MS = 2_500L
 /** Bezel or crown travel per volume step: one click of the Galaxy Watch bezel, a short crown turn. */
 private val VOLUME_STEP = 12.dp

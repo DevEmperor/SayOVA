@@ -69,6 +69,9 @@ class MainActivity : ComponentActivity() {
     /** The tile or complication was tapped while Parley was already open. */
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        // With diagnostics on, a question typed into the running conversation, for tests on an emulator
+        // whose microphone hears nothing: `adb shell am start -n …/.MainActivity --es say "…"`.
+        if (Diagnostics.enabled) intent.getStringExtra(EXTRA_SAY)?.let(SessionHub::say)
         when (launchOf(intent)) {
             Launch.TALK -> if (hasMicrophone() && parley.keys.connected.value.isNotEmpty()) SessionHub.start(this, textOnly = false)
             Launch.TEXT -> if (hasMicrophone() && parley.keys.connected.value.isNotEmpty()) SessionHub.start(this, textOnly = true)
@@ -91,6 +94,7 @@ class MainActivity : ComponentActivity() {
         const val ACTION_TEXT = "net.devemperor.parley.action.TEXT"
         private const val EXTRA_DEMO = "demo"
         private const val EXTRA_ROUTES = "routes"
+        private const val EXTRA_SAY = "say"
 
         fun talkIntent(context: Context, textOnly: Boolean = false): Intent =
             Intent(context, MainActivity::class.java)

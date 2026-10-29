@@ -11,10 +11,12 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 import net.devemperor.parley.core.session.SessionConfig
+import net.devemperor.parley.core.session.TokenUsage
 import net.devemperor.parley.core.session.VoiceEvent
 import java.util.Base64
 
@@ -168,6 +170,11 @@ class GeminiTranslator {
 
         obj["serverContent"]?.jsonObject?.let { content -> translateContent(content, events) }
 
+        // The audio is priced by the minute (see CostMeter); the thinking comes on top, billed as text.
+        (obj["usageMetadata"] as? JsonObject)?.get("thoughtsTokenCount")?.jsonPrimitive?.longOrNull?.takeIf { it > 0 }?.let { thoughts ->
+            events += VoiceEvent.Usage(TokenUsage(outputTextTokens = thoughts))
+        }
+
         obj["toolCall"]?.jsonObject?.get("functionCalls")?.let { calls ->
             (calls as? JsonArray)?.forEach { element ->
                 val call = element.jsonObject
@@ -220,6 +227,11 @@ class GeminiTranslator {
         if (content["turnComplete"]?.jsonPrimitive?.booleanOrNull == true) {
             events += VoiceEvent.TurnComplete
             closeTurns()
+        }
+        // Sent with every turnComplete: IN_PROGRESS while background reasoning may still add to the
+        // answer, IDLE once all is done (read 2026-10-29 from ai.google.dev/api/live).
+        content["interactionStatus"]?.jsonPrimitive?.contentOrNull?.let { status ->
+            events += VoiceEvent.Reasoning(active = status == "IN_PROGRESS")
         }
     }
 

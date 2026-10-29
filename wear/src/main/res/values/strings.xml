@@ -320,7 +320,7 @@
     </plurals>
     <string name="feature_allowed">Allowed</string>
     <string name="feature_asks_first">Asks the first time</string>
-    <string name="feature_blocked">Blocked in watch settings</string>
+    <string name="feature_not_allowed">Not allowed</string>
     <string name="notice_location">Finding your location…</string>
     <string name="notice_heart_rate">Measuring heart rate…</string>
     <string name="notice_steps">Reading today’s steps…</string>

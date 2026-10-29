@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.Handler
+import android.os.Looper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,6 +26,12 @@ enum class Transport { WIFI, CELLULAR, BLUETOOTH, OTHER, NONE }
  * OS prefers that link to save battery. For the length of a conversation Parley therefore asks for
  * Wi-Fi or LTE and routes its sockets through it, falling back to whatever is there if neither comes
  * up in time. The request is dropped again when the conversation ends, so the radio can sleep.
+ *
+ * Waking the Wi-Fi takes seconds, which made the start of a conversation slow; so the home screen
+ * asks for it already while it shows ([prewarm]), and the network is usually up by the time the user
+ * taps. Unused, that request lapses after [WARM_MS].
+ *
+ * Main thread only.
  */
 class NetworkSelector(context: Context) {
     private val connectivity = context.getSystemService(ConnectivityManager::class.java)
@@ -33,9 +41,35 @@ class NetworkSelector(context: Context) {
     val transport: StateFlow<Transport> = _transport.asStateFlow()
 
     private var callback: ConnectivityManager.NetworkCallback? = null
+    /** A conversation holds the network; nothing lets it lapse meanwhile. */
+    private var held = false
+    private val handler = Handler(Looper.getMainLooper())
+    private val lapse = Runnable { if (!held) drop() }
 
-    /** Requests a fast network and waits up to [timeoutMs] for it. */
+    /** Asks for the fast network without waiting for it; it lapses after [WARM_MS] unless a conversation takes it over. */
+    fun prewarm() {
+        request()
+        handler.removeCallbacks(lapse)
+        if (!held) handler.postDelayed(lapse, WARM_MS)
+    }
+
+    /** Holds a fast network for a conversation and waits up to [timeoutMs] for it. */
     suspend fun acquire(timeoutMs: Long = 4_000) {
+        held = true
+        handler.removeCallbacks(lapse)
+        request()
+        withTimeoutOrNull(timeoutMs) { _fastNetwork.first { it != null } }
+        updateTransport()
+    }
+
+    /** The conversation is over. A home screen showing again keeps the network warm for the next one. */
+    fun release() {
+        held = false
+        handler.removeCallbacks(lapse)
+        handler.postDelayed(lapse, LINGER_MS)
+    }
+
+    private fun request() {
         if (callback == null) {
             val request = NetworkRequest.Builder()
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -56,11 +90,9 @@ class NetworkSelector(context: Context) {
             callback = cb
             runCatching { connectivity.requestNetwork(request, cb) }
         }
-        withTimeoutOrNull(timeoutMs) { _fastNetwork.first { it != null } }
-        updateTransport()
     }
 
-    fun release() {
+    private fun drop() {
         callback?.let { runCatching { connectivity.unregisterNetworkCallback(it) } }
         callback = null
         _fastNetwork.value = null
@@ -94,5 +126,12 @@ class NetworkSelector(context: Context) {
             caps.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> Transport.BLUETOOTH
             else -> Transport.OTHER
         }
+    }
+
+    private companion object {
+        /** How long the home screen keeps the fast network up without a conversation. */
+        const val WARM_MS = 20_000L
+        /** After a conversation: long enough for the home screen to come back and take it over. */
+        const val LINGER_MS = 3_000L
     }
 }

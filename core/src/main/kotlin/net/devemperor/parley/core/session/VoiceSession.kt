@@ -93,6 +93,12 @@ sealed interface VoiceEvent {
     /** The model finished its answer (the audio may still be playing). */
     data object TurnComplete : VoiceEvent
 
+    /**
+     * With a turn's end: whether the model still reasons in the background and may say more without
+     * being asked (Gemini's extended-thinking model answers at once and keeps thinking).
+     */
+    data class Reasoning(val active: Boolean) : VoiceEvent
+
     data class ToolCall(val callId: String, val name: String, val arguments: JsonObject) : VoiceEvent
 
     data class ToolCallsCancelled(val callIds: List<String>) : VoiceEvent

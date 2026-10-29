@@ -317,7 +317,7 @@
     </plurals>
     <string name="feature_allowed">Erlaubt</string>
     <string name="feature_asks_first">Fragt beim ersten Mal</string>
-    <string name="feature_blocked">In den Uhreinstellungen blockiert</string>
+    <string name="feature_not_allowed">Nicht erlaubt</string>
     <string name="notice_location">Standort wird ermittelt…</string>
     <string name="notice_heart_rate">Puls wird gemessen…</string>
     <string name="notice_steps">Schritte werden abgerufen…</string>

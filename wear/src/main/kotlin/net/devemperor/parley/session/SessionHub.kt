@@ -34,6 +34,7 @@ object SessionHub {
     fun stepVolume(direction: Int): Int? = engine?.stepVolume(direction)
     fun setSoundOff(off: Boolean) = engine?.setSoundOff(off)
     fun toggleMute() = engine?.toggleMute()
+    fun say(text: String) = engine?.say(text)
 
     fun end(context: Context) {
         engine?.end() ?: run {

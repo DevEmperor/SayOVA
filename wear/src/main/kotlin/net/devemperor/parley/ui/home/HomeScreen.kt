@@ -48,7 +48,7 @@ import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.stringOr
 
 /**
- * The start screen: the orb (tap it, or the edge button, to talk) and three small buttons for the
+ * The start screen: the orb (tap it, or the edge button, to talk) and three round buttons for the
  * silent text mode, the history and the settings. The line under the orb names provider and model
  * and the month's cost; a tap on it opens the usage statistics.
  */
@@ -86,7 +86,7 @@ fun HomeScreen(
             val talkLabel = stringResource(R.string.home_talk)
             Box(
                 Modifier
-                    .size(width * 0.32f)
+                    .size(width * 0.26f)
                     .onGloballyPositioned { OrbHandoff.homeBounds = it.boundsInWindow() }
                     .semantics { contentDescription = talkLabel }
                     .clickable(
@@ -108,19 +108,21 @@ fun HomeScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).clickable(onClick = onUsage).padding(vertical = 3.dp),
             )
-            Spacer(Modifier.height(6.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                SmallAction(R.drawable.ic_chat, stringResource(R.string.home_text_mode), width * 0.17f, onText)
-                SmallAction(R.drawable.ic_history, stringResource(R.string.home_history), width * 0.17f, onHistory)
-                SmallAction(R.drawable.ic_settings, stringResource(R.string.home_settings), width * 0.17f, onSettings)
+            Spacer(Modifier.height(4.dp))
+            // Large enough to hit; at the size of a small icon they were easy to miss.
+            val size = width * 0.2f
+            Row(horizontalArrangement = Arrangement.spacedBy(width * 0.04f)) {
+                Action(R.drawable.ic_chat, stringResource(R.string.home_text_mode), size, onText)
+                Action(R.drawable.ic_history, stringResource(R.string.home_history), size, onHistory)
+                Action(R.drawable.ic_settings, stringResource(R.string.home_settings), size, onSettings)
             }
         }
     }
 }
 
 @Composable
-private fun SmallAction(icon: Int, label: String, size: Dp, onClick: () -> Unit) {
+private fun Action(icon: Int, label: String, size: Dp, onClick: () -> Unit) {
     FilledTonalIconButton(onClick = onClick, modifier = Modifier.size(size)) {
-        Icon(painterResource(icon), contentDescription = label, modifier = Modifier.size(size * 0.5f))
+        Icon(painterResource(icon), contentDescription = label, modifier = Modifier.size(size * 0.45f))
     }
 }

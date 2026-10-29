@@ -322,7 +322,7 @@
     </plurals>
     <string name="feature_allowed">Permitido</string>
     <string name="feature_asks_first">Pregunta la primera vez</string>
-    <string name="feature_blocked">Bloqueado en ajustes del reloj</string>
+    <string name="feature_not_allowed">No permitido</string>
     <string name="notice_location">Buscando tu ubicación…</string>
     <string name="notice_heart_rate">Midiendo el pulso…</string>
     <string name="notice_steps">Leyendo los pasos…</string>

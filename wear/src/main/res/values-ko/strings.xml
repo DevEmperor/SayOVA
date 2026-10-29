@@ -313,7 +313,7 @@
     </plurals>
     <string name="feature_allowed">허용됨</string>
     <string name="feature_asks_first">처음 사용할 때 요청</string>
-    <string name="feature_blocked">시계 설정에서 차단됨</string>
+    <string name="feature_not_allowed">허용되지 않음</string>
     <string name="notice_location">위치 확인 중…</string>
     <string name="notice_heart_rate">심박수 측정 중…</string>
     <string name="notice_steps">걸음 수 확인 중…</string>

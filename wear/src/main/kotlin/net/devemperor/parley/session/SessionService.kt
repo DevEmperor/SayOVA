@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -85,7 +86,9 @@ class SessionService : LifecycleService() {
             stopEverything()
             return@launch
         }
-        if (!demo) app.network.acquire()
+        // Waking the Wi-Fi runs alongside opening the speaker and the microphone; only the connection
+        // itself waits for it (usually it is up already, see NetworkSelector.prewarm).
+        val network = if (demo) null else async { app.network.acquire() }
         val model = provider.model(settings.modelId())
         val canSearch = settings.webSearch
         val memory = app.memory.takeIf { settings.memory }
@@ -158,6 +161,9 @@ class SessionService : LifecycleService() {
         SessionHub.engine = newEngine
         launch { newEngine.state.collectLatest { SessionHub.publish(it) } }
         withContext(Dispatchers.Default) { newEngine.start() }
+        network?.await()
+        if (Diagnostics.enabled) android.util.Log.d("ParleyEvent", "connecting over ${app.network.transport.value}")
+        newEngine.connect()
     }
 
     private fun stopEverything() {

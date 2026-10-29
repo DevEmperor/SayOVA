@@ -317,7 +317,7 @@
     </plurals>
     <string name="feature_allowed">Toegestaan</string>
     <string name="feature_asks_first">Vraagt de eerste keer</string>
-    <string name="feature_blocked">Geblokkeerd in instellingen</string>
+    <string name="feature_not_allowed">Niet toegestaan</string>
     <string name="notice_location">Locatie bepalen…</string>
     <string name="notice_heart_rate">Hartslag meten…</string>
     <string name="notice_steps">Stappen ophalen…</string>

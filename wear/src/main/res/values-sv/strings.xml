@@ -318,7 +318,7 @@
     </plurals>
     <string name="feature_allowed">Tillåten</string>
     <string name="feature_asks_first">Frågar första gången</string>
-    <string name="feature_blocked">Blockerad i inställningarna</string>
+    <string name="feature_not_allowed">Inte tillåten</string>
     <string name="notice_location">Hämtar din plats…</string>
     <string name="notice_heart_rate">Mäter pulsen…</string>
     <string name="notice_steps">Hämtar stegen…</string>

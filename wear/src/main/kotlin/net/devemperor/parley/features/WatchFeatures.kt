@@ -1,17 +1,18 @@
 package net.devemperor.parley.features
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import net.devemperor.parley.core.tools.WatchFeature
 
 /**
- * How a watch feature stands with its Android permission, as the settings show it. [SYSTEM_SETTING]:
- * a special access no dialog can grant (notifications), only a system screen.
+ * How a watch feature stands with its Android permission, as the settings show it. [DENIED]: asked
+ * and refused; asking again shows the dialog unless Android has stopped asking (see
+ * WatchFeaturesScreen). [SYSTEM_SETTING]: a special access no dialog can grant (notifications), only
+ * a system screen.
  */
-enum class Access { ALLOWED, ASKS_FIRST, BLOCKED, SYSTEM_SETTING }
+enum class Access { ALLOWED, ASKS_FIRST, DENIED, SYSTEM_SETTING }
 
 /** The Android permissions behind each watch feature, and whether they are granted. */
 object WatchFeatures {
@@ -52,13 +53,14 @@ object WatchFeatures {
         feature != WatchFeature.NOTIFICATIONS || NotificationReader.allowed(context) || NotificationReader.settingsIntent(context) != null
 
     /**
-     * Android shows no dialog any more once the user said no twice; [asked] tells that apart from a
-     * permission never asked for, which also has no rationale yet.
+     * Whether Android would still show its dialog is not told by its rationale flag, which reads the
+     * same for a dialog swiped away, a permission refused twice and (on Wear OS 6) the health
+     * permissions; only asking again tells.
      */
-    fun access(activity: Activity, feature: WatchFeature, asked: Boolean): Access = when {
-        granted(activity, feature) -> Access.ALLOWED
+    fun access(context: Context, feature: WatchFeature, asked: Boolean): Access = when {
+        granted(context, feature) -> Access.ALLOWED
         feature == WatchFeature.NOTIFICATIONS -> Access.SYSTEM_SETTING
-        asked && permissions(feature).none(activity::shouldShowRequestPermissionRationale) -> Access.BLOCKED
+        asked -> Access.DENIED
         else -> Access.ASKS_FIRST
     }
 

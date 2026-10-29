@@ -7,7 +7,12 @@ First version.
 - Realtime conversations with Google Gemini Live (`gemini-3.8-live`, `gemini-3.8-live-extended-thinking`)
   and OpenAI Realtime (`gpt-realtime-2.1-mini`, `gpt-realtime-2.1`), with your own API key.
 - Interrupt by talking over the answer or by tapping the orb. On the watch speaker Parley keeps the
-  microphone on the watch during an answer and tells your voice from its own echo.
+  microphone on the watch during an answer and tells your voice from its own echo; talking over the
+  very start of an answer works too, from the second answer on.
+- Talk right away: Parley listens from the tap on, while it still connects, and the home screen wakes
+  the watch's Wi-Fi while it shows, so the connection is usually ready sooner.
+- The thorough Gemini model answers at once and keeps thinking in the background; the status shows
+  "Thinking" until it has said everything, and its thinking counts in the cost.
 - Orb-only conversation view by default; a text button shows the live transcript of both sides,
   with the heard part of the answer highlighted, and the choice is remembered.
 - Parley's own volume, set with the bezel or the crown (or a long press on the sound button) and
@@ -23,12 +28,16 @@ First version.
 - Over the watch speaker a conversation runs as a call, so the watch's echo canceller takes Parley's
   voice out of the microphone; once the echo is quiet enough, talking over an answer is left to the
   provider, which hears the user directly.
-- Tapping the orb or Talk on the home screen grows the orb into the conversation.
+- Tapping the orb or Talk on the home screen grows the orb into the conversation; at the end it shrinks
+  back onto the home screen's orb.
+- Large round buttons on the home screen, and in the conversation three larger controls along the round
+  edge (end in the middle, lowest).
 - History: hold a conversation to select several and delete them together.
 - Watch features: location (weather and places nearby), heart rate, today's steps and the
   calendar as tools. Each asks for its permission when switched on under Settings → Watch
-  features or when a conversation first needs it; its icon shows while it is in use and stays
-  in the caption for the rest of the conversation.
+  features or when a conversation first needs it; its icon shows while it is in use. "Allow now"
+  asks again after a "no"; only once Android stops showing its dialog (after the second "no") does
+  the button lead to the watch's settings instead.
 - More watch features: the weather straight from MET Norway (here or for a place you name, without a
   web search), air pressure and altitude from the barometer, the next alarm, music control, contacts
   and calls (only after you confirmed name and number; the call starts when the conversation ends),
