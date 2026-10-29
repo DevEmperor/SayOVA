@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -40,6 +42,7 @@ import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.FitText
 import net.devemperor.parley.ui.components.Orb
+import net.devemperor.parley.ui.components.OrbHandoff
 import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.stringOr
@@ -84,6 +87,7 @@ fun HomeScreen(
             Box(
                 Modifier
                     .size(width * 0.32f)
+                    .onGloballyPositioned { OrbHandoff.homeBounds = it.boundsInWindow() }
                     .semantics { contentDescription = talkLabel }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },

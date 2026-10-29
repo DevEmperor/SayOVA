@@ -13,14 +13,16 @@ import net.devemperor.parley.Diagnostics
  * conversation ([begin]) and gives the media volume back afterwards ([end]); the media volume the
  * user chose for everything else, often silent on the watch speaker, stays theirs.
  */
-class SpeechVolume(context: Context) {
+class SpeechVolume(context: Context, private val call: Boolean = false) {
     private val audio = context.getSystemService(AudioManager::class.java)
+    /** In call mode (see CallAudio) the speaker follows the call volume, otherwise the media volume. */
+    private val stream = if (call) AudioManager.STREAM_VOICE_CALL else AudioManager.STREAM_MUSIC
     private var mediaBefore = -1
 
-    val min: Int = audio.getStreamMinVolume(STREAM)
-    val max: Int = audio.getStreamMaxVolume(STREAM)
+    val min: Int = audio.getStreamMinVolume(stream)
+    val max: Int = audio.getStreamMaxVolume(stream)
 
-    fun current(): Int = audio.getStreamVolume(STREAM)
+    fun current(): Int = audio.getStreamVolume(stream)
 
     /** One step louder (+1) or quieter (-1), without the system's own volume panel; returns the volume now. */
     fun step(direction: Int): Int {
@@ -34,7 +36,8 @@ class SpeechVolume(context: Context) {
      */
     fun begin(saved: Int) {
         mediaBefore = current()
-        val level = saved.takeIf { it >= 0 } ?: assistantLevel() ?: ((min + max) / 2)
+        // The first time in call mode, as loud as the user has their calls.
+        val level = saved.takeIf { it >= 0 } ?: (if (call) current() else assistantLevel()) ?: ((min + max) / 2)
         set(level.coerceAtLeast(min + 1))
     }
 
@@ -47,7 +50,7 @@ class SpeechVolume(context: Context) {
     }
 
     private fun set(index: Int) {
-        runCatching { audio.setStreamVolume(STREAM, index.coerceIn(min, max), 0) }
+        runCatching { audio.setStreamVolume(stream, index.coerceIn(min, max), 0) }
             .onFailure { Log.w("Parley", "Media volume not changeable: ${it.message}") }
         if (Diagnostics.enabled) Log.d("ParleyEvent", "volume ${current()} of $min..$max")
     }
@@ -55,12 +58,11 @@ class SpeechVolume(context: Context) {
     /** The assistant's volume on the media scale; null where it is the media volume anyway or unreadable. */
     private fun assistantLevel(): Int? = runCatching {
         val stream = ASSISTANT.volumeControlStream
-        if (stream == STREAM) return null
+        if (stream == this.stream) return null
         audio.getStreamVolume(stream) * max / audio.getStreamMaxVolume(stream)
     }.getOrNull()
 
     private companion object {
-        const val STREAM = AudioManager.STREAM_MUSIC
         val ASSISTANT: AudioAttributes = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANT).build()
     }
 }

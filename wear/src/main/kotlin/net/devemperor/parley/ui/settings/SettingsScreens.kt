@@ -5,13 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.wear.compose.material3.AlertDialog
-import androidx.wear.compose.material3.AlertDialogDefaults
-import androidx.wear.compose.material3.Icon
-import androidx.wear.compose.material3.Text
 import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.R
 import net.devemperor.parley.core.cost.CostMeter
@@ -23,6 +18,7 @@ import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.core.usage.UsageTotal
 import net.devemperor.parley.data.BargeIn
 import net.devemperor.parley.data.ParleySettings
+import net.devemperor.parley.ui.components.ConfirmDialog
 import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.Hint
 import net.devemperor.parley.ui.components.ListScreen
@@ -138,17 +134,14 @@ fun SettingsScreen(
         item { MenuButton(stringResource(R.string.settings_delete_history), spec, { confirmDelete = true }, icon = R.drawable.ic_delete) }
         item { MenuButton(stringResource(R.string.settings_about), spec, onOpenAbout, "${stringResource(R.string.app_name)} ${BuildConfig.VERSION_NAME}", R.drawable.ic_info) }
     }
-    AlertDialog(
+    ConfirmDialog(
         visible = confirmDelete,
-        onDismissRequest = { confirmDelete = false },
-        icon = { Icon(painterResource(R.drawable.ic_delete), contentDescription = null) },
-        title = { Text(stringResource(R.string.settings_delete_history_confirm)) },
-        confirmButton = {
-            AlertDialogDefaults.ConfirmButton(onClick = {
-                confirmDelete = false
-                onDeleteHistory()
-            })
+        title = stringResource(R.string.settings_delete_history_confirm),
+        onConfirm = {
+            confirmDelete = false
+            onDeleteHistory()
         },
+        onDismiss = { confirmDelete = false },
     )
 }
 
@@ -281,17 +274,14 @@ fun ProviderScreen(
         }
         item { Hint(stringResource(R.string.provider_keys_note), spec) }
     }
-    AlertDialog(
+    ConfirmDialog(
         visible = removing != null,
-        onDismissRequest = { removing = null },
-        icon = { Icon(painterResource(R.drawable.ic_delete), contentDescription = null) },
-        title = { Text(stringResource(R.string.provider_remove_confirm)) },
-        confirmButton = {
-            AlertDialogDefaults.ConfirmButton(onClick = {
-                removing?.let(onRemove)
-                removing = null
-            })
+        title = stringResource(R.string.provider_remove_confirm),
+        onConfirm = {
+            removing?.let(onRemove)
+            removing = null
         },
+        onDismiss = { removing = null },
     )
 }
 

@@ -260,8 +260,6 @@
     <string name="memory_forget_all">Her şeyi unut</string>
     <string name="memory_forget_all_confirm">Parley\'nin hakkınızda bildiği her şey unutulsun mu?</string>
     <string name="memory_privacy">Yalnızca bu saatte saklanır. Parley bu kayıtları her sohbette yapay zekâ sağlayıcınıza iletir.</string>
-    <string name="notice_remembered">Hafızaya alındı</string>
-    <string name="notice_forgotten">Unutuldu</string>
     <string name="note_remembered">Hafızaya alındı: %1$s</string>
     <string name="note_forgotten">Unutuldu: %1$s</string>
     <string name="note_searched">Web\'de arandı</string>
@@ -298,5 +296,21 @@
     <plurals name="note_calendar">
         <item quantity="one">Takvim · %1$d etkinlik</item>
         <item quantity="other">Takvim · %1$d etkinlik</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">Sona erdi</string>
+    <string name="action_cancel">İptal</string>
+    <string name="action_confirm">Onayla</string>
+    <string name="history_select_cancel">Seçimi kaldır</string>
+    <string name="history_select_hint">Birden fazla seçmek için bir sohbete basılı tutun.</string>
+    <string name="history_delete_selected">Seçilenleri sil</string>
+    <plurals name="history_selected">
+        <item quantity="one">%1$d seçildi</item>
+        <item quantity="other">%1$d seçildi</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="one">%1$d sohbet silinsin mi?</item>
+        <item quantity="other">%1$d sohbet silinsin mi?</item>
     </plurals>
 </resources>

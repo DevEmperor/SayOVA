@@ -37,6 +37,8 @@ data class Model(
     val label: String,
     val description: String,
     val pricing: Pricing,
+    /** Sent with every session for models that refuse to start without one. */
+    val thinkingLevel: String? = null,
 )
 
 data class Voice(val id: String, val description: String)
@@ -86,7 +88,9 @@ object ProviderCatalog {
         displayName = "Google Gemini",
         models = listOf(
             Model("gemini-3.8-live", "Fast", "Quick, natural answers", geminiPricing),
-            Model("gemini-3.8-live-extended-thinking", "Thorough", "Thinks longer before answering", geminiPricing),
+            // Refuses a session without a thinking level ("low", "medium" or "high"; read 2026-10-29 from
+            // …/live-api/capabilities); high is what the user picks this model for.
+            Model("gemini-3.8-live-extended-thinking", "Thorough", "Thinks longer before answering", geminiPricing, thinkingLevel = "high"),
         ),
         voices = geminiVoices,
         defaultVoice = "Kore",

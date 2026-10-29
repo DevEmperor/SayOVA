@@ -16,7 +16,9 @@ import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnScope
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.ButtonColors
 import androidx.wear.compose.material3.ButtonDefaults
+import androidx.wear.compose.material3.CheckboxButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.ListHeader
 import androidx.wear.compose.material3.ListSubHeader
@@ -100,12 +102,15 @@ fun TransformingLazyColumnItemScope.MenuButton(
     @DrawableRes icon: Int? = null,
     highlighted: Boolean = false,
     secondaryLines: Int = 3,
+    onLongClick: (() -> Unit)? = null,
+    colors: ButtonColors? = null,
 ) {
     Button(
         onClick = onClick,
+        onLongClick = onLongClick,
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
-        colors = if (highlighted) ButtonDefaults.buttonColors() else ButtonDefaults.filledTonalButtonColors(),
+        colors = colors ?: if (highlighted) ButtonDefaults.buttonColors() else ButtonDefaults.filledTonalButtonColors(),
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
         secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = secondaryLines, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
@@ -129,6 +134,24 @@ fun TransformingLazyColumnItemScope.SwitchItem(
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
         // The switch leaves the text a narrow column: four lines for longer translations.
         secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
+        label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
+    )
+}
+
+@Composable
+fun TransformingLazyColumnItemScope.CheckItem(
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    spec: TransformationSpec,
+    secondaryLabel: String? = null,
+) {
+    CheckboxButton(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
+        transformation = SurfaceTransformation(spec),
+        secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 1, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
     )
 }

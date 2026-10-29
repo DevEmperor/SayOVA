@@ -18,6 +18,11 @@ First version.
 - Tools: timers, alarms, notes, battery and time, web search.
 - Memory: "Remember that …" keeps a fact about you (up to 30) for every later conversation;
   read, delete or turn it off under Settings → Memory.
+- Over the watch speaker a conversation runs as a call, so the watch's echo canceller takes Parley's
+  voice out of the microphone; once the echo is quiet enough, talking over an answer is left to the
+  provider, which hears the user directly.
+- Tapping the orb or Talk on the home screen grows the orb into the conversation.
+- History: hold a conversation to select several and delete them together.
 - Watch features: location (weather and places nearby), heart rate, today's steps and the
   calendar as tools. Each asks for its permission when switched on under Settings → Watch
   features or when a conversation first needs it; its icon shows while it is in use and stays

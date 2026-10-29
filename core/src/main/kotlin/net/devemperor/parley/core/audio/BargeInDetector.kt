@@ -41,6 +41,10 @@ class BargeInDetector(
     @get:Synchronized
     val learnedCoupling: Float get() = coupling
 
+    /** The current answer's learning second is over and the coupling known. */
+    @Synchronized
+    fun settled(nowMs: Long): Boolean = learned && answerStartedAt >= 0 && nowMs - answerStartedAt >= learnMs
+
     @Synchronized
     fun startAnswer(nowMs: Long) {
         answerStartedAt = nowMs

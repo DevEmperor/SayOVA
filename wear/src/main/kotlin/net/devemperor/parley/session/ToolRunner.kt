@@ -49,14 +49,10 @@ class ToolRunner(
 ) {
     private val sensors = WatchSensors(context)
 
-    /**
-     * [note] is shown in the transcript as what Parley did, e.g. "Timer · 5 min"; [notice] is the
-     * shorter text under the orb, the note itself when not given.
-     */
+    /** [note] is shown under the orb and in the transcript as what Parley did, e.g. "Timer · 5 min". */
     data class Outcome(
         val result: JsonObject,
         val note: String? = null,
-        val notice: String? = null,
         val savedNote: String? = null,
         val endsConversation: Boolean = false,
     )
@@ -231,7 +227,6 @@ class ToolRunner(
                     put("number", change.fact.number)
                 },
                 note = context.getString(R.string.note_remembered, change.fact.text),
-                notice = context.getString(R.string.notice_remembered),
             )
             is Memory.Change.Known -> Outcome(buildJsonObject {
                 put("ok", true)
@@ -249,7 +244,6 @@ class ToolRunner(
             is Memory.Change.Forgotten -> Outcome(
                 ok(),
                 note = context.getString(R.string.note_forgotten, change.fact.text),
-                notice = context.getString(R.string.notice_forgotten),
             )
             is Memory.Change.Refused -> Outcome(error(change.reason))
             else -> Outcome(ok())

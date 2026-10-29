@@ -15,8 +15,10 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.MainActivity
 import net.devemperor.parley.R
@@ -107,6 +109,7 @@ class SessionService : LifecycleService() {
             tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.map { it.tool },
             webSearch = canSearch,
             textOnly = textOnly,
+            thinkingLevel = model.thinkingLevel,
         )
         val client = app.network.client(app.http)
         val session = if (demo) DemoSession(textOnly) else Sessions.create(provider.id, config, client)
@@ -115,41 +118,46 @@ class SessionService : LifecycleService() {
         } else {
             null
         }
-        val newEngine = ConversationEngine(
-            context = this@SessionService,
-            scope = lifecycleScope,
-            session = session,
-            model = model,
-            providerLabel = "${provider.displayName} · ${model.labelRes()?.let(::getString) ?: model.label}",
-            providerKey = provider.id.key,
-            options = ConversationEngine.Options(
-                textOnly = textOnly,
-                pushToTalk = settings.pushToTalk,
-                bargeIn = settings.bargeIn,
-                autoEndSeconds = settings.autoEndSeconds,
-                showCost = settings.showCost,
-                saveHistory = settings.historyDays != 0,
-                speechVolume = settings.speechVolume,
-                soundOff = settings.soundOff,
-                continues = earlier,
-            ),
-            toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType),
-            haptics = Haptics(this@SessionService) { settings.haptics },
-            transport = app.network.transport,
-            onSave = { conversation, usd, talkMs ->
-                conversation?.let { app.history.save(it) }
-                // Demo conversations count too: only adb can start them (see Diagnostics), and tests
-                // check the statistics with them.
-                app.usage.record(usd, talkMs)
-                ParleyTileService.refresh(this@SessionService)
-            },
-            onVolume = { level -> app.settings.update { it.copy(speechVolume = level) } },
-            onFinished = { stopEverything() },
-        )
+        // Off the main thread: opening the speaker, the call mode and the microphone takes long enough
+        // to stall the orb growing into the conversation.
+        val newEngine = withContext(Dispatchers.Default) {
+            ConversationEngine(
+                context = this@SessionService,
+                scope = lifecycleScope,
+                session = session,
+                model = model,
+                providerLabel = "${provider.displayName} · ${model.labelRes()?.let(::getString) ?: model.label}",
+                providerKey = provider.id.key,
+                options = ConversationEngine.Options(
+                    textOnly = textOnly,
+                    pushToTalk = settings.pushToTalk,
+                    bargeIn = settings.bargeIn,
+                    autoEndSeconds = settings.autoEndSeconds,
+                    showCost = settings.showCost,
+                    saveHistory = settings.historyDays != 0,
+                    speechVolume = settings.speechVolume,
+                    callVolume = settings.callVolume,
+                    soundOff = settings.soundOff,
+                    continues = earlier,
+                ),
+                toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType),
+                haptics = Haptics(this@SessionService) { settings.haptics },
+                transport = app.network.transport,
+                onSave = { conversation, usd, talkMs ->
+                    conversation?.let { app.history.save(it) }
+                    // Demo conversations count too: only adb can start them (see Diagnostics), and tests
+                    // check the statistics with them.
+                    app.usage.record(usd, talkMs)
+                    ParleyTileService.refresh(this@SessionService)
+                },
+                onVolume = { level, call -> app.settings.update { if (call) it.copy(callVolume = level) else it.copy(speechVolume = level) } },
+                onFinished = { stopEverything() },
+            )
+        }
         engine = newEngine
         SessionHub.engine = newEngine
         launch { newEngine.state.collectLatest { SessionHub.publish(it) } }
-        newEngine.start()
+        withContext(Dispatchers.Default) { newEngine.start() }
     }
 
     private fun stopEverything() {

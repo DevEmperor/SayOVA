@@ -54,6 +54,8 @@ data class ParleySettings(
     val showTranscript: Boolean = false,
     /** Parley's own volume on the media scale, set for each conversation; -1 until first chosen. */
     val speechVolume: Int = -1,
+    /** The same on the call scale, used over the watch speaker (see CallAudio). */
+    val callVolume: Int = -1,
     /** Parley's voice switched off in conversations, for quiet places; the transcript shows instead. */
     val soundOff: Boolean = false,
     /** Days conversations are kept; 0 = not saved, -1 = forever. */
@@ -108,6 +110,7 @@ class SettingsRepository(private val context: Context) {
         val showCost = booleanPreferencesKey("show_cost")
         val showTranscript = booleanPreferencesKey("show_transcript")
         val speechVolume = intPreferencesKey("speech_volume")
+        val callVolume = intPreferencesKey("call_volume")
         val soundOff = booleanPreferencesKey("sound_off")
         val historyDays = intPreferencesKey("history_days")
         val startOnLaunch = booleanPreferencesKey("start_on_launch")
@@ -151,6 +154,7 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.showCost] = updated.showCost
             prefs[Keys.showTranscript] = updated.showTranscript
             prefs[Keys.speechVolume] = updated.speechVolume
+            prefs[Keys.callVolume] = updated.callVolume
             prefs[Keys.soundOff] = updated.soundOff
             prefs[Keys.historyDays] = updated.historyDays
             prefs[Keys.startOnLaunch] = updated.startOnLaunch
@@ -195,6 +199,7 @@ class SettingsRepository(private val context: Context) {
             showCost = prefs[Keys.showCost] ?: d.showCost,
             showTranscript = prefs[Keys.showTranscript] ?: d.showTranscript,
             speechVolume = prefs[Keys.speechVolume] ?: d.speechVolume,
+            callVolume = prefs[Keys.callVolume] ?: d.callVolume,
             soundOff = prefs[Keys.soundOff] ?: d.soundOff,
             historyDays = prefs[Keys.historyDays]?.takeIf { it in ParleySettings.HISTORY_OPTIONS } ?: d.historyDays,
             startOnLaunch = prefs[Keys.startOnLaunch] ?: d.startOnLaunch,

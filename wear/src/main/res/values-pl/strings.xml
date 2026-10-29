@@ -265,8 +265,6 @@
     <string name="memory_forget_all">Zapomnij wszystko</string>
     <string name="memory_forget_all_confirm">Zapomnieć wszystko, co Parley o tobie wie?</string>
     <string name="memory_privacy">Przechowywane tylko na tym zegarku. Parley przekazuje te wpisy twojemu dostawcy AI w każdej rozmowie.</string>
-    <string name="notice_remembered">Zapamiętano</string>
-    <string name="notice_forgotten">Zapomniano</string>
     <string name="note_remembered">Zapamiętano: %1$s</string>
     <string name="note_forgotten">Zapomniano: %1$s</string>
     <string name="note_searched">Wyszukano w sieci</string>
@@ -307,5 +305,25 @@
         <item quantity="few">Kalendarz · %1$d wydarzenia</item>
         <item quantity="many">Kalendarz · %1$d wydarzeń</item>
         <item quantity="other">Kalendarz · %1$d wydarzenia</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">Zakończono</string>
+    <string name="action_cancel">Anuluj</string>
+    <string name="action_confirm">Potwierdź</string>
+    <string name="history_select_cancel">Anuluj wybór</string>
+    <string name="history_select_hint">Przytrzymaj rozmowę, aby zaznaczyć kilka.</string>
+    <string name="history_delete_selected">Usuń zaznaczone</string>
+    <plurals name="history_selected">
+        <item quantity="one">Zaznaczono %1$d</item>
+        <item quantity="few">Zaznaczono %1$d</item>
+        <item quantity="many">Zaznaczono %1$d</item>
+        <item quantity="other">Zaznaczono %1$d</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="one">Usunąć %1$d rozmowę?</item>
+        <item quantity="few">Usunąć %1$d rozmowy?</item>
+        <item quantity="many">Usunąć %1$d rozmów?</item>
+        <item quantity="other">Usunąć %1$d rozmowy?</item>
     </plurals>
 </resources>

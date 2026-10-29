@@ -7,16 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
-import androidx.wear.compose.material3.AlertDialog
-import androidx.wear.compose.material3.AlertDialogDefaults
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
-import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.SurfaceTransformation
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.lazy.TransformationSpec
@@ -24,6 +19,7 @@ import androidx.wear.compose.material3.lazy.transformedHeight
 import net.devemperor.parley.R
 import net.devemperor.parley.core.memory.Fact
 import net.devemperor.parley.core.memory.Memory
+import net.devemperor.parley.ui.components.ConfirmDialog
 import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.Hint
 import net.devemperor.parley.ui.components.ListScreen
@@ -61,30 +57,24 @@ fun MemoryScreen(
         }
         item { Hint(stringResource(R.string.memory_privacy), spec) }
     }
-    AlertDialog(
+    ConfirmDialog(
         visible = forgetting != null,
-        onDismissRequest = { forgetting = null },
-        icon = { Icon(painterResource(R.drawable.ic_delete), contentDescription = null) },
-        title = { Text(stringResource(R.string.memory_forget_confirm)) },
-        text = { forgetting?.let { Text(it.text, textAlign = TextAlign.Center, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
-        confirmButton = {
-            AlertDialogDefaults.ConfirmButton(onClick = {
-                forgetting?.let(onForget)
-                forgetting = null
-            })
+        title = stringResource(R.string.memory_forget_confirm),
+        text = forgetting?.text,
+        onConfirm = {
+            forgetting?.let(onForget)
+            forgetting = null
         },
+        onDismiss = { forgetting = null },
     )
-    AlertDialog(
+    ConfirmDialog(
         visible = forgettingAll,
-        onDismissRequest = { forgettingAll = false },
-        icon = { Icon(painterResource(R.drawable.ic_delete), contentDescription = null) },
-        title = { Text(stringResource(R.string.memory_forget_all_confirm)) },
-        confirmButton = {
-            AlertDialogDefaults.ConfirmButton(onClick = {
-                forgettingAll = false
-                onForgetAll()
-            })
+        title = stringResource(R.string.memory_forget_all_confirm),
+        onConfirm = {
+            forgettingAll = false
+            onForgetAll()
         },
+        onDismiss = { forgettingAll = false },
     )
 }
 

@@ -257,8 +257,6 @@
     <string name="memory_forget_all">すべて忘れる</string>
     <string name="memory_forget_all_confirm">Parley があなたについて知っていることをすべて忘れますか？</string>
     <string name="memory_privacy">このウォッチにのみ保存されます。Parley は会話のたびに、これらの項目を AI プロバイダに送ります。</string>
-    <string name="notice_remembered">覚えました</string>
-    <string name="notice_forgotten">忘れました</string>
     <string name="note_remembered">覚えました：%1$s</string>
     <string name="note_forgotten">忘れました：%1$s</string>
     <string name="note_searched">ウェブを検索しました</string>
@@ -293,5 +291,19 @@
     <string name="note_not_allowed">%1$s は許可されていません</string>
     <plurals name="note_calendar">
         <item quantity="other">カレンダー · %1$d 件の予定</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">終了</string>
+    <string name="action_cancel">キャンセル</string>
+    <string name="action_confirm">確定</string>
+    <string name="history_select_cancel">選択を解除</string>
+    <string name="history_select_hint">会話を長押しすると複数選択できます。</string>
+    <string name="history_delete_selected">選択した会話を削除</string>
+    <plurals name="history_selected">
+        <item quantity="other">%1$d 件選択中</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="other">%1$d 件の会話を削除しますか？</item>
     </plurals>
 </resources>

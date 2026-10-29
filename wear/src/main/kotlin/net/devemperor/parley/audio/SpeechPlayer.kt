@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  * Output goes to Bluetooth headphones when they are connected and to the watch speaker otherwise;
  * the platform routes the assistant usage that way by itself.
  */
-class SpeechPlayer(private val sampleRate: Int) {
+class SpeechPlayer(private val sampleRate: Int, call: Boolean = false) {
 
     private class Chunk(val turnKey: String, val pcm: ByteArray, val level: Float)
 
@@ -34,7 +34,7 @@ class SpeechPlayer(private val sampleRate: Int) {
     init {
         val minBuffer = AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT)
         track = AudioTrack.Builder()
-            .setAudioAttributes(ATTRIBUTES)
+            .setAudioAttributes(if (call) CALL_ATTRIBUTES else ATTRIBUTES)
             .setAudioFormat(
                 AudioFormat.Builder()
                     .setSampleRate(sampleRate)
@@ -167,6 +167,12 @@ class SpeechPlayer(private val sampleRate: Int) {
          */
         val ATTRIBUTES: AudioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+            .build()
+
+        /** Speech played as a call (see CallAudio), so the echo canceller hears it too. */
+        val CALL_ATTRIBUTES: AudioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
             .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
             .build()
     }

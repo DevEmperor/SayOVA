@@ -1,10 +1,19 @@
 package net.devemperor.parley.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -20,9 +29,11 @@ import net.devemperor.parley.core.provider.ProviderId
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.parley
+import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.ui.about.AboutScreen
 import net.devemperor.parley.ui.about.LicensesScreen
+import net.devemperor.parley.ui.components.OrbHandoff
 import net.devemperor.parley.ui.conversation.ConversationScreen
 import net.devemperor.parley.ui.history.ConversationDetailScreen
 import net.devemperor.parley.ui.history.HistoryScreen
@@ -90,6 +101,8 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
             val current = settings ?: return@AppScaffold
             val ready = connected.isNotEmpty() && context.hasMicrophone()
             val update: ((ParleySettings) -> ParleySettings) -> Unit = { transform -> scope.launch { app.settings.update(transform) } }
+            /** A conversation shows in place of the home screen (see startConversation). */
+            var homeTalk by rememberSaveable { mutableStateOf(false) }
 
             fun startConversation(textOnly: Boolean, demo: Boolean = false, continueId: String? = null) {
                 if (!context.hasMicrophone()) {
@@ -97,7 +110,47 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     return
                 }
                 SessionHub.start(context, textOnly, demo, continueId)
-                if (navController.currentDestination?.route != Routes.CONVERSATION) navController.navigate(Routes.CONVERSATION)
+                when (navController.currentDestination?.route) {
+                    // Started from the home screen, the conversation takes its place and the home orb
+                    // grows into the conversation's: a page of its own would come in with Wear's
+                    // round reveal, which cut the growing orb off.
+                    Routes.HOME -> {
+                        OrbHandoff.launch()
+                        homeTalk = true
+                    }
+                    Routes.CONVERSATION -> Unit
+                    else -> navController.navigate(Routes.CONVERSATION)
+                }
+            }
+
+            /** The conversation, on its own page or in place of the home screen; [onDone] leaves it. */
+            @Composable
+            fun Conversation(state: ConversationUiState, s: ParleySettings, onDone: () -> Unit) {
+                ConversationScreen(
+                    state = state,
+                    showTranscript = s.showTranscript,
+                    onToggleTranscript = { update { it.copy(showTranscript = !it.showTranscript) } },
+                    onToggleSound = {
+                        val off = !state.soundOff
+                        SessionHub.setSoundOff(off)
+                        update { it.copy(soundOff = off) }
+                    },
+                    onTapOrb = SessionHub::tapOrb,
+                    onEnd = { SessionHub.end(context) },
+                    onDone = {
+                        SessionHub.dismiss()
+                        onDone()
+                    },
+                    onRetry = {
+                        SessionHub.dismiss()
+                        startConversation(state.textOnly)
+                    },
+                    onFixProvider = {
+                        SessionHub.dismiss()
+                        homeTalk = false
+                        navController.navigate(Routes.pair(current.provider))
+                    },
+                )
             }
 
             // Decided once: recomputing it when a key arrives would rebuild the graph mid-setup and
@@ -114,15 +167,28 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
             SwipeDismissableNavHost(navController = navController, startDestination = start) {
                 composable(Routes.HOME) {
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
-                    HomeScreen(
-                        settings = s,
-                        monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
-                        onUsage = whenResumed { navController.navigate(Routes.USAGE) },
-                        onTalk = whenResumed { startConversation(textOnly = false) },
-                        onText = whenResumed { startConversation(textOnly = true) },
-                        onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
-                        onSettings = whenResumed { navController.navigate(Routes.SETTINGS) },
-                    )
+                    // Swiping back during a conversation shows the home screen again; it keeps running.
+                    BackHandler(enabled = homeTalk) { homeTalk = false }
+                    AnimatedContent(
+                        targetState = homeTalk && session != null,
+                        transitionSpec = { fadeIn(tween(HOME_FADE_MS)) togetherWith fadeOut(tween(HOME_FADE_MS)) },
+                        label = "home",
+                    ) { talking ->
+                        val state = session
+                        if (talking && state != null) {
+                            Conversation(state, s, onDone = { homeTalk = false })
+                        } else {
+                            HomeScreen(
+                                settings = s,
+                                monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
+                                onUsage = whenResumed { navController.navigate(Routes.USAGE) },
+                                onTalk = whenResumed { startConversation(textOnly = false) },
+                                onText = whenResumed { startConversation(textOnly = true) },
+                                onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
+                                onSettings = whenResumed { navController.navigate(Routes.SETTINGS) },
+                            )
+                        }
+                    }
                 }
                 composable(Routes.CONVERSATION) {
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
@@ -130,30 +196,9 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                     if (state == null) {
                         LaunchedEffect(Unit) { if (!navController.popBackStack(Routes.HOME, inclusive = false)) navController.navigateHome() }
                     } else {
-                        ConversationScreen(
-                            state = state,
-                            showTranscript = s.showTranscript,
-                            onToggleTranscript = { update { it.copy(showTranscript = !it.showTranscript) } },
-                            onToggleSound = {
-                                val off = !state.soundOff
-                                SessionHub.setSoundOff(off)
-                                update { it.copy(soundOff = off) }
-                            },
-                            onTapOrb = SessionHub::tapOrb,
-                            onEnd = { SessionHub.end(context) },
-                            onDone = {
-                                SessionHub.dismiss()
-                                if (!navController.popBackStack(Routes.HOME, inclusive = false)) navController.navigateHome()
-                            },
-                            onRetry = {
-                                SessionHub.dismiss()
-                                startConversation(state.textOnly)
-                            },
-                            onFixProvider = {
-                                SessionHub.dismiss()
-                                navController.navigate(Routes.pair(current.provider))
-                            },
-                        )
+                        Conversation(state, s, onDone = {
+                            if (!navController.popBackStack(Routes.HOME, inclusive = false)) navController.navigateHome()
+                        })
                     }
                 }
                 composable(Routes.WELCOME) {
@@ -183,6 +228,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                         historyOff = current.historyDays == 0,
                         showCost = current.showCost,
                         onOpen = whenResumed { id: String -> navController.navigate(Routes.detail(id)) },
+                        onDelete = { ids -> scope.launch { ids.forEach { app.history.delete(it) } } },
                     )
                 }
                 composable(Routes.DETAIL) { entry ->
@@ -270,15 +316,21 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 }
                 initialRoutes.forEach { runCatching { navController.navigate(it) } }
             }
-            // A conversation started elsewhere (tile while the app is open) brings its screen up.
+            // A conversation started elsewhere (tile while the app is open) brings its screen up; on the
+            // home screen it takes the home screen's place.
             LaunchedEffect(session?.active) {
-                if (session?.active == true && navController.currentDestination?.route != Routes.CONVERSATION) {
-                    navController.navigate(Routes.CONVERSATION)
+                if (session?.active != true) return@LaunchedEffect
+                when (navController.currentDestination?.route) {
+                    Routes.CONVERSATION -> Unit
+                    Routes.HOME -> homeTalk = true
+                    else -> navController.navigate(Routes.CONVERSATION)
                 }
             }
         }
     }
 }
+
+private const val HOME_FADE_MS = 250
 
 private fun NavHostController.navigateHome() {
     navigate(Routes.HOME) { popUpTo(graph.id) { inclusive = true } }

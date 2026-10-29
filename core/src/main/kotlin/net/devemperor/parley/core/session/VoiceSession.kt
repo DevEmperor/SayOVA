@@ -54,6 +54,8 @@ data class SessionConfig(
     val textOnly: Boolean = false,
     /** Pause that ends the user's turn. 500–800 ms is what the providers recommend. */
     val silenceMs: Int = 700,
+    /** How long a model that requires it thinks before answering (Gemini: low, medium, high). */
+    val thinkingLevel: String? = null,
 )
 
 sealed interface VoiceEvent {

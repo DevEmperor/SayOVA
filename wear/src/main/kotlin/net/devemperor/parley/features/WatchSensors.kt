@@ -5,6 +5,10 @@ import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -14,6 +18,7 @@ import android.os.Build
 import android.os.CancellationSignal
 import android.os.SystemClock
 import android.provider.CalendarContract
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.health.services.client.HealthServices
 import androidx.health.services.client.MeasureCallback
@@ -35,12 +40,14 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import net.devemperor.parley.Diagnostics
+import kotlin.coroutines.resume
+import kotlin.math.roundToInt
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.resume
-import kotlin.math.roundToInt
 
 /**
  * Reads the watch's own sensors and data for the model, each only while a conversation asks for it:
@@ -174,7 +181,13 @@ class WatchSensors(private val context: Context) {
         val steps = CompletableDeferred<Long>()
         val callback = object : PassiveListenerCallback {
             override fun onNewDataPointsReceived(dataPoints: DataPointContainer) {
-                dataPoints.getData(DataType.STEPS_DAILY).maxByOrNull { it.endDurationFromBoot }?.let { steps.complete(it.value) }
+                val points = dataPoints.getData(DataType.STEPS_DAILY)
+                if (Diagnostics.enabled) {
+                    val boot = Instant.ofEpochMilli(System.currentTimeMillis() - SystemClock.elapsedRealtime())
+                    points.forEach { Log.d("ParleyEvent", "steps daily ${it.value} from ${it.getStartInstant(boot)} to ${it.getEndInstant(boot)}") }
+                    logStepCounter()
+                }
+                points.maxByOrNull { it.endDurationFromBoot }?.let { steps.complete(it.value) }
             }
         }
         client.setPassiveListenerCallback(PassiveListenerConfig.Builder().setDataTypes(setOf(DataType.STEPS_DAILY)).build(), callback)
@@ -184,6 +197,24 @@ class WatchSensors(private val context: Context) {
         } finally {
             withContext(NonCancellable) { runCatching { client.clearPassiveListenerCallback() } }
         }
+    }
+
+    /** For the diagnosis of a wrong count: the raw step sensor, counting since the watch started. */
+    private fun logStepCounter() {
+        val sensors = context.getSystemService(SensorManager::class.java) ?: return
+        val counter = sensors.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        if (counter == null) {
+            Log.d("ParleyEvent", "no step counter sensor")
+            return
+        }
+        sensors.registerListener(object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
+                Log.d("ParleyEvent", "step counter ${event.values.firstOrNull()} since boot")
+                sensors.unregisterListener(this)
+            }
+
+            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+        }, counter, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     // ── Calendar ────────────────────────────────────────────────────────────────────────────────

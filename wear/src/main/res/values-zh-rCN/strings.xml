@@ -257,8 +257,6 @@
     <string name="memory_forget_all">全部忘记</string>
     <string name="memory_forget_all_confirm">要忘记 Parley 知道的关于你的所有信息吗？</string>
     <string name="memory_privacy">仅存储在此手表上。每次对话时，Parley 都会把这些内容发送给你的 AI 服务商。</string>
-    <string name="notice_remembered">已记住</string>
-    <string name="notice_forgotten">已忘记</string>
     <string name="note_remembered">已记住：%1$s</string>
     <string name="note_forgotten">已忘记：%1$s</string>
     <string name="note_searched">已搜索网络</string>
@@ -293,5 +291,19 @@
     <string name="note_not_allowed">未授权：%1$s</string>
     <plurals name="note_calendar">
         <item quantity="other">日历 · %1$d 个日程</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">已结束</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_confirm">确认</string>
+    <string name="history_select_cancel">取消选择</string>
+    <string name="history_select_hint">长按对话可选择多个。</string>
+    <string name="history_delete_selected">删除所选</string>
+    <plurals name="history_selected">
+        <item quantity="other">已选择 %1$d 个</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="other">要删除 %1$d 个对话吗？</item>
     </plurals>
 </resources>

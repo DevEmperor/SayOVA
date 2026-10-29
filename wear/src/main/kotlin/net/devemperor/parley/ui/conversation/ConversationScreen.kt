@@ -2,9 +2,11 @@ package net.devemperor.parley.ui.conversation
 
 import android.os.SystemClock
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -19,9 +21,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -44,7 +49,9 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.lerp
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -53,8 +60,11 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -69,6 +79,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.rotary.RotaryScrollableDefaults
 import androidx.wear.compose.foundation.rotary.rotaryScrollable
@@ -83,7 +94,6 @@ import androidx.wear.compose.material3.TimeText
 import androidx.wear.compose.material3.curvedText
 import androidx.wear.compose.material3.timeTextCurvedText
 import androidx.wear.compose.material3.timeTextSeparator
-import kotlin.math.abs
 import kotlinx.coroutines.delay
 import net.devemperor.parley.R
 import net.devemperor.parley.audio.SpeechVolume
@@ -99,10 +109,13 @@ import net.devemperor.parley.ui.components.FitText
 import net.devemperor.parley.ui.components.KeepScreenOn
 import net.devemperor.parley.ui.components.MessageScreen
 import net.devemperor.parley.ui.components.Orb
+import net.devemperor.parley.ui.components.OrbHandoff
 import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.iconRes
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.theme.ParleyColors
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * The live conversation: status on the bezel, the orb as the one control, one caption line under it,
@@ -150,8 +163,8 @@ fun ConversationScreen(
     val transcript = showTranscript || state.textOnly || state.soundOff
 
     val context = LocalContext.current
-    val volume = remember { SpeechVolume(context) }
-    var volumeLevel by remember { mutableIntStateOf(volume.current()) }
+    val volume = remember(state.callAudio) { SpeechVolume(context, call = state.callAudio) }
+    var volumeLevel by remember(volume) { mutableIntStateOf(volume.current()) }
     var volumeOpen by remember { mutableStateOf(false) }
     var volumeTouchedAt by remember { mutableLongStateOf(0L) }
     val showVolume = {
@@ -176,6 +189,12 @@ fun ConversationScreen(
     var rotary by remember { mutableFloatStateOf(0f) }
     val stepPx = with(LocalDensity.current) { VOLUME_STEP.toPx() }
     LaunchedEffect(bezelVolume) { if (bezelVolume) runCatching { focus.requestFocus() } }
+    // Started from the home screen: its orb grows into this one (see OrbHandoff) while the rest fades in.
+    val origin = remember { OrbHandoff.take() }
+    val grow = remember { Animatable(if (origin != null) 0f else 1f) }
+    LaunchedEffect(Unit) { if (origin != null) grow.animateTo(1f, tween(ORB_GROW_MS, easing = FastOutSlowInEasing)) }
+    var orbBounds by remember { mutableStateOf<Rect?>(null) }
+    var screenOffset by remember { mutableStateOf(Offset.Zero) }
     // No edge button: a small red hang-up button leaves the content most of the screen and is
     // recognisable at a glance, like the one on a phone call.
     ScreenScaffold(
@@ -207,9 +226,9 @@ fun ConversationScreen(
         } else {
             Modifier
         }
-        Box(Modifier.fillMaxSize().then(bezel)) {
+        Box(Modifier.fillMaxSize().then(bezel).onGloballyPositioned { screenOffset = it.positionInWindow() }) {
             Column(
-                Modifier.fillMaxSize().padding(bottom = width * 0.03f),
+                Modifier.fillMaxSize().padding(bottom = width * 0.03f).graphicsLayer { alpha = grow.value },
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(Modifier.height(width * 0.12f))
@@ -219,6 +238,8 @@ fun ConversationScreen(
                 Box(
                     Modifier
                         .size(orbSize)
+                        .onGloballyPositioned { orbBounds = it.boundsInWindow() }
+                        .graphicsLayer { alpha = if (grow.value < 1f) 0f else 1f }
                         .semantics { contentDescription = orbLabel }
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
@@ -252,6 +273,18 @@ fun ConversationScreen(
                     onToggleSound = onToggleSound.takeUnless { state.textOnly },
                     onVolume = showVolume,
                     onEnd = onEnd,
+                )
+            }
+            val target = orbBounds
+            if (origin != null && target != null && grow.value < 1f) {
+                val bounds = lerp(origin, target, grow.value).translate(-screenOffset)
+                val density = LocalDensity.current
+                Orb(
+                    phase = null,
+                    level = 0f,
+                    modifier = Modifier
+                        .offset { IntOffset(bounds.left.roundToInt(), bounds.top.roundToInt()) }
+                        .size(with(density) { bounds.width.toDp() }, with(density) { bounds.height.toDp() }),
                 )
             }
             AnimatedVisibility(volumeOpen, enter = fadeIn(), exit = fadeOut()) {
@@ -522,7 +555,8 @@ private fun statusText(state: ConversationUiState): String = when {
         Phase.THINKING -> stringResource(R.string.status_thinking)
         Phase.SPEAKING -> stringResource(if (state.textOnly) R.string.status_writing else R.string.status_speaking)
         Phase.RECONNECTING -> stringResource(R.string.status_reconnecting)
-        Phase.ENDED -> stringResource(R.string.status_ended)
+        // "Saved" only when there was something to keep.
+        Phase.ENDED -> stringResource(if (state.saved) R.string.status_ended else R.string.status_closed)
         Phase.ERROR -> stringResource(R.string.status_problem)
     }
 }
@@ -552,45 +586,51 @@ private fun Caption(state: ConversationUiState) {
         state.halfDuplex && state.phase == Phase.SPEAKING -> stringResource(R.string.notice_tap_to_interrupt)
         else -> null
     }
-    Box(Modifier.height(17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Crossfade(targetState = hint to state.activeFeature.takeIf { hint != null }, label = "caption") { (text, feature) ->
-            if (text != null) {
-                Row(
-                    Modifier
-                        .clip(RoundedCornerShape(50))
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
-                        .padding(horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (feature != null) {
-                        Icon(
-                            painterResource(feature.iconRes()), contentDescription = null,
-                            modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                        )
-                        Spacer(Modifier.width(4.dp))
-                    }
-                    FitText(
-                        text,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        modifier = Modifier.weight(1f, fill = false),
+    // Shown at once, without an animation: a hint sliding or fading in drew the eye away from the orb.
+    // A long one (a remembered fact) wraps onto up to three lines inside the round screen instead of
+    // running off its edges.
+    Box(Modifier.heightIn(min = 17.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
+        if (hint != null) {
+            val feature = state.activeFeature
+            Row(
+                Modifier
+                    .widthIn(max = screenWidth() * 0.8f)
+                    .clip(RoundedCornerShape(9.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(horizontal = 8.dp, vertical = 1.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (feature != null) {
+                    Icon(
+                        painterResource(feature.iconRes()), contentDescription = null,
+                        modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
+                    Spacer(Modifier.width(4.dp))
                 }
-            } else {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    state.usedFeatures.forEach { used ->
-                        Icon(
-                            painterResource(used.iconRes()), contentDescription = stringResource(used.labelRes()),
-                            modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(Modifier.width(3.dp))
-                    }
-                    if (state.usedFeatures.isNotEmpty()) Spacer(Modifier.width(2.dp))
-                    FitText(
-                        meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.weight(1f, fill = false),
+                Text(
+                    hint,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    textAlign = TextAlign.Center,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false),
+                )
+            }
+        } else {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                state.usedFeatures.forEach { used ->
+                    Icon(
+                        painterResource(used.iconRes()), contentDescription = stringResource(used.labelRes()),
+                        modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.primary,
                     )
+                    Spacer(Modifier.width(3.dp))
                 }
+                if (state.usedFeatures.isNotEmpty()) Spacer(Modifier.width(2.dp))
+                FitText(
+                    meta, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f, fill = false),
+                )
             }
         }
     }
@@ -700,10 +740,23 @@ private fun ErrorContent(state: ConversationUiState, onRetry: () -> Unit, onFixP
         // "Try again" fills the edge button by itself; with an icon beside it, it broke onto two lines.
         actionIcon = if (fixable) R.drawable.ic_key else null,
         onAction = if (fixable) onFixProvider else onRetry,
+        // The provider's own words, small: the explanation above is a guess from them.
+        extra = error.message.takeIf { error.kind != ErrorKind.REJECTED && it.isNotBlank() }?.let { message ->
+            {
+                Text(
+                    message,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                )
+            }
+        },
     )
 }
 
 private const val FOLLOW_PAUSE_MS = 6_000L
+private const val ORB_GROW_MS = 450
 private const val VOLUME_PANEL_MS = 2_500L
 /** Bezel or crown travel per volume step: one click of the Galaxy Watch bezel, a short crown turn. */
 private val VOLUME_STEP = 12.dp

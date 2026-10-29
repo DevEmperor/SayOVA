@@ -43,6 +43,7 @@ object GeminiProtocol {
                         putJsonObject("prebuiltVoiceConfig") { put("voiceName", config.voice) }
                     }
                 }
+                config.thinkingLevel?.let { level -> putJsonObject("thinkingConfig") { put("thinkingLevel", level) } }
             }
             putJsonObject("systemInstruction") {
                 putJsonArray("parts") { addJsonObject { put("text", config.instructions) } }

@@ -260,8 +260,6 @@
     <string name="memory_forget_all">Glöm allt</string>
     <string name="memory_forget_all_confirm">Glömma allt Parley vet om dig?</string>
     <string name="memory_privacy">Sparas bara på den här klockan. Parley skickar med posterna till din AI-leverantör i varje samtal.</string>
-    <string name="notice_remembered">Sparat</string>
-    <string name="notice_forgotten">Glömt</string>
     <string name="note_remembered">Sparat: %1$s</string>
     <string name="note_forgotten">Glömt: %1$s</string>
     <string name="note_searched">Sökte på webben</string>
@@ -298,5 +296,21 @@
     <plurals name="note_calendar">
         <item quantity="one">Kalender · %1$d händelse</item>
         <item quantity="other">Kalender · %1$d händelser</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">Avslutat</string>
+    <string name="action_cancel">Avbryt</string>
+    <string name="action_confirm">Bekräfta</string>
+    <string name="history_select_cancel">Avbryt markering</string>
+    <string name="history_select_hint">Håll kvar på ett samtal för att markera flera.</string>
+    <string name="history_delete_selected">Ta bort markerade</string>
+    <plurals name="history_selected">
+        <item quantity="one">%1$d markerat</item>
+        <item quantity="other">%1$d markerade</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="one">Ta bort %1$d samtal?</item>
+        <item quantity="other">Ta bort %1$d samtal?</item>
     </plurals>
 </resources>

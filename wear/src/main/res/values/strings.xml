@@ -261,8 +261,6 @@
     <string name="memory_forget_all">Forget everything</string>
     <string name="memory_forget_all_confirm">Forget everything Parley knows about you?</string>
     <string name="memory_privacy">Stored only on this watch. Parley gives these facts to your AI provider in every conversation.</string>
-    <string name="notice_remembered">Remembered</string>
-    <string name="notice_forgotten">Forgotten</string>
     <string name="note_remembered">Remembered: %1$s</string>
     <string name="note_forgotten">Forgotten: %1$s</string>
     <string name="note_searched">Searched the web</string>
@@ -299,5 +297,21 @@
     <plurals name="note_calendar">
         <item quantity="one">Calendar · %1$d event</item>
         <item quantity="other">Calendar · %1$d events</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">Ended</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="history_select_cancel">Cancel selection</string>
+    <string name="history_select_hint">Hold a conversation to select several.</string>
+    <string name="history_delete_selected">Delete selected</string>
+    <plurals name="history_selected">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="one">Delete %1$d conversation?</item>
+        <item quantity="other">Delete %1$d conversations?</item>
     </plurals>
 </resources>

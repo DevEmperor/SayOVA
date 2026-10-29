@@ -140,4 +140,14 @@ class CoreTest {
         assertEquals(WatchFeature.CALENDAR, WatchFeature.forTool("get_calendar_events"))
         assertEquals(null, WatchFeature.forTool("set_timer"))
     }
+
+    @Test
+    fun `a limit per minute is no lack of credit`() {
+        val perMinute = "Quota exceeded for metric: generativelanguage.googleapis.com/search_grounding_requests_per_minute, limit: 30"
+        assertEquals(ErrorKind.RATE_LIMIT, SessionErrors.fromText(perMinute)!!.kind)
+        assertEquals(ErrorKind.RATE_LIMIT, SessionErrors.fromHttp(429, """{"error": {"message": "$perMinute"}}""").kind)
+        val billing = "You exceeded your current quota, please check your plan and billing details."
+        assertEquals(ErrorKind.QUOTA, SessionErrors.fromText(billing)!!.kind)
+        assertEquals(ErrorKind.QUOTA, SessionErrors.fromHttp(429, """{"error": {"message": "$billing"}}""").kind)
+    }
 }

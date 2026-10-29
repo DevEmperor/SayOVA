@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -56,4 +57,22 @@ fun Orb(
             )
         }
     }
+}
+
+/**
+ * Hands the home screen's orb over to the conversation: where it was when a conversation started from
+ * it, so the conversation's orb can grow out of it (Wear's navigation has no shared elements).
+ */
+object OrbHandoff {
+    /** The home orb's bounds in the window, kept current while the home screen shows it. */
+    @Volatile var homeBounds: Rect? = null
+    private var pending: Rect? = null
+
+    /** A conversation starts from the home screen now. */
+    fun launch() {
+        pending = homeBounds
+    }
+
+    /** Where to grow from, once; null when the conversation did not start from the home orb. */
+    fun take(): Rect? = pending.also { pending = null }
 }

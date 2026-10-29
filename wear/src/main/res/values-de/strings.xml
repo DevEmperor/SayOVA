@@ -259,8 +259,6 @@
     <string name="memory_forget_all">Alles vergessen</string>
     <string name="memory_forget_all_confirm">Alles vergessen, was Parley über dich weiß?</string>
     <string name="memory_privacy">Nur auf dieser Uhr gespeichert. Parley gibt die Einträge in jedem Gespräch an deinen KI-Anbieter mit.</string>
-    <string name="notice_remembered">Gemerkt</string>
-    <string name="notice_forgotten">Vergessen</string>
     <string name="note_remembered">Gemerkt: %1$s</string>
     <string name="note_forgotten">Vergessen: %1$s</string>
     <string name="note_searched">Im Web gesucht</string>
@@ -297,5 +295,21 @@
     <plurals name="note_calendar">
         <item quantity="one">Kalender · %1$d Termin</item>
         <item quantity="other">Kalender · %1$d Termine</item>
+    </plurals>
+
+    <!-- Ended without saving; confirm dialogs; choosing several conversations in the history. -->
+    <string name="status_closed">Beendet</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_confirm">Bestätigen</string>
+    <string name="history_select_cancel">Auswahl aufheben</string>
+    <string name="history_select_hint">Halte ein Gespräch gedrückt, um mehrere auszuwählen.</string>
+    <string name="history_delete_selected">Ausgewählte löschen</string>
+    <plurals name="history_selected">
+        <item quantity="one">%1$d ausgewählt</item>
+        <item quantity="other">%1$d ausgewählt</item>
+    </plurals>
+    <plurals name="history_delete_selected_confirm">
+        <item quantity="one">%1$d Gespräch löschen?</item>
+        <item quantity="other">%1$d Gespräche löschen?</item>
     </plurals>
 </resources>

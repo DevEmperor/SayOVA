@@ -60,6 +60,16 @@ class GeminiProtocolTest {
     }
 
     @Test
+    fun `thinking level goes into the generation config only where the model needs one`() {
+        fun generation(c: SessionConfig) = parse(GeminiProtocol.setup(c, null))["setup"]!!.jsonObject["generationConfig"]!!.jsonObject
+        assertFalse("thinkingConfig" in generation(config))
+        val thorough = generation(config.copy(model = "gemini-3.8-live-extended-thinking", thinkingLevel = "high"))
+        assertEquals("high", thorough["thinkingConfig"]!!.jsonObject["thinkingLevel"]!!.jsonPrimitive.content)
+        assertEquals("high", ProviderCatalog.gemini.model("gemini-3.8-live-extended-thinking").thinkingLevel)
+        assertNull(ProviderCatalog.gemini.model("gemini-3.8-live").thinkingLevel)
+    }
+
+    @Test
     fun `setup without handle still asks for resumption updates`() {
         val setup = parse(GeminiProtocol.setup(config.copy(webSearch = false, tools = emptyList()), null))["setup"]!!.jsonObject
         assertEquals(JsonObject(emptyMap()), setup["sessionResumption"])
