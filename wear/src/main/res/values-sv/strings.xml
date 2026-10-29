@@ -235,6 +235,11 @@
     <string name="voice_lively">Livlig</string>
     <string name="voice_knowledgeable">Kunnig</string>
     <string name="voice_warm">Varm</string>
+    <string name="voice_hint">Tryck på en röst för att höra och välja den. Varje prov kostar en gång under 1 ¢.</string>
+    <string name="voice_sample_text">Hej, jag heter %1$s. Så här låter jag när jag svarar dig.</string>
+    <string name="voice_sample_loading">Hämtar prov…</string>
+    <string name="voice_sample_playing">Spelar</string>
+    <string name="voice_sample_failed">Inget prov just nu</string>
     <string name="transport_wifi">Wifi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">via telefon</string>

@@ -232,6 +232,11 @@
     <string name="voice_lively">활기참</string>
     <string name="voice_knowledgeable">박식함</string>
     <string name="voice_warm">따뜻함</string>
+    <string name="voice_hint">목소리를 탭하면 들어 보고 선택할 수 있습니다. 샘플마다 한 번만 1센트 미만의 비용이 듭니다.</string>
+    <string name="voice_sample_text">안녕하세요, %1$s입니다. 제가 대답할 때는 이런 목소리예요.</string>
+    <string name="voice_sample_loading">샘플 가져오는 중…</string>
+    <string name="voice_sample_playing">재생 중</string>
+    <string name="voice_sample_failed">지금은 샘플을 들을 수 없음</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">휴대전화 경유</string>

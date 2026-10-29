@@ -236,6 +236,12 @@
     <string name="voice_lively">Lively</string>
     <string name="voice_knowledgeable">Knowledgeable</string>
     <string name="voice_warm">Warm</string>
+    <string name="voice_hint">Tap a voice to hear and choose it. Each sample costs less than 1 ¢, once.</string>
+    <!-- Spoken by the voice as its sample; %1$s is the voice's name. -->
+    <string name="voice_sample_text">Hi, I’m %1$s. This is how I sound when I answer you.</string>
+    <string name="voice_sample_loading">Getting a sample…</string>
+    <string name="voice_sample_playing">Playing</string>
+    <string name="voice_sample_failed">No sample right now</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">via phone</string>

@@ -237,6 +237,11 @@
     <string name="voice_lively">Vivace</string>
     <string name="voice_knowledgeable">Competente</string>
     <string name="voice_warm">Calda</string>
+    <string name="voice_hint">Tocca una voce per ascoltarla e sceglierla. Ogni campione costa una sola volta meno di 1 ¢.</string>
+    <string name="voice_sample_text">Ciao, sono %1$s. Ecco come suono quando ti rispondo.</string>
+    <string name="voice_sample_loading">Caricamento campione…</string>
+    <string name="voice_sample_playing">In riproduzione</string>
+    <string name="voice_sample_failed">Campione non disponibile ora</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">via telefono</string>

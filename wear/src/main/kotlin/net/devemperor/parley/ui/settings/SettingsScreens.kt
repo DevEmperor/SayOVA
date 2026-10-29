@@ -1,15 +1,23 @@
 package net.devemperor.parley.ui.settings
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.R
+import net.devemperor.parley.audio.VoiceSamples
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.prompt.AnswerLanguage
 import net.devemperor.parley.core.prompt.Persona
@@ -38,6 +46,10 @@ typealias Update = ((ParleySettings) -> ParleySettings) -> Unit
 
 /** Options that are a single choice from a list get one generic screen each. */
 enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY }
+
+private enum class SampleState { LOADING, PLAYING, FAILED }
+
+private const val SAMPLE_FAILED_MS = 3_000L
 
 @Composable
 fun SettingsScreen(
@@ -173,6 +185,32 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
     val customInput = rememberTextInput(stringResource(R.string.persona_custom_label)) { text ->
         if (text != null) select { it.copy(persona = Persona.CUSTOM, customPersona = text) }
     }
+    // The voice sample being fetched or played; leaving the screen cancels it with the scope.
+    val samples = remember { VoiceSamples(context) }
+    val resources = LocalResources.current
+    val scope = rememberCoroutineScope()
+    var sample by remember { mutableStateOf<Pair<String, SampleState>?>(null) }
+    var sampleJob by remember { mutableStateOf<Job?>(null) }
+    fun hear(voice: String) {
+        sampleJob?.cancel()
+        sample = voice to SampleState.LOADING
+        sampleJob = scope.launch {
+            try {
+                val text = resources.getString(R.string.voice_sample_text, voice.replaceFirstChar(Char::uppercase))
+                val audio = samples.get(provider, voice, text)
+                sample = voice to SampleState.PLAYING
+                samples.play(audio, settings.speechVolume)
+                sample = null
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.w("Parley", "No voice sample for $voice: ${e.message}")
+                sample = voice to SampleState.FAILED
+                delay(SAMPLE_FAILED_MS)
+                sample = null
+            }
+        }
+    }
     ListScreen { spec ->
         when (choice) {
             Choice.MODEL -> {
@@ -187,11 +225,27 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
             }
             Choice.VOICE -> {
                 item { Header(stringResource(R.string.settings_voice), spec) }
+                item { Hint(stringResource(R.string.voice_hint), spec) }
                 provider.voices.forEach { voice ->
                     item(key = voice.id) {
-                        RadioItem(voice.id.replaceFirstChar(Char::uppercase), settings.voiceId() == voice.id, {
-                            select { if (provider.id == ProviderId.GEMINI) it.copy(geminiVoice = voice.id) else it.copy(openAiVoice = voice.id) }
-                        }, spec, stringOr(voice.descriptionRes(), voice.description))
+                        val state = sample?.takeIf { it.first == voice.id }?.second
+                        RadioItem(
+                            voice.id.replaceFirstChar(Char::uppercase),
+                            settings.voiceId() == voice.id,
+                            {
+                                // Chosen at once, but the list stays open: the user may want to hear a few.
+                                onUpdate { if (provider.id == ProviderId.GEMINI) it.copy(geminiVoice = voice.id) else it.copy(openAiVoice = voice.id) }
+                                hear(voice.id)
+                            },
+                            spec,
+                            when (state) {
+                                SampleState.LOADING -> stringResource(R.string.voice_sample_loading)
+                                SampleState.PLAYING -> stringResource(R.string.voice_sample_playing)
+                                SampleState.FAILED -> stringResource(R.string.voice_sample_failed)
+                                null -> stringOr(voice.descriptionRes(), voice.description)
+                            },
+                            icon = if (state == SampleState.PLAYING) R.drawable.ic_volume_up else null,
+                        )
                     }
                 }
             }

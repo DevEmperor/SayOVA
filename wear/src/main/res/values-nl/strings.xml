@@ -234,6 +234,11 @@
     <string name="voice_lively">Levendig</string>
     <string name="voice_knowledgeable">Deskundig</string>
     <string name="voice_warm">Warm</string>
+    <string name="voice_hint">Tik op een stem om hem te horen en te kiezen. Elk voorbeeld kost eenmalig minder dan 1 ¢.</string>
+    <string name="voice_sample_text">Hoi, ik ben %1$s. Zo klink ik als ik je antwoord geef.</string>
+    <string name="voice_sample_loading">Voorbeeld ophalen…</string>
+    <string name="voice_sample_playing">Speelt af</string>
+    <string name="voice_sample_failed">Nu geen voorbeeld mogelijk</string>
     <string name="transport_wifi">Wifi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">via telefoon</string>

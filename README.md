@@ -53,7 +53,8 @@ your own API key.
   it arrives end-to-end encrypted. No companion app, no typing on a tiny keyboard.
 - **Made for the watch.** Wi-Fi or LTE is used during a conversation instead of the slow
   Bluetooth link; conversations continue with the screen off; tile, complication and
-  watch-face icon; personalities, 40 voices, answer language, haptics.
+  watch-face icon; personalities, 40 voices to listen to before you pick one, answer language,
+  haptics.
 - **History on the watch only**, kept as long as you like, never backed up to the cloud.
 - **Runs on every Wear OS 3+ watch with a microphone.**
 

@@ -232,6 +232,11 @@
     <string name="voice_lively">活発</string>
     <string name="voice_knowledgeable">博識</string>
     <string name="voice_warm">温かい</string>
+    <string name="voice_hint">声をタップすると試聴して選べます。サンプルごとに一度だけ、1セント未満の料金がかかります。</string>
+    <string name="voice_sample_text">こんにちは、%1$sです。お答えするときは、こんな声で話します。</string>
+    <string name="voice_sample_loading">サンプルを取得中…</string>
+    <string name="voice_sample_playing">再生中</string>
+    <string name="voice_sample_failed">今はサンプルを再生できません</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">スマートフォン経由</string>

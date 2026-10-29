@@ -238,6 +238,11 @@
     <string name="voice_lively">Animée</string>
     <string name="voice_knowledgeable">Érudite</string>
     <string name="voice_warm">Chaleureuse</string>
+    <string name="voice_hint">Touchez une voix pour l’écouter et la choisir. Chaque extrait coûte une seule fois moins de 1 ¢.</string>
+    <string name="voice_sample_text">Bonjour, je suis %1$s. Voici ma voix quand je vous réponds.</string>
+    <string name="voice_sample_loading">Chargement de l’extrait…</string>
+    <string name="voice_sample_playing">Lecture</string>
+    <string name="voice_sample_failed">Extrait indisponible pour le moment</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">via le téléphone</string>

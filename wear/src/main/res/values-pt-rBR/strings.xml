@@ -237,6 +237,11 @@
     <string name="voice_lively">Vibrante</string>
     <string name="voice_knowledgeable">Experiente</string>
     <string name="voice_warm">Calorosa</string>
+    <string name="voice_hint">Toque em uma voz para ouvir e escolher. Cada amostra custa menos de 1 ¢, uma única vez.</string>
+    <string name="voice_sample_text">Oi, eu sou %1$s. É assim que eu falo quando te respondo.</string>
+    <string name="voice_sample_loading">Carregando amostra…</string>
+    <string name="voice_sample_playing">Tocando</string>
+    <string name="voice_sample_failed">Amostra indisponível agora</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">via celular</string>

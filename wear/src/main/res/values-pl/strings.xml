@@ -240,6 +240,11 @@
     <string name="voice_lively">Żywiołowy</string>
     <string name="voice_knowledgeable">Kompetentny</string>
     <string name="voice_warm">Ciepły</string>
+    <string name="voice_hint">Dotknij głosu, aby go usłyszeć i wybrać. Każda próbka kosztuje jednorazowo mniej niż 1 ¢.</string>
+    <string name="voice_sample_text">Cześć, jestem %1$s. Tak brzmię, kiedy ci odpowiadam.</string>
+    <string name="voice_sample_loading">Pobieranie próbki…</string>
+    <string name="voice_sample_playing">Odtwarzanie</string>
+    <string name="voice_sample_failed">Próbka teraz niedostępna</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">przez telefon</string>

@@ -235,6 +235,11 @@
     <string name="voice_lively">Canlı</string>
     <string name="voice_knowledgeable">Bilgili</string>
     <string name="voice_warm">Sıcak</string>
+    <string name="voice_hint">Dinlemek ve seçmek için bir sese dokunun. Her örnek yalnızca bir kez, 1 ¢’ten az tutar.</string>
+    <string name="voice_sample_text">Merhaba, ben %1$s. Size cevap verirken sesim böyle.</string>
+    <string name="voice_sample_loading">Örnek alınıyor…</string>
+    <string name="voice_sample_playing">Çalıyor</string>
+    <string name="voice_sample_failed">Şu anda örnek yok</string>
     <string name="transport_wifi">Wi-Fi</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">Telefon üzerinden</string>

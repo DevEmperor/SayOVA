@@ -166,12 +166,14 @@ fun TransformingLazyColumnItemScope.RadioItem(
     onSelect: () -> Unit,
     spec: TransformationSpec,
     secondaryLabel: String? = null,
+    @DrawableRes icon: Int? = null,
 ) {
     RadioButton(
         selected = selected,
         onSelect = onSelect,
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
+        icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
         secondaryLabel = secondaryLabel?.takeIf { it.isNotEmpty() }?.let { text -> { Text(text, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
         label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
     )

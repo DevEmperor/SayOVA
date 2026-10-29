@@ -232,6 +232,11 @@
     <string name="voice_lively">活泼</string>
     <string name="voice_knowledgeable">博学</string>
     <string name="voice_warm">温暖</string>
+    <string name="voice_hint">点按一个声音即可试听并选择。每个样本只收费一次，不到 1 美分。</string>
+    <string name="voice_sample_text">你好，我是%1$s。我回答你的时候，就是这个声音。</string>
+    <string name="voice_sample_loading">正在获取样本…</string>
+    <string name="voice_sample_playing">正在播放</string>
+    <string name="voice_sample_failed">暂时无法试听</string>
     <string name="transport_wifi">WLAN</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">通过手机</string>

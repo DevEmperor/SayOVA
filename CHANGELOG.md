@@ -16,6 +16,8 @@ First version.
 - Usage statistics: cost and talk time this month, the last two weeks, every month and in total.
 - Silent mode (text answers, push-to-talk).
 - Tools: timers, alarms, notes, battery and time, web search.
+- Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
+  the provider with your key (well under a cent, counted in the statistics) and then kept on the watch.
 - Memory: "Remember that …" keeps a fact about you (up to 30) for every later conversation;
   read, delete or turn it off under Settings → Memory.
 - Over the watch speaker a conversation runs as a call, so the watch's echo canceller takes Parley's

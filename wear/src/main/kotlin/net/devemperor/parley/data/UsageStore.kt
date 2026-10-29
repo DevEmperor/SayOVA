@@ -44,10 +44,10 @@ class UsageStore(context: Context) {
         }
     }
 
-    /** One conversation that just ended, counted on today's date. */
-    suspend fun record(costUsd: Double, talkMs: Long) = lock.withLock {
+    /** One conversation that just ended, counted on today's date; a voice sample costs without being one. */
+    suspend fun record(costUsd: Double, talkMs: Long, conversations: Int = 1) = lock.withLock {
         withContext(Dispatchers.IO) {
-            val updated = Usage.add(_days.value, LocalDate.now(ZoneId.systemDefault()), costUsd, talkMs)
+            val updated = Usage.add(_days.value, LocalDate.now(ZoneId.systemDefault()), costUsd, talkMs, conversations)
             write(updated)
             _days.value = updated
         }

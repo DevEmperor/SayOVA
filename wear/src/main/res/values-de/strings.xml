@@ -234,6 +234,11 @@
     <string name="voice_lively">Lebhaft</string>
     <string name="voice_knowledgeable">Sachkundig</string>
     <string name="voice_warm">Warm</string>
+    <string name="voice_hint">Tippe auf eine Stimme, um sie zu hören und zu wählen. Jede Probe kostet einmalig unter 1 ¢.</string>
+    <string name="voice_sample_text">Hallo, ich bin %1$s. So klinge ich, wenn ich dir antworte.</string>
+    <string name="voice_sample_loading">Probe wird geholt…</string>
+    <string name="voice_sample_playing">Spielt</string>
+    <string name="voice_sample_failed">Gerade keine Probe möglich</string>
     <string name="transport_wifi">WLAN</string>
     <string name="transport_cellular">LTE</string>
     <string name="transport_bluetooth">über Smartphone</string>

@@ -29,7 +29,7 @@ Scan the QR code on your watch with your phone, paste your key, compare a six-di
 • Keeps talking with the screen off, with an icon on the watch face
 • Tile and complication to start talking with one tap
 • Works with Bluetooth headphones
-• Personalities (friendly, concise, tutor, language partner or your own), 40 voices, answer language
+• Personalities (friendly, concise, tutor, language partner or your own), 40 voices to listen to before you choose, answer language
 • Running cost estimate and monthly total
 • History stored only on the watch, for as long as you choose
 

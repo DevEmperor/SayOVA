@@ -120,6 +120,12 @@ under Art. 6(1)(a) GDPR. You can withdraw your consent at any time as described 
 Contacts and notifications can contain data about other people; the App reads them only
 for your question and passes on only what it needs to answer it.
 
+**Voice samples.** When you tap a voice in the settings to hear it, the App asks your
+provider, with your key, to speak a fixed sentence in that voice ("Hi, I'm Puck. This is
+how I sound when I answer you." in the App's language). Nothing of yours is sent apart
+from your key. The sample is kept in the App's cache on the watch, so the provider is
+asked only once per voice; the system may clear the cache at any time.
+
 Web search is performed by the provider: with Google Gemini through Google Search, with
 OpenAI through a separate request to OpenAI's web search, made with your key. You can
 turn web search off in the settings.
