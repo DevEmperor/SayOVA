@@ -260,6 +260,8 @@
     <string name="memory_forget_all">Glöm allt</string>
     <string name="memory_forget_all_confirm">Glömma allt Parley vet om dig?</string>
     <string name="memory_privacy">Sparas bara på den här klockan. Parley skickar med posterna till din AI-leverantör i varje samtal.</string>
+    <string name="notice_remembered">Sparat</string>
+    <string name="notice_forgotten">Glömt</string>
     <string name="note_remembered">Sparat: %1$s</string>
     <string name="note_forgotten">Glömt: %1$s</string>
     <string name="note_searched">Sökte på webben</string>

@@ -259,6 +259,8 @@
     <string name="memory_forget_all">Alles vergessen</string>
     <string name="memory_forget_all_confirm">Alles vergessen, was Parley über dich weiß?</string>
     <string name="memory_privacy">Nur auf dieser Uhr gespeichert. Parley gibt die Einträge in jedem Gespräch an deinen KI-Anbieter mit.</string>
+    <string name="notice_remembered">Gemerkt</string>
+    <string name="notice_forgotten">Vergessen</string>
     <string name="note_remembered">Gemerkt: %1$s</string>
     <string name="note_forgotten">Vergessen: %1$s</string>
     <string name="note_searched">Im Web gesucht</string>

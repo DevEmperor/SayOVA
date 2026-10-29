@@ -82,6 +82,8 @@ object Instructions {
             null -> appendLine("Language: always reply in the language the user speaks to you.")
             else -> appendLine("Language: always reply in ${language.englishName}, whatever language the user speaks.")
         }
+        // The thorough model says a few words while it thinks; it said them in English to German users.
+        appendLine("This includes every word you say, also a short remark before you answer.")
         appendLine()
         appendLine("Context: it is ${now.format(DATE_FORMAT)} (time zone ${now.zone.id}). Use this for anything time-related.")
         appendLine()

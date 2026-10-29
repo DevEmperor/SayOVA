@@ -443,8 +443,7 @@ class ConversationEngine(
             outcome.note?.let { note ->
                 if (outcome.savedNote == null) record("tool-${call.callId}", Role.TOOL).text.append(note)
                 haptics.action()
-                // Long enough to read a remembered fact, which may fill two lines.
-                showNotice(note, (2_500L + 40L * note.length).coerceAtMost(6_000L))
+                showNotice(outcome.notice ?: note, 2_500)
             }
             if (outcome.endsConversation) endAfterSpeech = true
         }

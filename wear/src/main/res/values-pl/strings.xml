@@ -265,6 +265,8 @@
     <string name="memory_forget_all">Zapomnij wszystko</string>
     <string name="memory_forget_all_confirm">Zapomnieć wszystko, co Parley o tobie wie?</string>
     <string name="memory_privacy">Przechowywane tylko na tym zegarku. Parley przekazuje te wpisy twojemu dostawcy AI w każdej rozmowie.</string>
+    <string name="notice_remembered">Zapamiętano</string>
+    <string name="notice_forgotten">Zapomniano</string>
     <string name="note_remembered">Zapamiętano: %1$s</string>
     <string name="note_forgotten">Zapomniano: %1$s</string>
     <string name="note_searched">Wyszukano w sieci</string>

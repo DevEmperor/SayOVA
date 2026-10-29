@@ -263,6 +263,8 @@
     <string name="memory_forget_all">Tout oublier</string>
     <string name="memory_forget_all_confirm">Oublier tout ce que Parley sait de vous ?</string>
     <string name="memory_privacy">Stocké uniquement sur cette montre. Parley transmet ces entrées à votre fournisseur d’IA à chaque conversation.</string>
+    <string name="notice_remembered">Mémorisé</string>
+    <string name="notice_forgotten">Oublié</string>
     <string name="note_remembered">Mémorisé : %1$s</string>
     <string name="note_forgotten">Oublié : %1$s</string>
     <string name="note_searched">Recherche Web effectuée</string>

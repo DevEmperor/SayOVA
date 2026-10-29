@@ -257,6 +257,8 @@
     <string name="memory_forget_all">全部忘记</string>
     <string name="memory_forget_all_confirm">要忘记 Parley 知道的关于你的所有信息吗？</string>
     <string name="memory_privacy">仅存储在此手表上。每次对话时，Parley 都会把这些内容发送给你的 AI 服务商。</string>
+    <string name="notice_remembered">已记住</string>
+    <string name="notice_forgotten">已忘记</string>
     <string name="note_remembered">已记住：%1$s</string>
     <string name="note_forgotten">已忘记：%1$s</string>
     <string name="note_searched">已搜索网络</string>

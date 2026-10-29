@@ -70,6 +70,20 @@ class GeminiProtocolTest {
     }
 
     @Test
+    fun `talking over an answer starts a new user turn`() {
+        val t = GeminiTranslator()
+        t.translate("""{"voiceActivity": {"type": "ACTIVITY_START"}}""")
+        t.translate("""{"serverContent": {"inputTranscription": {"text": "Tell me about Rome."}}}""")
+        t.translate("""{"serverContent": {"outputTranscription": {"text": "Rome was founded"}}}""")
+        val barge = t.translate("""{"voiceActivity": {"type": "ACTIVITY_START"}}""")
+        assertEquals(VoiceEvent.SpeechStarted("u2"), barge.single())
+        assertEquals(VoiceEvent.Interrupted, t.translate("""{"serverContent": {"interrupted": true}}""").single())
+        t.translate("""{"serverContent": {"turnComplete": true}}""")
+        val words = t.translate("""{"serverContent": {"inputTranscription": {"text": "Stop!"}}}""")
+        assertEquals("u2", (words.single() as VoiceEvent.UserTranscript).turnKey)
+    }
+
+    @Test
     fun `setup without handle still asks for resumption updates`() {
         val setup = parse(GeminiProtocol.setup(config.copy(webSearch = false, tools = emptyList()), null))["setup"]!!.jsonObject
         assertEquals(JsonObject(emptyMap()), setup["sessionResumption"])

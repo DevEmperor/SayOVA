@@ -125,6 +125,8 @@ class GeminiTranslator {
     private var userTurn = 0
     private var modelTurn = 0
     private var userTurnOpen = false
+    /** The open user turn has words already; one opened only by the start of speech has not. */
+    private var userTurnHasText = false
     private var modelTurnOpen = false
     private var dropping = false
 
@@ -186,7 +188,10 @@ class GeminiTranslator {
 
     private fun translateContent(content: JsonObject, events: MutableList<VoiceEvent>) {
         content["inputTranscription"]?.jsonObject?.get("text")?.jsonPrimitive?.contentOrNull?.let { text ->
-            if (text.isNotEmpty()) events += VoiceEvent.UserTranscript(openUserTurn(), text, replace = false)
+            if (text.isNotEmpty()) {
+                events += VoiceEvent.UserTranscript(openUserTurn(), text, replace = false)
+                userTurnHasText = true
+            }
         }
 
         content["modelTurn"]?.jsonObject?.get("parts")?.let { parts ->
@@ -208,7 +213,9 @@ class GeminiTranslator {
 
         if (content["interrupted"]?.jsonPrimitive?.booleanOrNull == true) {
             events += VoiceEvent.Interrupted
-            closeTurns()
+            // Only the answer ends here; the user who cut it short is still speaking in their turn.
+            modelTurnOpen = false
+            dropping = false
         }
         if (content["turnComplete"]?.jsonPrimitive?.booleanOrNull == true) {
             events += VoiceEvent.TurnComplete
@@ -220,6 +227,7 @@ class GeminiTranslator {
         if (!userTurnOpen) {
             userTurn++
             userTurnOpen = true
+            userTurnHasText = false
         }
         return "u$userTurn"
     }
@@ -228,12 +236,16 @@ class GeminiTranslator {
         if (!modelTurnOpen) {
             modelTurn++
             modelTurnOpen = true
+            // The answer has begun, so the user's words before it are complete: talking over the
+            // answer starts a new user turn rather than continuing the question.
+            userTurnOpen = false
         }
         return "m$modelTurn"
     }
 
     private fun closeTurns() {
-        userTurnOpen = false
+        // A user who started speaking over the answer keeps their turn: their words come after it.
+        if (userTurnHasText) userTurnOpen = false
         modelTurnOpen = false
         dropping = false
     }

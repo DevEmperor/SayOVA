@@ -257,6 +257,8 @@
     <string name="memory_forget_all">すべて忘れる</string>
     <string name="memory_forget_all_confirm">Parley があなたについて知っていることをすべて忘れますか？</string>
     <string name="memory_privacy">このウォッチにのみ保存されます。Parley は会話のたびに、これらの項目を AI プロバイダに送ります。</string>
+    <string name="notice_remembered">覚えました</string>
+    <string name="notice_forgotten">忘れました</string>
     <string name="note_remembered">覚えました：%1$s</string>
     <string name="note_forgotten">忘れました：%1$s</string>
     <string name="note_searched">ウェブを検索しました</string>

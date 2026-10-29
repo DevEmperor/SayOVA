@@ -261,6 +261,8 @@
     <string name="memory_forget_all">Forget everything</string>
     <string name="memory_forget_all_confirm">Forget everything Parley knows about you?</string>
     <string name="memory_privacy">Stored only on this watch. Parley gives these facts to your AI provider in every conversation.</string>
+    <string name="notice_remembered">Remembered</string>
+    <string name="notice_forgotten">Forgotten</string>
     <string name="note_remembered">Remembered: %1$s</string>
     <string name="note_forgotten">Forgotten: %1$s</string>
     <string name="note_searched">Searched the web</string>

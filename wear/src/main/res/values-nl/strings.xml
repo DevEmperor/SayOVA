@@ -259,6 +259,8 @@
     <string name="memory_forget_all">Alles vergeten</string>
     <string name="memory_forget_all_confirm">Alles vergeten wat Parley over je weet?</string>
     <string name="memory_privacy">Alleen op dit horloge opgeslagen. Parley geeft deze items in elk gesprek mee aan je AI-aanbieder.</string>
+    <string name="notice_remembered">Onthouden</string>
+    <string name="notice_forgotten">Vergeten</string>
     <string name="note_remembered">Onthouden: %1$s</string>
     <string name="note_forgotten">Vergeten: %1$s</string>
     <string name="note_searched">Online gezocht</string>
