@@ -113,7 +113,8 @@ fun TransformingLazyColumnItemScope.MenuButton(
         colors = colors ?: if (highlighted) ButtonDefaults.buttonColors() else ButtonDefaults.filledTonalButtonColors(),
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
         secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = secondaryLines, overflow = TextOverflow.Ellipsis) } },
-        label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
+        // Three lines and a long word shrinking: "In den Uhreinstellungen erlauben" was cut off at two.
+        label = { WordFitText(label, maxLines = 3) },
     )
 }
 
