@@ -77,7 +77,12 @@ sensors and data, each only when your question needs it:
   Google Play services and sends the coordinates to Google.
 - **Heart rate** – measured for a few seconds with the watch's sensor through Android's
   Health Services. A watch is no medical device; the assistant is told not to diagnose.
-- **Steps** – the number of steps the watch has counted today.
+- **Steps** – the number of steps the watch has counted today. On some watches (Galaxy
+  watches among them) Android's Health Services counts steps only while an app asks it
+  to; while the feature is on and allowed, the App therefore asks it to keep counting
+  through the day. Health Services then passes the running count to the App now and
+  then; the App discards it, keeps nothing and sends nothing, and reads the day's total
+  only when you ask.
 - **Calendar** – the events from now up to at most 14 days ahead that are stored on
   the watch: title, start, end and location.
 - **Weather** – the forecast for the watch's location or a place you name, from the
@@ -253,6 +258,7 @@ statistics and crash reports to fix errors and improve the App (Art. 6(1)(f) GDP
 | `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION` | Location and the weather here (section 2.2), only if you allow it. |
 | `BODY_SENSORS` (up to Android 15), `health.READ_HEART_RATE` | Heart rate (section 2.2), only if you allow it. |
 | `ACTIVITY_RECOGNITION` | Today's steps (section 2.2), only if you allow it. |
+| `RECEIVE_BOOT_COMPLETED` | To ask Health Services again after a restart of the watch to keep counting steps, if the steps feature is on (section 2.2). |
 | `READ_CALENDAR` | Calendar (section 2.2), only if you allow it. |
 | `READ_CONTACTS`, `CALL_PHONE` | Calls and contacts (section 2.2), only if you allow it. |
 | `FOREGROUND_SERVICE_LOCATION`, `FOREGROUND_SERVICE_HEALTH` | To use location or heart rate in a conversation that runs with the screen off. |

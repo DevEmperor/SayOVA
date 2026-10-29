@@ -5,13 +5,17 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.HistoryStore
 import net.devemperor.parley.data.KeyVault
 import net.devemperor.parley.data.MemoryStore
 import net.devemperor.parley.data.SettingsRepository
 import net.devemperor.parley.data.UsageStore
+import net.devemperor.parley.features.StepTracking
 import net.devemperor.parley.net.NetworkSelector
 import okhttp3.OkHttpClient
 import java.time.YearMonth
@@ -53,6 +57,10 @@ class ParleyApp : Application() {
                 days
             })
             history.prune(settings.current().historyDays)
+        }
+        // Keeps Health Services counting steps while the feature is on, from the first start on.
+        appScope.launch {
+            settings.settings.map { WatchFeature.STEPS in it.features }.distinctUntilChanged().collect { StepTracking.sync(this@ParleyApp) }
         }
     }
 }

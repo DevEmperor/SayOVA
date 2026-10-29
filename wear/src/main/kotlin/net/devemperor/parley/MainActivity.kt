@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import net.devemperor.parley.features.PermissionBroker
+import net.devemperor.parley.features.StepTracking
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.tile.ParleyTileService
@@ -59,6 +60,8 @@ class MainActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         PermissionBroker.hostVisible = true
+        // Back from a permission dialog or the system settings: the step permission may have changed.
+        lifecycleScope.launch { StepTracking.sync(this@MainActivity) }
     }
 
     override fun onStop() {

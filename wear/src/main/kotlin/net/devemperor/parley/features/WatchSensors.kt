@@ -193,9 +193,11 @@ class WatchSensors(private val context: Context) {
 
     /**
      * Today's steps as Health Services counts them for the whole watch: listening briefly and asking
-     * it to flush hands over the current daily total.
+     * it to flush hands over the current daily total. It counts only while it is told to (see
+     * StepTracking), so the count is complete from the first full day after that.
      */
     suspend fun stepsToday(): Long {
+        StepTracking.sync(context)
         val client = HealthServices.getClient(context).passiveMonitoringClient
         if (DataType.STEPS_DAILY !in client.getCapabilities().supportedDataTypesPassiveMonitoring) {
             throw Unavailable("This watch does not count steps.")

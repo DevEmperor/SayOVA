@@ -42,6 +42,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
     <!-- Lets the model set timers and alarms in the watch's clock app when asked. -->
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <!-- Steps: Health Services forgets at a restart that it should keep counting (see StepTracking). -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <queries>
         <intent>
@@ -101,6 +103,24 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <!-- Keeps Health Services counting steps; what it delivers is dropped (see StepTracking). -->
+        <service
+            android:name=".features.StepTrackingService"
+            android:exported="true"
+            android:permission="com.google.android.wearable.healthservices.permission.PASSIVE_DATA_BINDING">
+            <intent-filter>
+                <action android:name="hs.passivedata.BIND" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".features.StepTrackingBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".tile.ParleyTileService"

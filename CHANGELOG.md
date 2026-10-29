@@ -35,7 +35,9 @@ First version.
 - History: hold a conversation to select several and delete them together.
 - Watch features: location (weather and places nearby), heart rate, today's steps and the
   calendar as tools. Each asks for its permission when switched on under Settings → Watch
-  features or when a conversation first needs it; its icon shows while it is in use. "Allow now"
+  features or when a conversation first needs it; its icon shows while it is in use. With steps on,
+  Parley keeps Health Services counting through the day, since on Galaxy watches it counts only for
+  registered apps. "Allow now"
   asks again after a "no"; only once Android stops showing its dialog (after the second "no") does
   the button lead to the watch's settings instead.
 - More watch features: the weather straight from MET Norway (here or for a place you name, without a
