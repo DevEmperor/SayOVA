@@ -105,7 +105,9 @@
     <string name="settings_provider_missing">Inte ansluten</string>
     <string name="settings_model">Modell</string>
     <string name="settings_voice">Röst</string>
-    <string name="settings_language">Språk</string>
+    <string name="settings_language">Svarsspråk</string>
+    <string name="settings_app_language">Appspråk</string>
+    <string name="app_language_system">Som klockan</string>
     <string name="settings_persona">Personlighet</string>
     <string name="settings_conversation">Samtal</string>
     <string name="settings_web_search">Webbsökning</string>

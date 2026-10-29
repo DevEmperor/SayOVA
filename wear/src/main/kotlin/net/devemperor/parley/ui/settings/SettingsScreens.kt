@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import net.devemperor.parley.BuildConfig
@@ -34,7 +35,7 @@ import net.devemperor.parley.ui.stringOr
 typealias Update = ((ParleySettings) -> ParleySettings) -> Unit
 
 /** Options that are a single choice from a list get one generic screen each. */
-enum class Choice { MODEL, VOICE, LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY }
+enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY }
 
 @Composable
 fun SettingsScreen(
@@ -77,6 +78,15 @@ fun SettingsScreen(
         item {
             val language = stringOr(settings.language.labelRes(), settings.language.label)
             MenuButton(stringResource(R.string.settings_language), spec, { onOpenChoice(Choice.LANGUAGE) }, language, R.drawable.ic_translate)
+        }
+        if (AppLanguages.supported) {
+            item {
+                val chosen = AppLanguages.current(LocalContext.current)
+                MenuButton(
+                    stringResource(R.string.settings_app_language), spec, { onOpenChoice(Choice.APP_LANGUAGE) },
+                    chosen?.let(AppLanguages::name) ?: stringResource(R.string.app_language_system), R.drawable.ic_language,
+                )
+            }
         }
         item { MenuButton(stringResource(R.string.settings_persona), spec, { onOpenChoice(Choice.PERSONA) }, stringResource(settings.persona.labelRes()), R.drawable.ic_face) }
         item {
@@ -147,6 +157,7 @@ fun SettingsScreen(
 
 @Composable
 fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onDone: () -> Unit) {
+    val context = LocalContext.current
     val provider = settings.providerInfo
     val select: ((ParleySettings) -> ParleySettings) -> Unit = { transform ->
         onUpdate(transform)
@@ -183,6 +194,23 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                 AnswerLanguage.entries.forEach { language ->
                     item(key = language.name) {
                         RadioItem(stringOr(language.labelRes(), language.label), settings.language == language, { select { it.copy(language = language) } }, spec)
+                    }
+                }
+            }
+            Choice.APP_LANGUAGE -> {
+                item { Header(stringResource(R.string.settings_app_language), spec) }
+                // Each language in its own name, so a user lost in a foreign one finds theirs.
+                (listOf<String?>(null) + AppLanguages.TAGS).forEach { tag ->
+                    item(key = tag ?: "system") {
+                        RadioItem(
+                            tag?.let(AppLanguages::name) ?: stringResource(R.string.app_language_system),
+                            AppLanguages.current(context) == tag,
+                            {
+                                onDone()
+                                AppLanguages.set(context, tag)
+                            },
+                            spec,
+                        )
                     }
                 }
             }

@@ -104,7 +104,9 @@
     <string name="settings_provider_missing">No conectado</string>
     <string name="settings_model">Modelo</string>
     <string name="settings_voice">Voz</string>
-    <string name="settings_language">Idioma</string>
+    <string name="settings_language">Idioma de respuesta</string>
+    <string name="settings_app_language">Idioma de la app</string>
+    <string name="app_language_system">Como el reloj</string>
     <string name="settings_persona">Personalidad</string>
     <string name="settings_conversation">Conversación</string>
     <string name="settings_web_search">Búsqueda web</string>

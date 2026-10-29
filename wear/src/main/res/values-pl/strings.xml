@@ -104,7 +104,9 @@
     <string name="settings_provider_missing">Nie połączono</string>
     <string name="settings_model">Model</string>
     <string name="settings_voice">Głos</string>
-    <string name="settings_language">Język</string>
+    <string name="settings_language">Język odpowiedzi</string>
+    <string name="settings_app_language">Język aplikacji</string>
+    <string name="app_language_system">Jak w zegarku</string>
     <string name="settings_persona">Osobowość</string>
     <string name="settings_conversation">Rozmowa</string>
     <string name="settings_web_search">Wyszukiwanie w sieci</string>

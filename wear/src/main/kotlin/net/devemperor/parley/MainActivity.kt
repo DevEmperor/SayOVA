@@ -34,7 +34,8 @@ class MainActivity : ComponentActivity() {
         val launch = if (savedInstanceState == null) launchOf(intent) else Launch.OPEN
         // With diagnostics on (see Diagnostics), a chain of routes to open, for tests and store
         // screenshots: `adb shell am start -n net.devemperor.parley/.MainActivity --es routes settings`.
-        val routes = if (Diagnostics.enabled) {
+        // Only on the first start: a new app language recreates the activity with the same intent.
+        val routes = if (Diagnostics.enabled && savedInstanceState == null) {
             intent.getStringExtra(EXTRA_ROUTES)?.split(',')?.filter(String::isNotBlank).orEmpty()
         } else {
             emptyList()

@@ -106,7 +106,9 @@
     <string name="settings_provider_missing">Not connected</string>
     <string name="settings_model">Model</string>
     <string name="settings_voice">Voice</string>
-    <string name="settings_language">Language</string>
+    <string name="settings_language">Answer language</string>
+    <string name="settings_app_language">App language</string>
+    <string name="app_language_system">Same as watch</string>
     <string name="settings_persona">Personality</string>
     <string name="settings_conversation">Conversation</string>
     <string name="settings_web_search">Web search</string>

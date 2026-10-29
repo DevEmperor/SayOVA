@@ -105,7 +105,9 @@
     <string name="settings_provider_missing">Bağlı değil</string>
     <string name="settings_model">Model</string>
     <string name="settings_voice">Ses</string>
-    <string name="settings_language">Dil</string>
+    <string name="settings_language">Yanıt dili</string>
+    <string name="settings_app_language">Uygulama dili</string>
+    <string name="app_language_system">Saatle aynı</string>
     <string name="settings_persona">Kişilik</string>
     <string name="settings_conversation">Sohbet</string>
     <string name="settings_web_search">Web araması</string>

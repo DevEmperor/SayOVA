@@ -105,7 +105,9 @@
     <string name="settings_provider_missing">未接続</string>
     <string name="settings_model">モデル</string>
     <string name="settings_voice">音声</string>
-    <string name="settings_language">言語</string>
+    <string name="settings_language">回答の言語</string>
+    <string name="settings_app_language">アプリの言語</string>
+    <string name="app_language_system">ウォッチと同じ</string>
     <string name="settings_persona">パーソナリティ</string>
     <string name="settings_conversation">会話</string>
     <string name="settings_web_search">ウェブ検索</string>

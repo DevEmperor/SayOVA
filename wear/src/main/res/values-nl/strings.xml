@@ -104,7 +104,9 @@
     <string name="settings_provider_missing">Niet verbonden</string>
     <string name="settings_model">Model</string>
     <string name="settings_voice">Stem</string>
-    <string name="settings_language">Taal</string>
+    <string name="settings_language">Antwoordtaal</string>
+    <string name="settings_app_language">App-taal</string>
+    <string name="app_language_system">Zoals het horloge</string>
     <string name="settings_persona">Persoonlijkheid</string>
     <string name="settings_conversation">Gesprek</string>
     <string name="settings_web_search">Online zoeken</string>

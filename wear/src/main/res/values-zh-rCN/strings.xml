@@ -105,7 +105,9 @@
     <string name="settings_provider_missing">未连接</string>
     <string name="settings_model">模型</string>
     <string name="settings_voice">语音</string>
-    <string name="settings_language">语言</string>
+    <string name="settings_language">回答语言</string>
+    <string name="settings_app_language">应用语言</string>
+    <string name="app_language_system">与手表相同</string>
     <string name="settings_persona">个性</string>
     <string name="settings_conversation">对话</string>
     <string name="settings_web_search">网络搜索</string>

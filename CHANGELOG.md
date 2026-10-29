@@ -33,4 +33,4 @@ First version.
   from the history can be continued where it left off.
 - In 13 languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Dutch, Polish,
   Swedish, Turkish, Japanese, Korean and Chinese (simplified); Parley's language can be set apart from
-  the watch's.
+  the watch's, right in Parley's settings (App language, Wear OS 4 and newer).
