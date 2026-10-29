@@ -131,6 +131,7 @@
     <string name="usage_average">%1$s per conversation · %2$s per minute</string>
     <string name="usage_estimate">Estimated from the usage your provider reports and its published prices. Your provider\'s bill is what counts.</string>
     <string name="settings_privacy">Privacy</string>
+    <string name="settings_general">General</string>
     <string name="settings_history">Keep history</string>
     <string name="settings_delete_history">Delete all history</string>
     <string name="settings_delete_history_confirm">Delete all conversations?</string>
@@ -293,7 +294,7 @@
     <string name="feature_apps">Open apps</string>
     <string name="feature_notifications">Notifications</string>
     <string name="feature_system_setting">Switch on in the watch settings</string>
-    <string name="feature_adb_only">This watch has no switch for it</string>
+    <string name="feature_unavailable">Not available on this watch</string>
     <string name="features_count">%1$d of %2$d on</string>
     <string name="notice_weather">Getting the weather…</string>
     <string name="notice_pressure">Reading the barometer…</string>

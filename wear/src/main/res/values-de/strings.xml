@@ -129,6 +129,7 @@
     <string name="usage_average">%1$s pro Gespräch · %2$s pro Minute</string>
     <string name="usage_estimate">Geschätzt aus der Nutzung, die dein Anbieter meldet, und seinen veröffentlichten Preisen. Maßgeblich ist die Rechnung deines Anbieters.</string>
     <string name="settings_privacy">Datenschutz</string>
+    <string name="settings_general">Allgemein</string>
     <string name="settings_history">Verlauf speichern</string>
     <string name="settings_delete_history">Gesamten Verlauf löschen</string>
     <string name="settings_delete_history_confirm">Alle Gespräche löschen?</string>
@@ -291,7 +292,7 @@
     <string name="feature_apps">Apps öffnen</string>
     <string name="feature_notifications">Benachrichtigungen</string>
     <string name="feature_system_setting">In den Uhreinstellungen einschalten</string>
-    <string name="feature_adb_only">Diese Uhr bietet dafür keinen Schalter</string>
+    <string name="feature_unavailable">Auf dieser Uhr nicht verfügbar</string>
     <string name="features_count">%1$d von %2$d an</string>
     <string name="notice_weather">Wetter wird geladen…</string>
     <string name="notice_pressure">Barometer wird gelesen…</string>

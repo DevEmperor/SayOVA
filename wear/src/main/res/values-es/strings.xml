@@ -129,6 +129,7 @@
     <string name="usage_average">%1$s por conversación · %2$s por minuto</string>
     <string name="usage_estimate">Estimación basada en el uso que indica tu proveedor y sus precios publicados. Lo que cuenta es la factura de tu proveedor.</string>
     <string name="settings_privacy">Privacidad</string>
+    <string name="settings_general">General</string>
     <string name="settings_history">Guardar historial</string>
     <string name="settings_delete_history">Borrar todo el historial</string>
     <string name="settings_delete_history_confirm">¿Eliminar todas las conversaciones?</string>
@@ -295,7 +296,7 @@
     <string name="feature_apps">Abrir apps</string>
     <string name="feature_notifications">Notificaciones</string>
     <string name="feature_system_setting">Activar en ajustes del reloj</string>
-    <string name="feature_adb_only">Este reloj no tiene ajuste para ello</string>
+    <string name="feature_unavailable">No disponible en este reloj</string>
     <string name="features_count">%1$d de %2$d activadas</string>
     <string name="notice_weather">Cargando el tiempo…</string>
     <string name="notice_pressure">Leyendo el barómetro…</string>

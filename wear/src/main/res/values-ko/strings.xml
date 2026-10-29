@@ -130,6 +130,7 @@
     <string name="usage_average">대화당 %1$s · 분당 %2$s</string>
     <string name="usage_estimate">제공업체가 보고한 사용량과 공개된 가격을 기준으로 추정한 값입니다. 실제 금액은 제공업체 청구서를 따릅니다.</string>
     <string name="settings_privacy">개인정보 보호</string>
+    <string name="settings_general">일반</string>
     <string name="settings_history">기록 보관</string>
     <string name="settings_delete_history">모든 기록 삭제</string>
     <string name="settings_delete_history_confirm">모든 대화를 삭제하시겠습니까?</string>
@@ -288,7 +289,7 @@
     <string name="feature_apps">앱 열기</string>
     <string name="feature_notifications">알림</string>
     <string name="feature_system_setting">시계 설정에서 켜세요</string>
-    <string name="feature_adb_only">이 시계에는 해당 설정이 없습니다</string>
+    <string name="feature_unavailable">이 시계에서는 사용할 수 없음</string>
     <string name="features_count">%2$d개 중 %1$d개 사용</string>
     <string name="notice_weather">날씨 불러오는 중…</string>
     <string name="notice_pressure">기압계 읽는 중…</string>

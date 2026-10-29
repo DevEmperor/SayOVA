@@ -49,6 +49,7 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
     val access = remember(resumed, settings.featuresAsked) {
         WatchFeature.entries.associateWith { WatchFeatures.access(activity, it, it in settings.featuresAsked) }
     }
+    val available = remember(resumed) { WatchFeature.entries.filter { WatchFeatures.available(context, it) }.toSet() }
     var asking by remember { mutableStateOf(emptyList<WatchFeature>()) }
     var switchingOn by remember { mutableStateOf<WatchFeature?>(null) }
     val request = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -64,13 +65,7 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
     }
     // Notification access is a switch in the system settings, which Wear OS itself does not offer
     // (only adb grants it there); some watches have one.
-    val notificationAccess = remember {
-        listOf(
-            Intent(Settings.ACTION_NOTIFICATION_LISTENER_DETAIL_SETTINGS)
-                .putExtra(Settings.EXTRA_NOTIFICATION_LISTENER_COMPONENT_NAME, NotificationReader.component(context).flattenToString()),
-            Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS),
-        ).firstOrNull { it.resolveActivity(context.packageManager) != null }
-    }
+    val notificationAccess = remember { NotificationReader.settingsIntent(context) }
     fun ask(features: List<WatchFeature>) {
         asking = features
         request.launch(features.flatMap(WatchFeatures::permissions).toTypedArray())
@@ -81,11 +76,13 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
         item { Hint(stringResource(R.string.features_examples), spec) }
         WatchFeature.entries.forEach { feature ->
             item(key = feature.name) {
-                val on = feature in settings.features
+                // A feature this watch cannot give stays off, its switch greyed out.
+                val usable = feature in available
+                val on = usable && feature in settings.features
                 val state = when {
+                    !usable -> stringResource(R.string.feature_unavailable)
                     !on -> null
-                    access[feature] == Access.SYSTEM_SETTING ->
-                        stringResource(if (notificationAccess != null) R.string.feature_system_setting else R.string.feature_adb_only)
+                    access[feature] == Access.SYSTEM_SETTING -> stringResource(R.string.feature_system_setting)
                     // Music, alarm, apps, weather, barometer: nothing to allow.
                     WatchFeatures.permissions(feature).isEmpty() && feature != WatchFeature.NOTIFICATIONS -> null
                     access[feature] == Access.ALLOWED -> stringResource(R.string.feature_allowed)
@@ -117,10 +114,11 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                     spec = spec,
                     secondaryLabel = state,
                     icon = feature.iconRes(),
+                    enabled = usable,
                 )
             }
         }
-        val waiting = settings.features.filter { access[it] != Access.ALLOWED && access[it] != Access.SYSTEM_SETTING }
+        val waiting = settings.features.filter { it in available && access[it] != Access.ALLOWED && access[it] != Access.SYSTEM_SETTING }
         if (waiting.isNotEmpty()) {
             item {
                 val askable = waiting.filter { access[it] == Access.ASKS_FIRST }

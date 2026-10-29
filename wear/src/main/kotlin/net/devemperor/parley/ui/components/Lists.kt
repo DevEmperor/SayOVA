@@ -125,10 +125,12 @@ fun TransformingLazyColumnItemScope.SwitchItem(
     spec: TransformationSpec,
     secondaryLabel: String? = null,
     @DrawableRes icon: Int? = null,
+    enabled: Boolean = true,
 ) {
     SwitchButton(
         checked = checked,
         onCheckedChange = onCheckedChange,
+        enabled = enabled,
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },

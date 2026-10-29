@@ -20,6 +20,7 @@ import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.core.usage.UsageTotal
 import net.devemperor.parley.data.BargeIn
 import net.devemperor.parley.data.ParleySettings
+import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.ui.components.ConfirmDialog
 import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.Hint
@@ -80,15 +81,6 @@ fun SettingsScreen(
             val language = stringOr(settings.language.labelRes(), settings.language.label)
             MenuButton(stringResource(R.string.settings_language), spec, { onOpenChoice(Choice.LANGUAGE) }, language, R.drawable.ic_translate)
         }
-        if (AppLanguages.supported) {
-            item {
-                val chosen = AppLanguages.current(LocalContext.current)
-                MenuButton(
-                    stringResource(R.string.settings_app_language), spec, { onOpenChoice(Choice.APP_LANGUAGE) },
-                    chosen?.let(AppLanguages::name) ?: stringResource(R.string.app_language_system), R.drawable.ic_language,
-                )
-            }
-        }
         item { MenuButton(stringResource(R.string.settings_persona), spec, { onOpenChoice(Choice.PERSONA) }, stringResource(settings.persona.labelRes()), R.drawable.ic_face) }
         item {
             val summary = when {
@@ -107,9 +99,11 @@ fun SettingsScreen(
             )
         }
         item {
-            // Eleven names no longer fit under the label; how many are on does.
-            val on = settings.features
-            val summary = if (on.isEmpty()) stringResource(R.string.features_none) else stringResource(R.string.features_count, on.size, WatchFeature.entries.size)
+            // Eleven names no longer fit under the label; how many are on does, of those this watch offers.
+            val context = LocalContext.current
+            val usable = remember { WatchFeature.entries.filter { WatchFeatures.available(context, it) } }
+            val on = settings.features.filter { it in usable }
+            val summary = if (on.isEmpty()) stringResource(R.string.features_none) else stringResource(R.string.features_count, on.size, usable.size)
             MenuButton(stringResource(R.string.features_title), spec, onOpenFeatures, summary, R.drawable.ic_watch)
         }
         item { MenuButton(stringResource(R.string.settings_barge_in), spec, { onOpenChoice(Choice.BARGE_IN) }, stringResource(settings.bargeIn.labelRes()), R.drawable.ic_front_hand) }
@@ -144,6 +138,17 @@ fun SettingsScreen(
         item { SubHeader(stringResource(R.string.settings_privacy), spec) }
         item { MenuButton(stringResource(R.string.settings_history), spec, { onOpenChoice(Choice.HISTORY) }, historyLabel(settings.historyDays), R.drawable.ic_history) }
         item { MenuButton(stringResource(R.string.settings_delete_history), spec, { confirmDelete = true }, icon = R.drawable.ic_delete) }
+
+        item { SubHeader(stringResource(R.string.settings_general), spec) }
+        if (AppLanguages.supported) {
+            item {
+                val chosen = AppLanguages.current(LocalContext.current)
+                MenuButton(
+                    stringResource(R.string.settings_app_language), spec, { onOpenChoice(Choice.APP_LANGUAGE) },
+                    chosen?.let(AppLanguages::name) ?: stringResource(R.string.app_language_system), R.drawable.ic_language,
+                )
+            }
+        }
         item { MenuButton(stringResource(R.string.settings_about), spec, onOpenAbout, "${stringResource(R.string.app_name)} ${BuildConfig.VERSION_NAME}", R.drawable.ic_info) }
     }
     ConfirmDialog(

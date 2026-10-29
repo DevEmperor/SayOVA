@@ -89,7 +89,7 @@ class SessionService : LifecycleService() {
         val model = provider.model(settings.modelId())
         val canSearch = settings.webSearch
         val memory = app.memory.takeIf { settings.memory }
-        features = if (demo) emptySet() else settings.features
+        features = if (demo) emptySet() else settings.features.filter { WatchFeatures.available(this@SessionService, it) }.toSet()
         widenForegroundType()
         val config = SessionConfig(
             apiKey = apiKey,

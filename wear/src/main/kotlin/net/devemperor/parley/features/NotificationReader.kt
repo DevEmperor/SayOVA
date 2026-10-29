@@ -3,6 +3,8 @@ package net.devemperor.parley.features
 import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import kotlinx.coroutines.delay
@@ -30,6 +32,16 @@ class NotificationReader : NotificationListenerService() {
 
         fun allowed(context: Context): Boolean =
             context.getSystemService(NotificationManager::class.java).isNotificationListenerAccessGranted(component(context))
+
+        /**
+         * The system screen that grants the access; null on watches without one, which is Wear OS
+         * itself (only adb grants it there).
+         */
+        fun settingsIntent(context: Context): Intent? = listOf(
+            Intent(Settings.ACTION_NOTIFICATION_LISTENER_DETAIL_SETTINGS)
+                .putExtra(Settings.EXTRA_NOTIFICATION_LISTENER_COMPONENT_NAME, component(context).flattenToString()),
+            Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS),
+        ).firstOrNull { it.resolveActivity(context.packageManager) != null }
 
         /** The notifications on the watch now; waits briefly for Android to connect the listener. */
         suspend fun current(context: Context): List<StatusBarNotification>? {

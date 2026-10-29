@@ -129,6 +129,7 @@
     <string name="usage_average">%1$s na rozmowę · %2$s na minutę</string>
     <string name="usage_estimate">Szacunek na podstawie użycia zgłaszanego przez dostawcę i jego cennika. Liczy się rachunek od dostawcy.</string>
     <string name="settings_privacy">Prywatność</string>
+    <string name="settings_general">Ogólne</string>
     <string name="settings_history">Zapisuj historię</string>
     <string name="settings_delete_history">Usuń całą historię</string>
     <string name="settings_delete_history_confirm">Usunąć wszystkie rozmowy?</string>
@@ -299,7 +300,7 @@
     <string name="feature_apps">Otwieranie aplikacji</string>
     <string name="feature_notifications">Powiadomienia</string>
     <string name="feature_system_setting">Włącz w ustawieniach zegarka</string>
-    <string name="feature_adb_only">Ten zegarek nie ma do tego przełącznika</string>
+    <string name="feature_unavailable">Niedostępne na tym zegarku</string>
     <string name="features_count">Włączone: %1$d z %2$d</string>
     <string name="notice_weather">Pobieranie pogody…</string>
     <string name="notice_pressure">Odczyt barometru…</string>

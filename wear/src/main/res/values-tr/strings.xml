@@ -130,6 +130,7 @@
     <string name="usage_average">Sohbet başına %1$s · dakika başına %2$s</string>
     <string name="usage_estimate">Sağlayıcınızın bildirdiği kullanım ve yayımladığı fiyatlarla tahmin edilir. Geçerli olan, sağlayıcınızın faturasıdır.</string>
     <string name="settings_privacy">Gizlilik</string>
+    <string name="settings_general">Genel</string>
     <string name="settings_history">Geçmişi sakla</string>
     <string name="settings_delete_history">Tüm geçmişi sil</string>
     <string name="settings_delete_history_confirm">Tüm sohbetler silinsin mi?</string>
@@ -292,7 +293,7 @@
     <string name="feature_apps">Uygulama açma</string>
     <string name="feature_notifications">Bildirimler</string>
     <string name="feature_system_setting">Saat ayarlarından açın</string>
-    <string name="feature_adb_only">Bu saatte bunun için ayar yok</string>
+    <string name="feature_unavailable">Bu saatte kullanılamaz</string>
     <string name="features_count">%2$d özellikten %1$d açık</string>
     <string name="notice_weather">Hava durumu yükleniyor…</string>
     <string name="notice_pressure">Barometre okunuyor…</string>

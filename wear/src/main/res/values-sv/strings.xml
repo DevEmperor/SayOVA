@@ -130,6 +130,7 @@
     <string name="usage_average">%1$s per samtal · %2$s per minut</string>
     <string name="usage_estimate">Uppskattat utifrån den användning som leverantören rapporterar och dess publicerade priser. Det är leverantörens faktura som gäller.</string>
     <string name="settings_privacy">Integritet</string>
+    <string name="settings_general">Allmänt</string>
     <string name="settings_history">Spara historik</string>
     <string name="settings_delete_history">Ta bort all historik</string>
     <string name="settings_delete_history_confirm">Ta bort alla samtal?</string>
@@ -292,7 +293,7 @@
     <string name="feature_apps">Öppna appar</string>
     <string name="feature_notifications">Aviseringar</string>
     <string name="feature_system_setting">Slå på i klockans inställningar</string>
-    <string name="feature_adb_only">Klockan har ingen inställning för det</string>
+    <string name="feature_unavailable">Inte tillgängligt på den här klockan</string>
     <string name="features_count">%1$d av %2$d på</string>
     <string name="notice_weather">Hämtar vädret…</string>
     <string name="notice_pressure">Läser barometern…</string>

@@ -45,6 +45,13 @@ object WatchFeatures {
     }
 
     /**
+     * Whether this watch can give Parley the feature at all. Notification access needs a system screen
+     * many watches lack; without it (and without access granted by adb) the feature stays off.
+     */
+    fun available(context: Context, feature: WatchFeature): Boolean =
+        feature != WatchFeature.NOTIFICATIONS || NotificationReader.allowed(context) || NotificationReader.settingsIntent(context) != null
+
+    /**
      * Android shows no dialog any more once the user said no twice; [asked] tells that apart from a
      * permission never asked for, which also has no rationale yet.
      */

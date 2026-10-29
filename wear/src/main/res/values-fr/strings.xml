@@ -130,6 +130,7 @@
     <string name="usage_average">%1$s par conversation · %2$s par minute</string>
     <string name="usage_estimate">Estimation basée sur l\'utilisation déclarée par votre fournisseur et ses tarifs publiés. Seule sa facture fait foi.</string>
     <string name="settings_privacy">Confidentialité</string>
+    <string name="settings_general">Général</string>
     <string name="settings_history">Conserver l\'historique</string>
     <string name="settings_delete_history">Supprimer l\'historique</string>
     <string name="settings_delete_history_confirm">Supprimer toutes les conversations ?</string>
@@ -296,7 +297,7 @@
     <string name="feature_apps">Ouvrir des apps</string>
     <string name="feature_notifications">Notifications</string>
     <string name="feature_system_setting">À activer dans les réglages</string>
-    <string name="feature_adb_only">Pas de réglage sur cette montre</string>
+    <string name="feature_unavailable">Non disponible sur cette montre</string>
     <string name="features_count">%1$d sur %2$d activées</string>
     <string name="notice_weather">Chargement de la météo…</string>
     <string name="notice_pressure">Lecture du baromètre…</string>

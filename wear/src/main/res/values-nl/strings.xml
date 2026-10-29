@@ -129,6 +129,7 @@
     <string name="usage_average">%1$s per gesprek · %2$s per minuut</string>
     <string name="usage_estimate">Geschat op basis van het gebruik dat je aanbieder meldt en diens gepubliceerde prijzen. De factuur van je aanbieder is leidend.</string>
     <string name="settings_privacy">Privacy</string>
+    <string name="settings_general">Algemeen</string>
     <string name="settings_history">Geschiedenis bewaren</string>
     <string name="settings_delete_history">Alle geschiedenis wissen</string>
     <string name="settings_delete_history_confirm">Alle gesprekken verwijderen?</string>
@@ -291,7 +292,7 @@
     <string name="feature_apps">Apps openen</string>
     <string name="feature_notifications">Meldingen</string>
     <string name="feature_system_setting">Aanzetten in de horloge-instellingen</string>
-    <string name="feature_adb_only">Dit horloge heeft er geen schakelaar voor</string>
+    <string name="feature_unavailable">Niet beschikbaar op dit horloge</string>
     <string name="features_count">%1$d van %2$d aan</string>
     <string name="notice_weather">Weer ophalen…</string>
     <string name="notice_pressure">Barometer lezen…</string>

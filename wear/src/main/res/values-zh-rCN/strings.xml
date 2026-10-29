@@ -130,6 +130,7 @@
     <string name="usage_average">每次对话 %1$s · 每分钟 %2$s</string>
     <string name="usage_estimate">根据服务商报告的用量及其公布的价格估算。实际费用以服务商的账单为准。</string>
     <string name="settings_privacy">隐私</string>
+    <string name="settings_general">通用</string>
     <string name="settings_history">保留历史记录</string>
     <string name="settings_delete_history">删除所有历史记录</string>
     <string name="settings_delete_history_confirm">要删除所有对话吗？</string>
@@ -288,7 +289,7 @@
     <string name="feature_apps">打开应用</string>
     <string name="feature_notifications">通知</string>
     <string name="feature_system_setting">请在手表设置中开启</string>
-    <string name="feature_adb_only">此手表没有相应的开关</string>
+    <string name="feature_unavailable">此手表不支持</string>
     <string name="features_count">已开启 %1$d / %2$d 项</string>
     <string name="notice_weather">正在获取天气…</string>
     <string name="notice_pressure">正在读取气压计…</string>
