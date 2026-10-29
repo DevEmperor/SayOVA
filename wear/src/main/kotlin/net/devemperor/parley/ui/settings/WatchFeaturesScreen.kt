@@ -83,9 +83,8 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                     !usable -> stringResource(R.string.feature_unavailable)
                     !on -> null
                     access[feature] == Access.SYSTEM_SETTING -> stringResource(R.string.feature_system_setting)
-                    // Music, alarm, apps, weather, barometer: nothing to allow. Notifications: a switch that
-                    // is on and usable has the access already, so "Allowed" would say nothing new.
-                    WatchFeatures.permissions(feature).isEmpty() -> null
+                    // Music, alarm, apps, weather, barometer: nothing to allow.
+                    WatchFeatures.permissions(feature).isEmpty() && feature != WatchFeature.NOTIFICATIONS -> null
                     access[feature] == Access.ALLOWED -> stringResource(R.string.feature_allowed)
                     access[feature] == Access.BLOCKED -> stringResource(R.string.feature_blocked)
                     else -> stringResource(R.string.feature_asks_first)
