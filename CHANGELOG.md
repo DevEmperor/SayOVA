@@ -33,7 +33,8 @@ First version.
   web search), air pressure and altitude from the barometer, the next alarm, music control, contacts
   and calls (only after you confirmed name and number; the call starts when the conversation ends),
   opening apps, and reading the notifications (needs notification access in the system settings).
-- QR pairing: the key is encrypted in the browser and relayed end to end to the watch.
+- QR pairing: the key is encrypted in the browser and relayed end to end to the watch; compare the
+  six-digit code and tap the check mark.
 - Wi-Fi or LTE during conversations, resumed Gemini sessions after network changes.
 - History on the watch, tile, complication, ongoing-activity icon on the watch face; a conversation
   from the history can be continued where it left off.

@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -40,13 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.EdgeButton
 import androidx.wear.compose.material3.EdgeButtonSize
 import androidx.wear.compose.material3.FilledTonalButton
-import androidx.wear.compose.material3.FilledTonalIconButton
-import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
@@ -57,6 +53,8 @@ import androidx.wear.compose.material3.curvedText
 import net.devemperor.parley.R
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.ui.components.CheckButton
+import net.devemperor.parley.ui.components.CrossButton
 import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.FitText
 import net.devemperor.parley.ui.components.Header
@@ -251,8 +249,9 @@ private fun QrContent(state: PairingState.Waiting) {
 /**
  * The phone shows a six-digit code when it sends the key; the watch derives the same code from what
  * arrived. Equal codes prove the key came from the user's own phone and nobody in between, so this is
- * one glance and one tap: the code fills the middle, "Matches" comes first and largest, and the small
- * cross after it ("Doesn't match") starts over with a new QR code.
+ * one glance and one tap: the code fills the middle, below it the two round buttons of every yes-or-no
+ * question in Parley, the highlighted check ("Matches") and the muted cross ("Doesn't match"), which
+ * starts over with a new QR code.
  */
 @Composable
 private fun CompareCode(code: String, onMatch: () -> Unit, onMismatch: () -> Unit) {
@@ -274,22 +273,13 @@ private fun CompareCode(code: String, onMatch: () -> Unit, onMismatch: () -> Uni
                 color = ParleyColors.TealBright,
             )
             Spacer(Modifier.height(width * 0.07f))
+            // Cross left, check right, as in the dialogs.
             Row(
-                horizontalArrangement = Arrangement.spacedBy(width * 0.03f),
+                horizontalArrangement = Arrangement.spacedBy(width * 0.08f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Button(
-                    onClick = onMatch,
-                    icon = { Icon(painterResource(R.drawable.ic_check), contentDescription = null) },
-                    label = { FitText(stringResource(R.string.pair_compare_match)) },
-                )
-                FilledTonalIconButton(onClick = onMismatch, modifier = Modifier.size(width * 0.14f)) {
-                    Icon(
-                        painterResource(R.drawable.ic_close),
-                        contentDescription = stringResource(R.string.pair_compare_mismatch),
-                        modifier = Modifier.size(width * 0.07f),
-                    )
-                }
+                CrossButton(onMismatch, stringResource(R.string.pair_compare_mismatch))
+                CheckButton(onMatch, stringResource(R.string.pair_compare_match))
             }
         }
     }

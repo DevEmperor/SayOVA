@@ -15,6 +15,7 @@ import androidx.wear.compose.material3.AlertDialog
 import androidx.wear.compose.material3.FilledIconButton
 import androidx.wear.compose.material3.FilledTonalIconButton
 import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material3.IconButtonColors
 import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.Text
 import net.devemperor.parley.R
@@ -40,26 +41,40 @@ fun ConfirmDialog(
         icon = { Icon(painterResource(icon), contentDescription = null) },
         title = { Text(title) },
         text = text?.let { { Text(it, textAlign = TextAlign.Center, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
-        dismissButton = {
-            FilledTonalIconButton(
-                onClick = onDismiss,
-                modifier = Modifier.size(BUTTON),
-                shapes = IconButtonDefaults.shapes(CircleShape),
-            ) {
-                Icon(painterResource(R.drawable.ic_close), contentDescription = stringResource(R.string.action_cancel))
-            }
-        },
+        dismissButton = { CrossButton(onDismiss, stringResource(R.string.action_cancel)) },
         confirmButton = {
-            FilledIconButton(
-                onClick = onConfirm,
-                modifier = Modifier.size(BUTTON),
-                shapes = IconButtonDefaults.shapes(CircleShape),
-                colors = IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.Coral, contentColor = Color.Black),
-            ) {
-                Icon(painterResource(R.drawable.ic_check), contentDescription = stringResource(R.string.action_confirm))
-            }
+            CheckButton(
+                onConfirm,
+                stringResource(R.string.action_confirm),
+                IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.Coral, contentColor = Color.Black),
+            )
         },
     )
+}
+
+/** The muted round cross of Parley's yes-or-no questions: no, cancel, start over. */
+@Composable
+fun CrossButton(onClick: () -> Unit, contentDescription: String) {
+    FilledTonalIconButton(
+        onClick = onClick,
+        modifier = Modifier.size(BUTTON),
+        shapes = IconButtonDefaults.shapes(CircleShape),
+    ) {
+        Icon(painterResource(R.drawable.ic_close), contentDescription = contentDescription)
+    }
+}
+
+/** The round check of Parley's yes-or-no questions, highlighted; [colors] give it a warning colour. */
+@Composable
+fun CheckButton(onClick: () -> Unit, contentDescription: String, colors: IconButtonColors = IconButtonDefaults.filledIconButtonColors()) {
+    FilledIconButton(
+        onClick = onClick,
+        modifier = Modifier.size(BUTTON),
+        shapes = IconButtonDefaults.shapes(CircleShape),
+        colors = colors,
+    ) {
+        Icon(painterResource(R.drawable.ic_check), contentDescription = contentDescription)
+    }
 }
 
 private val BUTTON = 52.dp
