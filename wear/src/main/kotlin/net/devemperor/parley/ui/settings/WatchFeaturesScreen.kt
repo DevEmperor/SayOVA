@@ -20,6 +20,7 @@ import net.devemperor.parley.R
 import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.features.Access
+import net.devemperor.parley.features.NotificationReader
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.ui.components.Header
 import net.devemperor.parley.ui.components.Hint
@@ -61,6 +62,15 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
     val openSystemSettings = {
         context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null)))
     }
+    // Notification access is a switch in the system settings, which Wear OS itself does not offer
+    // (only adb grants it there); some watches have one.
+    val notificationAccess = remember {
+        listOf(
+            Intent(Settings.ACTION_NOTIFICATION_LISTENER_DETAIL_SETTINGS)
+                .putExtra(Settings.EXTRA_NOTIFICATION_LISTENER_COMPONENT_NAME, NotificationReader.component(context).flattenToString()),
+            Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS),
+        ).firstOrNull { it.resolveActivity(context.packageManager) != null }
+    }
     fun ask(features: List<WatchFeature>) {
         asking = features
         request.launch(features.flatMap(WatchFeatures::permissions).toTypedArray())
@@ -74,6 +84,10 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                 val on = feature in settings.features
                 val state = when {
                     !on -> null
+                    access[feature] == Access.SYSTEM_SETTING ->
+                        stringResource(if (notificationAccess != null) R.string.feature_system_setting else R.string.feature_adb_only)
+                    // Music, alarm, apps, weather, barometer: nothing to allow.
+                    WatchFeatures.permissions(feature).isEmpty() && feature != WatchFeature.NOTIFICATIONS -> null
                     access[feature] == Access.ALLOWED -> stringResource(R.string.feature_allowed)
                     access[feature] == Access.BLOCKED -> stringResource(R.string.feature_blocked)
                     else -> stringResource(R.string.feature_asks_first)
@@ -86,6 +100,7 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                             onUpdate { it.copy(featuresOff = it.featuresOff - feature) }
                             when (access[feature]) {
                                 Access.ALLOWED -> Unit
+                                Access.SYSTEM_SETTING -> notificationAccess?.let(context::startActivity)
                                 Access.BLOCKED -> openSystemSettings()
                                 else -> {
                                     switchingOn = feature
@@ -95,7 +110,8 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                         } else {
                             onUpdate { it.copy(featuresOff = it.featuresOff + feature) }
                             // Given back when Parley's process ends; Android allows no sooner.
-                            if (Build.VERSION.SDK_INT >= 33) context.revokeSelfPermissionsOnKill(WatchFeatures.permissions(feature))
+                            val permissions = WatchFeatures.permissions(feature)
+                            if (Build.VERSION.SDK_INT >= 33 && permissions.isNotEmpty()) context.revokeSelfPermissionsOnKill(permissions)
                         }
                     },
                     spec = spec,
@@ -104,7 +120,7 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                 )
             }
         }
-        val waiting = settings.features.filter { access[it] != Access.ALLOWED }
+        val waiting = settings.features.filter { access[it] != Access.ALLOWED && access[it] != Access.SYSTEM_SETTING }
         if (waiting.isNotEmpty()) {
             item {
                 val askable = waiting.filter { access[it] == Access.ASKS_FIRST }

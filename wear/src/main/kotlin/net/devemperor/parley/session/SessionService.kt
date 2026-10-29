@@ -106,7 +106,7 @@ class SessionService : LifecycleService() {
                 memory = memory?.current(),
                 features = features,
             ),
-            tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.map { it.tool },
+            tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.flatMap { it.tools },
             webSearch = canSearch,
             textOnly = textOnly,
             thinkingLevel = model.thinkingLevel,
@@ -140,7 +140,7 @@ class SessionService : LifecycleService() {
                     soundOff = settings.soundOff,
                     continues = earlier,
                 ),
-                toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType),
+                toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType, http = client),
                 haptics = Haptics(this@SessionService) { settings.haptics },
                 transport = app.network.transport,
                 onSave = { conversation, usd, talkMs ->

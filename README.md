@@ -39,10 +39,13 @@ your own API key.
 - **Does things on the watch.** Timers, alarms, notes, battery and time, and web search
   for anything current.
 - **Knows the watch it runs on – when you ask.** "What's the weather here?", "What's my
-  heart rate?", "How many steps today?", "What's on this afternoon?": Parley reads the
-  location, heart rate, steps or calendar only for that question, after you allowed it
-  once, and shows an icon while it does. Each one can be switched off under Settings →
-  Watch features.
+  heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm
+  ring?", "How high up am I?", "Pause the music", "Call Lena", "Open the flashlight",
+  "Anything new?": Parley uses the location, weather, heart rate, steps, calendar, air
+  pressure, next alarm, music, contacts, apps or notifications only for that question,
+  after you allowed it once, and shows an icon while it does. Each one can be switched
+  off under Settings → Watch features. Calls are placed only after you confirmed name and
+  number.
 - **Your provider, your key, your data.** Choose Google Gemini (from about a cent a
   minute) or OpenAI. Audio goes straight from the watch to the provider; there is no
   Parley server in between.
@@ -91,7 +94,8 @@ settings.
 Your voice and your conversations go only to the provider you chose. Your key is
 encrypted on the watch, the history and memory never leave it except inside a
 conversation with your provider, and the pairing relay only ever
-sees data it cannot read. Details: [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
+sees data it cannot read. For the weather, MET Norway receives the place's rounded
+coordinates. Details: [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
 
 ## Project layout
 
@@ -121,6 +125,9 @@ adb shell am start -n net.devemperor.parley.debug/net.devemperor.parley.MainActi
 
 The orb is adapted from the Cloud theme of [orb-ui](https://github.com/exprmntl/orb-ui) by
 Alexander Chen (MIT License), recoloured in Parley's palette.
+
+Weather data from the [Norwegian Meteorological Institute (MET Norway)](https://api.met.no/),
+under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## License
 

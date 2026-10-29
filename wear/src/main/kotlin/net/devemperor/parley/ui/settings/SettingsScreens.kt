@@ -15,6 +15,7 @@ import net.devemperor.parley.core.prompt.AnswerLanguage
 import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.core.usage.UsageTotal
 import net.devemperor.parley.data.BargeIn
@@ -106,8 +107,9 @@ fun SettingsScreen(
             )
         }
         item {
+            // Eleven names no longer fit under the label; how many are on does.
             val on = settings.features
-            val summary = if (on.isEmpty()) stringResource(R.string.features_none) else on.map { stringResource(it.labelRes()) }.joinToString(", ")
+            val summary = if (on.isEmpty()) stringResource(R.string.features_none) else stringResource(R.string.features_count, on.size, WatchFeature.entries.size)
             MenuButton(stringResource(R.string.features_title), spec, onOpenFeatures, summary, R.drawable.ic_watch)
         }
         item { MenuButton(stringResource(R.string.settings_barge_in), spec, { onOpenChoice(Choice.BARGE_IN) }, stringResource(settings.bargeIn.labelRes()), R.drawable.ic_front_hand) }

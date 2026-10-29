@@ -2,15 +2,18 @@ package net.devemperor.parley.session
 
 import android.content.Context
 import android.content.Intent
+import android.hardware.SensorManager
 import android.os.BatteryManager
 import android.provider.AlarmClock
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.add
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
@@ -20,10 +23,13 @@ import net.devemperor.parley.core.provider.openai.OpenAiWebSearch
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.tools.ParleyTools
 import net.devemperor.parley.core.tools.WatchFeature
+import net.devemperor.parley.core.weather.MetNorway
 import net.devemperor.parley.data.MemoryStore
 import net.devemperor.parley.features.PermissionBroker
+import net.devemperor.parley.features.WatchActions
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.features.WatchSensors
+import okhttp3.OkHttpClient
 import net.devemperor.parley.parley
 import net.devemperor.parley.ui.labelRes
 import java.text.NumberFormat
@@ -32,6 +38,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.roundToInt
 
 /**
  * Carries out the model's tool calls on the watch. Every call answers, also when it fails, so the
@@ -46,12 +53,16 @@ class ToolRunner(
     private val features: Set<WatchFeature> = emptySet(),
     /** Called when the user allowed a feature mid-conversation (the service widens its type). */
     private val onAllowed: () -> Unit = {},
+    /** The conversation's network, for the weather. */
+    http: OkHttpClient = OkHttpClient(),
 ) {
     private val sensors = WatchSensors(context)
+    private val actions = WatchActions(context, http)
 
     /**
      * [note] is shown in the transcript as what Parley did, e.g. "Timer · 5 min"; [notice] is the
-     * shorter text under the orb, the note itself when not given.
+     * shorter text under the orb, the note itself when not given. [afterEnd] runs once the
+     * conversation has ended (a phone call must not share the microphone with it).
      */
     data class Outcome(
         val result: JsonObject,
@@ -59,6 +70,7 @@ class ToolRunner(
         val notice: String? = null,
         val savedNote: String? = null,
         val endsConversation: Boolean = false,
+        val afterEnd: (() -> Unit)? = null,
     )
 
     /** [onGranted] runs when the user allows a watch feature during the call, before it is used. */
@@ -71,14 +83,22 @@ class ToolRunner(
         ParleyTools.SEARCH_WEB -> search(call.arguments)
         ParleyTools.REMEMBER_FACT -> remember(call.arguments)
         ParleyTools.FORGET_FACT -> forget(call.arguments)
-        else -> WatchFeature.forTool(call.name)?.let { watchFeature(it, call.arguments, onGranted) } ?: Outcome(error("Unknown tool ${call.name}"))
+        else -> WatchFeature.forTool(call.name)?.let { watchFeature(it, call, onGranted) } ?: Outcome(error("Unknown tool ${call.name}"))
     }
 
     /** A watch feature: asks for its permission the first time, then reads the sensor or data. */
-    private suspend fun watchFeature(feature: WatchFeature, args: JsonObject, onGranted: () -> Unit): Outcome {
+    private suspend fun watchFeature(feature: WatchFeature, call: VoiceEvent.ToolCall, onGranted: () -> Unit): Outcome {
+        val args = call.arguments
         val name = context.getString(feature.labelRes())
         val where = "Parley's settings under ${setting(R.string.features_title)}"
         if (feature !in features) return Outcome(error("The user turned this off in $where."))
+        if (feature == WatchFeature.NOTIFICATIONS && !WatchFeatures.granted(context, feature)) {
+            // No dialog can grant it: a switch in the system settings does, where the watch has one.
+            return Outcome(
+                error("Notification access is off. The user switches it on for Parley in the watch's system settings; $where tells how."),
+                note = context.getString(R.string.note_not_allowed, name),
+            )
+        }
         if (!WatchFeatures.granted(context, feature)) {
             context.parley.settings.update { it.copy(featuresAsked = it.featuresAsked + feature) }
             when (PermissionBroker.request(feature)) {
@@ -98,9 +118,16 @@ class ToolRunner(
         return try {
             when (feature) {
                 WatchFeature.LOCATION -> location()
+                WatchFeature.WEATHER -> weather(args, where, onGranted)
                 WatchFeature.HEART_RATE -> heartRate()
                 WatchFeature.STEPS -> steps()
+                WatchFeature.PRESSURE -> airPressure()
                 WatchFeature.CALENDAR -> calendar(args)
+                WatchFeature.ALARM -> nextAlarm()
+                WatchFeature.MUSIC -> media(args)
+                WatchFeature.CALLS -> if (call.name == ParleyTools.FIND_CONTACT) findContact(args) else callPhone(args)
+                WatchFeature.APPS -> openApp(args)
+                WatchFeature.NOTIFICATIONS -> notifications()
             }
         } catch (e: WatchSensors.Unavailable) {
             Outcome(error(e.message.orEmpty()))
@@ -165,6 +192,177 @@ class ToolRunner(
                 })
             },
             note = context.resources.getQuantityString(R.plurals.note_calendar, events.size, events.size),
+        )
+    }
+
+    /**
+     * Where the watch is, or the place the model named by its coordinates. The location is asked for
+     * only for "here", so the weather elsewhere works without it.
+     */
+    private suspend fun weather(args: JsonObject, where: String, onGranted: () -> Unit): Outcome {
+        val latitude = args["latitude"]?.jsonPrimitive?.doubleOrNull
+        val longitude = args["longitude"]?.jsonPrimitive?.doubleOrNull
+        var place = args["place"]?.jsonPrimitive?.contentOrNull?.trim()?.takeIf { it.isNotEmpty() }
+        val (lat, lon) = if (latitude != null && longitude != null) {
+            latitude to longitude
+        } else if (place != null) {
+            // A place named without coordinates must not get the weather of where the watch is.
+            sensors.coordinates(place)
+                ?: return Outcome(error("Unknown place \"$place\" on this watch: call get_weather again with its latitude and longitude."))
+        } else {
+            if (WatchFeature.LOCATION !in features) return Outcome(error("The watch's location is turned off in $where. Ask the user for a place."))
+            if (!WatchFeatures.granted(context, WatchFeature.LOCATION)) {
+                context.parley.settings.update { it.copy(featuresAsked = it.featuresAsked + WatchFeature.LOCATION) }
+                if (PermissionBroker.request(WatchFeature.LOCATION) != PermissionBroker.Answer.GRANTED) {
+                    return Outcome(error("The user did not allow the location. Ask for a place instead, or they can allow it in $where."))
+                }
+                onAllowed()
+                onGranted()
+            }
+            val here = sensors.location()
+            place = place ?: here.name
+            here.latitude to here.longitude
+        }
+        val report = actions.weather(lat, lon)
+        val summary = listOfNotNull("${report.now.temperature.roundToInt()} °C", place).joinToString(", ")
+        return Outcome(MetNorway.toJson(report, place), note = context.getString(R.string.note_weather, summary))
+    }
+
+    /**
+     * The barometer, and the altitude it suggests: from the local sea-level pressure when the watch knows
+     * where it is (a quick forecast request), otherwise from the standard atmosphere, which the weather
+     * shifts by up to a few hundred metres.
+     */
+    private suspend fun airPressure(): Outcome {
+        val pressure = actions.airPressure()
+        val seaLevel = actions.recentLocation()?.let { here ->
+            runCatching { actions.weather(here.latitude, here.longitude).seaLevelPressure }.getOrNull()
+        }
+        val altitude = SensorManager.getAltitude((seaLevel ?: SensorManager.PRESSURE_STANDARD_ATMOSPHERE.toDouble()).toFloat(), pressure)
+        return Outcome(
+            buildJsonObject {
+                put("pressure_hpa", (pressure * 10).roundToInt() / 10.0)
+                put("altitude_m", altitude.roundToInt())
+                put("altitude_from", if (seaLevel != null) "local sea-level pressure" else "standard atmosphere, may be off by a few hundred metres")
+                seaLevel?.let { put("sea_level_pressure_hpa", it) }
+            },
+            note = context.getString(R.string.note_pressure, pressure.roundToInt()),
+        )
+    }
+
+    private fun nextAlarm(): Outcome {
+        val (at, app) = actions.nextAlarm() ?: return Outcome(buildJsonObject { put("alarm_set", false) }, note = context.getString(R.string.note_no_alarm))
+        val time = Instant.ofEpochMilli(at).atZone(ZoneId.systemDefault())
+        val locale = context.resources.configuration.locales[0]
+        return Outcome(
+            buildJsonObject {
+                put("alarm_set", true)
+                put("rings_at", time.toLocalDateTime().withSecond(0).withNano(0).toString())
+                put("in_minutes", (at - System.currentTimeMillis()) / 60_000)
+                app?.let { put("app", it) }
+            },
+            note = context.getString(R.string.note_next_alarm, time.format(DateTimeFormatter.ofPattern("EEE HH:mm", locale))),
+        )
+    }
+
+    private suspend fun media(args: JsonObject): Outcome {
+        val action = args["action"]?.jsonPrimitive?.contentOrNull?.trim().orEmpty().lowercase()
+        actions.mediaKey(action)
+        // The player needs a moment before it reports its new state.
+        delay(MEDIA_SETTLE_MS)
+        val playing = actions.nowPlaying()
+        val note = when (action) {
+            "play" -> R.string.note_music_play
+            "pause" -> R.string.note_music_pause
+            "next" -> R.string.note_music_next
+            else -> R.string.note_music_previous
+        }
+        return Outcome(
+            buildJsonObject {
+                put("ok", true)
+                if (playing != null) {
+                    playing.title?.let { put("title", it) }
+                    playing.artist?.let { put("artist", it) }
+                    playing.app?.let { put("app", it) }
+                    put("playing", playing.playing)
+                } else {
+                    put("note", "Sent to whatever plays on the watch; what plays is not known without notification access.")
+                }
+            },
+            note = context.getString(note),
+        )
+    }
+
+    private suspend fun findContact(args: JsonObject): Outcome {
+        val query = args["name"]?.jsonPrimitive?.contentOrNull.orEmpty()
+        val contacts = actions.findContacts(query)
+        return Outcome(
+            buildJsonObject {
+                put("count", contacts.size)
+                put("contacts", buildJsonArray {
+                    contacts.forEach { contact ->
+                        add(buildJsonObject {
+                            put("name", contact.name)
+                            put("number", contact.number)
+                            contact.type?.let { put("type", it) }
+                        })
+                    }
+                })
+            },
+            note = context.getString(R.string.note_contact, contacts.map { it.name }.distinct().take(2).joinToString(", ").ifEmpty { "–" }),
+        )
+    }
+
+    private fun callPhone(args: JsonObject): Outcome {
+        val number = args["number"]?.jsonPrimitive?.contentOrNull?.filter { it.isDigit() || it in "+*#" }.orEmpty()
+        if (number.length < 3) return Outcome(error("No valid number; look it up with find_contact first."))
+        if (!actions.canCall()) return Outcome(error("This watch cannot place phone calls itself."))
+        val name = args["name"]?.jsonPrimitive?.contentOrNull?.trim()?.takeIf { it.isNotEmpty() } ?: number
+        return Outcome(
+            buildJsonObject {
+                put("ok", true)
+                put("note", "The call starts when this conversation has ended; say a short goodbye.")
+            },
+            note = context.getString(R.string.note_calling, name),
+            endsConversation = true,
+            afterEnd = { actions.call(number) },
+        )
+    }
+
+    /** Opens the app at once: Parley is on screen then, which Android requires for starting another app. */
+    private fun openApp(args: JsonObject): Outcome {
+        val name = args["name"]?.jsonPrimitive?.contentOrNull.orEmpty()
+        if (!PermissionBroker.hostVisible) return Outcome(error("The watch screen is off, so no app can open. Ask the user to look at the watch and ask again."))
+        val apps = actions.launchableApps()
+        val app = actions.findApp(name, apps) ?: return Outcome(
+            buildJsonObject {
+                put("ok", false)
+                put("error", "No app called \"$name\". Installed apps:")
+                put("apps", buildJsonArray { apps.take(MAX_APP_NAMES).forEach { add(it.label) } })
+            },
+        )
+        actions.open(app)
+        return Outcome(buildJsonObject { put("opened", app.label) }, note = context.getString(R.string.note_app_opened, app.label), endsConversation = true)
+    }
+
+    private suspend fun notifications(): Outcome {
+        val notes = actions.notifications() ?: return Outcome(error("Notification access is off or Android has not connected Parley yet."))
+        val zone = ZoneId.systemDefault()
+        return Outcome(
+            buildJsonObject {
+                put("count", notes.size)
+                put("notifications", buildJsonArray {
+                    notes.forEach { note ->
+                        add(buildJsonObject {
+                            note.app?.let { put("app", it) }
+                            note.title?.let { put("title", it.take(100)) }
+                            note.text?.let { put("text", it.take(300)) }
+                            put("time", Instant.ofEpochMilli(note.postedAt).atZone(zone).toLocalTime().withSecond(0).withNano(0).toString())
+                        })
+                    }
+                })
+            },
+            note = context.resources.getQuantityString(R.plurals.note_notifications, notes.size, notes.size),
         )
     }
 
@@ -280,6 +478,9 @@ class ToolRunner(
     }
 
     companion object {
+        private const val MEDIA_SETTLE_MS = 600L
+        private const val MAX_APP_NAMES = 60
+
         fun formatDuration(seconds: Int): String = when {
             seconds < 60 -> "$seconds s"
             seconds % 3600 == 0 -> "${seconds / 3600} h"

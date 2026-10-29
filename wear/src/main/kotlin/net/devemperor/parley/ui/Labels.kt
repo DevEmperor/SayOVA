@@ -122,6 +122,13 @@ fun WatchFeature.labelRes(): Int = when (this) {
     WatchFeature.HEART_RATE -> R.string.feature_heart_rate
     WatchFeature.STEPS -> R.string.feature_steps
     WatchFeature.CALENDAR -> R.string.feature_calendar
+    WatchFeature.WEATHER -> R.string.feature_weather
+    WatchFeature.PRESSURE -> R.string.feature_pressure
+    WatchFeature.ALARM -> R.string.feature_alarm
+    WatchFeature.MUSIC -> R.string.feature_music
+    WatchFeature.CALLS -> R.string.feature_calls
+    WatchFeature.APPS -> R.string.feature_apps
+    WatchFeature.NOTIFICATIONS -> R.string.feature_notifications
 }
 
 
@@ -132,6 +139,13 @@ fun WatchFeature.workingRes(): Int = when (this) {
     WatchFeature.HEART_RATE -> R.string.notice_heart_rate
     WatchFeature.STEPS -> R.string.notice_steps
     WatchFeature.CALENDAR -> R.string.notice_calendar
+    WatchFeature.WEATHER -> R.string.notice_weather
+    WatchFeature.PRESSURE -> R.string.notice_pressure
+    WatchFeature.ALARM -> R.string.notice_alarm
+    WatchFeature.MUSIC -> R.string.notice_music
+    WatchFeature.CALLS -> R.string.notice_contacts
+    WatchFeature.APPS -> R.string.notice_apps
+    WatchFeature.NOTIFICATIONS -> R.string.notice_notifications
 }
 
 @DrawableRes
@@ -140,4 +154,11 @@ fun WatchFeature.iconRes(): Int = when (this) {
     WatchFeature.HEART_RATE -> R.drawable.ic_favorite
     WatchFeature.STEPS -> R.drawable.ic_directions_walk
     WatchFeature.CALENDAR -> R.drawable.ic_event
+    WatchFeature.WEATHER -> R.drawable.ic_partly_cloudy_day
+    WatchFeature.PRESSURE -> R.drawable.ic_landscape
+    WatchFeature.ALARM -> R.drawable.ic_alarm
+    WatchFeature.MUSIC -> R.drawable.ic_music_note
+    WatchFeature.CALLS -> R.drawable.ic_call
+    WatchFeature.APPS -> R.drawable.ic_apps
+    WatchFeature.NOTIFICATIONS -> R.drawable.ic_notifications
 }

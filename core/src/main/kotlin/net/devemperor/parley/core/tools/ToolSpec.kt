@@ -72,6 +72,14 @@ object ParleyTools {
     const val MEASURE_HEART_RATE = "measure_heart_rate"
     const val GET_STEPS_TODAY = "get_steps_today"
     const val GET_CALENDAR_EVENTS = "get_calendar_events"
+    const val CONTROL_MEDIA = "control_media"
+    const val GET_NEXT_ALARM = "get_next_alarm"
+    const val FIND_CONTACT = "find_contact"
+    const val CALL_PHONE = "call_phone"
+    const val OPEN_APP = "open_app"
+    const val GET_WEATHER = "get_weather"
+    const val GET_AIR_PRESSURE = "get_air_pressure"
+    const val GET_NOTIFICATIONS = "get_notifications"
 
     val deviceStatus = ToolSpec(
         name = DEVICE_STATUS,
@@ -137,7 +145,7 @@ object ParleyTools {
     val getLocation = ToolSpec(
         name = GET_LOCATION,
         description = "Returns where the watch is now: latitude, longitude, accuracy in metres and, when known, the place name. " +
-            "Use it for the weather here, places nearby or the way somewhere, then search the web if needed.",
+            "Use it for places nearby or the way somewhere, then search the web if needed; for the weather use get_weather.",
     )
 
     val measureHeartRate = ToolSpec(
@@ -157,6 +165,64 @@ object ParleyTools {
         parameters = listOf(
             ToolParam("days", ParamType.INTEGER, "How many days to cover, starting today: 1 is the rest of today, 2 adds tomorrow; at most 14.", required = false),
         ),
+    )
+
+    val controlMedia = ToolSpec(
+        name = CONTROL_MEDIA,
+        description = "Controls what is playing on the watch (music, podcasts): play, pause, next or previous. " +
+            "Returns what is playing when the watch tells. After play, say a word and end the conversation unless the user wants more.",
+        parameters = listOf(ToolParam("action", ParamType.STRING, "One of: play, pause, next, previous.")),
+    )
+
+    val getNextAlarm = ToolSpec(
+        name = GET_NEXT_ALARM,
+        description = "Returns when the next alarm on the watch rings, or that none is set.",
+    )
+
+    val findContact = ToolSpec(
+        name = FIND_CONTACT,
+        description = "Looks up the user's contacts on the watch by name and returns the matching names with their phone numbers.",
+        parameters = listOf(ToolParam("name", ParamType.STRING, "The name or part of it, as the user said it.")),
+    )
+
+    val callPhone = ToolSpec(
+        name = CALL_PHONE,
+        description = "Calls a phone number from the watch once this conversation has ended, which it then does by itself. " +
+            "Only after the user confirmed whom to call: look the number up with find_contact and ask first.",
+        parameters = listOf(
+            ToolParam("number", ParamType.STRING, "The phone number to call, as find_contact returned it."),
+            ToolParam("name", ParamType.STRING, "Who is called, for the screen.", required = false),
+        ),
+    )
+
+    val openApp = ToolSpec(
+        name = OPEN_APP,
+        description = "Opens an app on the watch by its name; the conversation ends for it. " +
+            "When no app matches, returns the names of the installed apps to choose from.",
+        parameters = listOf(ToolParam("name", ParamType.STRING, "The app's name as the user said it, e.g. 'Samsung Health' or 'stopwatch'.")),
+    )
+
+    val getWeather = ToolSpec(
+        name = GET_WEATHER,
+        description = "Returns the weather now and the forecast for today and tomorrow from the Norwegian Meteorological Institute: " +
+            "for where the watch is, or for another place when you pass its coordinates. Use it instead of a web search for the weather.",
+        parameters = listOf(
+            ToolParam("latitude", ParamType.NUMBER, "Latitude of another place; leave out for where the watch is.", required = false),
+            ToolParam("longitude", ParamType.NUMBER, "Longitude of another place; leave out for where the watch is.", required = false),
+            ToolParam("place", ParamType.STRING, "Name of that other place, for the screen.", required = false),
+        ),
+    )
+
+    val getAirPressure = ToolSpec(
+        name = GET_AIR_PRESSURE,
+        description = "Reads the watch's barometer: the air pressure in hPa and the altitude in metres it suggests " +
+            "(more exact when the local sea-level pressure is known).",
+    )
+
+    val getNotifications = ToolSpec(
+        name = GET_NOTIFICATIONS,
+        description = "Returns the notifications on the watch now, newest first: app, title, text and time. " +
+            "Read them out briefly, not word for word unless asked.",
     )
 
     val standard = listOf(deviceStatus, setTimer, setAlarm, saveNote, endConversation)

@@ -132,9 +132,10 @@ fun TransformingLazyColumnItemScope.SwitchItem(
         modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
         transformation = SurfaceTransformation(spec),
         icon = icon?.let { res -> { Icon(painterResource(res), contentDescription = null) } },
-        // The switch leaves the text a narrow column: four lines for longer translations.
+        // The switch leaves the text a narrow column: four lines for longer translations, and three
+        // for a long word in the label ("Benachrichtigungen" breaks into three pieces there).
         secondaryLabel = secondaryLabel?.let { text -> { Text(text, maxLines = 4, overflow = TextOverflow.Ellipsis) } },
-        label = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
+        label = { Text(label, maxLines = 3, overflow = TextOverflow.Ellipsis) },
     )
 }
 

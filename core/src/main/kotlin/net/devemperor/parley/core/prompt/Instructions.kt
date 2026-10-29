@@ -95,11 +95,21 @@ object Instructions {
         )
         if (features.isNotEmpty()) {
             appendLine("Use the watch's sensors and data only when the user's request needs them. The first time, the watch asks the user to allow it; if a tool reports it is not allowed, tell the user briefly how to allow it.")
-            if (WatchFeature.LOCATION in features) appendLine("Name places, never read out coordinates.")
+            if (WatchFeature.LOCATION in features || WatchFeature.WEATHER in features) appendLine("Name places, never read out coordinates.")
+            if (WatchFeature.WEATHER in features) {
+                appendLine("For the weather, use get_weather rather than a web search; say it in a sentence or two. For the weather here, call it without coordinates: it finds the watch's location itself.")
+            }
             if (WatchFeature.HEART_RATE in features) appendLine("A heart rate from a watch is no medical measurement: never diagnose; if a value worries the user, suggest seeing a doctor.")
+            if (WatchFeature.CALLS in features) {
+                appendLine("Never call anyone without the user's clear yes to the name and number you found. Read phone numbers out digit by digit.")
+            }
+            if (WatchFeature.NOTIFICATIONS in features) appendLine("Read notifications only when the user asks for them.")
         }
         appendLine("For a reminder at a time, set an alarm with what to remember as its label.")
-        if (canSearch) appendLine("For current information (news, weather, prices, opening hours, recent events) search the web before answering.")
+        if (canSearch) {
+            val weather = if (WatchFeature.WEATHER in features) "" else "weather, "
+            appendLine("For current information (news, ${weather}prices, opening hours, recent events) search the web before answering.")
+        }
         appendLine("After using a tool, confirm in a few words what you did. When the user says goodbye or wants to stop, say a short farewell and call end_conversation.")
         val style = if (persona == Persona.CUSTOM) customPersona.trim() else persona.prompt
         if (style.isNotEmpty()) {

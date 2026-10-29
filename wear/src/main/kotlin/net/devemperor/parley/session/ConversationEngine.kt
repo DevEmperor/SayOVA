@@ -168,6 +168,8 @@ class ConversationEngine(
     private var lastPhase = Phase.CONNECTING
     private var notice: String? = null
     private var noticeUntil = 0L
+    /** What a tool left to do once the conversation has ended (see ToolRunner.Outcome.afterEnd). */
+    private var afterEnd: (() -> Unit)? = null
     @Volatile private var activeFeature: WatchFeature? = null
     @Volatile private var usedFeatures: List<WatchFeature> = emptyList()
 
@@ -446,6 +448,7 @@ class ConversationEngine(
                 showNotice(outcome.notice ?: note, 2_500)
             }
             if (outcome.endsConversation) endAfterSpeech = true
+            outcome.afterEnd?.let { afterEnd = it }
         }
     }
 
@@ -584,6 +587,8 @@ class ConversationEngine(
         val ownVolume = volume?.end()
         session.close()
         if (error != null) haptics.error() else haptics.ended()
+        // A phone call the model placed starts only now, with the microphone and call mode released.
+        afterEnd?.let { action -> runCatching(action).onFailure { Log.w("Parley", "After the conversation: ${it.message}") } }
 
         val usd = cost()
         val talkMs = if (readyAt > 0) SystemClock.elapsedRealtime() - readyAt else 0L

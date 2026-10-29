@@ -105,6 +105,28 @@ class WatchSensors(private val context: Context) {
     private fun ageMinutes(location: Location): Long =
         TimeUnit.NANOSECONDS.toMinutes(SystemClock.elapsedRealtimeNanos() - location.elapsedRealtimeNanos)
 
+    /** A place's coordinates by its name, through the watch's geocoder; null without one or when unknown. */
+    suspend fun coordinates(place: String): Pair<Double, Double>? {
+        if (!Geocoder.isPresent()) return null
+        val geocoder = Geocoder(context, Locale.getDefault())
+        return withTimeoutOrNull(GEOCODER_TIMEOUT_MS) {
+            val address: Address? = if (Build.VERSION.SDK_INT >= 33) {
+                suspendCancellableCoroutine { continuation ->
+                    geocoder.getFromLocationName(place, 1, object : Geocoder.GeocodeListener {
+                        override fun onGeocode(addresses: MutableList<Address>) = continuation.resume(addresses.firstOrNull())
+                        override fun onError(errorMessage: String?) = continuation.resume(null)
+                    })
+                }
+            } else {
+                withContext(Dispatchers.IO) {
+                    @Suppress("DEPRECATION")
+                    runCatching { geocoder.getFromLocationName(place, 1)?.firstOrNull() }.getOrNull()
+                }
+            }
+            address?.takeIf { it.hasLatitude() && it.hasLongitude() }?.let { it.latitude to it.longitude }
+        }
+    }
+
     /** The town, and the district when known; null on watches without a geocoder, which is common. */
     private suspend fun placeName(location: Location): String? {
         if (!Geocoder.isPresent()) return null

@@ -13,7 +13,7 @@ In a lecture, a meeting or a quiet room? Get the answers as text only, with push
 Ask Parley to set a timer or an alarm, save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
 
 <b>Knows your watch – when you ask</b>
-"What's the weather here?", "What's my heart rate?", "How many steps today?", "What's on this afternoon?" – Parley reads your location, heart rate, steps or calendar only for that question, after you allowed it once, and shows an icon while it does.
+"What's the weather here?", "What's my heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm ring?", "Pause the music", "Call Lena", "Open the flashlight" – Parley uses your location, the weather, heart rate, steps, calendar, air pressure, next alarm, music, contacts, apps or notifications only for that question, after you allowed it once, and shows an icon while it does. Calls are placed only after you confirmed name and number.
 
 <b>Remembers what you ask it to</b>
 Say "Remember that I'm vegetarian" and every later conversation knows. Only what you ask for is kept, on the watch, and you can read or delete every fact in the settings.

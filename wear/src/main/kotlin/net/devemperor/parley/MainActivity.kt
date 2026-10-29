@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import net.devemperor.parley.features.PermissionBroker
+import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.tile.ParleyTileService
 import net.devemperor.parley.ui.Launch
@@ -23,8 +24,9 @@ class MainActivity : ComponentActivity() {
     /** The permission request of a conversation that Android's dialog is showing right now. */
     private var asking: PermissionBroker.Request? = null
 
-    private val askPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        asking?.let { PermissionBroker.answer(it, results.values.any { granted -> granted }) }
+    private val askPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        // Granted as the feature needs it: either location, but contacts and calling both.
+        asking?.let { PermissionBroker.answer(it, WatchFeatures.granted(this, it.feature)) }
         asking = null
     }
 

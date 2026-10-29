@@ -1,18 +1,25 @@
 package net.devemperor.parley.core.tools
 
 /**
- * The watch's own sensors and data the model may use, each behind an Android permission the user
- * grants once. [capability] completes the instructions' list of what Parley can do.
+ * The watch's own sensors, data and abilities the model may use, most behind an Android permission
+ * the user grants once. [capability] completes the instructions' list of what Parley can do.
  */
-enum class WatchFeature(val tool: ToolSpec, val capability: String) {
-    LOCATION(ParleyTools.getLocation, "find out where the watch is"),
-    HEART_RATE(ParleyTools.measureHeartRate, "measure the user's heart rate"),
-    STEPS(ParleyTools.getStepsToday, "read today's step count"),
-    CALENDAR(ParleyTools.getCalendarEvents, "read the user's calendar"),
+enum class WatchFeature(val tools: List<ToolSpec>, val capability: String) {
+    LOCATION(listOf(ParleyTools.getLocation), "find out where the watch is"),
+    WEATHER(listOf(ParleyTools.getWeather), "tell the weather"),
+    HEART_RATE(listOf(ParleyTools.measureHeartRate), "measure the user's heart rate"),
+    STEPS(listOf(ParleyTools.getStepsToday), "read today's step count"),
+    PRESSURE(listOf(ParleyTools.getAirPressure), "read the air pressure and altitude"),
+    CALENDAR(listOf(ParleyTools.getCalendarEvents), "read the user's calendar"),
+    ALARM(listOf(ParleyTools.getNextAlarm), "tell when the next alarm rings"),
+    MUSIC(listOf(ParleyTools.controlMedia), "control music playback"),
+    CALLS(listOf(ParleyTools.findContact, ParleyTools.callPhone), "look up contacts and make phone calls"),
+    APPS(listOf(ParleyTools.openApp), "open apps"),
+    NOTIFICATIONS(listOf(ParleyTools.getNotifications), "read the watch's notifications"),
     ;
 
     companion object {
-        fun forTool(name: String): WatchFeature? = entries.firstOrNull { it.tool.name == name }
+        fun forTool(name: String): WatchFeature? = entries.firstOrNull { feature -> feature.tools.any { it.name == name } }
 
         fun fromName(name: String?): WatchFeature? = entries.firstOrNull { it.name == name }
     }

@@ -27,6 +27,10 @@ First version.
   calendar as tools. Each asks for its permission when switched on under Settings → Watch
   features or when a conversation first needs it; its icon shows while it is in use and stays
   in the caption for the rest of the conversation.
+- More watch features: the weather straight from MET Norway (here or for a place you name, without a
+  web search), air pressure and altitude from the barometer, the next alarm, music control, contacts
+  and calls (only after you confirmed name and number; the call starts when the conversation ends),
+  opening apps, and reading the notifications (needs notification access in the system settings).
 - QR pairing: the key is encrypted in the browser and relayed end to end to the watch.
 - Wi-Fi or LTE during conversations, resumed Gemini sessions after network changes.
 - History on the watch, tile, complication, ongoing-activity icon on the watch face; a conversation

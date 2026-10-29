@@ -1,7 +1,7 @@
 # Privacy Policy for Parley
 
 **Effective date:** [date of the first Play release]
-**Last updated:** 28 October 2026
+**Last updated:** 29 October 2026
 
 This Privacy Policy explains how **Parley** (the "App", application ID
 `net.devemperor.parley`), a voice assistant for Wear OS watches, handles your
@@ -30,9 +30,11 @@ If you have any questions about this policy, contact us at
 - **What you ask Parley to remember stays on your watch** too. It is given to your
   provider at the start of each conversation, and you can delete it at any time
   (section 2.4).
-- **Your location, heart rate, steps and calendar are read only when you ask for them
-  in a conversation**, and only after you allowed it. What is read goes to your provider
-  as part of that conversation; nothing is collected in the background (section 2.2).
+- **Your location, heart rate, steps, calendar, contacts, notifications and the other
+  watch features are used only when you ask for them in a conversation**, and only after
+  you allowed it. What is read goes to your provider as part of that conversation;
+  nothing is collected in the background (section 2.2). For the weather, the App asks
+  MET Norway with the place's rounded coordinates.
 - **The provider you choose processes your audio and text under its own terms**
   (section 4). Read them, in particular what the free tiers allow the provider to do.
 - **The purchase is handled by Google Play** (section 5).
@@ -78,20 +80,45 @@ sensors and data, each only when your question needs it:
 - **Steps** – the number of steps the watch has counted today.
 - **Calendar** – the events from now up to at most 14 days ahead that are stored on
   the watch: title, start, end and location.
+- **Weather** – the forecast for the watch's location or a place you name, from the
+  Norwegian Meteorological Institute (MET Norway, api.met.no). The App sends MET Norway
+  only the place's coordinates, rounded to about a kilometre, and a fixed app name; like
+  every web service, MET Norway receives the watch's IP address. Its terms:
+  https://api.met.no/doc/TermsOfService. A place you name is turned into coordinates by
+  the watch's geocoder (Google, as above).
+- **Air pressure and altitude** – one reading of the watch's barometer. For the
+  altitude, the App takes the pressure at sea level from the weather forecast for the
+  watch's last known position, if it has one from the last half hour.
+- **Next alarm** – the time of the next alarm set on the watch, as Android reports it.
+- **Music** – play, pause, next and previous for whatever app plays on the watch, sent
+  like a headphone button. Which title plays is read only with notification access
+  (below).
+- **Calls and contacts** – the names and phone numbers in the watch's contacts that
+  match the name you said (at most eight). The assistant is told to call only after you
+  confirmed the name and number; the call is placed by the watch's phone app after the
+  conversation ended.
+- **Apps** – the names of the apps installed on the watch, to open the one you name.
+- **Notifications** – the notifications currently on the watch (app, title and text,
+  at most ten, without ongoing ones such as music). Android grants this access only in
+  its system settings, not through a permission dialog; on some watches it can only be
+  granted with developer tools.
 
-Each feature needs an Android permission, which the watch asks for when you switch the
-feature on under *Settings → Watch features* or when a conversation first needs it.
-You can switch every feature off there (the App then also hands the permission back)
-or withdraw the permission in the watch's system settings. The App reads these data
-only during the conversation in which you ask for them, never in the background, and
-keeps nothing of them except the short line the conversation shows (for example
-"Heart rate · 72 bpm" or "Location · Giessen"), which is part of the history
-(section 2.4). While a feature is in use, the conversation screen shows its icon.
+Each feature needs an Android permission or access, which the watch asks for when you
+switch the feature on under *Settings → Watch features* or when a conversation first
+needs it; weather, air pressure, next alarm, music and apps need none. You can switch
+every feature off there (the App then also hands the permission back) or withdraw the
+permission in the watch's system settings. The App reads these data only during the
+conversation in which you ask for them, never in the background, and keeps nothing of
+them except the short line the conversation shows (for example "Heart rate · 72 bpm" or
+"Location · Giessen"), which is part of the history (section 2.4). While a feature is in
+use, the conversation screen shows its icon.
 
 Your heart rate is health data, which the GDPR protects specially (Art. 9). It is read
 and sent to your provider only when you explicitly ask for it, after you have allowed
 the App to access it (Art. 9(2)(a) GDPR); the same applies to the other features
 under Art. 6(1)(a) GDPR. You can withdraw your consent at any time as described above.
+Contacts and notifications can contain data about other people; the App reads them only
+for your question and passes on only what it needs to answer it.
 
 Web search is performed by the provider: with Google Gemini through Google Search, with
 OpenAI through a separate request to OpenAI's web search, made with your key. You can
@@ -216,9 +243,17 @@ statistics and crash reports to fix errors and improve the App (Art. 6(1)(f) GDP
 | `POST_NOTIFICATIONS` | To show that a conversation is running (watch-face icon and notification). |
 | `VIBRATE` | Short vibrations when Parley starts listening, answers or does something. |
 | `SET_ALARM` | To set timers and alarms in the clock app when you ask for it. |
+| `MODIFY_AUDIO_SETTINGS` | To set Parley's own volume and run a conversation on the watch speaker as a call (echo cancelling). |
+| `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION` | Location and the weather here (section 2.2), only if you allow it. |
+| `BODY_SENSORS` (up to Android 15), `health.READ_HEART_RATE` | Heart rate (section 2.2), only if you allow it. |
+| `ACTIVITY_RECOGNITION` | Today's steps (section 2.2), only if you allow it. |
+| `READ_CALENDAR` | Calendar (section 2.2), only if you allow it. |
+| `READ_CONTACTS`, `CALL_PHONE` | Calls and contacts (section 2.2), only if you allow it. |
+| `FOREGROUND_SERVICE_LOCATION`, `FOREGROUND_SERVICE_HEALTH` | To use location or heart rate in a conversation that runs with the screen off. |
+| Notification access (system setting) | Notifications and the title of the music that plays (section 2.2), only if you grant it. |
 
-The App requests **no location, contacts, calendar, storage, sensor or account
-permissions**.
+The App lists the watch's apps that have a launcher icon, to open the one you ask for.
+It requests **no storage, SMS or account permissions**.
 
 ---
 
@@ -228,6 +263,7 @@ permissions**.
   chose; your settings until you change them. Uninstalling the App or clearing its
   storage removes all of it.
 - **On our relay:** a pairing ciphertext for at most ten minutes, deleted on pickup.
+- **With MET Norway:** weather requests under its terms (section 2.2).
 - **With the Developer:** reports you e-mailed us until they are dealt with; Play order
   reports as long as tax law requires.
 - **With your provider:** under its terms (section 4).

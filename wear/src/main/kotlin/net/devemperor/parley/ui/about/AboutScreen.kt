@@ -81,6 +81,8 @@ fun LicensesScreen() {
         "QR Code generator" to "MIT License · Project Nayuki",
         "orb-ui (Cloud orb)" to "MIT License · Alexander Chen",
         "Material Symbols" to "Apache License 2.0 · Google",
+        // MET Norway's terms ask for this credit wherever its data is used.
+        "Weather data: MET Norway (api.met.no)" to "CC BY 4.0 · Norwegian Meteorological Institute",
     )
     ListScreen { spec ->
         item { Header(stringResource(R.string.about_licenses), spec) }
