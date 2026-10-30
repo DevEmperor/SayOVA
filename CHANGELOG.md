@@ -23,10 +23,13 @@ First version.
   and the statistics show a bar; once it is spent the line turns coral and Parley asks before every
   conversation. On request Parley talks with the Fast model from 80% on. Crossing either mark during
   a conversation shows a short note; the conversation carries on.
-- Silent mode (text answers, push-to-talk).
 - The personality sets how long Parley talks: Friendly explains a how or why in four to six sentences,
   Concise keeps to one, the new Detailed explains with background and examples, the language partner
-  keeps its turns short. In silent mode answers stay short whatever the personality.
+  keeps its turns short.
+- Send to phone: from a conversation in the history, or for several chosen with a long press, Parley
+  opens an e-mail with the conversation as text on the paired phone. Without a phone the watch says
+  so, instead of claiming to continue on the phone (this also holds for reporting, the pairing link
+  and the links under About).
 - Choosing from a list in the settings goes straight back, also with a quick tap; only the voices stay
   open to listen to several.
 - Tools: timers, alarms, notes, battery and time, web search.

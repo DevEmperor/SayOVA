@@ -39,7 +39,6 @@ data class ConversationUiState(
     val muted: Boolean = false,
     /** Parley's voice is switched off; answers play silently and the screen shows the transcript. */
     val soundOff: Boolean = false,
-    val textOnly: Boolean = false,
     val pushToTalk: Boolean = false,
     /** Push-to-talk: the microphone is open right now. */
     val talking: Boolean = false,

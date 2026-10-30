@@ -35,7 +35,6 @@
 
     <!-- Home -->
     <string name="home_talk">Sprechen</string>
-    <string name="home_text_mode">Lautlos-Modus</string>
     <string name="home_history">Verlauf</string>
     <string name="home_settings">Einstellungen</string>
 
@@ -44,7 +43,6 @@
     <string name="status_listening">Hört zu</string>
     <string name="status_thinking">Denkt nach</string>
     <string name="status_speaking">Spricht</string>
-    <string name="status_writing">Antwortet</string>
     <string name="status_reconnecting">Verbindet neu</string>
     <string name="status_ended">Gespeichert</string>
     <string name="status_problem">Problem</string>
@@ -90,6 +88,9 @@
     <string name="history_off">Der Verlauf ist in den Einstellungen deaktiviert.</string>
     <string name="history_untitled">Gespräch</string>
     <string name="history_report">Antwort melden</string>
+    <string name="history_share">Ans Handy senden</string>
+    <string name="share_no_phone">Kein Handy verbunden</string>
+    <string name="share_you">Du</string>
     <string name="history_continue">Fortsetzen</string>
     <string name="history_delete">Löschen</string>
     <string name="history_delete_confirm">Dieses Gespräch löschen?</string>
@@ -183,8 +184,7 @@
     <string name="ongoing_status">Im Gespräch</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Per Tippen mit Parley sprechen</string>
-    <string name="tile_text_mode">Lautlos-Modus</string>
-    <string name="tile_hint">Antworten als Text, ohne Ton</string>
+    <string name="tile_latest">Zuletzt: %1$s</string>
     <string name="complication_label">Mit Parley sprechen</string>
     <string name="complication_short">Reden</string>
     <string name="complication_description">Gespräch mit Parley starten</string>

@@ -69,7 +69,6 @@ class SessionService : LifecycleService() {
                     return START_NOT_STICKY
                 }
                 begin(
-                    textOnly = intent.getBooleanExtra(EXTRA_TEXT_ONLY, false),
                     demo = Diagnostics.enabled && intent.getBooleanExtra(EXTRA_DEMO, false),
                     continueId = intent.getStringExtra(EXTRA_CONTINUE),
                 )
@@ -79,14 +78,14 @@ class SessionService : LifecycleService() {
         return START_NOT_STICKY
     }
 
-    private fun begin(textOnly: Boolean, demo: Boolean, continueId: String?) = lifecycleScope.launch {
+    private fun begin(demo: Boolean, continueId: String?) = lifecycleScope.launch {
         val app = parley
         val settings = app.settings.current()
         val earlier = continueId?.let(app.history::find)
         val provider = settings.providerInfo
         val apiKey = if (demo) "demo" else app.keys.get(provider.id)
         if (apiKey == null) {
-            SessionHub.publish(ConversationUiState(phase = Phase.ERROR, error = SessionError(ErrorKind.AUTH, getString(R.string.error_no_key_for, provider.displayName)), textOnly = textOnly))
+            SessionHub.publish(ConversationUiState(phase = Phase.ERROR, error = SessionError(ErrorKind.AUTH, getString(R.string.error_no_key_for, provider.displayName))))
             stopEverything()
             return@launch
         }
@@ -110,7 +109,6 @@ class SessionService : LifecycleService() {
                 customPersona = settings.customPersona,
                 language = settings.language,
                 now = ZonedDateTime.now(),
-                textOnly = textOnly,
                 canSearch = canSearch,
                 earlier = earlier?.turns.orEmpty(),
                 memory = memory?.current(),
@@ -118,11 +116,10 @@ class SessionService : LifecycleService() {
             ),
             tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.flatMap { it.tools },
             webSearch = canSearch,
-            textOnly = textOnly,
             thinkingLevel = model.thinkingLevel,
         )
         val client = app.network.client(app.http)
-        val session = if (demo) DemoSession(textOnly) else Sessions.create(provider.id, config, client)
+        val session = if (demo) DemoSession() else Sessions.create(provider.id, config, client)
         val search = if (provider.id == ProviderId.OPENAI && canSearch && !demo) {
             ToolRunner.searchWith(OpenAiWebSearch(client), apiKey)
         } else {
@@ -139,7 +136,6 @@ class SessionService : LifecycleService() {
                 providerLabel = "${provider.displayName} · ${model.labelRes()?.let(::getString) ?: model.label}",
                 providerKey = provider.id.key,
                 options = ConversationEngine.Options(
-                    textOnly = textOnly,
                     pushToTalk = settings.pushToTalk,
                     bargeIn = settings.bargeIn,
                     autoEndSeconds = settings.autoEndSeconds,
@@ -242,15 +238,13 @@ class SessionService : LifecycleService() {
     companion object {
         private const val ACTION_START = "net.devemperor.parley.START"
         private const val ACTION_STOP = "net.devemperor.parley.STOP"
-        private const val EXTRA_TEXT_ONLY = "text_only"
         private const val EXTRA_DEMO = "demo"
         private const val EXTRA_CONTINUE = "continue"
         private const val CHANNEL = "conversation"
         private const val NOTIFICATION_ID = 7
 
-        fun startIntent(context: Context, textOnly: Boolean, demo: Boolean, continueId: String? = null): Intent =
+        fun startIntent(context: Context, demo: Boolean, continueId: String? = null): Intent =
             Intent(context, SessionService::class.java).setAction(ACTION_START)
-                .putExtra(EXTRA_TEXT_ONLY, textOnly)
                 .putExtra(EXTRA_DEMO, demo)
                 .putExtra(EXTRA_CONTINUE, continueId)
 

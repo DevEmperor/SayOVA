@@ -35,7 +35,6 @@
 
     <!-- Home -->
     <string name="home_talk">Parla</string>
-    <string name="home_text_mode">Silenzioso</string>
     <string name="home_history">Cronologia</string>
     <string name="home_settings">Impostazioni</string>
 
@@ -44,7 +43,6 @@
     <string name="status_listening">In ascolto</string>
     <string name="status_thinking">Sto pensando</string>
     <string name="status_speaking">Sto parlando</string>
-    <string name="status_writing">Sto scrivendo</string>
     <string name="status_reconnecting">Riconnessione</string>
     <string name="status_ended">Salvata</string>
     <string name="status_problem">Problema</string>
@@ -90,6 +88,9 @@
     <string name="history_off">La cronologia è disattivata nelle impostazioni.</string>
     <string name="history_untitled">Conversazione</string>
     <string name="history_report">Segnala una risposta</string>
+    <string name="history_share">Invia al telefono</string>
+    <string name="share_no_phone">Nessun telefono connesso</string>
+    <string name="share_you">Tu</string>
     <string name="history_continue">Continua</string>
     <string name="history_delete">Elimina</string>
     <string name="history_delete_confirm">Eliminare questa conversazione?</string>
@@ -186,8 +187,7 @@
     <string name="ongoing_status">In conversazione</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Parla con Parley con un tocco</string>
-    <string name="tile_text_mode">Silenzioso</string>
-    <string name="tile_hint">Risposte in testo, senza audio</string>
+    <string name="tile_latest">Ultima: %1$s</string>
     <string name="complication_label">Parla con Parley</string>
     <string name="complication_short">Parla</string>
     <string name="complication_description">Avvia una conversazione con Parley</string>

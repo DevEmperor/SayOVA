@@ -36,7 +36,6 @@
 
     <!-- Home -->
     <string name="home_talk">Prata</string>
-    <string name="home_text_mode">Tyst läge</string>
     <string name="home_history">Historik</string>
     <string name="home_settings">Inställningar</string>
 
@@ -45,7 +44,6 @@
     <string name="status_listening">Lyssnar</string>
     <string name="status_thinking">Tänker</string>
     <string name="status_speaking">Talar</string>
-    <string name="status_writing">Svarar</string>
     <string name="status_reconnecting">Återansluter</string>
     <string name="status_ended">Sparat</string>
     <string name="status_problem">Problem</string>
@@ -91,6 +89,9 @@
     <string name="history_off">Historiken är avstängd i inställningarna.</string>
     <string name="history_untitled">Samtal</string>
     <string name="history_report">Rapportera ett svar</string>
+    <string name="history_share">Skicka till telefonen</string>
+    <string name="share_no_phone">Ingen telefon ansluten</string>
+    <string name="share_you">Du</string>
     <string name="history_continue">Fortsätt</string>
     <string name="history_delete">Ta bort</string>
     <string name="history_delete_confirm">Ta bort samtalet?</string>
@@ -184,8 +185,7 @@
     <string name="ongoing_status">Pratar</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Prata med Parley med ett tryck</string>
-    <string name="tile_text_mode">Tyst läge</string>
-    <string name="tile_hint">Svar som text, utan ljud</string>
+    <string name="tile_latest">Senast: %1$s</string>
     <string name="complication_label">Prata med Parley</string>
     <string name="complication_short">Prata</string>
     <string name="complication_description">Starta ett samtal med Parley</string>

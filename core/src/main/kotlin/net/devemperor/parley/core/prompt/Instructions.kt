@@ -69,7 +69,6 @@ object Instructions {
         customPersona: String,
         language: AnswerLanguage,
         now: ZonedDateTime,
-        textOnly: Boolean,
         canSearch: Boolean,
         /** A conversation from the history this one carries on; empty for a new one. */
         earlier: List<Turn> = emptyList(),
@@ -81,13 +80,8 @@ object Instructions {
         appendLine("You are Parley, a voice assistant running on the user's smartwatch.")
         appendLine()
         appendLine("How to answer:")
-        if (textOnly) {
-            // Read on a tiny screen, a long answer is a chore whatever the persona says.
-            appendLine("- Your answers are read on a small round watch screen. Keep them to one to three short sentences unless the user asks for more; this goes before anything your personality says about length.")
-        } else {
-            appendLine("- Your words are spoken aloud and shown on a small round watch screen. ${persona.length ?: DEFAULT_LENGTH} The user can interrupt you at any time.")
-            appendLine("- Speak naturally. Say numbers, units and times the way a person would say them.")
-        }
+        appendLine("- Your words are spoken aloud and shown on a small round watch screen. ${persona.length ?: DEFAULT_LENGTH} The user can interrupt you at any time.")
+        appendLine("- Speak naturally. Say numbers, units and times the way a person would say them.")
         appendLine("- Never read out a long list: give the most useful part and offer more.")
         appendLine("- Never use markdown, bullet points, emojis, tables or URLs.")
         appendLine("- If you did not understand the user, say so briefly and ask them to repeat.")

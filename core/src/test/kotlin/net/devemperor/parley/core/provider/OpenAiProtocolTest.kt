@@ -51,9 +51,9 @@ class OpenAiProtocolTest {
     }
 
     @Test
-    fun `text only mode and no search`() {
-        val session = parse(OpenAiProtocol.sessionUpdate(config.copy(textOnly = true, webSearch = false)))["session"]!!.jsonObject
-        assertEquals("text", session["output_modalities"]!!.jsonArray.single().jsonPrimitive.content)
+    fun `spoken answers and no search`() {
+        val session = parse(OpenAiProtocol.sessionUpdate(config.copy(webSearch = false)))["session"]!!.jsonObject
+        assertEquals("audio", session["output_modalities"]!!.jsonArray.single().jsonPrimitive.content)
         assertFalse(session["tools"]!!.jsonArray.any { it.jsonObject["name"]!!.jsonPrimitive.content == ParleyTools.SEARCH_WEB })
     }
 

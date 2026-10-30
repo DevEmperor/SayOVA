@@ -35,8 +35,8 @@ your own API key.
   answers in whatever language you talk to it.
 - **Know what it costs.** Usage statistics show cost and talk time per month and in total,
   and a monthly budget warns at 80% and asks before every conversation once it is spent.
-- **Silent mode.** Answers as text only, with push-to-talk — for lectures, meetings or a
-  quiet room.
+- **Quiet when it has to be.** One tap switches Parley's voice off and the answer appears as text;
+  push-to-talk keeps the microphone closed until you tap.
 - **Does things on the watch.** Timers, alarms, notes, battery and time, and web search
   for anything current.
 - **Knows the watch it runs on – when you ask.** "What's the weather here?", "What's my
@@ -56,7 +56,8 @@ your own API key.
   Bluetooth link; conversations continue with the screen off; tile, complication and
   watch-face icon; personalities that also set how long Parley talks (from Concise to Detailed),
   40 voices to listen to before you pick one, answer language, haptics.
-- **History on the watch only**, kept as long as you like, never backed up to the cloud.
+- **History on the watch only**, kept as long as you like, never backed up to the cloud; send a
+  conversation (or several) to your phone as an e-mail when you want to keep it.
 - **Runs on every Wear OS 3+ watch with a microphone.**
 
 ## Getting an API key

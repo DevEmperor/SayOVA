@@ -6,8 +6,8 @@ Parley streams your voice live to a speech-to-speech model – Google Gemini Liv
 <b>Hear it and read it</b>
 Both sides of the conversation appear on the screen as you talk. The part of the answer you have already heard is bright, the rest is still dim, so you never lose your place.
 
-<b>Silent mode</b>
-In a lecture, a meeting or a quiet room? Get the answers as text only, with push-to-talk.
+<b>Quiet when it has to be</b>
+In a lecture, a meeting or a quiet room? One tap switches Parley's voice off and the answers appear as text.
 
 <b>Gets things done</b>
 Ask Parley to set a timer or an alarm, save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.

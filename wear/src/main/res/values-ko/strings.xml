@@ -36,7 +36,6 @@
 
     <!-- Home -->
     <string name="home_talk">대화하기</string>
-    <string name="home_text_mode">무음 모드</string>
     <string name="home_history">기록</string>
     <string name="home_settings">설정</string>
 
@@ -45,7 +44,6 @@
     <string name="status_listening">듣는 중</string>
     <string name="status_thinking">생각 중</string>
     <string name="status_speaking">말하는 중</string>
-    <string name="status_writing">답변 중</string>
     <string name="status_reconnecting">다시 연결 중</string>
     <string name="status_ended">저장됨</string>
     <string name="status_problem">문제 발생</string>
@@ -91,6 +89,9 @@
     <string name="history_off">설정에서 기록이 꺼져 있습니다.</string>
     <string name="history_untitled">대화</string>
     <string name="history_report">응답 신고</string>
+    <string name="history_share">휴대폰으로 보내기</string>
+    <string name="share_no_phone">연결된 휴대폰 없음</string>
+    <string name="share_you">나</string>
     <string name="history_continue">이어서 대화</string>
     <string name="history_delete">삭제</string>
     <string name="history_delete_confirm">이 대화를 삭제하시겠습니까?</string>
@@ -181,8 +182,7 @@
     <string name="ongoing_status">대화 중</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">탭 한 번으로 Parley와 대화</string>
-    <string name="tile_text_mode">무음 모드</string>
-    <string name="tile_hint">소리 없이 텍스트로 답변</string>
+    <string name="tile_latest">최근: %1$s</string>
     <string name="complication_label">Parley와 대화</string>
     <string name="complication_short">대화</string>
     <string name="complication_description">Parley와 대화 시작</string>

@@ -69,7 +69,6 @@ class ConversationEngine(
     private val onFinished: () -> Unit,
 ) {
     data class Options(
-        val textOnly: Boolean,
         val pushToTalk: Boolean,
         val bargeIn: BargeIn,
         val autoEndSeconds: Int,
@@ -97,8 +96,7 @@ class ConversationEngine(
 
     private val _state = MutableStateFlow(
         ConversationUiState(
-            textOnly = options.textOnly,
-            pushToTalk = options.pushToTalk || options.textOnly,
+            pushToTalk = options.pushToTalk,
             showCost = options.showCost,
             providerLabel = providerLabel,
         ),
@@ -127,10 +125,10 @@ class ConversationEngine(
      * Over the watch speaker the conversation runs as a call (see CallAudio), so the echo canceller
      * takes Parley's voice out of the microphone; headphones need none and keep the better media sound.
      */
-    private val callMode = !options.textOnly && options.bargeIn != BargeIn.OFF && !headphones.connected
+    private val callMode = options.bargeIn != BargeIn.OFF && !headphones.connected
     private val callAudio: CallAudio? = if (callMode) CallAudio(context) else null
-    private val player: SpeechPlayer? = if (options.textOnly) null else SpeechPlayer(session.outputSampleRate, call = callMode)
-    private val volume: SpeechVolume? = if (options.textOnly) null else SpeechVolume(context, call = callMode)
+    private val player = SpeechPlayer(session.outputSampleRate, call = callMode)
+    private val volume = SpeechVolume(context, call = callMode)
     private val microphone = Microphone(session.inputSampleRate, ::onMicAudio, ::onMicLevel)
 
     // Touched by the microphone thread.
@@ -155,7 +153,7 @@ class ConversationEngine(
     @Volatile private var keepPreRoll = false
 
     private var muted = false
-    private var soundOff = options.soundOff && !options.textOnly
+    private var soundOff = options.soundOff
     private var talking = false
     private var currentAnswerKey: String? = null
     private var answerStreaming = false
@@ -188,8 +186,8 @@ class ConversationEngine(
     /** Sound and microphone; the microphone already listens, see [connect]. */
     fun start() {
         callAudio?.begin()
-        volume?.begin(if (callMode) options.callVolume else options.speechVolume)
-        player?.setMuted(soundOff)
+        volume.begin(if (callMode) options.callVolume else options.speechVolume)
+        player.setMuted(soundOff)
         headphones.start()
         scope.launch { session.events.collect(::handle) }
         scope.launch {
@@ -256,7 +254,7 @@ class ConversationEngine(
      * goes with the sound, so the barge-in detector learns it anew.
      */
     fun setSoundOff(off: Boolean) {
-        if (player == null || soundOff == off) return
+        if (soundOff == off) return
         soundOff = off
         player.setMuted(off)
         bargeIn.relearn(SystemClock.elapsedRealtime())
@@ -266,11 +264,11 @@ class ConversationEngine(
     }
 
     /**
-     * One volume step from the screen (+1 louder, -1 quieter); returns the volume now, null in silent
-     * mode. The answer's echo changes with it, so the barge-in detector learns it anew.
+     * One volume step from the screen (+1 louder, -1 quieter); returns the volume now. The answer's
+     * echo changes with it, so the barge-in detector learns it anew.
      */
-    fun stepVolume(direction: Int): Int? {
-        val level = volume?.step(direction) ?: return null
+    fun stepVolume(direction: Int): Int {
+        val level = volume.step(direction)
         bargeIn.relearn(SystemClock.elapsedRealtime())
         return level
     }
@@ -308,7 +306,7 @@ class ConversationEngine(
         if (diagnostics && listeningForBargeIn) echoPeak = maxOf(echoPeak, level)
         if (listeningForBargeIn && !bargeInHeard) {
             val now = SystemClock.elapsedRealtime()
-            val played = player?.recentLevel(ECHO_WINDOW_MS) ?: 0f
+            val played = player.recentLevel(ECHO_WINDOW_MS)
             if (bargeIn.onFrame(level, played, now)) {
                 bargeInHeard = true
                 if (diagnostics) Log.d(TAG, "barge-in: mic %.2f, played %.2f, coupling %.2f".format(level, played, bargeIn.learnedCoupling))
@@ -371,7 +369,7 @@ class ConversationEngine(
                 startAnswer(event.turnKey)
                 record(event.turnKey, Role.ASSISTANT)
                 outputAudioMs.addAndGet(Pcm.durationMs(event.pcm.size, session.outputSampleRate))
-                player?.enqueue(event.turnKey, event.pcm)
+                player.enqueue(event.turnKey, event.pcm)
             }
             VoiceEvent.Interrupted -> interruptAnswer()
             VoiceEvent.TurnComplete -> {
@@ -419,10 +417,10 @@ class ConversationEngine(
     private fun interruptAnswer() {
         val key = currentAnswerKey ?: return
         val record = records.lastOrNull { it.key == key && it.role == Role.ASSISTANT }
-        val played = player?.playedMs(key) ?: 0L
-        val received = player?.receivedMs(key) ?: 0L
+        val played = player.playedMs(key)
+        val received = player.receivedMs(key)
         val wasHeard = speaking
-        player?.flush()
+        player.flush()
         session.interrupt(key, played)
         answerStreaming = false
         speaking = false
@@ -505,17 +503,17 @@ class ConversationEngine(
     private fun tick() {
         if (finished) return
         val now = SystemClock.elapsedRealtime()
-        val playing = player?.isPlaying == true
+        val playing = player.isPlaying
         if (playing) lastAudibleAt = now
 
         // Speaking holds from the first word of an answer until the provider has finished it and the
         // last of it has been played, plus a short tail for the room to fall quiet. Audio arrives in
         // bursts over Wi-Fi or Bluetooth, and judging by the playback buffer alone made the state
         // flip back to listening at every gap.
-        speaking = if (options.textOnly) answerStreaming else answerStreaming || playing || now - lastAudibleAt < SPEAKING_TAIL_MS
+        speaking = answerStreaming || playing || now - lastAudibleAt < SPEAKING_TAIL_MS
 
         // The answer's echo still reaches the microphone for a moment after the last of it was played.
-        var echoTail = !options.textOnly && lastAudibleAt > 0 && now - lastAudibleAt < ECHO_WINDOW_MS
+        var echoTail = lastAudibleAt > 0 && now - lastAudibleAt < ECHO_WINDOW_MS
         if (bargeInHeard) {
             bargeInHeard = false
             if (speaking) interruptAnswer()
@@ -529,7 +527,7 @@ class ConversationEngine(
         val listening = !muted && if (_state.value.pushToTalk) ready && talking else true
         if (!listening) keepPreRoll = false
         val gated = (speaking || echoTail) && !streamWhileSpeaking()
-        listeningForBargeIn = listening && gated && options.bargeIn == BargeIn.AUTO && !options.textOnly
+        listeningForBargeIn = listening && gated && options.bargeIn == BargeIn.AUTO
         // Held-back audio is the user's first words when they talked over the answer, and otherwise
         // only the answer's echo, which must not reach the provider when the microphone opens.
         if (!listeningForBargeIn && !keepPreRoll) synchronized(preRoll) { preRoll.clear() }
@@ -594,14 +592,14 @@ class ConversationEngine(
             phase = phase,
             turns = uiTurns(),
             micLevel = if (micOpen) micLevel else 0f,
-            speechLevel = player?.level ?: 0f,
+            speechLevel = player.level,
             elapsedMs = if (ready) now - readyAt else 0,
             costUsd = usd,
             transport = transport.value,
             muted = muted,
             soundOff = soundOff,
             talking = talking,
-            halfDuplex = speaking && options.bargeIn == BargeIn.OFF && !options.textOnly,
+            halfDuplex = speaking && options.bargeIn == BargeIn.OFF,
             notice = notice,
             activeFeature = activeFeature,
             callAudio = callMode,
@@ -610,7 +608,7 @@ class ConversationEngine(
 
     private fun uiTurns(): List<UiTurn> = records.filter { it.text.isNotBlank() }.map { record ->
         val text = record.text.toString().trim()
-        val spoken = if (record.role == Role.ASSISTANT && record.key == currentAnswerKey && player != null && !record.interrupted) {
+        val spoken = if (record.role == Role.ASSISTANT && record.key == currentAnswerKey && !record.interrupted) {
             val received = player.receivedMs(record.key)
             if (received <= 0) 0 else (text.length * (player.playedMs(record.key).toDouble() / received)).toInt().coerceIn(0, text.length)
         } else {
@@ -638,11 +636,11 @@ class ConversationEngine(
         val finalTurns = uiTurns()
         // Silent before the call mode ends: leaving it with the answer still playing sent the rest to
         // the media output for a moment, louder and sounding different, before it stopped.
-        player?.release()
+        player.release()
         headphones.stop()
         callAudio?.end()
         microphone.stop()
-        val ownVolume = volume?.end()
+        val ownVolume = volume.end()
         session.close()
         if (error != null) haptics.error() else haptics.ended()
         // A phone call the model placed starts only now, with the microphone and call mode released.
@@ -676,7 +674,7 @@ class ConversationEngine(
             saved = conversation != null,
         )
         scope.launch {
-            ownVolume?.let { onVolume(it, callMode) }
+            onVolume(ownVolume, callMode)
             onSave(conversation, usd, talkMs)
             onFinished()
         }

@@ -37,7 +37,6 @@
 
     <!-- Home -->
     <string name="home_talk">Talk</string>
-    <string name="home_text_mode">Silent mode</string>
     <string name="home_history">History</string>
     <string name="home_settings">Settings</string>
 
@@ -46,7 +45,6 @@
     <string name="status_listening">Listening</string>
     <string name="status_thinking">Thinking</string>
     <string name="status_speaking">Speaking</string>
-    <string name="status_writing">Answering</string>
     <string name="status_reconnecting">Reconnecting</string>
     <string name="status_ended">Saved</string>
     <string name="status_problem">Problem</string>
@@ -92,6 +90,10 @@
     <string name="history_off">History is turned off in the settings.</string>
     <string name="history_untitled">Conversation</string>
     <string name="history_report">Report a response</string>
+    <string name="history_share">Send to phone</string>
+    <string name="share_no_phone">No phone connected</string>
+    <!-- Who spoke, in the conversation text sent to the phone: "You: …", "Parley: …". -->
+    <string name="share_you">You</string>
     <string name="history_continue">Continue</string>
     <string name="history_delete">Delete</string>
     <string name="history_delete_confirm">Delete this conversation?</string>
@@ -187,8 +189,8 @@
     <string name="ongoing_status">Talking</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Talk to Parley with one tap</string>
-    <string name="tile_text_mode">Silent mode</string>
-    <string name="tile_hint">Answers as text, without sound</string>
+    <!-- On the tile above the talk button: the title of the latest conversation. -->
+    <string name="tile_latest">Last: %1$s</string>
     <string name="complication_label">Talk to Parley</string>
     <string name="complication_short">Talk</string>
     <string name="complication_description">Start a conversation with Parley</string>

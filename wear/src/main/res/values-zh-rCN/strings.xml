@@ -36,7 +36,6 @@
 
     <!-- Home -->
     <string name="home_talk">对话</string>
-    <string name="home_text_mode">静音模式</string>
     <string name="home_history">历史记录</string>
     <string name="home_settings">设置</string>
 
@@ -45,7 +44,6 @@
     <string name="status_listening">正在聆听</string>
     <string name="status_thinking">正在思考</string>
     <string name="status_speaking">正在说话</string>
-    <string name="status_writing">正在回答</string>
     <string name="status_reconnecting">正在重新连接</string>
     <string name="status_ended">已保存</string>
     <string name="status_problem">出现问题</string>
@@ -91,6 +89,9 @@
     <string name="history_off">历史记录已在设置中关闭。</string>
     <string name="history_untitled">对话</string>
     <string name="history_report">举报回答</string>
+    <string name="history_share">发送到手机</string>
+    <string name="share_no_phone">未连接手机</string>
+    <string name="share_you">你</string>
     <string name="history_continue">继续</string>
     <string name="history_delete">删除</string>
     <string name="history_delete_confirm">要删除此对话吗？</string>
@@ -181,8 +182,7 @@
     <string name="ongoing_status">对话中</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">点按一下即可与 Parley 对话</string>
-    <string name="tile_text_mode">静音模式</string>
-    <string name="tile_hint">以文字回答，不发出声音</string>
+    <string name="tile_latest">上次：%1$s</string>
     <string name="complication_label">与 Parley 对话</string>
     <string name="complication_short">对话</string>
     <string name="complication_description">开始与 Parley 对话</string>

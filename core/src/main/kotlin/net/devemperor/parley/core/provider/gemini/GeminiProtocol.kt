@@ -37,8 +37,8 @@ object GeminiProtocol {
         putJsonObject("setup") {
             put("model", "models/${config.model}")
             putJsonObject("generationConfig") {
-                // Native-audio models answer in audio only. Silent mode keeps the audio modality and
-                // simply does not play it: the transcript is the text the user reads.
+                // Native-audio models answer in audio only; with the sound off the transcript is the
+                // text the user reads.
                 putJsonArray("responseModalities") { add(JsonPrimitive("AUDIO")) }
                 putJsonObject("speechConfig") {
                     putJsonObject("voiceConfig") {

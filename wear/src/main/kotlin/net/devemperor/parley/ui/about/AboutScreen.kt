@@ -38,7 +38,7 @@ private const val PRIVACY = "$REPOSITORY/blob/main/PRIVACY_POLICY.md"
 fun AboutScreen(onLicenses: () -> Unit) {
     val context = LocalContext.current
     var opened by remember { mutableStateOf(false) }
-    val open: (String) -> Unit = { url -> opened = openOnPhone(context, url) }
+    val open: (String) -> Unit = { url -> openOnPhone(context, url) { opened = it } }
     val continueOnPhone = stringResource(R.string.about_continue_on_phone)
     ListScreen { spec ->
         item {

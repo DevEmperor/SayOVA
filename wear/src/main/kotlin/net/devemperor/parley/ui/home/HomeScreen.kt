@@ -51,8 +51,8 @@ import net.devemperor.parley.ui.stringOr
 import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
- * The start screen: the orb (tap it, or the edge button, to talk) and three round buttons for the
- * silent text mode, the history and the settings. The line under the orb names provider and model
+ * The start screen: the orb (tap it, or the edge button, to talk) and round buttons for the history
+ * and the settings. The line under the orb names provider and model
  * and the month's cost, near the monthly budget against it; a tap on it opens the usage statistics.
  */
 @Composable
@@ -61,7 +61,6 @@ fun HomeScreen(
     monthUsd: Double,
     onUsage: () -> Unit,
     onTalk: () -> Unit,
-    onText: () -> Unit,
     onHistory: () -> Unit,
     onSettings: () -> Unit,
 ) {
@@ -129,7 +128,6 @@ fun HomeScreen(
             // Large enough to hit; at the size of a small icon they were easy to miss.
             val size = width * 0.2f
             Row(horizontalArrangement = Arrangement.spacedBy(width * 0.04f)) {
-                Action(R.drawable.ic_chat, stringResource(R.string.home_text_mode), size, onText)
                 Action(R.drawable.ic_history, stringResource(R.string.home_history), size, onHistory)
                 Action(R.drawable.ic_settings, stringResource(R.string.home_settings), size, onSettings)
             }

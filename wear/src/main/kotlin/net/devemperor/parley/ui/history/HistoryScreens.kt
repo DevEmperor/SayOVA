@@ -1,7 +1,9 @@
 package net.devemperor.parley.ui.history
 
+import android.content.Context
 import android.net.Uri
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.curvedText
+import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.R
 import net.devemperor.parley.core.conversation.Conversation
 import net.devemperor.parley.core.conversation.Role
@@ -39,7 +42,8 @@ import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
  * The saved conversations, newest first. A long press starts choosing several: each tap then ticks a
- * conversation, and the button at the top deletes the ticked ones after asking.
+ * conversation, and the buttons at the top send the ticked ones to the phone or delete them after
+ * asking.
  */
 @Composable
 fun HistoryScreen(
@@ -49,8 +53,11 @@ fun HistoryScreen(
     onOpen: (String) -> Unit,
     onDelete: (Set<String>) -> Unit,
 ) {
+    val context = LocalContext.current
     var selected by remember { mutableStateOf(emptySet<String>()) }
     var confirmDelete by remember { mutableStateOf(false) }
+    var sent by remember { mutableStateOf(false) }
+    var noPhone by remember { mutableStateOf(false) }
     // Conversations that disappeared (deleted, pruned) leave the selection too.
     val chosen = selected.intersect(conversations.map { it.id }.toSet())
     val choosing = chosen.isNotEmpty()
@@ -67,6 +74,14 @@ fun HistoryScreen(
         }
         // At the top, not at the end of a long list where nobody would find them.
         if (choosing) {
+            item {
+                MenuButton(
+                    stringResource(R.string.history_share), spec,
+                    { sendToPhone(context, conversations.filter { it.id in chosen }) { ok -> if (ok) sent = true else noPhone = true } },
+                    secondaryLabel = if (noPhone) stringResource(R.string.share_no_phone) else null,
+                    icon = R.drawable.ic_send_to_mobile,
+                )
+            }
             item {
                 MenuButton(
                     stringResource(R.string.history_delete_selected), spec, { confirmDelete = true },
@@ -112,12 +127,22 @@ fun HistoryScreen(
         },
         onDismiss = { confirmDelete = false },
     )
+    OnPhoneDialog(sent) {
+        sent = false
+        selected = emptySet()
+    }
 }
 
-/** The transcript of one conversation: carrying it on comes first, reporting and deleting at the end. */
+/**
+ * The transcript of one conversation: carrying it on comes first; sending it to the phone, reporting
+ * and deleting at the end.
+ */
 @Composable
 fun ConversationDetailScreen(conversation: Conversation, onContinue: () -> Unit, onReport: () -> Unit, onDelete: () -> Unit) {
+    val context = LocalContext.current
     var confirmDelete by remember { mutableStateOf(false) }
+    var sent by remember { mutableStateOf(false) }
+    var noPhone by remember { mutableStateOf(false) }
     ListScreen { spec ->
         item {
             Header(
@@ -156,6 +181,15 @@ fun ConversationDetailScreen(conversation: Conversation, onContinue: () -> Unit,
         }
         item {
             MenuButton(
+                label = stringResource(R.string.history_share),
+                secondaryLabel = if (noPhone) stringResource(R.string.share_no_phone) else null,
+                icon = R.drawable.ic_send_to_mobile,
+                spec = spec,
+                onClick = { sendToPhone(context, listOf(conversation)) { ok -> if (ok) sent = true else noPhone = true } },
+            )
+        }
+        item {
+            MenuButton(
                 label = stringResource(R.string.history_report),
                 icon = R.drawable.ic_flag,
                 spec = spec,
@@ -180,6 +214,7 @@ fun ConversationDetailScreen(conversation: Conversation, onContinue: () -> Unit,
         },
         onDismiss = { confirmDelete = false },
     )
+    OnPhoneDialog(sent) { sent = false }
 }
 
 /**
@@ -193,7 +228,6 @@ fun ReportScreen(conversation: Conversation, onSent: () -> Unit) {
     var opened by remember { mutableStateOf(false) }
     var failed by remember { mutableStateOf(false) }
     val answers = conversation.turns.filter { it.role == Role.ASSISTANT }
-    val continueOnPhone = stringResource(R.string.report_continue)
     ListScreen { spec ->
         item { Header(stringResource(R.string.report_title), spec) }
         item { Hint(stringResource(if (failed) R.string.report_no_phone else R.string.report_hint), spec) }
@@ -205,21 +239,72 @@ fun ReportScreen(conversation: Conversation, onSent: () -> Unit) {
                     onClick = {
                         val body = "Model: ${conversation.provider} / ${conversation.model}\n\nResponse:\n${turn.text}\n\nWhat is wrong with it?\n"
                         val uri = "mailto:$REPORT_ADDRESS?subject=" + Uri.encode("Parley: reported response") + "&body=" + Uri.encode(body)
-                        if (openOnPhone(context, uri)) opened = true else failed = true
+                        openOnPhone(context, uri) { ok -> if (ok) opened = true else failed = true }
                     },
                 )
             }
         }
     }
+    OnPhoneDialog(opened) {
+        opened = false
+        onSent()
+    }
+}
+
+/** Wear's "continue on phone" animation, after something was opened there. */
+@Composable
+private fun OnPhoneDialog(visible: Boolean, onDone: () -> Unit) {
+    val continueOnPhone = stringResource(R.string.report_continue)
     OpenOnPhoneDialog(
-        visible = opened,
-        onDismissRequest = {
-            opened = false
-            onSent()
-        },
+        visible = visible,
+        onDismissRequest = onDone,
         curvedText = { curvedText(continueOnPhone) },
         content = { OpenOnPhoneDialogDefaults.Icon() },
     )
 }
+
+/**
+ * Opens an e-mail with [conversations] on the paired phone, to send to oneself or to copy into a notes
+ * app: a watch app can open a link on the phone, but cannot hand it a file or the share sheet.
+ * [onResult] tells whether a phone took it.
+ */
+private fun sendToPhone(context: Context, conversations: List<Conversation>, onResult: (Boolean) -> Unit) {
+    val subject = conversations.singleOrNull()?.title?.takeIf { it.isNotBlank() }?.let { "Parley: $it" } ?: "Parley"
+    val body = transcriptText(context, conversations)
+    if (Diagnostics.enabled) Log.d("ParleyEvent", "send to phone: ${body.length} characters\n$body")
+    openOnPhone(context, "mailto:?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(body), onResult)
+}
+
+/**
+ * [conversations] as plain text, oldest first: date and time, then who said what. Cut after
+ * [SHARE_LIMIT] characters, so the link stays small enough for its way to the phone.
+ */
+private fun transcriptText(context: Context, conversations: List<Conversation>): String {
+    val you = context.getString(R.string.share_you)
+    val parley = context.getString(R.string.app_name)
+    val text = conversations.sortedBy { it.startedAt }.joinToString("\n\n") { conversation ->
+        buildString {
+            appendLine(
+                DateUtils.formatDateTime(
+                    context, conversation.startedAt,
+                    DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_TIME,
+                ),
+            )
+            conversation.turns.forEach { turn ->
+                appendLine(
+                    when (turn.role) {
+                        Role.USER -> "$you: ${turn.text}"
+                        Role.ASSISTANT -> "$parley: ${turn.text}"
+                        Role.NOTE -> "✎ ${turn.text}"
+                        Role.TOOL -> "✓ ${turn.text}"
+                    },
+                )
+            }
+        }.trimEnd()
+    }
+    return if (text.length > SHARE_LIMIT) text.take(SHARE_LIMIT) + "\n…" else text
+}
+
+private const val SHARE_LIMIT = 20_000
 
 const val REPORT_ADDRESS = "contact@devemperor.net"

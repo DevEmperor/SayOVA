@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.wear.compose.foundation.ScrollInfoProvider
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
@@ -182,13 +183,22 @@ fun QrCodeImage(text: String, modifier: Modifier = Modifier) {
     }
 }
 
-/** Opens [url] in the browser of the paired phone. Returns false when no phone can be reached. */
-fun openOnPhone(context: Context, url: String): Boolean = runCatching {
-    RemoteActivityHelper(context).startRemoteActivity(
-        Intent(Intent.ACTION_VIEW, url.toUri()).addCategory(Intent.CATEGORY_BROWSABLE),
-    )
-    true
-}.getOrDefault(false)
+/**
+ * Opens [url] on the paired phone; [onResult] tells, on the main thread, whether the phone took it.
+ * Without a phone the request fails only after a moment: taken as sent at once, the watch showed
+ * "Continue on phone" with no phone at all.
+ */
+fun openOnPhone(context: Context, url: String, onResult: (Boolean) -> Unit) {
+    val sent = runCatching {
+        RemoteActivityHelper(context).startRemoteActivity(
+            Intent(Intent.ACTION_VIEW, url.toUri()).addCategory(Intent.CATEGORY_BROWSABLE),
+        )
+    }.getOrElse {
+        onResult(false)
+        return
+    }
+    sent.addListener({ onResult(runCatching { sent.get() }.isSuccess) }, ContextCompat.getMainExecutor(context))
+}
 
 /**
  * Asks the user for text with the system input (keyboard, voice or the phone). [onResult] receives

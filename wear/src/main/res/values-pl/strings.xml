@@ -35,7 +35,6 @@
 
     <!-- Home -->
     <string name="home_talk">Mów</string>
-    <string name="home_text_mode">Tryb cichy</string>
     <string name="home_history">Historia</string>
     <string name="home_settings">Ustawienia</string>
 
@@ -44,7 +43,6 @@
     <string name="status_listening">Słucham</string>
     <string name="status_thinking">Myślę</string>
     <string name="status_speaking">Mówię</string>
-    <string name="status_writing">Odpowiadam</string>
     <string name="status_reconnecting">Łączę ponownie</string>
     <string name="status_ended">Zapisano</string>
     <string name="status_problem">Problem</string>
@@ -90,6 +88,9 @@
     <string name="history_off">Historia jest wyłączona w ustawieniach.</string>
     <string name="history_untitled">Rozmowa</string>
     <string name="history_report">Zgłoś odpowiedź</string>
+    <string name="history_share">Wyślij na telefon</string>
+    <string name="share_no_phone">Brak połączonego telefonu</string>
+    <string name="share_you">Ty</string>
     <string name="history_continue">Kontynuuj</string>
     <string name="history_delete">Usuń</string>
     <string name="history_delete_confirm">Usunąć tę rozmowę?</string>
@@ -189,8 +190,7 @@
     <string name="ongoing_status">Rozmowa</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Rozmowa z Parley jednym kliknięciem</string>
-    <string name="tile_text_mode">Tryb cichy</string>
-    <string name="tile_hint">Odpowiedzi tekstem, bez dźwięku</string>
+    <string name="tile_latest">Ostatnio: %1$s</string>
     <string name="complication_label">Rozmawiaj z Parley</string>
     <string name="complication_short">Mów</string>
     <string name="complication_description">Rozpocznij rozmowę z Parley</string>

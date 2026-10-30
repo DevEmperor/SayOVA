@@ -57,7 +57,7 @@ plays and shows on the watch.
   seconds).
 - The App **does not store audio**. Recordings exist only in memory while they are
   being sent.
-- In silent mode the microphone only listens while you hold it open with a tap.
+- With push-to-talk the microphone only listens while you hold it open with a tap.
 
 ### 2.2 What the assistant can do on the watch
 
@@ -188,6 +188,13 @@ opens an e-mail on your paired phone, addressed to us and containing the answer 
 picked and the model that produced it. Nothing is sent unless you send that e-mail
 yourself. We use reports only to understand and pass on problems with the providers'
 models (Art. 6(1)(f) GDPR) and delete them when they are dealt with.
+
+### 2.6 Sending a conversation to your phone
+
+From the history you can send one or several saved conversations to your phone. The App
+opens an e-mail on your paired phone with the conversation as text, without a recipient;
+you decide whether and to whom it goes. The text travels over the watch's own connection
+to the phone; it does not pass through us.
 
 ---
 

@@ -36,7 +36,6 @@
 
     <!-- Home -->
     <string name="home_talk">話す</string>
-    <string name="home_text_mode">サイレント モード</string>
     <string name="home_history">履歴</string>
     <string name="home_settings">設定</string>
 
@@ -45,7 +44,6 @@
     <string name="status_listening">聞き取り中</string>
     <string name="status_thinking">考え中</string>
     <string name="status_speaking">発話中</string>
-    <string name="status_writing">回答中</string>
     <string name="status_reconnecting">再接続中</string>
     <string name="status_ended">保存済み</string>
     <string name="status_problem">問題が発生</string>
@@ -91,6 +89,9 @@
     <string name="history_off">履歴は設定でオフになっています。</string>
     <string name="history_untitled">会話</string>
     <string name="history_report">回答を報告</string>
+    <string name="history_share">スマホに送信</string>
+    <string name="share_no_phone">スマホが接続されていません</string>
+    <string name="share_you">あなた</string>
     <string name="history_continue">続ける</string>
     <string name="history_delete">削除</string>
     <string name="history_delete_confirm">この会話を削除しますか？</string>
@@ -181,8 +182,7 @@
     <string name="ongoing_status">会話中</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">ワンタップで Parley と話す</string>
-    <string name="tile_text_mode">サイレント モード</string>
-    <string name="tile_hint">音声なし、テキストで回答</string>
+    <string name="tile_latest">前回：%1$s</string>
     <string name="complication_label">Parley と話す</string>
     <string name="complication_short">話す</string>
     <string name="complication_description">Parley との会話を開始</string>

@@ -89,10 +89,10 @@ object Routes {
 }
 
 /** What the app was opened for: from the launcher, or straight into a conversation (tile, complication). */
-enum class Launch { OPEN, TALK, TEXT, DEMO }
+enum class Launch { OPEN, TALK, DEMO }
 
 /** A conversation that waits for the user's yes, because this month's budget is spent (see Budget). */
-private data class HeldStart(val textOnly: Boolean, val demo: Boolean, val continueId: String?)
+private data class HeldStart(val demo: Boolean, val continueId: String?)
 
 /** [relaunches]: the tile or complication tapped while Parley is already open. */
 @Composable
@@ -118,7 +118,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
             var held by remember { mutableStateOf<HeldStart?>(null) }
 
             /** [anyway]: the user said yes although the month's budget is spent. */
-            fun startConversation(textOnly: Boolean, demo: Boolean = false, continueId: String? = null, anyway: Boolean = false) {
+            fun startConversation(demo: Boolean = false, continueId: String? = null, anyway: Boolean = false) {
                 if (!context.hasMicrophone()) {
                     navController.navigate(Routes.PERMISSION)
                     return
@@ -128,10 +128,10 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 // which may have loaded a frame before the screen saw it.
                 val spent = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
                 if (!anyway && !SessionHub.running && Budget.level(spent, settings?.budgetUsd ?: 0) == BudgetLevel.REACHED) {
-                    held = HeldStart(textOnly, demo, continueId)
+                    held = HeldStart(demo, continueId)
                     return
                 }
-                SessionHub.start(context, textOnly, demo, continueId)
+                SessionHub.start(context, demo, continueId)
                 when (navController.currentDestination?.route) {
                     // Started from the home screen, the conversation takes its place and the home orb
                     // grows into the conversation's: a page of its own would come in with Wear's
@@ -166,7 +166,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     },
                     onRetry = {
                         SessionHub.dismiss()
-                        startConversation(state.textOnly)
+                        startConversation()
                     },
                     onFixProvider = {
                         SessionHub.dismiss()
@@ -215,8 +215,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                                 settings = s,
                                 monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
                                 onUsage = whenResumed { navController.navigate(Routes.USAGE) },
-                                onTalk = whenResumed { startConversation(textOnly = false) },
-                                onText = whenResumed { startConversation(textOnly = true) },
+                                onTalk = whenResumed { startConversation() },
                                 onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
                                 onSettings = whenResumed { navController.navigate(Routes.SETTINGS) },
                             )
@@ -269,7 +268,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     if (conversation != null) {
                         ConversationDetailScreen(
                             conversation,
-                            onContinue = whenResumed { startConversation(textOnly = false, continueId = conversation.id) },
+                            onContinue = whenResumed { startConversation(continueId = conversation.id) },
                             onReport = whenResumed { navController.navigate(Routes.report(conversation.id)) },
                             onDelete = {
                                 scope.launch { app.history.delete(conversation.id) }
@@ -361,7 +360,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 onConfirm = {
                     val start = held
                     held = null
-                    if (start != null) startConversation(start.textOnly, start.demo, start.continueId, anyway = true)
+                    if (start != null) startConversation(start.demo, start.continueId, anyway = true)
                 },
                 onDismiss = { held = null },
             )
@@ -370,16 +369,15 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 // Opened to talk at once: checked against the month on file, not an empty one still loading.
                 app.usage.awaitLoaded()
                 when (launch) {
-                    Launch.TALK -> if (ready) startConversation(textOnly = false)
-                    Launch.TEXT -> if (ready) startConversation(textOnly = true)
-                    Launch.DEMO -> startConversation(textOnly = false, demo = true)
-                    Launch.OPEN -> if (ready && current.startOnLaunch && !SessionHub.running) startConversation(textOnly = false)
+                    Launch.TALK -> if (ready) startConversation()
+                    Launch.DEMO -> startConversation(demo = true)
+                    Launch.OPEN -> if (ready && current.startOnLaunch && !SessionHub.running) startConversation()
                 }
                 initialRoutes.forEach { runCatching { navController.navigate(it) } }
             }
             LaunchedEffect(Unit) {
-                relaunches.collect { again ->
-                    if (connected.isNotEmpty() && context.hasMicrophone()) startConversation(textOnly = again == Launch.TEXT)
+                relaunches.collect {
+                    if (connected.isNotEmpty() && context.hasMicrophone()) startConversation()
                 }
             }
             // A conversation started without startConversation's navigation brings its screen up too; on

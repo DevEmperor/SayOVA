@@ -36,7 +36,6 @@
 
     <!-- Home -->
     <string name="home_talk">Konuş</string>
-    <string name="home_text_mode">Sessiz mod</string>
     <string name="home_history">Geçmiş</string>
     <string name="home_settings">Ayarlar</string>
 
@@ -45,7 +44,6 @@
     <string name="status_listening">Dinliyor</string>
     <string name="status_thinking">Düşünüyor</string>
     <string name="status_speaking">Konuşuyor</string>
-    <string name="status_writing">Yanıtlıyor</string>
     <string name="status_reconnecting">Yeniden bağlanıyor</string>
     <string name="status_ended">Kaydedildi</string>
     <string name="status_problem">Sorun</string>
@@ -91,6 +89,9 @@
     <string name="history_off">Geçmiş, ayarlarda kapalı.</string>
     <string name="history_untitled">Sohbet</string>
     <string name="history_report">Yanıtı bildir</string>
+    <string name="history_share">Telefona gönder</string>
+    <string name="share_no_phone">Bağlı telefon yok</string>
+    <string name="share_you">Siz</string>
     <string name="history_continue">Devam et</string>
     <string name="history_delete">Sil</string>
     <string name="history_delete_confirm">Bu sohbet silinsin mi?</string>
@@ -184,8 +185,7 @@
     <string name="ongoing_status">Sohbette</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Tek dokunuşla Parley ile konuşun</string>
-    <string name="tile_text_mode">Sessiz mod</string>
-    <string name="tile_hint">Sessizce, metin olarak yanıtlar</string>
+    <string name="tile_latest">Son: %1$s</string>
     <string name="complication_label">Parley ile konuş</string>
     <string name="complication_short">Konuş</string>
     <string name="complication_description">Parley ile sohbet başlatın</string>

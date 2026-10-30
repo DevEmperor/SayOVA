@@ -90,29 +90,26 @@ class CoreTest {
     }
 
     @Test
-    fun `instructions reflect language, persona and mode`() {
+    fun `instructions reflect language and persona`() {
         val now = ZonedDateTime.of(2026, 10, 27, 14, 5, 0, 0, ZoneId.of("Europe/Berlin"))
-        val spoken = Instructions.build(Persona.TUTOR, "", AnswerLanguage.GERMAN, now, textOnly = false, canSearch = true)
+        val spoken = Instructions.build(Persona.TUTOR, "", AnswerLanguage.GERMAN, now, canSearch = true)
         assertTrue("always reply in German" in spoken)
         assertTrue("Tuesday, 27 October 2026, 14:05" in spoken)
         assertTrue(Persona.TUTOR.prompt in spoken)
         assertTrue("search the web" in spoken)
 
-        val custom = Instructions.build(Persona.CUSTOM, "Talk like a pirate.", AnswerLanguage.AUTO, now, textOnly = true, canSearch = false)
+        val custom = Instructions.build(Persona.CUSTOM, "Talk like a pirate.", AnswerLanguage.AUTO, now, canSearch = false)
         assertTrue("Talk like a pirate." in custom)
         assertTrue("language the user speaks" in custom)
         assertFalse("search the web" in custom)
-        assertFalse("spoken aloud" in custom)
         assertFalse("carries on an earlier" in custom)
-        // The length comes with the persona; read on the screen, answers stay short whatever it says.
-        assertTrue("goes before anything your personality says about length" in custom)
 
-        val detailed = Instructions.build(Persona.DETAILED, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false)
+        // The length comes with the persona, in place of the general rule.
+        val detailed = Instructions.build(Persona.DETAILED, "", AnswerLanguage.AUTO, now, canSearch = false)
         assertTrue(Persona.DETAILED.prompt in detailed)
         assertTrue(Persona.DETAILED.length!! in detailed)
         assertFalse("four to six sentences" in detailed)
-        assertFalse("one to three short sentences" in detailed)
-        assertTrue("four to six sentences" in Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false))
+        assertTrue("four to six sentences" in Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, canSearch = false))
     }
 
     @Test
@@ -123,7 +120,7 @@ class CoreTest {
             Turn(Role.ASSISTANT, "Lima.", 2),
             Turn(Role.NOTE, "Buy pisco", 3),
         )
-        val prompt = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false, earlier = earlier)
+        val prompt = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, canSearch = false, earlier = earlier)
         assertTrue("carries on an earlier one" in prompt)
         assertTrue("User: What is the capital of Peru?\nParley: Lima.\n(Note saved: Buy pisco)" in prompt)
         // A long history keeps its end: the last turns, not the first.
@@ -138,13 +135,13 @@ class CoreTest {
     fun `watch features are offered in the instructions only when on`() {
         val now = ZonedDateTime.of(2026, 10, 28, 12, 0, 0, 0, ZoneId.of("Europe/Berlin"))
         val with = Instructions.build(
-            Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = true,
+            Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, canSearch = true,
             features = setOf(WatchFeature.HEART_RATE, WatchFeature.LOCATION),
         )
         assertTrue("find out where the watch is, measure the user's heart rate, and end the conversation" in with)
         assertTrue("never read out coordinates" in with)
         assertTrue("never diagnose" in with)
-        val without = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = true)
+        val without = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, canSearch = true)
         assertFalse("watch's sensors" in without)
         assertEquals(WatchFeature.CALENDAR, WatchFeature.forTool("get_calendar_events"))
         assertEquals(null, WatchFeature.forTool("set_timer"))

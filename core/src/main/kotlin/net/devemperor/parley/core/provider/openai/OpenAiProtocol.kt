@@ -41,7 +41,7 @@ object OpenAiProtocol {
         putJsonObject("session") {
             put("type", "realtime")
             put("model", config.model)
-            putJsonArray("output_modalities") { add(JsonPrimitive(if (config.textOnly) "text" else "audio")) }
+            putJsonArray("output_modalities") { add(JsonPrimitive("audio")) }
             put("instructions", config.instructions)
             putJsonObject("audio") {
                 putJsonObject("input") {

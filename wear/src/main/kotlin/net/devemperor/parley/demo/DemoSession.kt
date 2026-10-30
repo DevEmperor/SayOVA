@@ -20,7 +20,7 @@ import kotlin.math.sin
  * `adb shell am start -n net.devemperor.parley.debug/net.devemperor.parley.MainActivity --ez demo true`.
  * The "speech" is a quiet hum shaped like syllables, enough to move the orb.
  */
-class DemoSession(private val textOnly: Boolean) : VoiceSession {
+class DemoSession : VoiceSession {
     private val channel = Channel<VoiceEvent>(Channel.UNLIMITED)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     override val events: Flow<VoiceEvent> = channel.receiveAsFlow()
@@ -53,8 +53,8 @@ class DemoSession(private val textOnly: Boolean) : VoiceSession {
         val words = text.split(" ")
         words.forEachIndexed { index, word ->
             channel.send(VoiceEvent.AssistantTranscript(key, if (index == 0) word else " $word"))
-            if (!textOnly) channel.send(VoiceEvent.AssistantAudio(key, syllable(index)))
-            delay(if (textOnly) 60 else 240)
+            channel.send(VoiceEvent.AssistantAudio(key, syllable(index)))
+            delay(240)
         }
         channel.send(VoiceEvent.TurnComplete)
     }

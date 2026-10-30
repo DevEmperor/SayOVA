@@ -24,10 +24,10 @@ object SessionHub {
      * Starts a conversation unless one is already running; [continueId] carries on that one from the
      * history. Call only while an activity is visible.
      */
-    fun start(context: Context, textOnly: Boolean, demo: Boolean = false, continueId: String? = null) {
+    fun start(context: Context, demo: Boolean = false, continueId: String? = null) {
         if (running) return
-        _state.value = ConversationUiState(textOnly = textOnly)
-        ContextCompat.startForegroundService(context, SessionService.startIntent(context, textOnly, demo, continueId))
+        _state.value = ConversationUiState()
+        ContextCompat.startForegroundService(context, SessionService.startIntent(context, demo, continueId))
     }
 
     fun tapOrb() = engine?.tapOrb()

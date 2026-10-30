@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
         // whose microphone hears nothing: `adb shell am start -n …/.MainActivity --es say "…"`.
         if (Diagnostics.enabled) intent.getStringExtra(EXTRA_SAY)?.let(SessionHub::say)
         when (val again = launchOf(intent)) {
-            Launch.TALK, Launch.TEXT -> relaunches.tryEmit(again)
+            Launch.TALK -> relaunches.tryEmit(again)
             else -> Unit
         }
     }
@@ -89,21 +89,19 @@ class MainActivity : ComponentActivity() {
         return when {
             Diagnostics.enabled && intent?.getBooleanExtra(EXTRA_DEMO, false) == true -> Launch.DEMO
             action == ACTION_TALK -> Launch.TALK
-            action == ACTION_TEXT -> Launch.TEXT
             else -> Launch.OPEN
         }
     }
 
     companion object {
         const val ACTION_TALK = "net.devemperor.parley.action.TALK"
-        const val ACTION_TEXT = "net.devemperor.parley.action.TEXT"
         private const val EXTRA_DEMO = "demo"
         private const val EXTRA_ROUTES = "routes"
         private const val EXTRA_SAY = "say"
 
-        fun talkIntent(context: Context, textOnly: Boolean = false): Intent =
+        fun talkIntent(context: Context): Intent =
             Intent(context, MainActivity::class.java)
-                .setAction(if (textOnly) ACTION_TEXT else ACTION_TALK)
+                .setAction(ACTION_TALK)
                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
     }
 }

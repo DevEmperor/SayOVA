@@ -35,7 +35,6 @@
 
     <!-- Home -->
     <string name="home_talk">Praten</string>
-    <string name="home_text_mode">Stille modus</string>
     <string name="home_history">Geschiedenis</string>
     <string name="home_settings">Instellingen</string>
 
@@ -44,7 +43,6 @@
     <string name="status_listening">Luisteren</string>
     <string name="status_thinking">Nadenken</string>
     <string name="status_speaking">Spreken</string>
-    <string name="status_writing">Antwoorden</string>
     <string name="status_reconnecting">Opnieuw verbinden</string>
     <string name="status_ended">Opgeslagen</string>
     <string name="status_problem">Probleem</string>
@@ -90,6 +88,9 @@
     <string name="history_off">Geschiedenis staat uit in de instellingen.</string>
     <string name="history_untitled">Gesprek</string>
     <string name="history_report">Antwoord melden</string>
+    <string name="history_share">Naar telefoon sturen</string>
+    <string name="share_no_phone">Geen telefoon verbonden</string>
+    <string name="share_you">Jij</string>
     <string name="history_continue">Doorgaan</string>
     <string name="history_delete">Verwijderen</string>
     <string name="history_delete_confirm">Dit gesprek verwijderen?</string>
@@ -183,8 +184,7 @@
     <string name="ongoing_status">In gesprek</string>
     <string name="tile_label">Parley</string>
     <string name="tile_description">Met één tik met Parley praten</string>
-    <string name="tile_text_mode">Stille modus</string>
-    <string name="tile_hint">Antwoordt in tekst, zonder geluid</string>
+    <string name="tile_latest">Laatst: %1$s</string>
     <string name="complication_label">Praat met Parley</string>
     <string name="complication_short">Praat</string>
     <string name="complication_description">Start een gesprek met Parley</string>

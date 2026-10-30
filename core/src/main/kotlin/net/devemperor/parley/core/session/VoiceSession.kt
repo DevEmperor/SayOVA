@@ -50,8 +50,6 @@ data class SessionConfig(
     val tools: List<ToolSpec>,
     /** Let the model search the web (Gemini: built-in Google Search; OpenAI: the search_web tool). */
     val webSearch: Boolean = true,
-    /** Answers as text only (silent mode). */
-    val textOnly: Boolean = false,
     /** Pause that ends the user's turn. 500–800 ms is what the providers recommend. */
     val silenceMs: Int = 700,
     /** How long a model that requires it thinks before answering (Gemini: low, medium, high). */

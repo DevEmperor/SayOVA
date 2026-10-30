@@ -62,7 +62,7 @@ class MemoryTest {
     @Test
     fun `the instructions carry the facts only while the memory is on`() {
         val now = ZonedDateTime.of(2026, 10, 28, 12, 0, 0, 0, ZoneId.of("Europe/Berlin"))
-        fun build(memory: List<Fact>?) = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false, memory = memory)
+        fun build(memory: List<Fact>?) = Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, canSearch = false, memory = memory)
 
         val on = build(listOf(Fact(2, "Lives in Giessen", 1), Fact(5, "Is vegetarian", 1)))
         assertTrue("What you remember (number, fact):\n[2] Lives in Giessen\n[5] Is vegetarian" in on)

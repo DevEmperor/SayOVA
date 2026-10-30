@@ -1,14 +1,12 @@
 package net.devemperor.parley.tile
 
 import androidx.wear.protolayout.ActionBuilders
-import androidx.wear.protolayout.material3.CardDefaults.filledTonalCardColors
 import androidx.wear.protolayout.material3.ColorScheme
 import androidx.wear.protolayout.material3.MaterialScope
 import androidx.wear.protolayout.material3.Typography
 import androidx.wear.protolayout.material3.primaryLayout
 import androidx.wear.protolayout.material3.text
 import androidx.wear.protolayout.material3.textEdgeButton
-import androidx.wear.protolayout.material3.titleCard
 import androidx.wear.protolayout.modifiers.clickable
 import androidx.wear.protolayout.types.argb
 import androidx.wear.protolayout.types.layoutString
@@ -25,8 +23,8 @@ import net.devemperor.parley.R
 import net.devemperor.parley.parley
 
 /**
- * Tile in the watch carousel: one tap on the edge button starts talking, the card starts the silent
- * text mode and shows the latest conversation.
+ * Tile in the watch carousel: one tap on the edge button starts talking; above it the latest
+ * conversation, as a reminder of what was last asked.
  */
 class ParleyTileService : Material3TileService(allowDynamicTheme = false, defaultColorScheme = TILE_COLORS) {
 
@@ -35,22 +33,14 @@ class ParleyTileService : Material3TileService(allowDynamicTheme = false, defaul
         app.history.load()
         val latest = app.history.conversations.value.firstOrNull()?.title
         val talk = clickable(action = launch(MainActivity.ACTION_TALK), id = "talk")
-        val text = clickable(action = launch(MainActivity.ACTION_TEXT), id = "text")
 
         val layout = primaryLayout(
             titleSlot = { text(getString(R.string.app_name).layoutString) },
             mainSlot = {
-                titleCard(
-                    onClick = text,
-                    colors = filledTonalCardColors(),
-                    title = { text(getString(R.string.tile_text_mode).layoutString, maxLines = 1) },
-                    content = {
-                        text(
-                            (latest ?: getString(R.string.tile_hint)).layoutString,
-                            typography = Typography.BODY_SMALL,
-                            maxLines = 2,
-                        )
-                    },
+                text(
+                    (latest?.let { getString(R.string.tile_latest, it) } ?: getString(R.string.tile_description)).layoutString,
+                    typography = Typography.BODY_MEDIUM,
+                    maxLines = 3,
                 )
             },
             bottomSlot = {

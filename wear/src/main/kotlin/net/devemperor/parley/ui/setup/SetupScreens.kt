@@ -218,7 +218,7 @@ private fun QrContent(state: PairingState.Waiting) {
         timeText = { TimeText(maxSweepAngle = 170f) { curvedText(instruction, color = instructionColor, maxSweepAngle = 170f) } },
         edgeButton = {
             EdgeButton(
-                onClick = { phoneOpened = openOnPhone(context, state.link) },
+                onClick = { openOnPhone(context, state.link) { phoneOpened = it } },
                 buttonSize = EdgeButtonSize.ExtraSmall,
                 colors = ButtonDefaults.filledTonalButtonColors(),
             ) {

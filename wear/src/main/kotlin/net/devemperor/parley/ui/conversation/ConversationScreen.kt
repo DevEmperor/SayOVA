@@ -78,8 +78,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.foundation.rotary.RotaryScrollableDefaults
-import androidx.wear.compose.foundation.rotary.rotaryScrollable
 import androidx.wear.compose.material3.FilledIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
@@ -118,13 +116,11 @@ import kotlin.math.abs
  * the red end button at the bottom between the text and the sound button. By default only the orb
  * is shown, large and centred, pulsing with whoever speaks; with the transcript on, the orb moves up
  * and the transcript scrolls below it, the part of an answer already heard bright, the rest dim. The
- * last choice is remembered ([showTranscript]); silent mode always shows the text, its only output,
- * and so does a conversation with the sound off.
+ * last choice is remembered ([showTranscript]); a conversation with the sound off always shows it.
  *
  * The sound button switches Parley's voice off and on at a tap, for a place where nobody should hear
  * it; a long press, or turning the bezel or crown, opens the volume panel. Turning it louder while
- * the sound is off switches it back on. Silent mode has no voice, so there the bezel scrolls the
- * transcript instead.
+ * the sound is off switches it back on.
  *
  * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
  * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
@@ -179,7 +175,7 @@ fun ConversationScreen(
 
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
-    val transcript = showTranscript || state.textOnly || state.soundOff
+    val transcript = showTranscript || state.soundOff
 
     val context = LocalContext.current
     val volume = remember(state.callAudio) { SpeechVolume(context, call = state.callAudio) }
@@ -203,11 +199,10 @@ fun ConversationScreen(
             volumeOpen = false
         }
     }
-    val bezelVolume = !state.textOnly
     val focus = remember { FocusRequester() }
     var rotary by remember { mutableFloatStateOf(0f) }
     val stepPx = with(LocalDensity.current) { VOLUME_STEP.toPx() }
-    LaunchedEffect(bezelVolume) { if (bezelVolume) runCatching { focus.requestFocus() } }
+    LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
     // No edge button: a small red hang-up button leaves the content most of the screen and is
     // recognisable at a glance, like the one on a phone call.
     ScreenScaffold(
@@ -222,23 +217,19 @@ fun ConversationScreen(
     ) { _ ->
         val width = screenWidth()
         val orbSize by animateDpAsState(if (transcript) width * 0.2f else width * 0.46f, label = "orb")
-        val bezel = if (bezelVolume) {
-            Modifier
-                .onRotaryScrollEvent { event ->
-                    // One step per bezel click; a crown turned in the other direction starts over.
-                    val px = event.verticalScrollPixels
-                    rotary = if (rotary * px < 0f) px else rotary + px
-                    if (abs(rotary) >= stepPx) {
-                        changeVolume(if (rotary > 0f) 1 else -1)
-                        rotary = 0f
-                    }
-                    true
+        val bezel = Modifier
+            .onRotaryScrollEvent { event ->
+                // One step per bezel click; a crown turned in the other direction starts over.
+                val px = event.verticalScrollPixels
+                rotary = if (rotary * px < 0f) px else rotary + px
+                if (abs(rotary) >= stepPx) {
+                    changeVolume(if (rotary > 0f) 1 else -1)
+                    rotary = 0f
                 }
-                .focusRequester(focus)
-                .focusable()
-        } else {
-            Modifier
-        }
+                true
+            }
+            .focusRequester(focus)
+            .focusable()
         Box(Modifier.fillMaxSize().then(bezel)) {
             Column(
                 Modifier.fillMaxSize().padding(bottom = width * 0.03f),
@@ -290,7 +281,7 @@ fun ConversationScreen(
                 if (!transcript) Spacer(Modifier.height(6.dp))
                 Caption(state, rest)
                 if (transcript) {
-                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth().then(rest), rotary = !bezelVolume)
+                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth().then(rest))
                 } else {
                     Spacer(Modifier.weight(1f))
                 }
@@ -298,9 +289,9 @@ fun ConversationScreen(
                     state = state,
                     width = width,
                     transcript = transcript,
-                    onToggleTranscript = onToggleTranscript.takeUnless { state.textOnly },
+                    onToggleTranscript = onToggleTranscript,
                     volumeIcon = volumeIcon(volumeLevel, volume.min, volume.max),
-                    onToggleSound = onToggleSound.takeUnless { state.textOnly },
+                    onToggleSound = onToggleSound,
                     onVolume = showVolume,
                     onEnd = onEnd,
                     modifier = rest,
@@ -414,8 +405,6 @@ private fun volumeIcon(level: Int, min: Int, max: Int): Int = when {
  * The red end button in the middle; left of it the text button, dim with the text hidden and lit
  * with it shown (and resting while the sound is off, which shows the text anyway), right of it the
  * sound button: a tap switches Parley's voice off, coral, and on again, a long press opens [onVolume].
- * Both are null in silent mode, which shows text only and has no voice; their places stay empty so
- * the end button keeps the middle.
  *
  * The three follow the round edge: the end button sits lowest, the two beside it higher up, where the
  * screen is wider. In one straight row, buttons of a size to hit were cut off by the edge.
@@ -425,9 +414,9 @@ private fun Controls(
     state: ConversationUiState,
     width: Dp,
     transcript: Boolean,
-    onToggleTranscript: (() -> Unit)?,
+    onToggleTranscript: () -> Unit,
     volumeIcon: Int,
-    onToggleSound: (() -> Unit)?,
+    onToggleSound: () -> Unit,
     onVolume: () -> Unit,
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
@@ -439,31 +428,27 @@ private fun Controls(
         horizontalArrangement = Arrangement.spacedBy(width * 0.035f),
         verticalAlignment = Alignment.Bottom,
     ) {
-        Box(raised) {
-            if (onToggleTranscript != null) {
-                FilledIconButton(
-                    onClick = onToggleTranscript,
-                    enabled = !state.soundOff,
-                    colors = if (transcript) {
-                        IconButtonDefaults.filledIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    } else {
-                        IconButtonDefaults.filledIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        painterResource(if (transcript) R.drawable.ic_subtitles else R.drawable.ic_subtitles_off),
-                        contentDescription = stringResource(if (transcript) R.string.action_hide_text else R.string.action_show_text),
-                        modifier = Modifier.size(width * 0.08f),
-                    )
-                }
-            }
+        FilledIconButton(
+            onClick = onToggleTranscript,
+            enabled = !state.soundOff,
+            colors = if (transcript) {
+                IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            } else {
+                IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            },
+            modifier = raised,
+        ) {
+            Icon(
+                painterResource(if (transcript) R.drawable.ic_subtitles else R.drawable.ic_subtitles_off),
+                contentDescription = stringResource(if (transcript) R.string.action_hide_text else R.string.action_show_text),
+                modifier = Modifier.size(width * 0.08f),
+            )
         }
         FilledIconButton(
             onClick = onEnd,
@@ -473,32 +458,28 @@ private fun Controls(
         ) {
             Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.1f))
         }
-        Box(raised) {
-            if (onToggleSound != null) {
-                FilledIconButton(
-                    onClick = onToggleSound,
-                    onLongClick = onVolume,
-                    onLongClickLabel = stringResource(R.string.action_volume),
-                    colors = if (state.soundOff) {
-                        IconButtonDefaults.filledIconButtonColors(
-                            containerColor = ParleyColors.Coral.copy(alpha = 0.22f),
-                            contentColor = ParleyColors.Coral,
-                        )
-                    } else {
-                        IconButtonDefaults.filledIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        painterResource(if (state.soundOff) R.drawable.ic_volume_off else volumeIcon),
-                        contentDescription = stringResource(if (state.soundOff) R.string.action_sound_on else R.string.action_sound_off),
-                        modifier = Modifier.size(width * 0.08f),
-                    )
-                }
-            }
+        FilledIconButton(
+            onClick = onToggleSound,
+            onLongClick = onVolume,
+            onLongClickLabel = stringResource(R.string.action_volume),
+            colors = if (state.soundOff) {
+                IconButtonDefaults.filledIconButtonColors(
+                    containerColor = ParleyColors.Coral.copy(alpha = 0.22f),
+                    contentColor = ParleyColors.Coral,
+                )
+            } else {
+                IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            },
+            modifier = raised,
+        ) {
+            Icon(
+                painterResource(if (state.soundOff) R.drawable.ic_volume_off else volumeIcon),
+                contentDescription = stringResource(if (state.soundOff) R.string.action_sound_on else R.string.action_sound_off),
+                modifier = Modifier.size(width * 0.08f),
+            )
         }
     }
 }
@@ -511,14 +492,13 @@ private fun Controls(
  * The top edge fades, so lines leave under the caption rather than being cut.
  */
 @Composable
-private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier, rotary: Boolean) {
+private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier) {
     val scroll = rememberScrollState()
-    val focus = remember { FocusRequester() }
     var scrollingOurselves by remember { mutableStateOf(false) }
     var userScrolledAt by remember { mutableLongStateOf(0L) }
     // Where the line being spoken starts, in the column's own coordinates; -1 when nobody speaks.
     var spokenLineY by remember { mutableFloatStateOf(-1f) }
-    val speaking = state.phase == Phase.SPEAKING && !state.textOnly
+    val speaking = state.phase == Phase.SPEAKING
     val leadPx = with(LocalDensity.current) { LEAD.toPx() }
     LaunchedEffect(scroll.isScrollInProgress) {
         if (scroll.isScrollInProgress && !scrollingOurselves) userScrolledAt = SystemClock.elapsedRealtime()
@@ -536,8 +516,6 @@ private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier
                 }
             }
     }
-    LaunchedEffect(rotary) { if (rotary) runCatching { focus.requestFocus() } }
-
     Column(
         modifier
             .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
@@ -549,7 +527,6 @@ private fun Transcript(state: ConversationUiState, width: Dp, modifier: Modifier
                     blendMode = BlendMode.DstIn,
                 )
             }
-            .then(if (rotary) Modifier.rotaryScrollable(RotaryScrollableDefaults.behavior(scroll), focus) else Modifier)
             .verticalScroll(scroll)
             .padding(horizontal = width * 0.11f, vertical = 6.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -578,7 +555,7 @@ private fun statusText(state: ConversationUiState): String = when {
         Phase.CONNECTING -> stringResource(R.string.status_connecting)
         Phase.LISTENING -> stringResource(R.string.status_listening)
         Phase.THINKING -> stringResource(R.string.status_thinking)
-        Phase.SPEAKING -> stringResource(if (state.textOnly) R.string.status_writing else R.string.status_speaking)
+        Phase.SPEAKING -> stringResource(R.string.status_speaking)
         Phase.RECONNECTING -> stringResource(R.string.status_reconnecting)
         // "Saved" only when there was something to keep.
         Phase.ENDED -> stringResource(if (state.saved) R.string.status_ended else R.string.status_closed)
