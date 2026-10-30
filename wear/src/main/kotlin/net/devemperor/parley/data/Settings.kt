@@ -50,6 +50,10 @@ data class ParleySettings(
     val autoEndSeconds: Int = 20,
     val haptics: Boolean = true,
     val showCost: Boolean = true,
+    /** Monthly budget in whole dollars (see Budget); 0 = none. */
+    val budgetUsd: Int = 0,
+    /** From the budget's warning on, conversations use the provider's cheaper model. */
+    val budgetSave: Boolean = false,
     /** Whether a conversation shows the transcript or only the orb; the last choice sticks. */
     val showTranscript: Boolean = false,
     /** Parley's own volume on the media scale, set for each conversation; -1 until first chosen. */
@@ -80,6 +84,7 @@ data class ParleySettings(
     companion object {
         val AUTO_END_OPTIONS = listOf(10, 20, 30, 60, 0)
         val HISTORY_OPTIONS = listOf(0, 7, 30, -1)
+        val BUDGET_OPTIONS = listOf(0, 1, 2, 5, 10, 20, 50)
     }
 }
 
@@ -108,6 +113,8 @@ class SettingsRepository(private val context: Context) {
         val autoEnd = intPreferencesKey("auto_end_seconds")
         val haptics = booleanPreferencesKey("haptics")
         val showCost = booleanPreferencesKey("show_cost")
+        val budget = intPreferencesKey("budget_usd")
+        val budgetSave = booleanPreferencesKey("budget_save")
         val showTranscript = booleanPreferencesKey("show_transcript")
         val speechVolume = intPreferencesKey("speech_volume")
         val callVolume = intPreferencesKey("call_volume")
@@ -152,6 +159,8 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.autoEnd] = updated.autoEndSeconds
             prefs[Keys.haptics] = updated.haptics
             prefs[Keys.showCost] = updated.showCost
+            prefs[Keys.budget] = updated.budgetUsd
+            prefs[Keys.budgetSave] = updated.budgetSave
             prefs[Keys.showTranscript] = updated.showTranscript
             prefs[Keys.speechVolume] = updated.speechVolume
             prefs[Keys.callVolume] = updated.callVolume
@@ -197,6 +206,8 @@ class SettingsRepository(private val context: Context) {
             autoEndSeconds = prefs[Keys.autoEnd]?.takeIf { it in ParleySettings.AUTO_END_OPTIONS } ?: d.autoEndSeconds,
             haptics = prefs[Keys.haptics] ?: d.haptics,
             showCost = prefs[Keys.showCost] ?: d.showCost,
+            budgetUsd = prefs[Keys.budget]?.takeIf { it in ParleySettings.BUDGET_OPTIONS } ?: d.budgetUsd,
+            budgetSave = prefs[Keys.budgetSave] ?: d.budgetSave,
             showTranscript = prefs[Keys.showTranscript] ?: d.showTranscript,
             speechVolume = prefs[Keys.speechVolume] ?: d.speechVolume,
             callVolume = prefs[Keys.callVolume] ?: d.callVolume,

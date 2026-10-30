@@ -44,9 +44,13 @@ class ParleyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         appScope.launch {
-            history.load()
-            memory.load()
+            // The usage before the history: a conversation started with the app waits for it (the
+            // budget), and a history kept forever takes a while to read. Only a watch without
+            // statistics yet needs the history first, to start them from.
+            var historyLoaded = false
             usage.load(seed = {
+                history.load()
+                historyLoaded = true
                 var days = Usage.fromConversations(history.conversations.value, ZoneId.systemDefault())
                 // Cost counted in the month before the statistics, beyond what the history shows.
                 settings.takeLegacyMonthCost()?.let { (month, usd) ->
@@ -56,6 +60,8 @@ class ParleyApp : Application() {
                 }
                 days
             })
+            if (!historyLoaded) history.load()
+            memory.load()
             history.prune(settings.current().historyDays)
         }
         // Keeps Health Services counting steps while the feature is on, from the first start on.

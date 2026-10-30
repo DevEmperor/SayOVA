@@ -114,7 +114,6 @@
     <string name="settings_push_to_talk">点按说话</string>    <string name="settings_auto_end">静默后自动结束</string>
     <string name="settings_start_on_launch">打开即开始对话</string>    <string name="settings_haptics">振动</string>
     <string name="settings_show_cost">显示费用</string>
-    <string name="settings_show_cost_note">对话时和历史记录中</string>
     <string name="settings_usage">用量和费用</string>
     <string name="settings_usage_summary">本月 %1$s · %2$s</string>
     <string name="usage_title">用量</string>
@@ -123,6 +122,17 @@
     <string name="usage_recent">%1$s 至今 · 最高 %2$s</string>
     <string name="usage_average">每次对话 %1$s · 每分钟 %2$s</string>
     <string name="usage_estimate">根据服务商报告的用量及其公布的价格估算。实际费用以服务商的账单为准。</string>
+    <string name="settings_budget">每月预算</string>
+    <string name="budget_off">关闭</string>
+    <string name="budget_hint">用到 %1$s 时 Parley 会提醒你；预算用完后，每次对话前都会先询问。按 Parley 的费用估算计算。</string>
+    <string name="settings_budget_save">接近上限时节省</string>
+    <string name="settings_budget_save_note">%1$s 起使用快速模型</string>
+    <string name="budget_reached_title">已达预算</string>
+    <string name="budget_reached_text">本月已用 %1$s，预算为 %2$s。仍要对话吗？</string>
+    <string name="usage_budget">已用 %2$s 预算的 %1$s</string>
+    <string name="notice_budget_near">已用预算的 %1$s</string>
+    <string name="notice_budget_reached">已达每月预算</string>
+    <string name="notice_budget_economy">预算即将用完 · %1$s</string>
     <string name="settings_privacy">隐私</string>
     <string name="settings_general">通用</string>
     <string name="settings_history">保留历史记录</string>

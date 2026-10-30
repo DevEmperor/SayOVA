@@ -33,7 +33,8 @@ your own API key.
   every fact to read or delete.
 - **Speaks your language.** The app is translated into 12 languages besides English, and Parley
   answers in whatever language you talk to it.
-- **Know what it costs.** Usage statistics show cost and talk time per month and in total.
+- **Know what it costs.** Usage statistics show cost and talk time per month and in total,
+  and a monthly budget warns at 80% and asks before every conversation once it is spent.
 - **Silent mode.** Answers as text only, with push-to-talk — for lectures, meetings or a
   quiet room.
 - **Does things on the watch.** Timers, alarms, notes, battery and time, and web search
@@ -88,7 +89,8 @@ its own prices — roughly:
 | OpenAI | `gpt-realtime-2.1` (Best) | 6–11 ¢ per minute |
 
 Parley shows a running estimate during the conversation and the month's total in the
-settings. Thorough answers at once and then thinks in the background before it gives its
+settings. A monthly budget (Settings → Monthly budget, $1 to $50) warns from 80% on, can switch
+to the Fast model from there, and asks before every conversation once it is spent. Thorough answers at once and then thinks in the background before it gives its
 considered answer; that thinking adds about half a cent to a hard question.
 
 ## Privacy

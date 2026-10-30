@@ -34,6 +34,8 @@ import net.devemperor.parley.core.session.TokenUsage
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.session.VoiceSession
 import net.devemperor.parley.core.tools.WatchFeature
+import net.devemperor.parley.core.usage.Budget
+import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.data.BargeIn
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.net.Transport
@@ -81,6 +83,11 @@ class ConversationEngine(
         val soundOff: Boolean,
         /** A conversation from the history this one carries on: shown first, saved into the same entry. */
         val continues: Conversation? = null,
+        /** The monthly budget in dollars (0 = none, see Budget) and the month's cost before this conversation. */
+        val budgetUsd: Int = 0,
+        val spentUsd: Double = 0.0,
+        /** Talking with the cheaper model because the budget is near: said at the start. */
+        val economy: Boolean = false,
     )
 
     private class Record(val key: String, val role: Role, val at: Long) {
@@ -172,6 +179,8 @@ class ConversationEngine(
     private var lastPhase = Phase.CONNECTING
     private var notice: String? = null
     private var noticeUntil = 0L
+    /** How far the month's budget is spent; a step up during the conversation shows a notice once. */
+    private var budgetLevel = Budget.level(options.spentUsd, options.budgetUsd)
     /** What a tool left to do once the conversation has ended (see ToolRunner.Outcome.afterEnd). */
     private var afterEnd: (() -> Unit)? = null
     @Volatile private var activeFeature: WatchFeature? = null
@@ -323,6 +332,10 @@ class ConversationEngine(
                     readyAt = SystemClock.elapsedRealtime()
                     haptics.listening()
                     if (diagnostics) Log.d(TAG, "ready ${readyAt - createdAt} ms after the start")
+                    // Said once the conversation shows: started from the tile, the splash screen hid it.
+                    if (options.economy) {
+                        showNotice(context.getString(R.string.notice_budget_economy, model.labelRes()?.let(context::getString) ?: model.label), BUDGET_NOTICE_MS)
+                    }
                 }
                 reconnecting = false
                 touch()
@@ -563,6 +576,18 @@ class ConversationEngine(
         // here; this tick's state would then overwrite the final one and leave the screen on "Listening".
         if (finished) return
 
+        val usd = cost()
+        // The budget's warning or its end crossed during this conversation; it carries on either way.
+        val level = Budget.level(options.spentUsd + usd, options.budgetUsd)
+        if (level > budgetLevel) {
+            budgetLevel = level
+            val text = if (level == BudgetLevel.REACHED) {
+                context.getString(R.string.notice_budget_reached)
+            } else {
+                context.getString(R.string.notice_budget_near, Budget.percent(Budget.NEAR_SHARE, context.resources.configuration.locales[0]))
+            }
+            showNotice(text, BUDGET_NOTICE_MS)
+        }
         if (notice != null && now > noticeUntil) notice = null
 
         _state.value = _state.value.copy(
@@ -571,7 +596,7 @@ class ConversationEngine(
             micLevel = if (micOpen) micLevel else 0f,
             speechLevel = player?.level ?: 0f,
             elapsedMs = if (ready) now - readyAt else 0,
-            costUsd = cost(),
+            costUsd = usd,
             transport = transport.value,
             muted = muted,
             soundOff = soundOff,
@@ -714,6 +739,7 @@ class ConversationEngine(
         const val ECHO_WINDOW_MS = 600L
         /** Long enough for a heart rate measurement or the permission dialog; the outcome replaces it. */
         const val FEATURE_NOTICE_MS = 60_000L
+        const val BUDGET_NOTICE_MS = 4_000L
         /**
          * 10 × 100 ms of microphone audio kept during an answer for when the user talks over it: when
          * the echo is loud the user is often recognised only in the answer's next pause.

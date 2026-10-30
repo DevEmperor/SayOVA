@@ -113,7 +113,6 @@
     <string name="settings_push_to_talk">Druk om te praten</string>    <string name="settings_auto_end">Stoppen na stilte</string>
     <string name="settings_start_on_launch">Praten bij openen</string>    <string name="settings_haptics">Trillen</string>
     <string name="settings_show_cost">Kosten tonen</string>
-    <string name="settings_show_cost_note">Tijdens het praten en in geschiedenis</string>
     <string name="settings_usage">Gebruik &amp; kosten</string>
     <string name="settings_usage_summary">Deze maand %1$s · %2$s</string>
     <string name="usage_title">Gebruik</string>
@@ -122,6 +121,17 @@
     <string name="usage_recent">%1$s – vandaag · top %2$s</string>
     <string name="usage_average">%1$s per gesprek · %2$s per minuut</string>
     <string name="usage_estimate">Geschat op basis van het gebruik dat je aanbieder meldt en diens gepubliceerde prijzen. De factuur van je aanbieder is leidend.</string>
+    <string name="settings_budget">Maandbudget</string>
+    <string name="budget_off">Uit</string>
+    <string name="budget_hint">Vanaf %1$s waarschuwt Parley; is het budget op, dan vraagt het vóór elk gesprek. Het telt Parleys kostenschatting.</string>
+    <string name="settings_budget_save">Besparen vlak voor de grens</string>
+    <string name="settings_budget_save_note">Snel model vanaf %1$s</string>
+    <string name="budget_reached_title">Budget bereikt</string>
+    <string name="budget_reached_text">Deze maand %1$s van %2$s uitgegeven. Toch praten?</string>
+    <string name="usage_budget">%1$s van het budget van %2$s</string>
+    <string name="notice_budget_near">%1$s van het budget gebruikt</string>
+    <string name="notice_budget_reached">Maandbudget bereikt</string>
+    <string name="notice_budget_economy">Budget bijna op · %1$s</string>
     <string name="settings_privacy">Privacy</string>
     <string name="settings_general">Algemeen</string>
     <string name="settings_history">Geschiedenis bewaren</string>

@@ -10,6 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import net.devemperor.parley.features.PermissionBroker
 import net.devemperor.parley.features.StepTracking
@@ -18,12 +19,14 @@ import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.tile.ParleyTileService
 import net.devemperor.parley.ui.Launch
 import net.devemperor.parley.ui.ParleyUi
-import net.devemperor.parley.ui.setup.hasMicrophone
 
 class MainActivity : ComponentActivity() {
 
     /** The permission request of a conversation that Android's dialog is showing right now. */
     private var asking: PermissionBroker.Request? = null
+
+    /** The tile or complication tapped while Parley is open: the screens start it, after their checks. */
+    private val relaunches = MutableSharedFlow<Launch>(extraBufferCapacity = 1)
 
     private val askPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         // Granted as the feature needs it: either location, but contacts and calling both.
@@ -43,7 +46,7 @@ class MainActivity : ComponentActivity() {
         } else {
             emptyList()
         }
-        setContent { ParleyUi(launch, routes) }
+        setContent { ParleyUi(launch, routes, relaunches) }
         // A conversation needs a watch feature the user has not allowed yet (see PermissionBroker).
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -75,9 +78,8 @@ class MainActivity : ComponentActivity() {
         // With diagnostics on, a question typed into the running conversation, for tests on an emulator
         // whose microphone hears nothing: `adb shell am start -n …/.MainActivity --es say "…"`.
         if (Diagnostics.enabled) intent.getStringExtra(EXTRA_SAY)?.let(SessionHub::say)
-        when (launchOf(intent)) {
-            Launch.TALK -> if (hasMicrophone() && parley.keys.connected.value.isNotEmpty()) SessionHub.start(this, textOnly = false)
-            Launch.TEXT -> if (hasMicrophone() && parley.keys.connected.value.isNotEmpty()) SessionHub.start(this, textOnly = true)
+        when (val again = launchOf(intent)) {
+            Launch.TALK, Launch.TEXT -> relaunches.tryEmit(again)
             else -> Unit
         }
     }

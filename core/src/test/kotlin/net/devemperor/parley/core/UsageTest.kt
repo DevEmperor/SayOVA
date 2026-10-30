@@ -1,6 +1,8 @@
 package net.devemperor.parley.core
 
 import net.devemperor.parley.core.conversation.Conversation
+import net.devemperor.parley.core.usage.Budget
+import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.core.usage.UsageDay
 import org.junit.Assert.assertEquals
@@ -9,6 +11,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.Locale
 
 class UsageTest {
 
@@ -54,5 +57,19 @@ class UsageTest {
         assertEquals("<1\u00A0min", Usage.formatDuration(59_000))
         assertEquals("42\u00A0min", Usage.formatDuration(42 * 60_000L))
         assertEquals("3\u00A0h 05\u00A0min", Usage.formatDuration((3 * 60 + 5) * 60_000L))
+    }
+
+    @Test
+    fun `the budget warns from 80 percent and is reached at its amount`() {
+        assertEquals(BudgetLevel.NONE, Budget.level(12.0, 0))
+        assertEquals(BudgetLevel.UNDER, Budget.level(3.99, 5))
+        assertEquals(BudgetLevel.NEAR, Budget.level(4.0, 5))
+        assertEquals(BudgetLevel.NEAR, Budget.level(4.999, 5))
+        assertEquals(BudgetLevel.REACHED, Budget.level(5.0, 5))
+        assertEquals(BudgetLevel.REACHED, Budget.level(7.5, 5))
+        assertEquals(1.5, Budget.share(7.5, 5), 1e-9)
+        assertEquals("\$20", Budget.format(20))
+        assertEquals("80%", Budget.percent(Budget.NEAR_SHARE, Locale.US))
+        assertEquals("%80", Budget.percent(Budget.NEAR_SHARE, Locale.forLanguageTag("tr")))
     }
 }

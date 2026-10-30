@@ -19,6 +19,10 @@ First version.
   remembered between conversations; the media volume is handed back when a conversation ends.
 - Sound button: switches Parley's voice off for quiet places; the transcript shows instead.
 - Usage statistics: cost and talk time this month, the last two weeks, every month and in total.
+- Monthly budget ($1 to $50): from 80% the home screen shows the month's cost against it in amber,
+  and the statistics show a bar; once it is spent the line turns coral and Parley asks before every
+  conversation. On request Parley talks with the Fast model from 80% on. Crossing either mark during
+  a conversation shows a short note; the conversation carries on.
 - Silent mode (text answers, push-to-talk).
 - Tools: timers, alarms, notes, battery and time, web search.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by

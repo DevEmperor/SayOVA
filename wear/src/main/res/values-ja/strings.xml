@@ -114,7 +114,6 @@
     <string name="settings_push_to_talk">タップで発話</string>    <string name="settings_auto_end">無音時に自動終了</string>
     <string name="settings_start_on_launch">起動時に会話を開始</string>    <string name="settings_haptics">バイブレーション</string>
     <string name="settings_show_cost">費用を表示</string>
-    <string name="settings_show_cost_note">会話中と履歴で表示</string>
     <string name="settings_usage">使用量と費用</string>
     <string name="settings_usage_summary">今月 %1$s · %2$s</string>
     <string name="usage_title">使用量</string>
@@ -123,6 +122,17 @@
     <string name="usage_recent">%1$s～今日 · 最大 %2$s</string>
     <string name="usage_average">会話あたり %1$s · 1 分あたり %2$s</string>
     <string name="usage_estimate">プロバイダが報告した使用量と公開価格に基づく推定値です。実際の金額はプロバイダの請求をご確認ください。</string>
+    <string name="settings_budget">月の予算</string>
+    <string name="budget_off">オフ</string>
+    <string name="budget_hint">%1$sに達するとお知らせし、予算を使い切ると会話の前に毎回確認します。Parleyの料金見積もりで数えます。</string>
+    <string name="settings_budget_save">上限が近いときは節約</string>
+    <string name="settings_budget_save_note">%1$sから高速モデル</string>
+    <string name="budget_reached_title">予算に達しました</string>
+    <string name="budget_reached_text">今月は%2$sのうち%1$sを使いました。それでも話しますか？</string>
+    <string name="usage_budget">予算%2$sのうち%1$s</string>
+    <string name="notice_budget_near">予算の%1$sを使用</string>
+    <string name="notice_budget_reached">月の予算に達しました</string>
+    <string name="notice_budget_economy">予算の上限が近い · %1$s</string>
     <string name="settings_privacy">プライバシー</string>
     <string name="settings_general">一般</string>
     <string name="settings_history">履歴を保存</string>

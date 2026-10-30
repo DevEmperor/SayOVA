@@ -113,7 +113,6 @@
     <string name="settings_push_to_talk">Pulsar para hablar</string>    <string name="settings_auto_end">Fin tras silencio</string>
     <string name="settings_start_on_launch">Hablar al abrir</string>    <string name="settings_haptics">Vibración</string>
     <string name="settings_show_cost">Mostrar coste</string>
-    <string name="settings_show_cost_note">Al hablar y en el historial</string>
     <string name="settings_usage">Uso y costes</string>
     <string name="settings_usage_summary">Este mes %1$s · %2$s</string>
     <string name="usage_title">Uso</string>
@@ -122,6 +121,17 @@
     <string name="usage_recent">%1$s – hoy · máx. %2$s</string>
     <string name="usage_average">%1$s por conversación · %2$s por minuto</string>
     <string name="usage_estimate">Estimación basada en el uso que indica tu proveedor y sus precios publicados. Lo que cuenta es la factura de tu proveedor.</string>
+    <string name="settings_budget">Presupuesto mensual</string>
+    <string name="budget_off">Desactivado</string>
+    <string name="budget_hint">A partir del %1$s, Parley te avisa; cuando se agota el presupuesto, pregunta antes de cada conversación. Cuenta la estimación de costes de Parley.</string>
+    <string name="settings_budget_save">Ahorrar al acercarse</string>
+    <string name="settings_budget_save_note">Modelo rápido desde el %1$s</string>
+    <string name="budget_reached_title">Presupuesto alcanzado</string>
+    <string name="budget_reached_text">Este mes llevas %1$s de %2$s. ¿Hablar de todos modos?</string>
+    <string name="usage_budget">%1$s del presupuesto de %2$s</string>
+    <string name="notice_budget_near">%1$s del presupuesto usado</string>
+    <string name="notice_budget_reached">Presupuesto mensual alcanzado</string>
+    <string name="notice_budget_economy">Presupuesto casi agotado · %1$s</string>
     <string name="settings_privacy">Privacidad</string>
     <string name="settings_general">General</string>
     <string name="settings_history">Guardar historial</string>

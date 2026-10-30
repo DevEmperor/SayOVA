@@ -1,6 +1,7 @@
 package net.devemperor.parley.data
 
 import android.content.Context
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,7 @@ class UsageStore(context: Context) {
     private val serializer = ListSerializer(UsageDay.serializer())
     private val lock = Mutex()
     private val _days = MutableStateFlow<List<UsageDay>>(emptyList())
+    private val loaded = CompletableDeferred<Unit>()
 
     /** Oldest first. */
     val days: StateFlow<List<UsageDay>> = _days.asStateFlow()
@@ -35,14 +37,21 @@ class UsageStore(context: Context) {
      * conversations and the month's cost Parley counted before it kept statistics).
      */
     suspend fun load(seed: suspend () -> List<UsageDay>) = lock.withLock {
-        withContext(Dispatchers.IO) {
-            _days.value = if (file.exists()) {
-                runCatching { json.decodeFromString(serializer, file.readText()) }.getOrDefault(emptyList())
-            } else {
-                seed().also(::write)
+        try {
+            withContext(Dispatchers.IO) {
+                _days.value = if (file.exists()) {
+                    runCatching { json.decodeFromString(serializer, file.readText()) }.getOrDefault(emptyList())
+                } else {
+                    seed().also(::write)
+                }
             }
+        } finally {
+            loaded.complete(Unit)
         }
     }
+
+    /** Returns once [load] is done: a conversation started with the app is checked against the real month. */
+    suspend fun awaitLoaded() = loaded.await()
 
     /** One conversation that just ended, counted on today's date; a voice sample costs without being one. */
     suspend fun record(costUsd: Double, talkMs: Long, conversations: Int = 1) = lock.withLock {

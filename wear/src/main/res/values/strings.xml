@@ -115,7 +115,6 @@
     <string name="settings_push_to_talk">Push to talk</string>    <string name="settings_auto_end">End after silence</string>
     <string name="settings_start_on_launch">Talk when opened</string>    <string name="settings_haptics">Vibration</string>
     <string name="settings_show_cost">Show cost</string>
-    <string name="settings_show_cost_note">While talking and in history</string>
     <string name="settings_usage">Usage &amp; costs</string>
     <string name="settings_usage_summary">This month %1$s · %2$s</string>
     <string name="usage_title">Usage</string>
@@ -124,6 +123,19 @@
     <string name="usage_recent">%1$s – today · top %2$s</string>
     <string name="usage_average">%1$s per conversation · %2$s per minute</string>
     <string name="usage_estimate">Estimated from the usage your provider reports and its published prices. Your provider\'s bill is what counts.</string>
+    <!-- Monthly budget (Settings → Monthly budget); amounts are in US dollars like the cost estimate. -->
+    <string name="settings_budget">Monthly budget</string>
+    <string name="budget_off">Off</string>
+    <!-- %1$s is the warning's share, written the watch's way: "80%", "80 %", "%80". -->
+    <string name="budget_hint">From %1$s on, Parley warns you; once the budget is spent, it asks before every conversation. It counts Parley\'s cost estimate.</string>
+    <string name="settings_budget_save">Save near the limit</string>
+    <string name="settings_budget_save_note">Fast model from %1$s</string>
+    <string name="budget_reached_title">Budget reached</string>
+    <string name="budget_reached_text">%1$s of %2$s spent this month. Talk anyway?</string>
+    <string name="usage_budget">%1$s of the %2$s budget</string>
+    <string name="notice_budget_near">%1$s of the budget used</string>
+    <string name="notice_budget_reached">Monthly budget reached</string>
+    <string name="notice_budget_economy">Near the budget · %1$s</string>
     <string name="settings_privacy">Privacy</string>
     <string name="settings_general">General</string>
     <string name="settings_history">Keep history</string>

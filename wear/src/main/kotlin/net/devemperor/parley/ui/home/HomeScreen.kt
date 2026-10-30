@@ -38,6 +38,8 @@ import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.TimeText
 import net.devemperor.parley.R
 import net.devemperor.parley.core.cost.CostMeter
+import net.devemperor.parley.core.usage.Budget
+import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.ui.components.EdgeButtonScaffold
 import net.devemperor.parley.ui.components.FitText
@@ -46,11 +48,12 @@ import net.devemperor.parley.ui.components.OrbHandoff
 import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.stringOr
+import net.devemperor.parley.ui.theme.ParleyColors
 
 /**
  * The start screen: the orb (tap it, or the edge button, to talk) and three round buttons for the
  * silent text mode, the history and the settings. The line under the orb names provider and model
- * and the month's cost; a tap on it opens the usage statistics.
+ * and the month's cost, near the monthly budget against it; a tap on it opens the usage statistics.
  */
 @Composable
 fun HomeScreen(
@@ -63,7 +66,9 @@ fun HomeScreen(
     onSettings: () -> Unit,
 ) {
     val provider = settings.providerInfo
-    val model = provider.model(settings.modelId())
+    val budget = Budget.level(monthUsd, settings.budgetUsd)
+    // The model the next conversation will use: near the budget perhaps the cheaper one (see SessionService).
+    val model = if (settings.budgetSave && budget >= BudgetLevel.NEAR) provider.economyModel else provider.model(settings.modelId())
     EdgeButtonScaffold(
         timeText = { TimeText() },
         edgeButton = {
@@ -99,12 +104,24 @@ fun HomeScreen(
                 Orb(phase = null, level = 0f, modifier = Modifier.fillMaxSize())
             }
             // One line that shrinks for languages whose model names run long ("Gründlich", "Minucioso"):
-            // a second line pushed the buttons below off their size.
+            // a second line pushed the buttons below off their size. Near the budget the provider's name
+            // gives way to the budget, in amber and then coral, even with the cost hidden: it is a
+            // warning then.
+            val modelLabel = stringOr(model.labelRes(), model.label)
+            val line = if (budget == BudgetLevel.NEAR || budget == BudgetLevel.REACHED) {
+                "$modelLabel · ${CostMeter.format(monthUsd)} / ${Budget.format(settings.budgetUsd)}"
+            } else {
+                "${provider.displayName.substringAfterLast(' ')} · $modelLabel" +
+                    if (settings.showCost && monthUsd > 0) " · ${CostMeter.format(monthUsd)}" else ""
+            }
             FitText(
-                "${provider.displayName.substringAfterLast(' ')} · ${stringOr(model.labelRes(), model.label)}" +
-                    if (settings.showCost && monthUsd > 0) " · ${CostMeter.format(monthUsd)}" else "",
+                line,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = when (budget) {
+                    BudgetLevel.REACHED -> ParleyColors.Coral
+                    BudgetLevel.NEAR -> ParleyColors.Amber
+                    else -> MaterialTheme.colorScheme.onSurfaceVariant
+                },
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).clickable(onClick = onUsage).padding(vertical = 3.dp),
             )

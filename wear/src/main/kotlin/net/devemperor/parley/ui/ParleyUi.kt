@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -25,8 +26,13 @@ import androidx.wear.compose.material3.AppScaffold
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import net.devemperor.parley.R
+import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.provider.ProviderId
+import net.devemperor.parley.core.usage.Budget
+import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.ParleySettings
 import net.devemperor.parley.parley
@@ -34,6 +40,7 @@ import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.SessionHub
 import net.devemperor.parley.ui.about.AboutScreen
 import net.devemperor.parley.ui.about.LicensesScreen
+import net.devemperor.parley.ui.components.ConfirmDialog
 import net.devemperor.parley.ui.components.OrbHandoff
 import net.devemperor.parley.ui.conversation.ConversationScreen
 import net.devemperor.parley.ui.history.ConversationDetailScreen
@@ -84,8 +91,12 @@ object Routes {
 /** What the app was opened for: from the launcher, or straight into a conversation (tile, complication). */
 enum class Launch { OPEN, TALK, TEXT, DEMO }
 
+/** A conversation that waits for the user's yes, because this month's budget is spent (see Budget). */
+private data class HeldStart(val textOnly: Boolean, val demo: Boolean, val continueId: String?)
+
+/** [relaunches]: the tile or complication tapped while Parley is already open. */
 @Composable
-fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
+fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launch>) {
     val context = LocalContext.current
     val app = context.parley
     val scope = rememberCoroutineScope()
@@ -104,10 +115,20 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
             val update: ((ParleySettings) -> ParleySettings) -> Unit = { transform -> scope.launch { app.settings.update(transform) } }
             /** A conversation shows in place of the home screen (see startConversation). */
             var homeTalk by rememberSaveable { mutableStateOf(false) }
+            var held by remember { mutableStateOf<HeldStart?>(null) }
 
-            fun startConversation(textOnly: Boolean, demo: Boolean = false, continueId: String? = null) {
+            /** [anyway]: the user said yes although the month's budget is spent. */
+            fun startConversation(textOnly: Boolean, demo: Boolean = false, continueId: String? = null, anyway: Boolean = false) {
                 if (!context.hasMicrophone()) {
                     navController.navigate(Routes.PERMISSION)
+                    return
+                }
+                // Settings and usage read now, not as this composition saw them: the tile's starts come
+                // through an effect launched with the first one, and the usage straight from the store,
+                // which may have loaded a frame before the screen saw it.
+                val spent = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
+                if (!anyway && !SessionHub.running && Budget.level(spent, settings?.budgetUsd ?: 0) == BudgetLevel.REACHED) {
+                    held = HeldStart(textOnly, demo, continueId)
                     return
                 }
                 SessionHub.start(context, textOnly, demo, continueId)
@@ -302,7 +323,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 }
                 composable(Routes.ABOUT) { AboutScreen(onLicenses = whenResumed { navController.navigate(Routes.LICENSES) }) }
                 composable(Routes.LICENSES) { LicensesScreen() }
-                composable(Routes.USAGE) { UsageScreen(usage) }
+                composable(Routes.USAGE) { UsageScreen(usage, current.budgetUsd) }
                 composable(Routes.FEATURES) {
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     WatchFeaturesScreen(s, update)
@@ -319,7 +340,26 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 }
             }
 
+            ConfirmDialog(
+                visible = held != null,
+                title = stringResource(R.string.budget_reached_title),
+                text = stringResource(
+                    R.string.budget_reached_text,
+                    CostMeter.format(Usage.month(usage, YearMonth.now()).costUsd),
+                    Budget.format(current.budgetUsd),
+                ),
+                icon = R.drawable.ic_savings,
+                onConfirm = {
+                    val start = held
+                    held = null
+                    if (start != null) startConversation(start.textOnly, start.demo, start.continueId, anyway = true)
+                },
+                onDismiss = { held = null },
+            )
+
             LaunchedEffect(Unit) {
+                // Opened to talk at once: checked against the month on file, not an empty one still loading.
+                app.usage.awaitLoaded()
                 when (launch) {
                     Launch.TALK -> if (ready) startConversation(textOnly = false)
                     Launch.TEXT -> if (ready) startConversation(textOnly = true)
@@ -328,8 +368,13 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>) {
                 }
                 initialRoutes.forEach { runCatching { navController.navigate(it) } }
             }
-            // A conversation started elsewhere (tile while the app is open) brings its screen up; on the
-            // home screen it takes the home screen's place.
+            LaunchedEffect(Unit) {
+                relaunches.collect { again ->
+                    if (connected.isNotEmpty() && context.hasMicrophone()) startConversation(textOnly = again == Launch.TEXT)
+                }
+            }
+            // A conversation started without startConversation's navigation brings its screen up too; on
+            // the home screen it takes the home screen's place.
             LaunchedEffect(session?.active) {
                 if (session?.active != true) return@LaunchedEffect
                 when (navController.currentDestination?.route) {

@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
@@ -24,6 +25,7 @@ import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
 import net.devemperor.parley.core.tools.WatchFeature
+import net.devemperor.parley.core.usage.Budget
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.core.usage.UsageTotal
 import net.devemperor.parley.data.BargeIn
@@ -45,7 +47,7 @@ import net.devemperor.parley.ui.stringOr
 typealias Update = ((ParleySettings) -> ParleySettings) -> Unit
 
 /** Options that are a single choice from a list get one generic screen each. */
-enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY }
+enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY, BUDGET }
 
 private enum class SampleState { LOADING, PLAYING, FAILED }
 
@@ -136,7 +138,7 @@ fun SettingsScreen(
         item {
             SwitchItem(
                 stringResource(R.string.settings_show_cost), settings.showCost, { v -> onUpdate { it.copy(showCost = v) } }, spec,
-                stringResource(R.string.settings_show_cost_note), R.drawable.ic_payments,
+                icon = R.drawable.ic_payments,
             )
         }
         item {
@@ -145,6 +147,15 @@ fun SettingsScreen(
                 stringResource(R.string.settings_usage_summary, CostMeter.format(monthUsage.costUsd), Usage.formatDuration(monthUsage.talkMs)),
                 R.drawable.ic_bar_chart,
             )
+        }
+        item { MenuButton(stringResource(R.string.settings_budget), spec, { onOpenChoice(Choice.BUDGET) }, budgetLabel(settings.budgetUsd), R.drawable.ic_savings) }
+        if (settings.budgetUsd > 0) {
+            item {
+                SwitchItem(
+                    stringResource(R.string.settings_budget_save), settings.budgetSave, { v -> onUpdate { it.copy(budgetSave = v) } }, spec,
+                    stringResource(R.string.settings_budget_save_note, nearPercent()), R.drawable.ic_bolt,
+                )
+            }
         }
 
         item { SubHeader(stringResource(R.string.settings_privacy), spec) }
@@ -312,6 +323,15 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                     }
                 }
             }
+            Choice.BUDGET -> {
+                item { Header(stringResource(R.string.settings_budget), spec) }
+                item { Hint(stringResource(R.string.budget_hint, nearPercent()), spec) }
+                ParleySettings.BUDGET_OPTIONS.forEach { usd ->
+                    item(key = usd) {
+                        RadioItem(budgetLabel(usd), settings.budgetUsd == usd, { select { it.copy(budgetUsd = usd) } }, spec)
+                    }
+                }
+            }
         }
     }
 }
@@ -377,6 +397,13 @@ fun ProviderScreen(
 @Composable
 private fun autoEndLabel(seconds: Int): String =
     if (seconds == 0) stringResource(R.string.auto_end_never) else pluralStringResource(R.plurals.auto_end_seconds, seconds, seconds)
+
+@Composable
+private fun budgetLabel(usd: Int): String = if (usd == 0) stringResource(R.string.budget_off) else Budget.format(usd)
+
+/** Where the budget's warning starts, in the watch's way of writing a percentage. */
+@Composable
+private fun nearPercent(): String = Budget.percent(Budget.NEAR_SHARE, LocalConfiguration.current.locales[0])
 
 @Composable
 private fun historyLabel(days: Int): String = when {

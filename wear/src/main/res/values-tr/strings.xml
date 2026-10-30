@@ -114,7 +114,6 @@
     <string name="settings_push_to_talk">Bas-konuş</string>    <string name="settings_auto_end">Sessizlikte bitir</string>
     <string name="settings_start_on_launch">Açılışta konuş</string>    <string name="settings_haptics">Titreşim</string>
     <string name="settings_show_cost">Maliyeti göster</string>
-    <string name="settings_show_cost_note">Konuşurken ve geçmişte</string>
     <string name="settings_usage">Kullanım ve maliyet</string>
     <string name="settings_usage_summary">Bu ay %1$s · %2$s</string>
     <string name="usage_title">Kullanım</string>
@@ -123,6 +122,17 @@
     <string name="usage_recent">%1$s – bugün · en fazla %2$s</string>
     <string name="usage_average">Sohbet başına %1$s · dakika başına %2$s</string>
     <string name="usage_estimate">Sağlayıcınızın bildirdiği kullanım ve yayımladığı fiyatlarla tahmin edilir. Geçerli olan, sağlayıcınızın faturasıdır.</string>
+    <string name="settings_budget">Aylık bütçe</string>
+    <string name="budget_off">Kapalı</string>
+    <string name="budget_hint">Parley bütçenin %1$s\'inden itibaren uyarır; bütçe bitince her konuşmadan önce sorar. Parley\'nin maliyet tahminini sayar.</string>
+    <string name="settings_budget_save">Sınıra yakın tasarruf</string>
+    <string name="settings_budget_save_note">%1$s\'den itibaren hızlı model</string>
+    <string name="budget_reached_title">Bütçeye ulaşıldı</string>
+    <string name="budget_reached_text">Bu ay %2$s bütçeden %1$s harcandı. Yine de konuşalım mı?</string>
+    <string name="usage_budget">%2$s bütçeden %1$s kullanıldı</string>
+    <string name="notice_budget_near">Bütçenin %1$s\'i kullanıldı</string>
+    <string name="notice_budget_reached">Aylık bütçeye ulaşıldı</string>
+    <string name="notice_budget_economy">Bütçe dolmak üzere · %1$s</string>
     <string name="settings_privacy">Gizlilik</string>
     <string name="settings_general">Genel</string>
     <string name="settings_history">Geçmişi sakla</string>

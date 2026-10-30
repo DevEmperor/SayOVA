@@ -113,7 +113,6 @@
     <string name="settings_push_to_talk">Toque para falar</string>    <string name="settings_auto_end">Encerrar após silêncio</string>
     <string name="settings_start_on_launch">Falar ao abrir</string>    <string name="settings_haptics">Vibração</string>
     <string name="settings_show_cost">Mostrar custo</string>
-    <string name="settings_show_cost_note">Na conversa e no histórico</string>
     <string name="settings_usage">Uso e custos</string>
     <string name="settings_usage_summary">Este mês %1$s · %2$s</string>
     <string name="usage_title">Uso</string>
@@ -122,6 +121,17 @@
     <string name="usage_recent">%1$s – hoje · máx. %2$s</string>
     <string name="usage_average">%1$s por conversa · %2$s por minuto</string>
     <string name="usage_estimate">Estimativa baseada no uso informado pelo provedor e nos preços publicados. O que vale é a fatura do provedor.</string>
+    <string name="settings_budget">Orçamento mensal</string>
+    <string name="budget_off">Desativado</string>
+    <string name="budget_hint">A partir de %1$s, o Parley avisa; quando o orçamento acaba, ele pergunta antes de cada conversa. Conta a estimativa de custos do Parley.</string>
+    <string name="settings_budget_save">Economizar perto do limite</string>
+    <string name="settings_budget_save_note">Modelo rápido a partir de %1$s</string>
+    <string name="budget_reached_title">Orçamento atingido</string>
+    <string name="budget_reached_text">%1$s de %2$s gastos este mês. Falar mesmo assim?</string>
+    <string name="usage_budget">%1$s do orçamento de %2$s</string>
+    <string name="notice_budget_near">%1$s do orçamento usado</string>
+    <string name="notice_budget_reached">Orçamento mensal atingido</string>
+    <string name="notice_budget_economy">Orçamento quase no fim · %1$s</string>
     <string name="settings_privacy">Privacidade</string>
     <string name="settings_general">Geral</string>
     <string name="settings_history">Manter histórico</string>

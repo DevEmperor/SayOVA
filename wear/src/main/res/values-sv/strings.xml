@@ -114,7 +114,6 @@
     <string name="settings_push_to_talk">Tryck för att tala</string>    <string name="settings_auto_end">Avsluta vid tystnad</string>
     <string name="settings_start_on_launch">Prata vid start</string>    <string name="settings_haptics">Vibration</string>
     <string name="settings_show_cost">Visa kostnad</string>
-    <string name="settings_show_cost_note">Under samtal och i historiken</string>
     <string name="settings_usage">Användning &amp; kostnad</string>
     <string name="settings_usage_summary">Denna månad %1$s · %2$s</string>
     <string name="usage_title">Användning</string>
@@ -123,6 +122,17 @@
     <string name="usage_recent">%1$s – i dag · max %2$s</string>
     <string name="usage_average">%1$s per samtal · %2$s per minut</string>
     <string name="usage_estimate">Uppskattat utifrån den användning som leverantören rapporterar och dess publicerade priser. Det är leverantörens faktura som gäller.</string>
+    <string name="settings_budget">Månadsbudget</string>
+    <string name="budget_off">Av</string>
+    <string name="budget_hint">Från %1$s varnar Parley, och när budgeten är slut frågar den före varje samtal. Den räknar Parleys kostnadsuppskattning.</string>
+    <string name="settings_budget_save">Spara nära gränsen</string>
+    <string name="settings_budget_save_note">Snabb modell från %1$s</string>
+    <string name="budget_reached_title">Budgeten nådd</string>
+    <string name="budget_reached_text">%1$s av %2$s använt den här månaden. Prata ändå?</string>
+    <string name="usage_budget">%1$s av budgeten på %2$s</string>
+    <string name="notice_budget_near">%1$s av budgeten använd</string>
+    <string name="notice_budget_reached">Månadsbudgeten nådd</string>
+    <string name="notice_budget_economy">Budgeten snart slut · %1$s</string>
     <string name="settings_privacy">Integritet</string>
     <string name="settings_general">Allmänt</string>
     <string name="settings_history">Spara historik</string>

@@ -27,6 +27,8 @@ data class Provider(
     val keyPrefixes: List<String>,
 ) {
     val defaultModel: Model get() = models.first()
+    /** The cheaper one: each provider's fast model is listed first. */
+    val economyModel: Model get() = models.first()
     fun model(id: String?): Model = models.firstOrNull { it.id == id } ?: defaultModel
     fun voice(id: String?): Voice = voices.firstOrNull { it.id == id } ?: voices.first { it.id == defaultVoice }
 }

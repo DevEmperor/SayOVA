@@ -23,6 +23,8 @@ import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.lazy.TransformationSpec
 import net.devemperor.parley.R
 import net.devemperor.parley.core.cost.CostMeter
+import net.devemperor.parley.core.usage.Budget
+import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.core.usage.UsageDay
 import net.devemperor.parley.core.usage.UsageTotal
@@ -31,6 +33,7 @@ import net.devemperor.parley.ui.components.Hint
 import net.devemperor.parley.ui.components.ListScreen
 import net.devemperor.parley.ui.components.SubHeader
 import net.devemperor.parley.ui.components.transformedContent
+import net.devemperor.parley.ui.theme.ParleyColors
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -38,11 +41,12 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 /**
- * Talk time and cost: this month large, the last two weeks as bars, every month before, and the
- * totals. The costs are Parley's estimate from the usage the provider reports and its list prices.
+ * Talk time and cost: this month large (against the monthly budget, if one is set), the last two weeks
+ * as bars, every month before, and the totals. The costs are Parley's estimate from the usage the
+ * provider reports and its list prices.
  */
 @Composable
-fun UsageScreen(days: List<UsageDay>) {
+fun UsageScreen(days: List<UsageDay>, budgetUsd: Int) {
     // Months and days in the watch's language, followed when it changes.
     val locale = LocalConfiguration.current.locales[0]
     val today = LocalDate.now()
@@ -60,6 +64,7 @@ fun UsageScreen(days: List<UsageDay>) {
                 spec = spec,
             )
         }
+        if (budgetUsd > 0) item { BudgetBar(month.costUsd, budgetUsd, locale, spec) }
         item { RecentBars(recent, locale, spec) }
         if (months.isNotEmpty()) {
             item { SubHeader(stringResource(R.string.usage_earlier), spec) }
@@ -84,6 +89,36 @@ private fun TransformingLazyColumnItemScope.Summary(label: String, total: UsageT
         Text(
             "${Usage.formatDuration(total.talkMs)} · ${pluralStringResource(R.plurals.usage_conversations, total.conversations, total.conversations)}",
             style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+/** How much of the monthly budget is spent, as a bar that turns amber near it and coral once spent. */
+@Composable
+private fun TransformingLazyColumnItemScope.BudgetBar(spentUsd: Double, budgetUsd: Int, locale: Locale, spec: TransformationSpec) {
+    val share = Budget.share(spentUsd, budgetUsd)
+    val fill = when (Budget.level(spentUsd, budgetUsd)) {
+        BudgetLevel.REACHED -> ParleyColors.Coral
+        BudgetLevel.NEAR -> ParleyColors.Amber
+        else -> MaterialTheme.colorScheme.primary
+    }
+    val track = MaterialTheme.colorScheme.surfaceContainerHigh
+    Column(
+        Modifier.fillMaxWidth().padding(horizontal = 30.dp, vertical = 2.dp).transformedContent(this, spec),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(3.dp),
+    ) {
+        Canvas(Modifier.fillMaxWidth().height(6.dp)) {
+            val radius = CornerRadius(size.height / 2f)
+            drawRoundRect(track, cornerRadius = radius)
+            val filled = size.width * share.coerceIn(0.0, 1.0).toFloat()
+            if (filled > 0f) drawRoundRect(fill, size = Size(filled.coerceAtLeast(size.height), size.height), cornerRadius = radius)
+        }
+        Text(
+            stringResource(R.string.usage_budget, Budget.percent(share, locale), Budget.format(budgetUsd)),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
     }

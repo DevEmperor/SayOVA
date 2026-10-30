@@ -33,11 +33,15 @@ import net.devemperor.parley.core.session.SessionError
 import net.devemperor.parley.core.session.Sessions
 import net.devemperor.parley.core.tools.ParleyTools
 import net.devemperor.parley.core.tools.WatchFeature
+import net.devemperor.parley.core.usage.Budget
+import net.devemperor.parley.core.usage.BudgetLevel
+import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.demo.DemoSession
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.parley
 import net.devemperor.parley.tile.ParleyTileService
 import net.devemperor.parley.ui.labelRes
+import java.time.YearMonth
 import java.time.ZonedDateTime
 
 /**
@@ -89,7 +93,10 @@ class SessionService : LifecycleService() {
         // Waking the Wi-Fi runs alongside opening the speaker and the microphone; only the connection
         // itself waits for it (usually it is up already, see NetworkSelector.prewarm).
         val network = if (demo) null else async { app.network.acquire() }
-        val model = provider.model(settings.modelId())
+        val spentUsd = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
+        val chosen = provider.model(settings.modelId())
+        // Near the budget the user may have Parley talk with the cheaper model, so what is left lasts.
+        val model = if (settings.budgetSave && Budget.level(spentUsd, settings.budgetUsd) >= BudgetLevel.NEAR) provider.economyModel else chosen
         val canSearch = settings.webSearch
         val memory = app.memory.takeIf { settings.memory }
         features = if (demo) emptySet() else settings.features.filter { WatchFeatures.available(this@SessionService, it) }.toSet()
@@ -142,6 +149,9 @@ class SessionService : LifecycleService() {
                     callVolume = settings.callVolume,
                     soundOff = settings.soundOff,
                     continues = earlier,
+                    budgetUsd = settings.budgetUsd,
+                    spentUsd = spentUsd,
+                    economy = model != chosen,
                 ),
                 toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType, http = client),
                 haptics = Haptics(this@SessionService) { settings.haptics },
@@ -162,7 +172,7 @@ class SessionService : LifecycleService() {
         launch { newEngine.state.collectLatest { SessionHub.publish(it) } }
         withContext(Dispatchers.Default) { newEngine.start() }
         network?.await()
-        if (Diagnostics.enabled) android.util.Log.d("ParleyEvent", "connecting over ${app.network.transport.value}")
+        if (Diagnostics.enabled) android.util.Log.d("ParleyEvent", "connecting over ${app.network.transport.value} to ${model.id}")
         newEngine.connect()
     }
 
