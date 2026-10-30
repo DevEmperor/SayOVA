@@ -124,7 +124,6 @@
     <string name="usage_estimate">プロバイダが報告した使用量と公開価格に基づく推定値です。実際の金額はプロバイダの請求をご確認ください。</string>
     <string name="settings_budget">月の予算</string>
     <string name="budget_off">オフ</string>
-    <string name="budget_hint">%1$sに達するとお知らせし、予算を使い切ると会話の前に毎回確認します。Parleyの料金見積もりで数えます。</string>
     <string name="settings_budget_save">上限が近いときは節約</string>
     <string name="settings_budget_save_note">%1$sから高速モデル</string>
     <string name="budget_reached_title">予算に達しました</string>

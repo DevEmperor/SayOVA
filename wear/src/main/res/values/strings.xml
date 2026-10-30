@@ -127,7 +127,6 @@
     <string name="settings_budget">Monthly budget</string>
     <string name="budget_off">Off</string>
     <!-- %1$s is the warning's share, written the watch's way: "80%", "80 %", "%80". -->
-    <string name="budget_hint">From %1$s on, Parley warns you; once the budget is spent, it asks before every conversation. It counts Parley\'s cost estimate.</string>
     <string name="settings_budget_save">Save near the limit</string>
     <string name="settings_budget_save_note">Fast model from %1$s</string>
     <string name="budget_reached_title">Budget reached</string>

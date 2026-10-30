@@ -123,7 +123,6 @@
     <string name="usage_estimate">Geschätzt aus der Nutzung, die dein Anbieter meldet, und seinen veröffentlichten Preisen. Maßgeblich ist die Rechnung deines Anbieters.</string>
     <string name="settings_budget">Monatsbudget</string>
     <string name="budget_off">Aus</string>
-    <string name="budget_hint">Ab %1$s warnt Parley; ist das Budget aufgebraucht, fragt es vor jedem Gespräch nach. Es zählt Parleys Kostenschätzung.</string>
     <string name="settings_budget_save">Kurz davor sparen</string>
     <string name="settings_budget_save_note">Schnelles Modell ab %1$s</string>
     <string name="budget_reached_title">Budget erreicht</string>

@@ -124,7 +124,6 @@
     <string name="usage_estimate">Sağlayıcınızın bildirdiği kullanım ve yayımladığı fiyatlarla tahmin edilir. Geçerli olan, sağlayıcınızın faturasıdır.</string>
     <string name="settings_budget">Aylık bütçe</string>
     <string name="budget_off">Kapalı</string>
-    <string name="budget_hint">Parley bütçenin %1$s\'inden itibaren uyarır; bütçe bitince her konuşmadan önce sorar. Parley\'nin maliyet tahminini sayar.</string>
     <string name="settings_budget_save">Sınıra yakın tasarruf</string>
     <string name="settings_budget_save_note">%1$s\'den itibaren hızlı model</string>
     <string name="budget_reached_title">Bütçeye ulaşıldı</string>

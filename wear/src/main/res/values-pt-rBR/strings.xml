@@ -123,7 +123,6 @@
     <string name="usage_estimate">Estimativa baseada no uso informado pelo provedor e nos preços publicados. O que vale é a fatura do provedor.</string>
     <string name="settings_budget">Orçamento mensal</string>
     <string name="budget_off">Desativado</string>
-    <string name="budget_hint">A partir de %1$s, o Parley avisa; quando o orçamento acaba, ele pergunta antes de cada conversa. Conta a estimativa de custos do Parley.</string>
     <string name="settings_budget_save">Economizar perto do limite</string>
     <string name="settings_budget_save_note">Modelo rápido a partir de %1$s</string>
     <string name="budget_reached_title">Orçamento atingido</string>

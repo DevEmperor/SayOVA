@@ -123,7 +123,6 @@
     <string name="usage_estimate">Szacunek na podstawie użycia zgłaszanego przez dostawcę i jego cennika. Liczy się rachunek od dostawcy.</string>
     <string name="settings_budget">Budżet miesięczny</string>
     <string name="budget_off">Wyłączony</string>
-    <string name="budget_hint">Od %1$s Parley ostrzega, a gdy budżet się wyczerpie, pyta przed każdą rozmową. Liczy szacunkowe koszty Parley.</string>
     <string name="settings_budget_save">Oszczędzaj przy limicie</string>
     <string name="settings_budget_save_note">Szybki model od %1$s</string>
     <string name="budget_reached_title">Budżet wyczerpany</string>

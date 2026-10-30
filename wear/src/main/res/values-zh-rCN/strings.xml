@@ -124,7 +124,6 @@
     <string name="usage_estimate">根据服务商报告的用量及其公布的价格估算。实际费用以服务商的账单为准。</string>
     <string name="settings_budget">每月预算</string>
     <string name="budget_off">关闭</string>
-    <string name="budget_hint">用到 %1$s 时 Parley 会提醒你；预算用完后，每次对话前都会先询问。按 Parley 的费用估算计算。</string>
     <string name="settings_budget_save">接近上限时节省</string>
     <string name="settings_budget_save_note">%1$s 起使用快速模型</string>
     <string name="budget_reached_title">已达预算</string>

@@ -123,7 +123,6 @@
     <string name="usage_estimate">Geschat op basis van het gebruik dat je aanbieder meldt en diens gepubliceerde prijzen. De factuur van je aanbieder is leidend.</string>
     <string name="settings_budget">Maandbudget</string>
     <string name="budget_off">Uit</string>
-    <string name="budget_hint">Vanaf %1$s waarschuwt Parley; is het budget op, dan vraagt het vóór elk gesprek. Het telt Parleys kostenschatting.</string>
     <string name="settings_budget_save">Besparen vlak voor de grens</string>
     <string name="settings_budget_save_note">Snel model vanaf %1$s</string>
     <string name="budget_reached_title">Budget bereikt</string>

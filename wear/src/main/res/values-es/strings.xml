@@ -123,7 +123,6 @@
     <string name="usage_estimate">Estimación basada en el uso que indica tu proveedor y sus precios publicados. Lo que cuenta es la factura de tu proveedor.</string>
     <string name="settings_budget">Presupuesto mensual</string>
     <string name="budget_off">Desactivado</string>
-    <string name="budget_hint">A partir del %1$s, Parley te avisa; cuando se agota el presupuesto, pregunta antes de cada conversación. Cuenta la estimación de costes de Parley.</string>
     <string name="settings_budget_save">Ahorrar al acercarse</string>
     <string name="settings_budget_save_note">Modelo rápido desde el %1$s</string>
     <string name="budget_reached_title">Presupuesto alcanzado</string>

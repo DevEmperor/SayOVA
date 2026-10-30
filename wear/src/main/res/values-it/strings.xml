@@ -123,7 +123,6 @@
     <string name="usage_estimate">Stima basata sull\'utilizzo riportato dal provider e sui suoi prezzi pubblicati. Fa fede la fattura del provider.</string>
     <string name="settings_budget">Budget mensile</string>
     <string name="budget_off">Disattivato</string>
-    <string name="budget_hint">Dall\'%1$s Parley ti avvisa; esaurito il budget, chiede prima di ogni conversazione. Conta la stima dei costi di Parley.</string>
     <string name="settings_budget_save">Risparmia vicino al limite</string>
     <string name="settings_budget_save_note">Modello veloce dall\'%1$s</string>
     <string name="budget_reached_title">Budget raggiunto</string>

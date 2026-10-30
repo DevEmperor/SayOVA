@@ -149,14 +149,6 @@ fun SettingsScreen(
             )
         }
         item { MenuButton(stringResource(R.string.settings_budget), spec, { onOpenChoice(Choice.BUDGET) }, budgetLabel(settings.budgetUsd), R.drawable.ic_savings) }
-        if (settings.budgetUsd > 0) {
-            item {
-                SwitchItem(
-                    stringResource(R.string.settings_budget_save), settings.budgetSave, { v -> onUpdate { it.copy(budgetSave = v) } }, spec,
-                    stringResource(R.string.settings_budget_save_note, nearPercent()), R.drawable.ic_bolt,
-                )
-            }
-        }
 
         item { SubHeader(stringResource(R.string.settings_privacy), spec) }
         item { MenuButton(stringResource(R.string.settings_history), spec, { onOpenChoice(Choice.HISTORY) }, historyLabel(settings.historyDays), R.drawable.ic_history) }
@@ -325,11 +317,18 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
             }
             Choice.BUDGET -> {
                 item { Header(stringResource(R.string.settings_budget), spec) }
-                item { Hint(stringResource(R.string.budget_hint, nearPercent()), spec) }
+                // The list stays open after a choice: the switch for saving near the budget is below.
                 ParleySettings.BUDGET_OPTIONS.forEach { usd ->
                     item(key = usd) {
-                        RadioItem(budgetLabel(usd), settings.budgetUsd == usd, { select { it.copy(budgetUsd = usd) } }, spec)
+                        RadioItem(budgetLabel(usd), settings.budgetUsd == usd, { onUpdate { it.copy(budgetUsd = usd) } }, spec)
                     }
+                }
+                item(key = "save") {
+                    SwitchItem(
+                        stringResource(R.string.settings_budget_save), settings.budgetSave, { v -> onUpdate { it.copy(budgetSave = v) } }, spec,
+                        stringResource(R.string.settings_budget_save_note, nearPercent()), R.drawable.ic_bolt,
+                        enabled = settings.budgetUsd > 0,
+                    )
                 }
             }
         }
