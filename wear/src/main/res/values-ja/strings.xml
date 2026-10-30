@@ -133,7 +133,13 @@
     <string name="notice_budget_near">予算の%1$sを使用</string>
     <string name="notice_budget_reached">月の予算に達しました</string>
     <string name="notice_budget_economy">予算の上限が近い · %1$s</string>
+    <string name="settings_costs">費用</string>
     <string name="settings_privacy">プライバシー</string>
+    <string name="interpreter_title">通訳</string>
+    <string name="interpreter_start">通訳を開始</string>
+    <string name="interpreter_first">1つ目の言語</string>
+    <string name="interpreter_second">2つ目の言語</string>
+    <string name="interpreter_hint">ウォッチを2人の間に持ってください。Parley が話した内容をもう一方の言語で伝えます。</string>
     <string name="settings_general">一般</string>
     <string name="settings_history">履歴を保存</string>
     <string name="settings_delete_history">履歴をすべて削除</string>

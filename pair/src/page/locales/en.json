@@ -45,5 +45,15 @@
   "error_send_status": "Sending failed ({status}). Please try again.",
   "error_send": "Sending failed. Please try again.",
   "footer_privacy": "Privacy",
-  "footer_source": "Source code"
+  "footer_source": "Source code",
+  "share_page_title": "Parley · From your watch",
+  "share_page_description": "A conversation sent from Parley on your watch.",
+  "watch_send_to_phone": "Send to phone",
+  "share_missing_title": "Nothing to share",
+  "share_missing_text": "On your watch, open a conversation in Parley's history and tap {send}.",
+  "share_title": "From your watch",
+  "share_button": "Share",
+  "copy_button": "Copy",
+  "copied": "Copied",
+  "share_note": "The text stays on this phone: it is only in this page's address, which is never sent to a server."
 }

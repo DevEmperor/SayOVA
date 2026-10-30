@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import net.devemperor.parley.core.prompt.InterpretLanguage
 
 /**
  * The one place the screens, the tile and the service meet. At most one conversation runs at a time;
@@ -22,13 +23,18 @@ object SessionHub {
 
     /**
      * Starts a conversation unless one is already running; [continueId] carries on that one from the
-     * history. Call only while an activity is visible.
+     * history, [interpret] makes Parley the interpreter between two languages. Call only while an
+     * activity is visible.
      */
-    fun start(context: Context, demo: Boolean = false, continueId: String? = null) {
+    fun start(context: Context, demo: Boolean = false, continueId: String? = null, interpret: Pair<InterpretLanguage, InterpretLanguage>? = null) {
         if (running) return
-        _state.value = ConversationUiState()
-        ContextCompat.startForegroundService(context, SessionService.startIntent(context, demo, continueId))
+        _state.value = ConversationUiState(interpreting = interpret?.let(::interpretLabel))
+        ContextCompat.startForegroundService(context, SessionService.startIntent(context, demo, continueId, interpret))
     }
+
+    /** The pair in short, as the conversation shows it: "DE ⇄ ES". */
+    fun interpretLabel(pair: Pair<InterpretLanguage, InterpretLanguage>): String =
+        "${pair.first.code.uppercase()} ⇄ ${pair.second.code.uppercase()}"
 
     fun tapOrb() = engine?.tapOrb()
     fun stepVolume(direction: Int): Int? = engine?.stepVolume(direction)

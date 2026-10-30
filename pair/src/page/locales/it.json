@@ -45,5 +45,15 @@
   "error_send_status": "Invio non riuscito ({status}). Riprova.",
   "error_send": "Invio non riuscito. Riprova.",
   "footer_privacy": "Privacy",
-  "footer_source": "Codice sorgente"
+  "footer_source": "Codice sorgente",
+  "share_page_title": "Parley · Dal tuo orologio",
+  "share_page_description": "Una conversazione inviata da Parley sul tuo orologio.",
+  "watch_send_to_phone": "Invia al telefono",
+  "share_missing_title": "Niente da condividere",
+  "share_missing_text": "Sull’orologio apri una conversazione nella cronologia di Parley e tocca {send}.",
+  "share_title": "Dal tuo orologio",
+  "share_button": "Condividi",
+  "copy_button": "Copia",
+  "copied": "Copiato",
+  "share_note": "Il testo resta su questo telefono: si trova solo nell’indirizzo di questa pagina, che non viene mai inviato a un server."
 }

@@ -132,7 +132,13 @@
     <string name="notice_budget_near">%1$s des Budgets verbraucht</string>
     <string name="notice_budget_reached">Monatsbudget erreicht</string>
     <string name="notice_budget_economy">Budget fast erreicht · %1$s</string>
+    <string name="settings_costs">Kosten</string>
     <string name="settings_privacy">Datenschutz</string>
+    <string name="interpreter_title">Dolmetscher</string>
+    <string name="interpreter_start">Dolmetschen starten</string>
+    <string name="interpreter_first">Erste Sprache</string>
+    <string name="interpreter_second">Zweite Sprache</string>
+    <string name="interpreter_hint">Halte die Uhr zwischen euch. Parley sagt alles Gesagte in der anderen Sprache.</string>
     <string name="settings_general">Allgemein</string>
     <string name="settings_history">Verlauf speichern</string>
     <string name="settings_delete_history">Gesamten Verlauf löschen</string>

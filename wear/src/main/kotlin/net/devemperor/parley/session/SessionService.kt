@@ -25,6 +25,7 @@ import net.devemperor.parley.MainActivity
 import net.devemperor.parley.R
 import net.devemperor.parley.audio.Haptics
 import net.devemperor.parley.core.prompt.Instructions
+import net.devemperor.parley.core.prompt.InterpretLanguage
 import net.devemperor.parley.core.provider.ProviderId
 import net.devemperor.parley.core.provider.openai.OpenAiWebSearch
 import net.devemperor.parley.core.session.ErrorKind
@@ -36,6 +37,7 @@ import net.devemperor.parley.core.tools.WatchFeature
 import net.devemperor.parley.core.usage.Budget
 import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.core.usage.Usage
+import net.devemperor.parley.data.BargeIn
 import net.devemperor.parley.demo.DemoSession
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.parley
@@ -68,9 +70,12 @@ class SessionService : LifecycleService() {
                     stopSelf()
                     return START_NOT_STICKY
                 }
+                val first = InterpretLanguage.fromCode(intent.getStringExtra(EXTRA_INTERPRET_FIRST))
+                val second = InterpretLanguage.fromCode(intent.getStringExtra(EXTRA_INTERPRET_SECOND))
                 begin(
                     demo = Diagnostics.enabled && intent.getBooleanExtra(EXTRA_DEMO, false),
                     continueId = intent.getStringExtra(EXTRA_CONTINUE),
+                    interpret = if (first != null && second != null) first to second else null,
                 )
             }
             ACTION_STOP -> engine?.end() ?: stopEverything()
@@ -78,10 +83,11 @@ class SessionService : LifecycleService() {
         return START_NOT_STICKY
     }
 
-    private fun begin(demo: Boolean, continueId: String?) = lifecycleScope.launch {
+    /** [interpret]: Parley interprets between the two languages instead of answering (see Instructions.interpreter). */
+    private fun begin(demo: Boolean, continueId: String?, interpret: Pair<InterpretLanguage, InterpretLanguage>?) = lifecycleScope.launch {
         val app = parley
         val settings = app.settings.current()
-        val earlier = continueId?.let(app.history::find)
+        val earlier = continueId?.takeIf { interpret == null }?.let(app.history::find)
         val provider = settings.providerInfo
         val apiKey = if (demo) "demo" else app.keys.get(provider.id)
         if (apiKey == null) {
@@ -93,28 +99,33 @@ class SessionService : LifecycleService() {
         // itself waits for it (usually it is up already, see NetworkSelector.prewarm).
         val network = if (demo) null else async { app.network.acquire() }
         val spentUsd = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
-        val chosen = provider.model(settings.modelId())
+        // Interpreting wants the quickest model: a thorough one thinks before every sentence.
+        val chosen = if (interpret != null) provider.economyModel else provider.model(settings.modelId())
         // Near the budget the user may have Parley talk with the cheaper model, so what is left lasts.
         val model = if (settings.budgetSave && Budget.level(spentUsd, settings.budgetUsd) >= BudgetLevel.NEAR) provider.economyModel else chosen
-        val canSearch = settings.webSearch
-        val memory = app.memory.takeIf { settings.memory }
-        features = if (demo) emptySet() else settings.features.filter { WatchFeatures.available(this@SessionService, it) }.toSet()
+        val canSearch = settings.webSearch && interpret == null
+        val memory = app.memory.takeIf { settings.memory && interpret == null }
+        features = if (demo || interpret != null) emptySet() else settings.features.filter { WatchFeatures.available(this@SessionService, it) }.toSet()
         widenForegroundType()
         val config = SessionConfig(
             apiKey = apiKey,
             model = model.id,
             voice = settings.voiceId(),
-            instructions = Instructions.build(
-                persona = settings.persona,
-                customPersona = settings.customPersona,
-                language = settings.language,
-                now = ZonedDateTime.now(),
-                canSearch = canSearch,
-                earlier = earlier?.turns.orEmpty(),
-                memory = memory?.current(),
-                features = features,
-            ),
-            tools = ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.flatMap { it.tools },
+            instructions = if (interpret != null) {
+                Instructions.interpreter(interpret.first, interpret.second)
+            } else {
+                Instructions.build(
+                    persona = settings.persona,
+                    customPersona = settings.customPersona,
+                    language = settings.language,
+                    now = ZonedDateTime.now(),
+                    canSearch = canSearch,
+                    earlier = earlier?.turns.orEmpty(),
+                    memory = memory?.current(),
+                    features = features,
+                )
+            },
+            tools = if (interpret != null) emptyList() else ParleyTools.standard + (if (memory != null) ParleyTools.memory else emptyList()) + features.flatMap { it.tools },
             webSearch = canSearch,
             thinkingLevel = model.thinkingLevel,
         )
@@ -137,8 +148,11 @@ class SessionService : LifecycleService() {
                 providerKey = provider.id.key,
                 options = ConversationEngine.Options(
                     pushToTalk = settings.pushToTalk,
-                    bargeIn = settings.bargeIn,
-                    autoEndSeconds = settings.autoEndSeconds,
+                    // Interpreting, the microphone rests while Parley speaks, so it never translates
+                    // itself, and the speaker plays as media, louder than a call; pauses between two
+                    // people are longer than within one conversation.
+                    bargeIn = if (interpret != null) BargeIn.OFF else settings.bargeIn,
+                    autoEndSeconds = if (interpret != null && settings.autoEndSeconds > 0) INTERPRET_AUTO_END_SECONDS else settings.autoEndSeconds,
                     showCost = settings.showCost,
                     saveHistory = settings.historyDays != 0,
                     speechVolume = settings.speechVolume,
@@ -148,6 +162,7 @@ class SessionService : LifecycleService() {
                     budgetUsd = settings.budgetUsd,
                     spentUsd = spentUsd,
                     economy = model != chosen,
+                    interpreting = interpret?.let(SessionHub::interpretLabel),
                 ),
                 toolRunner = ToolRunner(this@SessionService, search, memory, features, onAllowed = ::widenForegroundType, http = client),
                 haptics = Haptics(this@SessionService) { settings.haptics },
@@ -240,13 +255,23 @@ class SessionService : LifecycleService() {
         private const val ACTION_STOP = "net.devemperor.parley.STOP"
         private const val EXTRA_DEMO = "demo"
         private const val EXTRA_CONTINUE = "continue"
+        private const val EXTRA_INTERPRET_FIRST = "interpret_first"
+        private const val EXTRA_INTERPRET_SECOND = "interpret_second"
         private const val CHANNEL = "conversation"
         private const val NOTIFICATION_ID = 7
+        private const val INTERPRET_AUTO_END_SECONDS = 60
 
-        fun startIntent(context: Context, demo: Boolean, continueId: String? = null): Intent =
+        fun startIntent(
+            context: Context,
+            demo: Boolean,
+            continueId: String? = null,
+            interpret: Pair<InterpretLanguage, InterpretLanguage>? = null,
+        ): Intent =
             Intent(context, SessionService::class.java).setAction(ACTION_START)
                 .putExtra(EXTRA_DEMO, demo)
                 .putExtra(EXTRA_CONTINUE, continueId)
+                .putExtra(EXTRA_INTERPRET_FIRST, interpret?.first?.code)
+                .putExtra(EXTRA_INTERPRET_SECOND, interpret?.second?.code)
 
         fun stopIntent(context: Context): Intent = Intent(context, SessionService::class.java).setAction(ACTION_STOP)
     }

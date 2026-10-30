@@ -133,7 +133,13 @@
     <string name="notice_budget_near">Bütçenin %1$s\'i kullanıldı</string>
     <string name="notice_budget_reached">Aylık bütçeye ulaşıldı</string>
     <string name="notice_budget_economy">Bütçe dolmak üzere · %1$s</string>
+    <string name="settings_costs">Maliyetler</string>
     <string name="settings_privacy">Gizlilik</string>
+    <string name="interpreter_title">Tercüman</string>
+    <string name="interpreter_start">Tercümeyi başlat</string>
+    <string name="interpreter_first">Birinci dil</string>
+    <string name="interpreter_second">İkinci dil</string>
+    <string name="interpreter_hint">Saati aranızda tutun. Parley söylenen her şeyi diğer dilde söyler.</string>
     <string name="settings_general">Genel</string>
     <string name="settings_history">Geçmişi sakla</string>
     <string name="settings_delete_history">Tüm geçmişi sil</string>

@@ -45,6 +45,8 @@ data class ConversationUiState(
     /** Parley is speaking over the watch speaker, so the microphone is closed: a tap interrupts. */
     val halfDuplex: Boolean = false,
     val providerLabel: String = "",
+    /** Parley interprets between two languages, shown in short ("DE ⇄ ES"); null in a normal conversation. */
+    val interpreting: String? = null,
     /** A short, temporary hint ("Timer set", "Searching the web…"). */
     val notice: String? = null,
     /** The watch feature in use right now (location, heart rate …), shown with its icon. */

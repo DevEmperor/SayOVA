@@ -45,5 +45,15 @@
   "error_send_status": "No se ha podido enviar ({status}). Inténtalo de nuevo.",
   "error_send": "No se ha podido enviar. Inténtalo de nuevo.",
   "footer_privacy": "Privacidad",
-  "footer_source": "Código fuente"
+  "footer_source": "Código fuente",
+  "share_page_title": "Parley · Desde tu reloj",
+  "share_page_description": "Una conversación enviada desde Parley en tu reloj.",
+  "watch_send_to_phone": "Enviar al teléfono",
+  "share_missing_title": "Nada que compartir",
+  "share_missing_text": "En tu reloj, abre una conversación en el historial de Parley y toca {send}.",
+  "share_title": "Desde tu reloj",
+  "share_button": "Compartir",
+  "copy_button": "Copiar",
+  "copied": "Copiado",
+  "share_note": "El texto se queda en este teléfono: solo está en la dirección de esta página, que nunca se envía a un servidor."
 }

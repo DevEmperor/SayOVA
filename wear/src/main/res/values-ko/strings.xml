@@ -133,7 +133,13 @@
     <string name="notice_budget_near">예산의 %1$s 사용</string>
     <string name="notice_budget_reached">월 예산 도달</string>
     <string name="notice_budget_economy">예산 거의 소진 · %1$s</string>
+    <string name="settings_costs">비용</string>
     <string name="settings_privacy">개인정보 보호</string>
+    <string name="interpreter_title">통역</string>
+    <string name="interpreter_start">통역 시작</string>
+    <string name="interpreter_first">첫 번째 언어</string>
+    <string name="interpreter_second">두 번째 언어</string>
+    <string name="interpreter_hint">워치를 두 사람 사이에 두세요. Parley가 모든 말을 다른 언어로 전합니다.</string>
     <string name="settings_general">일반</string>
     <string name="settings_history">기록 보관</string>
     <string name="settings_delete_history">모든 기록 삭제</string>

@@ -45,5 +45,15 @@
   "error_send_status": "전송하지 못했습니다({status}). 다시 시도하세요.",
   "error_send": "전송하지 못했습니다. 다시 시도하세요.",
   "footer_privacy": "개인정보 보호",
-  "footer_source": "소스 코드"
+  "footer_source": "소스 코드",
+  "share_page_title": "Parley · 워치에서 보냄",
+  "share_page_description": "워치의 Parley에서 보낸 대화입니다.",
+  "watch_send_to_phone": "휴대폰으로 보내기",
+  "share_missing_title": "공유할 내용 없음",
+  "share_missing_text": "워치에서 Parley 기록의 대화를 열고 {send}을(를) 탭하세요.",
+  "share_title": "워치에서 보냄",
+  "share_button": "공유",
+  "copy_button": "복사",
+  "copied": "복사됨",
+  "share_note": "텍스트는 이 휴대폰에만 남습니다. 이 페이지 주소에만 들어 있으며 서버로 전송되지 않습니다."
 }

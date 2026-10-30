@@ -3,6 +3,7 @@ package net.devemperor.parley.ui.history
 import android.content.Context
 import android.net.Uri
 import android.text.format.DateUtils
+import android.util.Base64
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.curvedText
+import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.R
 import net.devemperor.parley.core.conversation.Conversation
@@ -264,20 +266,22 @@ private fun OnPhoneDialog(visible: Boolean, onDone: () -> Unit) {
 }
 
 /**
- * Opens an e-mail with [conversations] on the paired phone, to send to oneself or to copy into a notes
- * app: a watch app can open a link on the phone, but cannot hand it a file or the share sheet.
- * [onResult] tells whether a phone took it.
+ * Shows [conversations] as plain text on the paired phone, with Share (messengers, notes, mail) and
+ * Copy: a watch app can only open a link there, not the share sheet, so the link leads to the share
+ * page next to the pairing page (pair/public/share.html). The text travels in the link's fragment,
+ * which the phone's browser never sends to the server. [onResult] tells whether a phone took it.
  */
 private fun sendToPhone(context: Context, conversations: List<Conversation>, onResult: (Boolean) -> Unit) {
-    val subject = conversations.singleOrNull()?.title?.takeIf { it.isNotBlank() }?.let { "Parley: $it" } ?: "Parley"
-    val body = transcriptText(context, conversations)
-    if (Diagnostics.enabled) Log.d("ParleyEvent", "send to phone: ${body.length} characters\n$body")
-    openOnPhone(context, "mailto:?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(body), onResult)
+    val text = transcriptText(context, conversations)
+    if (Diagnostics.enabled) Log.d("ParleyEvent", "send to phone: ${text.length} characters\n$text")
+    val encoded = Base64.encodeToString(text.toByteArray(), Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
+    openOnPhone(context, "${BuildConfig.PAIR_BASE_URL}/share#t=$encoded", onResult)
 }
 
 /**
  * [conversations] as plain text, oldest first: date and time, then who said what. Cut after
- * [SHARE_LIMIT] characters, so the link stays small enough for its way to the phone.
+ * [SHARE_LIMIT] characters: the link travels to the phone as one message of at most 100 KB, and in
+ * base64 even Chinese stays well below that.
  */
 private fun transcriptText(context: Context, conversations: List<Conversation>): String {
     val you = context.getString(R.string.share_you)
@@ -305,6 +309,6 @@ private fun transcriptText(context: Context, conversations: List<Conversation>):
     return if (text.length > SHARE_LIMIT) text.take(SHARE_LIMIT) + "\n…" else text
 }
 
-private const val SHARE_LIMIT = 20_000
+private const val SHARE_LIMIT = 12_000
 
 const val REPORT_ADDRESS = "contact@devemperor.net"

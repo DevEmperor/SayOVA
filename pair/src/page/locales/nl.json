@@ -45,5 +45,15 @@
   "error_send_status": "Versturen mislukt ({status}). Probeer het opnieuw.",
   "error_send": "Versturen mislukt. Probeer het opnieuw.",
   "footer_privacy": "Privacy",
-  "footer_source": "Broncode"
+  "footer_source": "Broncode",
+  "share_page_title": "Parley · Van je horloge",
+  "share_page_description": "Een gesprek dat Parley vanaf je horloge heeft gestuurd.",
+  "watch_send_to_phone": "Naar telefoon sturen",
+  "share_missing_title": "Niets om te delen",
+  "share_missing_text": "Open op je horloge een gesprek in de geschiedenis van Parley en tik op {send}.",
+  "share_title": "Van je horloge",
+  "share_button": "Delen",
+  "copy_button": "Kopiëren",
+  "copied": "Gekopieerd",
+  "share_note": "De tekst blijft op deze telefoon: hij staat alleen in het adres van deze pagina, dat nooit naar een server wordt gestuurd."
 }

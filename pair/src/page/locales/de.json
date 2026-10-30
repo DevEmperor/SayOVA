@@ -45,5 +45,15 @@
   "error_send_status": "Senden fehlgeschlagen ({status}). Bitte versuch es noch einmal.",
   "error_send": "Senden fehlgeschlagen. Bitte versuch es noch einmal.",
   "footer_privacy": "Datenschutz",
-  "footer_source": "Quellcode"
+  "footer_source": "Quellcode",
+  "share_page_title": "Parley · Von deiner Uhr",
+  "share_page_description": "Ein Gespräch, das Parley von deiner Uhr geschickt hat.",
+  "watch_send_to_phone": "Ans Handy senden",
+  "share_missing_title": "Nichts zum Teilen",
+  "share_missing_text": "Öffne auf deiner Uhr ein Gespräch im Verlauf von Parley und tippe auf {send}.",
+  "share_title": "Von deiner Uhr",
+  "share_button": "Teilen",
+  "copy_button": "Kopieren",
+  "copied": "Kopiert",
+  "share_note": "Der Text bleibt auf diesem Handy: Er steht nur in der Adresse dieser Seite, und die wird nie an einen Server geschickt."
 }

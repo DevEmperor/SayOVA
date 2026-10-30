@@ -25,4 +25,5 @@ pair/node_modules/
 pair/.wrangler/
 pair/.dev.vars
 pair/public/app.js
+pair/public/share.js
 __pycache__/

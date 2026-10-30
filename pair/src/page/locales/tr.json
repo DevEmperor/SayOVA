@@ -45,5 +45,15 @@
   "error_send_status": "Gönderme başarısız oldu ({status}). Lütfen tekrar deneyin.",
   "error_send": "Gönderme başarısız oldu. Lütfen tekrar deneyin.",
   "footer_privacy": "Gizlilik",
-  "footer_source": "Kaynak kodu"
+  "footer_source": "Kaynak kodu",
+  "share_page_title": "Parley · Saatinizden",
+  "share_page_description": "Saatinizdeki Parley'den gönderilen bir konuşma.",
+  "watch_send_to_phone": "Telefona gönder",
+  "share_missing_title": "Paylaşılacak bir şey yok",
+  "share_missing_text": "Saatinizde Parley geçmişinden bir konuşma açın ve {send} öğesine dokunun.",
+  "share_title": "Saatinizden",
+  "share_button": "Paylaş",
+  "copy_button": "Kopyala",
+  "copied": "Kopyalandı",
+  "share_note": "Metin bu telefonda kalır: yalnızca bu sayfanın adresinde bulunur ve bu adres hiçbir zaman bir sunucuya gönderilmez."
 }

@@ -87,6 +87,8 @@ class ConversationEngine(
         val spentUsd: Double = 0.0,
         /** Talking with the cheaper model because the budget is near: said at the start. */
         val economy: Boolean = false,
+        /** Interpreting between two languages, in short ("DE ⇄ ES"); null in a normal conversation. */
+        val interpreting: String? = null,
     )
 
     private class Record(val key: String, val role: Role, val at: Long) {
@@ -97,6 +99,7 @@ class ConversationEngine(
     private val _state = MutableStateFlow(
         ConversationUiState(
             pushToTalk = options.pushToTalk,
+            interpreting = options.interpreting,
             showCost = options.showCost,
             providerLabel = providerLabel,
         ),

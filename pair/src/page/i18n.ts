@@ -73,10 +73,10 @@ export function fill(el: Element, key: Key, parts: Record<string, [tag: string, 
 }
 
 /** Translates the static page: [data-i18n] elements, [data-i18n-placeholder], the title and language. */
-export function translatePage() {
+export function translatePage(titleKey: Key = "page_title", descriptionKey: Key = "page_description") {
   document.documentElement.lang = lang;
-  document.title = t("page_title");
-  document.querySelector('meta[name="description"]')?.setAttribute("content", t("page_description"));
+  document.title = t(titleKey);
+  document.querySelector('meta[name="description"]')?.setAttribute("content", t(descriptionKey));
   document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((el) => {
     // Elements with highlighted parts are filled by the code that knows the parts.
     if (!el.dataset.i18nParts) el.textContent = t(el.dataset.i18n as Key);
@@ -89,6 +89,7 @@ export function translatePage() {
   const parts: Partial<Record<Key, Record<string, [string, string]>>> = {
     missing_text: { provider: strong("watch_choose_provider"), phone: strong("watch_open_on_phone") },
     sent_text: { matches: strong("watch_matches") },
+    share_missing_text: { send: strong("watch_send_to_phone") },
     // Menu names of Google AI Studio and the OpenAI platform, which are English there.
     help_gemini_1: { menu: em("API Keys") },
     help_gemini_2: { button: em("Create API key") },

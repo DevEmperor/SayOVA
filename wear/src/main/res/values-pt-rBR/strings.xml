@@ -132,7 +132,13 @@
     <string name="notice_budget_near">%1$s do orçamento usado</string>
     <string name="notice_budget_reached">Orçamento mensal atingido</string>
     <string name="notice_budget_economy">Orçamento quase no fim · %1$s</string>
+    <string name="settings_costs">Custos</string>
     <string name="settings_privacy">Privacidade</string>
+    <string name="interpreter_title">Intérprete</string>
+    <string name="interpreter_start">Começar a interpretar</string>
+    <string name="interpreter_first">Primeiro idioma</string>
+    <string name="interpreter_second">Segundo idioma</string>
+    <string name="interpreter_hint">Segure o relógio entre vocês. O Parley diz tudo no outro idioma.</string>
     <string name="settings_general">Geral</string>
     <string name="settings_history">Manter histórico</string>
     <string name="settings_delete_history">Excluir histórico</string>

@@ -27,9 +27,17 @@ First version.
   Concise keeps to one, the new Detailed explains with background and examples, the language partner
   keeps its turns short.
 - Send to phone: from a conversation in the history, or for several chosen with a long press, Parley
-  opens an e-mail with the conversation as text on the paired phone. Without a phone the watch says
-  so, instead of claiming to continue on the phone (this also holds for reporting, the pairing link
-  and the links under About).
+  opens a page on the paired phone with the conversation as plain text and Share (any app: messengers,
+  notes, mail) and Copy. The text sits only in the page address after "#", never sent to a server.
+  Without a phone the watch says so, instead of claiming to continue on the phone (this also holds
+  for reporting, the pairing link and the links under About).
+- Interpreter: the third button on the home screen. Pick two of 21 languages (remembered), hold the
+  watch between two people, and Parley says everything in the other language, nothing else; both
+  sides show as text, the pair in the info line ("DE ⇄ ES").
+- Settings grouped anew: a Costs section (usage, monthly budget, show cost), vibration under General.
+- Volume: one step below the lowest switches the sound off and reads 0 (the call volume over the
+  watch speaker never reaches 0 by itself); turned with the bezel, the volume panel goes after a
+  second instead of two and a half.
 - Choosing from a list in the settings goes straight back, also with a quick tap; only the voices stay
   open to listen to several.
 - Tools: timers, alarms, notes, battery and time, web search.

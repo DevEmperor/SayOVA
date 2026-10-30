@@ -45,5 +45,15 @@
   "error_send_status": "发送失败（{status}）。请重试。",
   "error_send": "发送失败。请重试。",
   "footer_privacy": "隐私",
-  "footer_source": "源代码"
+  "footer_source": "源代码",
+  "share_page_title": "Parley · 来自你的手表",
+  "share_page_description": "从你手表上的 Parley 发送的对话。",
+  "watch_send_to_phone": "发送到手机",
+  "share_missing_title": "没有可分享的内容",
+  "share_missing_text": "在手表上打开 Parley 历史记录中的对话，然后点按{send}。",
+  "share_title": "来自你的手表",
+  "share_button": "分享",
+  "copy_button": "复制",
+  "copied": "已复制",
+  "share_note": "文字只保留在这部手机上：它只在本页地址中，而这个地址从不会发送到服务器。"
 }

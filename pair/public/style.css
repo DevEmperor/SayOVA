@@ -226,6 +226,24 @@ button {
 
 .sent { text-align: center; }
 
+/* The share page: the conversation as plain text, then Share (wide) and Copy side by side. */
+.share-text {
+  max-height: 55dvh;
+  overflow: auto;
+  margin: 0.75rem 0 0;
+  padding: 1rem;
+  border-radius: 16px;
+  background: var(--surface-high);
+  border: 1px solid var(--line);
+  font: inherit;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
+.actions .primary { flex: 1; margin-top: 0; }
+.actions .ghost { border-radius: 999px; padding: 0 1.4rem; }
+
 .code {
   margin: 1.25rem 0;
   font: 700 2.75rem/1 ui-monospace, "SF Mono", "Roboto Mono", monospace;

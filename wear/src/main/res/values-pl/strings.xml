@@ -132,7 +132,13 @@
     <string name="notice_budget_near">Wykorzystano %1$s budżetu</string>
     <string name="notice_budget_reached">Budżet miesięczny wyczerpany</string>
     <string name="notice_budget_economy">Budżet prawie wyczerpany · %1$s</string>
+    <string name="settings_costs">Koszty</string>
     <string name="settings_privacy">Prywatność</string>
+    <string name="interpreter_title">Tłumacz</string>
+    <string name="interpreter_start">Rozpocznij tłumaczenie</string>
+    <string name="interpreter_first">Pierwszy język</string>
+    <string name="interpreter_second">Drugi język</string>
+    <string name="interpreter_hint">Trzymaj zegarek między wami. Parley powtarza wszystko w drugim języku.</string>
     <string name="settings_general">Ogólne</string>
     <string name="settings_history">Zapisuj historię</string>
     <string name="settings_delete_history">Usuń całą historię</string>

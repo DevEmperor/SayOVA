@@ -45,5 +45,15 @@
   "error_send_status": "Falha no envio ({status}). Tente novamente.",
   "error_send": "Falha no envio. Tente novamente.",
   "footer_privacy": "Privacidade",
-  "footer_source": "Código-fonte"
+  "footer_source": "Código-fonte",
+  "share_page_title": "Parley · Do seu relógio",
+  "share_page_description": "Uma conversa enviada pelo Parley do seu relógio.",
+  "watch_send_to_phone": "Enviar para o celular",
+  "share_missing_title": "Nada para compartilhar",
+  "share_missing_text": "No relógio, abra uma conversa no histórico do Parley e toque em {send}.",
+  "share_title": "Do seu relógio",
+  "share_button": "Compartilhar",
+  "copy_button": "Copiar",
+  "copied": "Copiado",
+  "share_note": "O texto fica neste celular: ele está só no endereço desta página, que nunca é enviado a um servidor."
 }

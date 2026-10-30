@@ -133,7 +133,13 @@
     <string name="notice_budget_near">%1$s av budgeten använd</string>
     <string name="notice_budget_reached">Månadsbudgeten nådd</string>
     <string name="notice_budget_economy">Budgeten snart slut · %1$s</string>
+    <string name="settings_costs">Kostnader</string>
     <string name="settings_privacy">Integritet</string>
+    <string name="interpreter_title">Tolk</string>
+    <string name="interpreter_start">Börja tolka</string>
+    <string name="interpreter_first">Första språk</string>
+    <string name="interpreter_second">Andra språk</string>
+    <string name="interpreter_hint">Håll klockan mellan er. Parley säger allt på det andra språket.</string>
     <string name="settings_general">Allmänt</string>
     <string name="settings_history">Spara historik</string>
     <string name="settings_delete_history">Ta bort all historik</string>

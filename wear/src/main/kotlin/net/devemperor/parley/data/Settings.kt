@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import net.devemperor.parley.core.prompt.AnswerLanguage
+import net.devemperor.parley.core.prompt.InterpretLanguage
 import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.Provider
 import net.devemperor.parley.core.provider.ProviderCatalog
@@ -65,8 +66,22 @@ data class ParleySettings(
     /** Days conversations are kept; 0 = not saved, -1 = forever. */
     val historyDays: Int = 30,
     val startOnLaunch: Boolean = false,
+    /** The interpreter's two languages as codes (see InterpretLanguage); empty until first chosen. */
+    val interpretFirst: String = "",
+    val interpretSecond: String = "",
 ) {
     val providerInfo: Provider get() = ProviderCatalog.get(provider)
+
+    /**
+     * The interpreter's pair, until chosen the watch's language ([deviceLanguage]) and English (or
+     * English and Spanish for an English watch).
+     */
+    fun interpretPair(deviceLanguage: String): Pair<InterpretLanguage, InterpretLanguage> {
+        val first = InterpretLanguage.fromCode(interpretFirst) ?: InterpretLanguage.fromCode(deviceLanguage) ?: InterpretLanguage.ENGLISH
+        val second = InterpretLanguage.fromCode(interpretSecond)?.takeIf { it != first }
+            ?: if (first == InterpretLanguage.ENGLISH) InterpretLanguage.SPANISH else InterpretLanguage.ENGLISH
+        return first to second
+    }
 
     /** The watch features offered to the model. */
     val features: Set<WatchFeature> get() = WatchFeature.entries.filter { it !in featuresOff }.toSet()
@@ -121,6 +136,8 @@ class SettingsRepository(private val context: Context) {
         val soundOff = booleanPreferencesKey("sound_off")
         val historyDays = intPreferencesKey("history_days")
         val startOnLaunch = booleanPreferencesKey("start_on_launch")
+        val interpretFirst = stringPreferencesKey("interpret_first")
+        val interpretSecond = stringPreferencesKey("interpret_second")
         // Before the statistics (UsageStore), only the current month's cost was kept here.
         val legacyCostMonth = stringPreferencesKey("cost_month")
         val legacyCostMonthUsd = doublePreferencesKey("cost_month_usd")
@@ -167,6 +184,8 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.soundOff] = updated.soundOff
             prefs[Keys.historyDays] = updated.historyDays
             prefs[Keys.startOnLaunch] = updated.startOnLaunch
+            prefs[Keys.interpretFirst] = updated.interpretFirst
+            prefs[Keys.interpretSecond] = updated.interpretSecond
         }
     }
 
@@ -214,6 +233,8 @@ class SettingsRepository(private val context: Context) {
             soundOff = prefs[Keys.soundOff] ?: d.soundOff,
             historyDays = prefs[Keys.historyDays]?.takeIf { it in ParleySettings.HISTORY_OPTIONS } ?: d.historyDays,
             startOnLaunch = prefs[Keys.startOnLaunch] ?: d.startOnLaunch,
+            interpretFirst = prefs[Keys.interpretFirst] ?: d.interpretFirst,
+            interpretSecond = prefs[Keys.interpretSecond] ?: d.interpretSecond,
         )
     }
 

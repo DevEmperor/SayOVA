@@ -45,5 +45,15 @@
   "error_send_status": "送信に失敗しました（{status}）。もう一度お試しください。",
   "error_send": "送信に失敗しました。もう一度お試しください。",
   "footer_privacy": "プライバシー",
-  "footer_source": "ソースコード"
+  "footer_source": "ソースコード",
+  "share_page_title": "Parley · ウォッチから",
+  "share_page_description": "ウォッチの Parley から送られた会話です。",
+  "watch_send_to_phone": "スマホに送信",
+  "share_missing_title": "共有するものがありません",
+  "share_missing_text": "ウォッチで Parley の履歴から会話を開き、{send} をタップしてください。",
+  "share_title": "ウォッチから",
+  "share_button": "共有",
+  "copy_button": "コピー",
+  "copied": "コピーしました",
+  "share_note": "テキストはこのスマホにだけ残ります。このページのアドレスに含まれるだけで、サーバーには送信されません。"
 }

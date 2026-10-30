@@ -133,7 +133,13 @@
     <string name="notice_budget_near">已用预算的 %1$s</string>
     <string name="notice_budget_reached">已达每月预算</string>
     <string name="notice_budget_economy">预算即将用完 · %1$s</string>
+    <string name="settings_costs">费用</string>
     <string name="settings_privacy">隐私</string>
+    <string name="interpreter_title">口译</string>
+    <string name="interpreter_start">开始口译</string>
+    <string name="interpreter_first">第一种语言</string>
+    <string name="interpreter_second">第二种语言</string>
+    <string name="interpreter_hint">把手表放在你们之间。Parley 会把说的话用另一种语言说出来。</string>
     <string name="settings_general">通用</string>
     <string name="settings_history">保留历史记录</string>
     <string name="settings_delete_history">删除所有历史记录</string>

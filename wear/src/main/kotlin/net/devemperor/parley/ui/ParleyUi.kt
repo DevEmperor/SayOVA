@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import net.devemperor.parley.R
 import net.devemperor.parley.core.cost.CostMeter
+import net.devemperor.parley.core.prompt.InterpretLanguage
 import net.devemperor.parley.core.provider.ProviderId
 import net.devemperor.parley.core.usage.Budget
 import net.devemperor.parley.core.usage.BudgetLevel
@@ -47,6 +49,7 @@ import net.devemperor.parley.ui.history.ConversationDetailScreen
 import net.devemperor.parley.ui.history.HistoryScreen
 import net.devemperor.parley.ui.history.ReportScreen
 import net.devemperor.parley.ui.home.HomeScreen
+import net.devemperor.parley.ui.interpreter.InterpreterScreen
 import net.devemperor.parley.ui.memory.MemoryScreen
 import net.devemperor.parley.ui.settings.Choice
 import net.devemperor.parley.ui.settings.ChoiceScreen
@@ -81,6 +84,7 @@ object Routes {
     const val USAGE = "usage"
     const val MEMORY = "memory"
     const val FEATURES = "features"
+    const val INTERPRETER = "interpreter"
 
     fun pair(provider: ProviderId) = "pair/${provider.key}"
     fun detail(id: String) = "history/$id"
@@ -92,7 +96,7 @@ object Routes {
 enum class Launch { OPEN, TALK, DEMO }
 
 /** A conversation that waits for the user's yes, because this month's budget is spent (see Budget). */
-private data class HeldStart(val demo: Boolean, val continueId: String?)
+private data class HeldStart(val demo: Boolean, val continueId: String?, val interpret: Pair<InterpretLanguage, InterpretLanguage>?)
 
 /** [relaunches]: the tile or complication tapped while Parley is already open. */
 @Composable
@@ -117,8 +121,13 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
             var homeTalk by rememberSaveable { mutableStateOf(false) }
             var held by remember { mutableStateOf<HeldStart?>(null) }
 
-            /** [anyway]: the user said yes although the month's budget is spent. */
-            fun startConversation(demo: Boolean = false, continueId: String? = null, anyway: Boolean = false) {
+            /** [interpret]: as the interpreter between these two languages; [anyway]: the user said yes although the month's budget is spent. */
+            fun startConversation(
+                demo: Boolean = false,
+                continueId: String? = null,
+                interpret: Pair<InterpretLanguage, InterpretLanguage>? = null,
+                anyway: Boolean = false,
+            ) {
                 if (!context.hasMicrophone()) {
                     navController.navigate(Routes.PERMISSION)
                     return
@@ -128,10 +137,10 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 // which may have loaded a frame before the screen saw it.
                 val spent = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
                 if (!anyway && !SessionHub.running && Budget.level(spent, settings?.budgetUsd ?: 0) == BudgetLevel.REACHED) {
-                    held = HeldStart(demo, continueId)
+                    held = HeldStart(demo, continueId, interpret)
                     return
                 }
-                SessionHub.start(context, demo, continueId)
+                SessionHub.start(context, demo, continueId, interpret)
                 when (navController.currentDestination?.route) {
                     // Started from the home screen, the conversation takes its place and the home orb
                     // grows into the conversation's: a page of its own would come in with Wear's
@@ -216,6 +225,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                                 monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
                                 onUsage = whenResumed { navController.navigate(Routes.USAGE) },
                                 onTalk = whenResumed { startConversation() },
+                                onInterpreter = whenResumed { navController.navigate(Routes.INTERPRETER) },
                                 onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
                                 onSettings = whenResumed { navController.navigate(Routes.SETTINGS) },
                             )
@@ -336,6 +346,15 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     WatchFeaturesScreen(s, update)
                 }
+                composable(Routes.INTERPRETER) {
+                    val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
+                    val pair = s.interpretPair(LocalConfiguration.current.locales[0].language)
+                    InterpreterScreen(
+                        pair = pair,
+                        onStart = whenResumed { startConversation(interpret = pair) },
+                        onPick = whenResumed { choice: Choice -> navController.navigate(Routes.choice(choice)) },
+                    )
+                }
                 composable(Routes.MEMORY) {
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     MemoryScreen(
@@ -360,7 +379,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 onConfirm = {
                     val start = held
                     held = null
-                    if (start != null) startConversation(start.demo, start.continueId, anyway = true)
+                    if (start != null) startConversation(start.demo, start.continueId, start.interpret, anyway = true)
                 },
                 onDismiss = { held = null },
             )

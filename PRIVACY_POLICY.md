@@ -192,9 +192,13 @@ models (Art. 6(1)(f) GDPR) and delete them when they are dealt with.
 ### 2.6 Sending a conversation to your phone
 
 From the history you can send one or several saved conversations to your phone. The App
-opens an e-mail on your paired phone with the conversation as text, without a recipient;
-you decide whether and to whom it goes. The text travels over the watch's own connection
-to the phone; it does not pass through us.
+opens a page next to the pairing page on your paired phone that shows the conversation as
+text, with buttons to share it (to a messenger, a notes app, e-mail …) or to copy it; you
+decide whether and to whom it goes. The text travels over the watch's own connection to
+the phone and sits only in the part of the page's address after "#", which browsers never
+send to a server: our server delivers the empty page and never sees the text. The page
+removes the text from its address as soon as it has read it, so it does not stay in the
+browser's history.
 
 ---
 

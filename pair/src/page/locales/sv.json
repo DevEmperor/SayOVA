@@ -45,5 +45,15 @@
   "error_send_status": "Det gick inte att skicka ({status}). Försök igen.",
   "error_send": "Det gick inte att skicka. Försök igen.",
   "footer_privacy": "Integritet",
-  "footer_source": "Källkod"
+  "footer_source": "Källkod",
+  "share_page_title": "Parley · Från din klocka",
+  "share_page_description": "Ett samtal som Parley skickade från din klocka.",
+  "watch_send_to_phone": "Skicka till telefonen",
+  "share_missing_title": "Inget att dela",
+  "share_missing_text": "Öppna ett samtal i Parleys historik på klockan och tryck på {send}.",
+  "share_title": "Från din klocka",
+  "share_button": "Dela",
+  "copy_button": "Kopiera",
+  "copied": "Kopierat",
+  "share_note": "Texten stannar på den här telefonen: den finns bara i sidans adress, som aldrig skickas till en server."
 }

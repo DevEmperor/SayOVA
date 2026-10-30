@@ -31,6 +31,8 @@ your own API key.
 - **Remembers what you ask it to.** Say "Remember that I'm vegetarian" and every later
   conversation knows. Only what you ask for is kept, on the watch, and the settings show
   every fact to read or delete.
+- **Interpreter.** Hold the watch between two people: Parley says everything in the other
+  language (21 languages, the pair is remembered) and shows both sides as text.
 - **Speaks your language.** The app is translated into 12 languages besides English, and Parley
   answers in whatever language you talk to it.
 - **Know what it costs.** Usage statistics show cost and talk time per month and in total,
@@ -57,7 +59,7 @@ your own API key.
   watch-face icon; personalities that also set how long Parley talks (from Concise to Detailed),
   40 voices to listen to before you pick one, answer language, haptics.
 - **History on the watch only**, kept as long as you like, never backed up to the cloud; send a
-  conversation (or several) to your phone as an e-mail when you want to keep it.
+  conversation (or several) to your phone as text, to share it with any app or copy it.
 - **Runs on every Wear OS 3+ watch with a microphone.**
 
 ## Getting an API key

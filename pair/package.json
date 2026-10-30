@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build:page": "esbuild src/page/main.ts --bundle --minify --format=esm --target=es2022 --outfile=public/app.js",
+    "build:page": "esbuild src/page/main.ts --bundle --minify --format=esm --target=es2022 --outfile=public/app.js && esbuild src/page/share.ts --bundle --minify --format=esm --target=es2022 --outfile=public/share.js",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.page.json",

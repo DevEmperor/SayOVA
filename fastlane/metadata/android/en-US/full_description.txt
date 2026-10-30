@@ -6,6 +6,9 @@ Parley streams your voice live to a speech-to-speech model – Google Gemini Liv
 <b>Hear it and read it</b>
 Both sides of the conversation appear on the screen as you talk. The part of the answer you have already heard is bright, the rest is still dim, so you never lose your place.
 
+<b>Your interpreter on the wrist</b>
+Pick two of 21 languages and hold the watch between you and the person you are talking to. Parley says everything in the other language and shows both sides as text.
+
 <b>Quiet when it has to be</b>
 In a lecture, a meeting or a quiet room? One tap switches Parley's voice off and the answers appear as text.
 

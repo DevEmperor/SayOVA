@@ -116,11 +116,12 @@ import kotlin.math.abs
  * the red end button at the bottom between the text and the sound button. By default only the orb
  * is shown, large and centred, pulsing with whoever speaks; with the transcript on, the orb moves up
  * and the transcript scrolls below it, the part of an answer already heard bright, the rest dim. The
- * last choice is remembered ([showTranscript]); a conversation with the sound off always shows it.
+ * last choice is remembered ([showTranscript]); a conversation with the sound off always shows it,
+ * and so does the interpreter.
  *
  * The sound button switches Parley's voice off and on at a tap, for a place where nobody should hear
- * it; a long press, or turning the bezel or crown, opens the volume panel. Turning it louder while
- * the sound is off switches it back on.
+ * it; a long press, or turning the bezel or crown, opens the volume panel. One step below the lowest
+ * volume switches the sound off, one step up switches it back on.
  *
  * The screen deliberately does not hand the transcript's scroll state to the scaffold: Wear would
  * then scroll the clock and status away and shrink the end button exactly while Parley speaks.
@@ -175,27 +176,38 @@ fun ConversationScreen(
 
     val statusColor = ParleyColors.forPhase(state.phase)
     val status = statusText(state)
-    val transcript = showTranscript || state.soundOff
+    // Interpreting, both people read along, so the text always shows.
+    val transcript = showTranscript || state.soundOff || state.interpreting != null
 
     val context = LocalContext.current
     val volume = remember(state.callAudio) { SpeechVolume(context, call = state.callAudio) }
     var volumeLevel by remember(volume) { mutableIntStateOf(volume.current()) }
     var volumeOpen by remember { mutableStateOf(false) }
     var volumeTouchedAt by remember { mutableLongStateOf(0L) }
+    // Turned with the bezel the panel only confirms the turn and goes soon; opened by touch it waits
+    // for the plus and minus.
+    var volumeHoldMs by remember { mutableLongStateOf(VOLUME_PANEL_MS) }
     val showVolume = {
         volumeLevel = volume.current()
         volumeOpen = true
+        volumeHoldMs = VOLUME_PANEL_MS
         volumeTouchedAt = SystemClock.elapsedRealtime()
     }
-    val changeVolume = { delta: Int ->
-        if (state.soundOff && delta > 0) onToggleSound()
-        volumeLevel = SessionHub.stepVolume(delta) ?: volume.current()
+    val changeVolume = { delta: Int, bezel: Boolean ->
+        when {
+            // One step below the lowest is silence, the sound switched off: in call mode Android keeps
+            // the volume above zero. One step up from there brings the sound back.
+            delta < 0 && !state.soundOff && volume.current() <= volume.min -> onToggleSound()
+            delta > 0 && state.soundOff -> onToggleSound()
+            else -> volumeLevel = SessionHub.stepVolume(delta) ?: volume.current()
+        }
         volumeOpen = true
+        volumeHoldMs = if (bezel) VOLUME_PANEL_BEZEL_MS else VOLUME_PANEL_MS
         volumeTouchedAt = SystemClock.elapsedRealtime()
     }
     LaunchedEffect(volumeOpen, volumeTouchedAt) {
         if (volumeOpen) {
-            delay(VOLUME_PANEL_MS)
+            delay(volumeHoldMs)
             volumeOpen = false
         }
     }
@@ -223,7 +235,7 @@ fun ConversationScreen(
                 val px = event.verticalScrollPixels
                 rotary = if (rotary * px < 0f) px else rotary + px
                 if (abs(rotary) >= stepPx) {
-                    changeVolume(if (rotary > 0f) 1 else -1)
+                    changeVolume(if (rotary > 0f) 1 else -1, true)
                     rotary = 0f
                 }
                 true
@@ -304,7 +316,7 @@ fun ConversationScreen(
                     max = volume.max,
                     soundOff = state.soundOff,
                     width = width,
-                    onChange = changeVolume,
+                    onChange = { changeVolume(it, false) },
                     onToggleSound = {
                         onToggleSound()
                         volumeTouchedAt = SystemClock.elapsedRealtime()
@@ -319,8 +331,8 @@ fun ConversationScreen(
 /**
  * Parley's volume: an arc along the left of the bezel that fills upwards as the bezel turns
  * clockwise, plus and minus for touch, the level in the middle; tapping the level switches the sound
- * off or on, and with the sound off the arc turns grey. Closes by itself shortly after the last
- * change, or with a tap beside the buttons.
+ * off or on. With the sound off the level reads 0 and the arc is empty. Closes by itself shortly
+ * after the last change, or with a tap beside the buttons.
  */
 @Composable
 private fun VolumePanel(
@@ -333,7 +345,7 @@ private fun VolumePanel(
     onToggleSound: () -> Unit,
     onClose: () -> Unit,
 ) {
-    val fraction by animateFloatAsState(if (max > min) (level - min).toFloat() / (max - min) else 0f, label = "volume")
+    val fraction by animateFloatAsState(if (max > min && !soundOff) (level - min + 1).toFloat() / (max - min + 1) else 0f, label = "volume")
     val track = MaterialTheme.colorScheme.surfaceContainerHigh
     val fill = if (soundOff) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary
     Box(
@@ -358,7 +370,7 @@ private fun VolumePanel(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(width * 0.03f),
         ) {
-            VolumeStep(R.drawable.ic_add, stringResource(R.string.action_louder), enabled = level < max, width = width) { onChange(1) }
+            VolumeStep(R.drawable.ic_add, stringResource(R.string.action_louder), enabled = soundOff || level < max, width = width) { onChange(1) }
             Row(
                 Modifier
                     .clip(RoundedCornerShape(50))
@@ -373,9 +385,9 @@ private fun VolumePanel(
                     modifier = Modifier.size(width * 0.09f),
                 )
                 Spacer(Modifier.width(6.dp))
-                Text("$level", style = MaterialTheme.typography.displaySmall, color = if (soundOff) MaterialTheme.colorScheme.outline else Color.Unspecified)
+                Text(if (soundOff) "0" else "$level", style = MaterialTheme.typography.displaySmall, color = if (soundOff) MaterialTheme.colorScheme.outline else Color.Unspecified)
             }
-            VolumeStep(R.drawable.ic_remove, stringResource(R.string.action_quieter), enabled = level > min, width = width) { onChange(-1) }
+            VolumeStep(R.drawable.ic_remove, stringResource(R.string.action_quieter), enabled = !soundOff, width = width) { onChange(-1) }
         }
     }
 }
@@ -395,8 +407,9 @@ private fun VolumeStep(icon: Int, label: String, enabled: Boolean, width: Dp, on
     }
 }
 
+/** Struck through only when nothing is heard: the call volume's lowest step still is. */
 private fun volumeIcon(level: Int, min: Int, max: Int): Int = when {
-    level <= min -> R.drawable.ic_volume_off
+    level <= 0 -> R.drawable.ic_volume_off
     level < (min + max + 1) / 2 -> R.drawable.ic_volume_down
     else -> R.drawable.ic_volume_up
 }
@@ -430,7 +443,7 @@ private fun Controls(
     ) {
         FilledIconButton(
             onClick = onToggleTranscript,
-            enabled = !state.soundOff,
+            enabled = !state.soundOff && state.interpreting == null,
             colors = if (transcript) {
                 IconButtonDefaults.filledIconButtonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -580,8 +593,12 @@ private fun orbDescription(state: ConversationUiState): String = when {
 private fun Caption(state: ConversationUiState, modifier: Modifier = Modifier) {
     val meta = buildList {
         if (state.elapsedMs > 0) add(formatElapsed(state.elapsedMs))
+        // Interpreting, the language pair takes the network's place: the line has room for three.
+        state.interpreting?.let(::add)
         if (state.showCost && state.costUsd > 0) add(CostMeter.format(state.costUsd))
-        if (state.transport != Transport.NONE && state.phase != Phase.CONNECTING) add(stringResource(state.transport.labelRes()))
+        if (state.interpreting == null && state.transport != Transport.NONE && state.phase != Phase.CONNECTING) {
+            add(stringResource(state.transport.labelRes()))
+        }
     }.joinToString(" · ")
     val hint = when {
         state.notice != null -> state.notice
@@ -749,6 +766,8 @@ private const val ORB_GROW_MS = 450
 /** How long an ended conversation shows "Saved" before it goes. */
 private const val ENDED_PAUSE_MS = 950L
 private const val VOLUME_PANEL_MS = 2_500L
+/** After a turn of the bezel: long enough to read the level, gone before it is in the way. */
+private const val VOLUME_PANEL_BEZEL_MS = 1_000L
 /** Bezel or crown travel per volume step: one click of the Galaxy Watch bezel, a short crown turn. */
 private val VOLUME_STEP = 12.dp
 private val VOLUME_ARC = 6.dp

@@ -7,6 +7,7 @@ import net.devemperor.parley.core.conversation.Turn
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.prompt.AnswerLanguage
 import net.devemperor.parley.core.prompt.Instructions
+import net.devemperor.parley.core.prompt.InterpretLanguage
 import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.session.ErrorKind
@@ -110,6 +111,17 @@ class CoreTest {
         assertTrue(Persona.DETAILED.length!! in detailed)
         assertFalse("four to six sentences" in detailed)
         assertTrue("four to six sentences" in Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, canSearch = false))
+    }
+
+    @Test
+    fun `the interpreter passes everything on in the other language and answers nothing`() {
+        val prompt = Instructions.interpreter(InterpretLanguage.GERMAN, InterpretLanguage.SPANISH)
+        assertTrue("When you hear German, say the same in Spanish. When you hear Spanish, say the same in German." in prompt)
+        assertTrue("A question is translated, not answered." in prompt)
+        assertFalse("Personality" in prompt)
+        assertFalse("Memory" in prompt)
+        assertEquals(InterpretLanguage.CHINESE, InterpretLanguage.fromCode("zh"))
+        assertEquals(null, InterpretLanguage.fromCode("xx"))
     }
 
     @Test

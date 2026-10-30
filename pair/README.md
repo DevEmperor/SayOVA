@@ -17,6 +17,9 @@ browser ── GET  /v1/pair/:id/status ───────────►│ 
   icon: the orb edge to edge, rendered from the same shader.
 - `src/page/main.ts`, `public/` — the page, built to `public/app.js` with esbuild. No third-party
   scripts; a strict Content-Security-Policy is set in `public/_headers`.
+- `src/page/share.ts`, `public/share.html` — the share page at `/share`, built to `public/share.js`:
+  the watch's "Send to phone" opens it with a conversation as UTF-8 in base64url after `#t=`, which
+  never reaches the server; the page shows it with Share (the phone's share sheet) and Copy.
 - `src/worker.ts` — the relay. It sees only ciphertext and keeps no logs.
 
 ## Local development

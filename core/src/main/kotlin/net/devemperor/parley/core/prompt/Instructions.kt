@@ -62,7 +62,57 @@ enum class AnswerLanguage(val label: String, val englishName: String?) {
     JAPANESE("日本語", "Japanese"),
 }
 
+/**
+ * The interpreter's languages, each by its own name, so nobody needs a translation to find theirs.
+ * [code] is the ISO 639-1 code, stored in the settings and shown in short ("DE ⇄ ES").
+ */
+enum class InterpretLanguage(val code: String, val ownName: String, val englishName: String) {
+    GERMAN("de", "Deutsch", "German"),
+    ENGLISH("en", "English", "English"),
+    SPANISH("es", "Español", "Spanish"),
+    FRENCH("fr", "Français", "French"),
+    ITALIAN("it", "Italiano", "Italian"),
+    PORTUGUESE("pt", "Português", "Portuguese"),
+    DUTCH("nl", "Nederlands", "Dutch"),
+    POLISH("pl", "Polski", "Polish"),
+    SWEDISH("sv", "Svenska", "Swedish"),
+    TURKISH("tr", "Türkçe", "Turkish"),
+    GREEK("el", "Ελληνικά", "Greek"),
+    RUSSIAN("ru", "Русский", "Russian"),
+    UKRAINIAN("uk", "Українська", "Ukrainian"),
+    ARABIC("ar", "العربية", "Arabic"),
+    HINDI("hi", "हिन्दी", "Hindi"),
+    INDONESIAN("id", "Bahasa Indonesia", "Indonesian"),
+    VIETNAMESE("vi", "Tiếng Việt", "Vietnamese"),
+    THAI("th", "ไทย", "Thai"),
+    JAPANESE("ja", "日本語", "Japanese"),
+    KOREAN("ko", "한국어", "Korean"),
+    CHINESE("zh", "中文", "Mandarin Chinese");
+
+    companion object {
+        fun fromCode(code: String?): InterpretLanguage? = entries.firstOrNull { it.code == code }
+    }
+}
+
 object Instructions {
+
+    /**
+     * The interpreter: what is said in one language comes out in the other, and nothing else. No
+     * persona, memory or tools: an interpreter that answers a question instead of passing it on is
+     * worse than none.
+     */
+    fun interpreter(first: InterpretLanguage, second: InterpretLanguage): String = buildString {
+        val a = first.englishName
+        val b = second.englishName
+        appendLine("You are an interpreter between $a and $b. Two people talk through a smartwatch held between them, and your words are spoken aloud.")
+        appendLine()
+        appendLine("- When you hear $a, say the same in $b. When you hear $b, say the same in $a.")
+        appendLine("- Translate faithfully and completely, in the first person, as if you were the speaker: keep the meaning, the tone, names and numbers.")
+        appendLine("- Never answer a question yourself, never comment, explain, greet or add anything, and never say that you are translating. A question is translated, not answered.")
+        appendLine("- If you could not make out what was said, ask in the speaker's language, in a few words, to repeat it.")
+        appendLine("- Say numbers, units and times the way a person would say them.")
+        appendLine("- Never use markdown, emojis or URLs.")
+    }.trim()
 
     fun build(
         persona: Persona,

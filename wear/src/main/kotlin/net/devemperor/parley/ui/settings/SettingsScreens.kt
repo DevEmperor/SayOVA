@@ -21,6 +21,7 @@ import net.devemperor.parley.R
 import net.devemperor.parley.audio.VoiceSamples
 import net.devemperor.parley.core.cost.CostMeter
 import net.devemperor.parley.core.prompt.AnswerLanguage
+import net.devemperor.parley.core.prompt.InterpretLanguage
 import net.devemperor.parley.core.prompt.Persona
 import net.devemperor.parley.core.provider.ProviderCatalog
 import net.devemperor.parley.core.provider.ProviderId
@@ -47,7 +48,7 @@ import net.devemperor.parley.ui.stringOr
 typealias Update = ((ParleySettings) -> ParleySettings) -> Unit
 
 /** Options that are a single choice from a list get one generic screen each. */
-enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY, BUDGET }
+enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUTO_END, HISTORY, BUDGET, INTERPRET_FIRST, INTERPRET_SECOND }
 
 private enum class SampleState { LOADING, PLAYING, FAILED }
 
@@ -134,13 +135,8 @@ fun SettingsScreen(
                 icon = R.drawable.ic_mic,
             )
         }
-        item { SwitchItem(stringResource(R.string.settings_haptics), settings.haptics, { v -> onUpdate { it.copy(haptics = v) } }, spec, icon = R.drawable.ic_vibration) }
-        item {
-            SwitchItem(
-                stringResource(R.string.settings_show_cost), settings.showCost, { v -> onUpdate { it.copy(showCost = v) } }, spec,
-                icon = R.drawable.ic_payments,
-            )
-        }
+
+        item { SubHeader(stringResource(R.string.settings_costs), spec) }
         item {
             MenuButton(
                 stringResource(R.string.settings_usage), spec, onOpenUsage,
@@ -149,12 +145,19 @@ fun SettingsScreen(
             )
         }
         item { MenuButton(stringResource(R.string.settings_budget), spec, { onOpenChoice(Choice.BUDGET) }, budgetLabel(settings.budgetUsd), R.drawable.ic_savings) }
+        item {
+            SwitchItem(
+                stringResource(R.string.settings_show_cost), settings.showCost, { v -> onUpdate { it.copy(showCost = v) } }, spec,
+                icon = R.drawable.ic_payments,
+            )
+        }
 
         item { SubHeader(stringResource(R.string.settings_privacy), spec) }
         item { MenuButton(stringResource(R.string.settings_history), spec, { onOpenChoice(Choice.HISTORY) }, historyLabel(settings.historyDays), R.drawable.ic_history) }
         item { MenuButton(stringResource(R.string.settings_delete_history), spec, { confirmDelete = true }, icon = R.drawable.ic_delete) }
 
         item { SubHeader(stringResource(R.string.settings_general), spec) }
+        item { SwitchItem(stringResource(R.string.settings_haptics), settings.haptics, { v -> onUpdate { it.copy(haptics = v) } }, spec, icon = R.drawable.ic_vibration) }
         if (AppLanguages.supported) {
             item {
                 val chosen = AppLanguages.current(LocalContext.current)
@@ -180,6 +183,7 @@ fun SettingsScreen(
 @Composable
 fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onDone: () -> Unit) {
     val context = LocalContext.current
+    val deviceLanguage = LocalConfiguration.current.locales[0].language
     val provider = settings.providerInfo
     val select: ((ParleySettings) -> ParleySettings) -> Unit = { transform ->
         onUpdate(transform)
@@ -328,6 +332,25 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
                         stringResource(R.string.settings_budget_save_note, nearPercent()), R.drawable.ic_bolt,
                         enabled = settings.budgetUsd > 0,
                     )
+                }
+            }
+            Choice.INTERPRET_FIRST, Choice.INTERPRET_SECOND -> {
+                val isFirst = choice == Choice.INTERPRET_FIRST
+                val (first, second) = settings.interpretPair(deviceLanguage)
+                val current = if (isFirst) first else second
+                val other = if (isFirst) second else first
+                item { Header(stringResource(if (isFirst) R.string.interpreter_first else R.string.interpreter_second), spec) }
+                InterpretLanguage.entries.forEach { language ->
+                    item(key = language.code) {
+                        RadioItem(language.ownName, language == current, {
+                            // The other side's language changes sides instead of leaving both the same.
+                            val rest = if (language == other) current else other
+                            select {
+                                if (isFirst) it.copy(interpretFirst = language.code, interpretSecond = rest.code)
+                                else it.copy(interpretFirst = rest.code, interpretSecond = language.code)
+                            }
+                        }, spec)
+                    }
                 }
             }
         }
