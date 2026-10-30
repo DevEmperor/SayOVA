@@ -24,6 +24,11 @@ First version.
   conversation. On request Parley talks with the Fast model from 80% on. Crossing either mark during
   a conversation shows a short note; the conversation carries on.
 - Silent mode (text answers, push-to-talk).
+- The personality sets how long Parley talks: Friendly explains a how or why in four to six sentences,
+  Concise keeps to one, the new Detailed explains with background and examples, the language partner
+  keeps its turns short. In silent mode answers stay short whatever the personality.
+- Choosing from a list in the settings goes straight back, also with a quick tap; only the voices stay
+  open to listen to several.
 - Tools: timers, alarms, notes, battery and time, web search.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
   the provider with your key (well under a cent, counted in the statistics) and then kept on the watch.

@@ -195,6 +195,8 @@
     <string name="persona_friendly_description">Varm och hjälpsam</string>
     <string name="persona_concise">Koncis</string>
     <string name="persona_concise_description">Så kort som möjligt</string>
+    <string name="persona_detailed">Utförlig</string>
+    <string name="persona_detailed_description">Förklarar med bakgrund och exempel</string>
     <string name="persona_tutor">Lärare</string>
     <string name="persona_tutor_description">Förklarar steg för steg</string>
     <string name="persona_language_partner">Språkpartner</string>

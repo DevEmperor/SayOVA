@@ -104,6 +104,15 @@ class CoreTest {
         assertFalse("search the web" in custom)
         assertFalse("spoken aloud" in custom)
         assertFalse("carries on an earlier" in custom)
+        // The length comes with the persona; read on the screen, answers stay short whatever it says.
+        assertTrue("goes before anything your personality says about length" in custom)
+
+        val detailed = Instructions.build(Persona.DETAILED, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false)
+        assertTrue(Persona.DETAILED.prompt in detailed)
+        assertTrue(Persona.DETAILED.length!! in detailed)
+        assertFalse("four to six sentences" in detailed)
+        assertFalse("one to three short sentences" in detailed)
+        assertTrue("four to six sentences" in Instructions.build(Persona.FRIENDLY, "", AnswerLanguage.AUTO, now, textOnly = false, canSearch = false))
     }
 
     @Test

@@ -194,6 +194,8 @@
     <string name="persona_friendly_description">Warm en behulpzaam</string>
     <string name="persona_concise">Beknopt</string>
     <string name="persona_concise_description">Zo kort mogelijk</string>
+    <string name="persona_detailed">Uitgebreid</string>
+    <string name="persona_detailed_description">Legt uit met achtergrond en voorbeelden</string>
     <string name="persona_tutor">Docent</string>
     <string name="persona_tutor_description">Legt stap voor stap uit</string>
     <string name="persona_language_partner">Taalmaatje</string>

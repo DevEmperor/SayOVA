@@ -192,6 +192,8 @@
     <string name="persona_friendly_description">热情且乐于助人</string>
     <string name="persona_concise">简洁</string>
     <string name="persona_concise_description">尽可能简短</string>
+    <string name="persona_detailed">详细</string>
+    <string name="persona_detailed_description">结合背景和示例讲解</string>
     <string name="persona_tutor">导师</string>
     <string name="persona_tutor_description">逐步讲解</string>
     <string name="persona_language_partner">语言伙伴</string>

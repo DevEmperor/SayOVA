@@ -194,6 +194,8 @@
     <string name="persona_friendly_description">Herzlich und hilfsbereit</string>
     <string name="persona_concise">Knapp</string>
     <string name="persona_concise_description">So kurz wie möglich</string>
+    <string name="persona_detailed">Ausführlich</string>
+    <string name="persona_detailed_description">Erklärt mit Hintergrund und Beispielen</string>
     <string name="persona_tutor">Tutor</string>
     <string name="persona_tutor_description">Erklärt Schritt für Schritt</string>
     <string name="persona_language_partner">Sprachpartner</string>

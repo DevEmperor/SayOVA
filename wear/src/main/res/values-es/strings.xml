@@ -197,6 +197,8 @@
     <string name="persona_friendly_description">Cálido y servicial</string>
     <string name="persona_concise">Conciso</string>
     <string name="persona_concise_description">Lo más breve posible</string>
+    <string name="persona_detailed">Detallado</string>
+    <string name="persona_detailed_description">Explica con contexto y ejemplos</string>
     <string name="persona_tutor">Tutor</string>
     <string name="persona_tutor_description">Explica paso a paso</string>
     <string name="persona_language_partner">Compañero de idiomas</string>

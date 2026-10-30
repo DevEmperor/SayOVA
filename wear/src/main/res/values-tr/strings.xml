@@ -195,6 +195,8 @@
     <string name="persona_friendly_description">Sıcak ve yardımsever</string>
     <string name="persona_concise">Kısa ve öz</string>
     <string name="persona_concise_description">Olabildiğince kısa</string>
+    <string name="persona_detailed">Ayrıntılı</string>
+    <string name="persona_detailed_description">Arka plan ve örneklerle anlatır</string>
     <string name="persona_tutor">Öğretmen</string>
     <string name="persona_tutor_description">Adım adım açıklar</string>
     <string name="persona_language_partner">Dil partneri</string>

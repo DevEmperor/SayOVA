@@ -28,6 +28,7 @@ fun stringOr(@StringRes res: Int?, fallback: String): String = if (res != null) 
 fun Persona.labelRes(): Int = when (this) {
     Persona.FRIENDLY -> R.string.persona_friendly
     Persona.CONCISE -> R.string.persona_concise
+    Persona.DETAILED -> R.string.persona_detailed
     Persona.TUTOR -> R.string.persona_tutor
     Persona.LANGUAGE_PARTNER -> R.string.persona_language_partner
     Persona.CUSTOM -> R.string.persona_custom
@@ -37,6 +38,7 @@ fun Persona.labelRes(): Int = when (this) {
 fun Persona.descriptionRes(): Int = when (this) {
     Persona.FRIENDLY -> R.string.persona_friendly_description
     Persona.CONCISE -> R.string.persona_concise_description
+    Persona.DETAILED -> R.string.persona_detailed_description
     Persona.TUTOR -> R.string.persona_tutor_description
     Persona.LANGUAGE_PARTNER -> R.string.persona_language_partner_description
     Persona.CUSTOM -> R.string.persona_custom_description

@@ -192,6 +192,8 @@
     <string name="persona_friendly_description">따뜻하고 친절한 도우미</string>
     <string name="persona_concise">간결함</string>
     <string name="persona_concise_description">최대한 짧게</string>
+    <string name="persona_detailed">자세히</string>
+    <string name="persona_detailed_description">배경과 예시를 들어 설명</string>
     <string name="persona_tutor">튜터</string>
     <string name="persona_tutor_description">단계별로 설명</string>
     <string name="persona_language_partner">언어 파트너</string>

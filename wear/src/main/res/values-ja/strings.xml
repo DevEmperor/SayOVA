@@ -192,6 +192,8 @@
     <string name="persona_friendly_description">温かく親切</string>
     <string name="persona_concise">簡潔</string>
     <string name="persona_concise_description">できるだけ短く</string>
+    <string name="persona_detailed">詳しく</string>
+    <string name="persona_detailed_description">背景や例を交えて説明</string>
     <string name="persona_tutor">家庭教師</string>
     <string name="persona_tutor_description">順を追って説明</string>
     <string name="persona_language_partner">語学パートナー</string>

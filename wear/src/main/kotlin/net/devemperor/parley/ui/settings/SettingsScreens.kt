@@ -317,10 +317,9 @@ fun ChoiceScreen(choice: Choice, settings: ParleySettings, onUpdate: Update, onD
             }
             Choice.BUDGET -> {
                 item { Header(stringResource(R.string.settings_budget), spec) }
-                // The list stays open after a choice: the switch for saving near the budget is below.
                 ParleySettings.BUDGET_OPTIONS.forEach { usd ->
                     item(key = usd) {
-                        RadioItem(budgetLabel(usd), settings.budgetUsd == usd, { onUpdate { it.copy(budgetUsd = usd) } }, spec)
+                        RadioItem(budgetLabel(usd), settings.budgetUsd == usd, { select { it.copy(budgetUsd = usd) } }, spec)
                     }
                 }
                 item(key = "save") {

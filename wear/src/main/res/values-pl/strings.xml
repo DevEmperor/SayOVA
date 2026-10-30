@@ -200,6 +200,8 @@
     <string name="persona_friendly_description">Ciepła i pomocna</string>
     <string name="persona_concise">Zwięzła</string>
     <string name="persona_concise_description">Jak najkrócej</string>
+    <string name="persona_detailed">Szczegółowy</string>
+    <string name="persona_detailed_description">Wyjaśnia z tłem i przykładami</string>
     <string name="persona_tutor">Nauczyciel</string>
     <string name="persona_tutor_description">Wyjaśnia krok po kroku</string>
     <string name="persona_language_partner">Partner językowy</string>

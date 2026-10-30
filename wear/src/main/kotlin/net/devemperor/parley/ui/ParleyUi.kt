@@ -305,7 +305,11 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                         settings = s,
                         connected = connected,
                         keyHint = app.keys::hint,
-                        onUse = { id -> update { it.copy(provider = id) } },
+                        // Like every other choice from a list, back at once (see the choice screens).
+                        onUse = { id ->
+                            update { it.copy(provider = id) }
+                            if (navController.currentDestination?.route == Routes.PROVIDER) navController.popBackStack()
+                        },
                         onConnect = whenResumed { id: ProviderId -> navController.navigate(Routes.pair(id)) },
                         onRemove = { id ->
                             app.keys.remove(id)
@@ -318,7 +322,12 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     val choice = entry.arguments?.getString("choice")?.let { name -> Choice.entries.firstOrNull { it.name == name } }
                     if (choice != null) {
                         val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
-                        ChoiceScreen(choice, s, update, onDone = whenResumed { navController.popBackStack() })
+                        // Back after a choice even while the list is still sliding in: whenResumed dropped a
+                        // quick tap's way back (the choice itself was kept). Popping only while the list
+                        // shows guards against a double tap instead.
+                        ChoiceScreen(choice, s, update, onDone = {
+                            if (navController.currentDestination?.route == Routes.CHOICE) navController.popBackStack()
+                        })
                     }
                 }
                 composable(Routes.ABOUT) { AboutScreen(onLicenses = whenResumed { navController.navigate(Routes.LICENSES) }) }

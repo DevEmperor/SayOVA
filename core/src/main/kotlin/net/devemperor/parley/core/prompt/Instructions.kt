@@ -8,8 +8,12 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-/** How Parley sounds. The text is part of the system instruction. */
-enum class Persona(val label: String, val description: String, val prompt: String) {
+/**
+ * How Parley sounds, and so how long it talks: there is no separate setting for the length. [length]
+ * takes the place of the general rule in [Instructions] (beside it, Gemini kept to the general one);
+ * a persona without one gets that rule. The texts are part of the system instruction.
+ */
+enum class Persona(val label: String, val description: String, val prompt: String, val length: String? = null) {
     FRIENDLY(
         "Friendly",
         "Warm and helpful",
@@ -18,7 +22,15 @@ enum class Persona(val label: String, val description: String, val prompt: Strin
     CONCISE(
         "Concise",
         "As short as possible",
-        "Be extremely brief. Answer in one sentence whenever that is enough, and skip pleasantries.",
+        "Be extremely brief and skip pleasantries.",
+        length = "Answer in one sentence whenever that is enough.",
+    ),
+    DETAILED(
+        "Detailed",
+        "Explains with background and examples",
+        "Be thorough, like a knowledgeable friend who enjoys explaining: give the background, how it works, an " +
+            "example or two and what follows from it. Still talk rather than lecture, and stop once the point is made.",
+        length = "Give a simple question a short answer, but talk about anything else for about a minute, roughly 150 words.",
     ),
     TUTOR(
         "Tutor",
@@ -30,6 +42,7 @@ enum class Persona(val label: String, val description: String, val prompt: Strin
         "Practice conversation",
         "Act as a conversation partner for language practice. Keep the conversation going with questions. " +
             "When the user makes a mistake, first answer naturally, then briefly give the corrected phrase.",
+        length = "Keep your turns to a sentence or two, so the user does most of the talking.",
     ),
     CUSTOM("Custom", "Your own instruction", ""),
 }
@@ -69,12 +82,13 @@ object Instructions {
         appendLine()
         appendLine("How to answer:")
         if (textOnly) {
-            appendLine("- Your answers are read on a small round watch screen. Keep them to one to three short sentences.")
+            // Read on a tiny screen, a long answer is a chore whatever the persona says.
+            appendLine("- Your answers are read on a small round watch screen. Keep them to one to three short sentences unless the user asks for more; this goes before anything your personality says about length.")
         } else {
-            appendLine("- Your words are spoken aloud and shown on a small round watch screen. Keep answers to one to three short sentences unless the user asks for more.")
+            appendLine("- Your words are spoken aloud and shown on a small round watch screen. ${persona.length ?: DEFAULT_LENGTH} The user can interrupt you at any time.")
             appendLine("- Speak naturally. Say numbers, units and times the way a person would say them.")
         }
-        appendLine("- Offer to go deeper instead of listing everything at once.")
+        appendLine("- Never read out a long list: give the most useful part and offer more.")
         appendLine("- Never use markdown, bullet points, emojis, tables or URLs.")
         appendLine("- If you did not understand the user, say so briefly and ask them to repeat.")
         appendLine()
@@ -173,6 +187,10 @@ object Instructions {
     }
 
     private const val EARLIER_LIMIT = 6_000
+
+    // A length in sentences: told only "a few sentences", Gemini kept to two (measured 30.10.).
+    private const val DEFAULT_LENGTH = "Unless your personality below says otherwise, give a simple question a short answer, " +
+        "and a question about how or why something is a real explanation of four to six sentences."
 
     private val DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy, HH:mm", Locale.ENGLISH)
 }
