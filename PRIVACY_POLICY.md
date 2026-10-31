@@ -1,6 +1,6 @@
 # Privacy Policy for SayOVA
 
-**Effective date:** [date of the first Play release]
+**Effective date:** 31 October 2026
 **Last updated:** 29 October 2026
 
 This Privacy Policy explains how **SayOVA** (the "App", application ID

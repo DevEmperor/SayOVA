@@ -29,7 +29,8 @@ Fonts, both under the SIL Open Font License: [Newsreader](https://fonts.google.c
 headings ([OFL-Newsreader.txt](public/fonts/OFL-Newsreader.txt)) and
 [Google Sans Flex](https://fonts.google.com/specimen/Google+Sans+Flex) for the rest
 ([OFL.txt](public/fonts/OFL.txt)), Latin only; other scripts use the system's fonts. Icons: Material Symbols
-(Apache 2.0) and Simple Icons (CC0).
+(Apache 2.0) and Simple Icons (CC0); the flags in the language menu: flag-icons (MIT,
+[public/flags/LICENSE.txt](public/flags/LICENSE.txt)).
 
 ## Building and deploying
 

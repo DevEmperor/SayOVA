@@ -35,22 +35,26 @@ function pngSize(file) {
   return [header.readUInt32BE(0), header.readUInt32BE(4)];
 }
 
-// The watch app's languages: the page's path, the app's resource folder, the name in the menu.
+// The watch app's languages: the page's path, the app's resource folder, the name and flag in the menu
+// (flag-icons, MIT; Spain's as a small PNG, since its coat of arms makes the SVG 90 KB).
 const LANGS = [
-  { code: "en", path: "/", res: "values", name: "English" },
-  { code: "de", path: "/de/", res: "values-de", name: "Deutsch" },
-  { code: "fr", path: "/fr/", res: "values-fr", name: "Français" },
-  { code: "es", path: "/es/", res: "values-es", name: "Español" },
-  { code: "it", path: "/it/", res: "values-it", name: "Italiano" },
-  { code: "pt-BR", path: "/pt-br/", res: "values-pt-rBR", name: "Português (Brasil)" },
-  { code: "nl", path: "/nl/", res: "values-nl", name: "Nederlands" },
-  { code: "pl", path: "/pl/", res: "values-pl", name: "Polski" },
-  { code: "sv", path: "/sv/", res: "values-sv", name: "Svenska" },
-  { code: "tr", path: "/tr/", res: "values-tr", name: "Türkçe" },
-  { code: "ja", path: "/ja/", res: "values-ja", name: "日本語" },
-  { code: "ko", path: "/ko/", res: "values-ko", name: "한국어" },
-  { code: "zh-CN", path: "/zh-cn/", res: "values-zh-rCN", name: "简体中文" },
+  { code: "en", path: "/", res: "values", name: "English", flag: "gb.svg" },
+  { code: "de", path: "/de/", res: "values-de", name: "Deutsch", flag: "de.svg" },
+  { code: "fr", path: "/fr/", res: "values-fr", name: "Français", flag: "fr.svg" },
+  { code: "es", path: "/es/", res: "values-es", name: "Español", flag: "es.png" },
+  { code: "it", path: "/it/", res: "values-it", name: "Italiano", flag: "it.svg" },
+  { code: "pt-BR", path: "/pt-br/", res: "values-pt-rBR", name: "Português (Brasil)", flag: "br.svg" },
+  { code: "nl", path: "/nl/", res: "values-nl", name: "Nederlands", flag: "nl.svg" },
+  { code: "pl", path: "/pl/", res: "values-pl", name: "Polski", flag: "pl.svg" },
+  { code: "sv", path: "/sv/", res: "values-sv", name: "Svenska", flag: "se.svg" },
+  { code: "tr", path: "/tr/", res: "values-tr", name: "Türkçe", flag: "tr.svg" },
+  { code: "ja", path: "/ja/", res: "values-ja", name: "日本語", flag: "jp.svg" },
+  { code: "ko", path: "/ko/", res: "values-ko", name: "한국어", flag: "kr.svg" },
+  { code: "zh-CN", path: "/zh-cn/", res: "values-zh-rCN", name: "简体中文", flag: "cn.svg" },
 ];
+
+const flag = (lang, lazy) =>
+  `<img class="flag" src="/flags/${lang.flag}" alt="" width="20" height="20"${lazy ? ' loading="lazy"' : ""}>`;
 
 // The example conversation in the order it is played; q is the user's voice, a is SayOVA's.
 const SAMPLE = ["q1", "a1", "q2", "a2", "q3", "a3"];
@@ -110,8 +114,8 @@ for (const lang of LANGS) {
 
   const menu = LANGS.map((l) =>
     l === lang
-      ? `<li><a href="${l.path}" lang="${l.code}" aria-current="page">${escape(l.name)}</a></li>`
-      : `<li><a href="${l.path}" lang="${l.code}" hreflang="${l.code}" data-lang="${l.code}">${escape(l.name)}</a></li>`,
+      ? `<li><a href="${l.path}" lang="${l.code}" aria-current="page">${flag(l, true)}${escape(l.name)}</a></li>`
+      : `<li><a href="${l.path}" lang="${l.code}" hreflang="${l.code}" data-lang="${l.code}">${flag(l, true)}${escape(l.name)}</a></li>`,
   ).join("\n          ");
 
   // Google's own badge in the page's language, its transparent margin cut off.
@@ -127,6 +131,7 @@ for (const lang of LANGS) {
     alternates,
     menu,
     langname: escape(lang.name),
+    langflag: flag(lang, false),
     play,
     closing: escape(PLAY_LIVE ? t.closing_live : t.closing_soon),
     demo: JSON.stringify(demo).replace(/</g, "\\u003c"),

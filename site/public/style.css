@@ -233,7 +233,18 @@ p { margin: 0; text-wrap: pretty; }
 
 .lang summary::-webkit-details-marker { display: none; }
 .lang summary:hover, .lang[open] summary { color: var(--text); border-color: var(--bezel-edge); }
-.lang summary svg { width: 1.15rem; height: 1.15rem; fill: currentColor; }
+.lang .chevron { width: 1.1rem; height: 1.1rem; margin-right: -0.25rem; fill: currentColor; transition: transform 0.2s; }
+.lang[open] .chevron { transform: rotate(180deg); }
+
+/* Flags, round like the watch and the orb. */
+.flag {
+  flex: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.14);
+}
 
 .lang ul {
   position: absolute;
@@ -253,7 +264,9 @@ p { margin: 0; text-wrap: pretty; }
 }
 
 .lang a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
   padding: 0.5rem 0.8rem;
   border-radius: 0.6rem;
   color: var(--soft);
