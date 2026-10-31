@@ -1,9 +1,29 @@
 /*
- * SayOVA's website. Black is the watch's screen and every colour comes from the app (wear/…/theme/Theme.kt):
- * mint for the one thing to tap, the orb's sky for SayOVA itself, amber and teal only where the watch
- * uses them. The type is Google Sans Flex, the face of Wear OS, rounded for headings like the watch's
- * buttons.
+ * SayOVA's website. Every colour comes from the app (wear/…/theme/Theme.kt): the night behind it is the
+ * orb's sky, dimmed and drifting (sky.ts), the watches on it are black like the real screen, mint marks the
+ * one thing to tap, amber and teal appear only where the watch uses them. Headings are set in Newsreader,
+ * everything else in Google Sans Flex, the face of Wear OS.
  */
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @font-face {
   font-family: "Google Sans Flex";
   font-style: normal;
@@ -50,7 +70,7 @@
 
   --page: 74rem;
   --gutter: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
-  --round: "ROND" 100;
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   color-scheme: dark;
 }
 
@@ -68,7 +88,12 @@ html {
 
 body {
   margin: 0;
-  background: var(--black);
+  /* Without WebGL, a still glow of the same sky. */
+  background:
+    radial-gradient(60rem 40rem at 70% -10rem, rgb(102 84 242 / 0.22), transparent 70%),
+    radial-gradient(50rem 36rem at 10% 20rem, rgb(140 219 219 / 0.08), transparent 70%),
+    var(--black);
+  background-attachment: fixed;
   color: var(--text);
   font: 400 1.0625rem/1.6 "Google Sans Flex", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -94,22 +119,35 @@ a { color: inherit; }
 
 h1, h2, h3 {
   margin: 0;
-  font-variation-settings: var(--round);
   text-wrap: balance;
 }
 
+h1, h2 {
+  font-family: var(--serif);
+  font-weight: 440;
+}
+
 h1 {
-  font-size: clamp(2.75rem, 1.4rem + 5.2vw, 5.4rem);
-  font-weight: 620;
+  font-size: clamp(3rem, 1.6rem + 5.4vw, 5.9rem);
   line-height: 1;
-  letter-spacing: -0.032em;
+  letter-spacing: -0.022em;
 }
 
 h2 {
-  font-size: clamp(2rem, 1.3rem + 2.6vw, 3.4rem);
-  font-weight: 600;
-  line-height: 1.06;
-  letter-spacing: -0.025em;
+  font-size: clamp(2.2rem, 1.5rem + 2.6vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+/* The canvas sky.ts draws the night into, behind everything. */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  pointer-events: none;
 }
 
 p { margin: 0; text-wrap: pretty; }
@@ -152,7 +190,6 @@ p { margin: 0; text-wrap: pretty; }
   gap: 0.6rem;
   font-size: 1.1875rem;
   font-weight: 640;
-  font-variation-settings: var(--round);
   letter-spacing: -0.01em;
   text-decoration: none;
 }
@@ -162,20 +199,21 @@ p { margin: 0; text-wrap: pretty; }
 .nav {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 0.6rem;
 }
 
-.nav-link {
-  color: var(--muted);
-  font-size: 1rem;
-  text-decoration: none;
+.icon-link {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--soft);
 }
 
-.nav-link:hover { color: var(--text); }
-
-@media (max-width: 639px) {
-  .nav-link { display: none; }
-}
+.icon-link svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+.icon-link:hover { color: var(--text); border-color: var(--bezel-edge); background: rgb(255 255 255 / 0.04); }
 
 .lang { position: relative; }
 
@@ -272,7 +310,9 @@ p { margin: 0; text-wrap: pretty; }
   box-shadow: 0 0 10px var(--mint);
 }
 
+.play-badge { display: block; border-radius: 10px; }
 .play-badge img { height: 56px; width: auto; }
+.closing .play-badge img { height: 64px; }
 
 .fine {
   max-width: 30rem;
@@ -288,7 +328,7 @@ p { margin: 0; text-wrap: pretty; }
     row-gap: 2rem;
   }
 
-  .hero h1 { grid-column: 1; grid-row: 1; align-self: end; }
+  .hero h1 { grid-column: 1; grid-row: 1; align-self: end; font-size: clamp(3.2rem, 0.4rem + 4.7vw, 5.9rem); }
   .hero-body { grid-column: 1; grid-row: 2; align-self: start; }
   .demo { grid-column: 2; grid-row: 1 / 3; align-self: center; }
 }
@@ -385,9 +425,9 @@ p { margin: 0; text-wrap: pretty; }
   background: var(--mint);
   color: var(--on-mint);
   font: inherit;
+  width: max-content;
   font-size: 5.4cqw;
   font-weight: 620;
-  font-variation-settings: var(--round);
   white-space: nowrap;
   transform: translateX(-50%);
   cursor: pointer;
@@ -453,6 +493,7 @@ p { margin: 0; text-wrap: pretty; }
   left: 50%;
   bottom: 6%;
   display: flex;
+  width: max-content;
   align-items: flex-start;
   gap: 3.2cqw;
   transform: translateX(-50%);
@@ -520,10 +561,11 @@ p { margin: 0; text-wrap: pretty; }
 .said {
   grid-area: said;
   max-width: 24ch;
-  font-size: clamp(1.65rem, 1.2rem + 1.8vw, 2.6rem);
-  font-weight: 480;
-  line-height: 1.18;
-  letter-spacing: -0.015em;
+  font-family: var(--serif);
+  font-size: clamp(1.85rem, 1.3rem + 2vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
 }
 
 .said-pair span { display: block; }
@@ -632,9 +674,9 @@ p { margin: 0; text-wrap: pretty; }
   border: 1px solid var(--bezel-edge);
   border-radius: 50%;
   color: var(--mint);
-  font-size: 1.25rem;
-  font-weight: 600;
-  font-variation-settings: var(--round);
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .steps h3 {
@@ -702,9 +744,10 @@ p { margin: 0; text-wrap: pretty; }
 }
 
 .facts dt {
-  font-size: 1.1875rem;
-  font-weight: 600;
-  font-variation-settings: var(--round);
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 .facts dd {
@@ -789,6 +832,32 @@ p { margin: 0; text-wrap: pretty; }
 .closing h2 { max-width: 16ch; }
 .closing .more { justify-self: center; }
 
+.support {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--line);
+  max-width: 30rem;
+  color: var(--soft);
+}
+
+.paypal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.3rem 0.7rem 1.1rem;
+  border: 1px solid var(--bezel-edge);
+  border-radius: 999px;
+  color: var(--text);
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.paypal svg { width: 1.15rem; height: 1.15rem; fill: currentColor; }
+.paypal:hover { background: rgb(255 255 255 / 0.06); }
+
 /* Footer */
 
 .foot {
@@ -811,8 +880,9 @@ p { margin: 0; text-wrap: pretty; }
   list-style: none;
 }
 
-.foot a { text-decoration: none; }
+.foot a { display: inline-flex; align-items: center; gap: 0.45rem; text-decoration: none; }
 .foot a:hover { color: var(--text); text-decoration: underline; }
+.foot svg { width: 1rem; height: 1rem; fill: currentColor; }
 
 /* The page that does not exist */
 

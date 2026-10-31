@@ -106,6 +106,9 @@
   "closing_soon": "SayOVA is coming to Google Play.",
   "closing_live": "Get SayOVA on Google Play.",
   "closing_guide": "Read the guide",
+  "support_text": "Like SayOVA? A donation supports its development.",
+  "support_paypal": "Donate with PayPal",
+  "footer_donate": "Donate",
 
   "footer_privacy": "Privacy policy",
   "footer_contact": "Contact"

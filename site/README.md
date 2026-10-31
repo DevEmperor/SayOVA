@@ -16,15 +16,20 @@ its voices from `wear/src/main/assets/sample/` (as Ogg Opus, plus AAC made with 
 Opus). The orb is drawn live with WebGL by the pairing page's [orb.ts](../pair/src/page/orb.ts) and stirs
 with the voice; without WebGL the still `orb.png` stays.
 
-Until Google Play has published SayOVA, `PLAY_LIVE` in `build.mjs` is false and the page says it is coming.
-To switch, set it to true and put Google's official badge for every language into `public/badges/` (named
-like `de.png`).
+Behind the page, `src/sky.ts` draws the orb's sky over the whole window, dimmed and drifting (WebGL at a
+fifth of the window's size, 30 frames a second, one still frame for reduced motion).
+
+The Google Play badge (top and bottom) is Google's own, per language in `public/badges/`, its transparent
+margin trimmed. With `PLAY_LIVE` in `build.mjs` set to false the page says "Coming soon" instead.
 
 The privacy policy is not on the website but in the repository ([PRIVACY_POLICY.md](../PRIVACY_POLICY.md)),
-as for DevEmperor's other apps. Contact: contact@devemperor.net.
+as for DevEmperor's other apps. Contact: contact@devemperor.net. Donations: paypal.me/DevEmperor.
 
-Font: [Google Sans Flex](https://fonts.google.com/specimen/Google+Sans+Flex) (weight and roundness axes,
-Latin), under the SIL Open Font License ([public/fonts/OFL.txt](public/fonts/OFL.txt)).
+Fonts, both under the SIL Open Font License: [Newsreader](https://fonts.google.com/specimen/Newsreader) for
+headings ([OFL-Newsreader.txt](public/fonts/OFL-Newsreader.txt)) and
+[Google Sans Flex](https://fonts.google.com/specimen/Google+Sans+Flex) for the rest
+([OFL.txt](public/fonts/OFL.txt)), Latin only; other scripts use the system's fonts. Icons: Material Symbols
+(Apache 2.0) and Simple Icons (CC0).
 
 ## Building and deploying
 

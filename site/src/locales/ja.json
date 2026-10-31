@@ -106,6 +106,9 @@
   "closing_soon": "SayOVA は Google Play で近日公開予定です。",
   "closing_live": "SayOVA は Google Play で入手できます。",
   "closing_guide": "ガイドを読む",
+  "support_text": "SayOVA を気に入っていただけましたか？寄付は今後の開発の支えになります。",
+  "support_paypal": "PayPal で寄付する",
+  "footer_donate": "寄付",
 
   "footer_privacy": "プライバシー ポリシー",
   "footer_contact": "お問い合わせ"

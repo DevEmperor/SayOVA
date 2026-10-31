@@ -16,8 +16,24 @@ const APP = join(SITE, "../wear/src/main");
 const ORIGIN = "https://sayova.app";
 const PLAY = "https://play.google.com/store/apps/details?id=net.devemperor.sayova";
 
-// Until Google Play has published SayOVA, the page says it is coming instead of linking there.
-const PLAY_LIVE = false;
+// Before Google Play had published SayOVA, the page said it was coming instead of linking there.
+const PLAY_LIVE = true;
+
+// Icons: Material Symbols "menu_book" (Apache 2.0) for the guide; GitHub and PayPal from Simple Icons (CC0).
+const ICONS = {
+  icon_guide:
+    "M248-300q53.57 0 104.28 12.5Q403-275 452-250v-427q-45-30-97.62-46.5Q301.76-740 248-740q-38 0-74.5 9.5T100-707v434q31-14 70.5-20.5T248-300Zm264 50q50-25 98-37.5T712-300q38 0 78.5 6t69.5 16v-429q-34-17-71.82-25-37.82-8-76.18-8-54 0-104.5 16.5T512-677v427Zm-30 79q-7.54 0-14.27-1.5Q461-174 456-178q-47-29-99.85-45-52.84-16-108.15-16-36.54 0-71.77 9T106-208q-23.1 11-44.55-3Q40-225 40-251v-463q0-15 7-27.5T68-761q42-20 87.39-29.5 45.4-9.5 92.61-9.5 63 0 122.5 17T482-731q51-35 109.5-52T712-800q46.87 0 91.93 9.5Q849-781 891-761q14 7 21.5 19.5T920-714v463q0 27.89-22.5 42.45Q875-194 853-208q-34-14-69.23-22.5Q748.54-239 712-239q-54.27 0-106.14 16Q554-207 508-178q-5 4-11.73 5.5T482-171Z",
+  icon_github:
+    "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12",
+  icon_paypal:
+    "M7.016 19.198h-4.2a.562.562 0 0 1-.555-.65L5.093.584A.692.692 0 0 1 5.776 0h7.222c3.417 0 5.904 2.488 5.846 5.5-.006.25-.027.5-.066.747A6.794 6.794 0 0 1 12.071 12H8.743a.69.69 0 0 0-.682.583l-.325 2.056-.013.083-.692 4.39-.015.087zM19.79 6.142c-.01.087-.01.175-.023.261a7.76 7.76 0 0 1-7.695 6.598H9.007l-.283 1.795-.013.083-.692 4.39-.134.843-.014.088H6.86l-.497 3.15a.562.562 0 0 0 .555.65h3.612c.34 0 .63-.249.683-.585l.952-6.031a.692.692 0 0 1 .683-.584h2.126a6.793 6.793 0 0 0 6.707-5.752c.306-1.95-.466-3.744-1.89-4.906z",
+};
+
+/** A PNG's width and height, from its header. */
+function pngSize(file) {
+  const header = readFileSync(file).subarray(16, 24);
+  return [header.readUInt32BE(0), header.readUInt32BE(4)];
+}
 
 // The watch app's languages: the page's path, the app's resource folder, the name in the menu.
 const LANGS = [
@@ -98,8 +114,10 @@ for (const lang of LANGS) {
       : `<li><a href="${l.path}" lang="${l.code}" hreflang="${l.code}" data-lang="${l.code}">${escape(l.name)}</a></li>`,
   ).join("\n          ");
 
+  // Google's own badge in the page's language, its transparent margin cut off.
+  const [badgeWidth, badgeHeight] = pngSize(join(SITE, "public/badges", `${lang.code}.png`));
   const play = PLAY_LIVE
-    ? `<a class="play-badge" href="${PLAY}"><img src="/badges/${lang.code}.png" alt="${escape(t.play_get)}" height="56"></a>`
+    ? `<a class="play-badge" href="${PLAY}"><img src="/badges/${lang.code}.png" alt="${escape(t.play_get)}" width="${badgeWidth}" height="${badgeHeight}"></a>`
     : `<p class="soon"><span class="dot" aria-hidden="true"></span>${escape(t.play_soon)}</p>`;
 
   const built = {
@@ -112,6 +130,7 @@ for (const lang of LANGS) {
     play,
     closing: escape(PLAY_LIVE ? t.closing_live : t.closing_soon),
     demo: JSON.stringify(demo).replace(/</g, "\\u003c"),
+    ...ICONS,
   };
 
   const html = template.replace(/\{\{(@?)(\w+)\}\}/g, (all, raw, key) => {

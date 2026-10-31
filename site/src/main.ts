@@ -1,10 +1,14 @@
 /*
- * The website's script: the watch at the top, which plays SayOVA's example conversation with the app's
- * own texts and voices, and the language menu. The living orb is the pairing page's own WebGL shader
+ * The website's script: the drifting sky behind the page (sky.ts), the watch at the top, which plays
+ * SayOVA's example conversation with the app's own texts and voices, and the language menu. The living
+ * orb is the pairing page's own WebGL shader
  * (pair/src/page/orb.ts); a CSS-scaled still image stutters in Firefox, which moves such a slow scale in
  * whole pixels.
  */
 import { startOrb } from "../../pair/src/page/orb.ts";
+import { startSky } from "./sky.ts";
+
+startSky();
 
 interface Line {
   who: "q" | "a";
