@@ -43,7 +43,7 @@ sealed interface PairingState {
 }
 
 /**
- * The watch side of the QR handover (PLAN.md §5): make a one-time key pair, announce the code to the
+ * The watch side of the QR handover (Pairing): make a one-time key pair, announce the code to the
  * relay, wait for the sealed key, open it, let the user compare the code, check the key with the
  * provider, store it. The private key only ever exists in this object's memory.
  */

@@ -16,7 +16,7 @@ import java.security.SecureRandom
 import java.util.Base64
 
 /**
- * Key handover from a browser to the watch (PLAN.md §5).
+ * Key handover from a browser to the watch (the relay: pair/README.md).
  *
  * The watch makes a one-time X25519 key pair and shows its public half in a QR code. The pairing page
  * encrypts the API key to it with HPKE (RFC 9180: DHKEM-X25519-HKDF-SHA256, HKDF-SHA256,
