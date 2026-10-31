@@ -69,4 +69,8 @@ under the Apache License 2.0: every claim on this page can be checked in the cod
 
 ## Reporting a security problem
 
-Please don't open a public issue — write to [contact@devemperor.net](mailto:contact@devemperor.net).
+Please don't open a public issue — use
+[GitHub's private advisory form](https://github.com/DevEmperor/SayOVA/security/advisories/new), or write
+to [contact@devemperor.net](mailto:contact@devemperor.net). The
+[security policy](https://github.com/DevEmperor/SayOVA/blob/main/SECURITY.md) says what is in scope and
+what to expect.

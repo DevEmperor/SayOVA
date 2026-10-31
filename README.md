@@ -240,6 +240,10 @@ The best way to help is to **[open an issue](https://github.com/DevEmperor/SayOV
 reports, ideas or feedback. A wrong or offensive answer can be reported right from the watch: open
 the conversation in the history and choose *Report a response*.
 
+**Found a security problem?** Please don't open a public issue for it — use
+[GitHub's private advisory form](https://github.com/DevEmperor/SayOVA/security/advisories/new).
+[`SECURITY.md`](SECURITY.md) says what is in scope, what isn't, and what to expect.
+
 <br>
 
 ## 📄 License & credits
