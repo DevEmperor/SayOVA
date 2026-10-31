@@ -234,38 +234,6 @@ Details: [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
 
 <br>
 
-## 🛠️ Building from source
-
-| Path | What lives there |
-| --- | --- |
-| `core/` | Provider protocols (Gemini Live, OpenAI Realtime), event model, tools, cost meter, pairing crypto — pure Kotlin, unit-tested |
-| `wear/` | The Wear OS app: audio, network selection, conversation service, Compose UI, tile, complication |
-| `pair/` | The pairing page and relay on pair.sayova.app (Cloudflare Worker + Durable Object) |
-| `site/` | The website on [sayova.app](https://sayova.app) |
-| `docs/wiki/` | The pages of the [guide](https://github.com/DevEmperor/SayOVA/wiki), with their pictures |
-
-```bash
-JAVA_HOME=/usr/lib/jvm/java-21-openjdk ./gradlew :core:testDebugUnitTest :wear:testDebugUnitTest :wear:lintDebug :wear:assembleRelease
-```
-
-Java 21 is needed. The address of the pairing page is compiled into the app from
-`sayova.pairBaseUrl` in `gradle.properties` (`https://pair.sayova.app`). See
-[pair/README.md](pair/README.md) for the relay and [site/README.md](site/README.md) for the website.
-Release builds are signed with the key named in an untracked `keystore.properties`
-(see [keystore.properties.example](keystore.properties.example)), else with the debug key.
-
-Debug builds open the introduction's sample conversation straight away, for tests and screenshots:
-
-```bash
-adb shell am start -n net.devemperor.sayova.debug/net.devemperor.sayova.MainActivity --ez demo true
-```
-
-The sample's voices are Gemini's (SayOVA's answers in its default voice Kore, the user's questions in
-Puck), recorded once per app language with `--ez record_sample true` (see `SampleVoices`) and kept as
-Opus in `wear/src/main/assets/sample/`; when its lines change in the strings, record them again.
-
-<br>
-
 ## 🤝 Contributing
 
 The best way to help is to **[open an issue](https://github.com/DevEmperor/SayOVA/issues)** with bug
