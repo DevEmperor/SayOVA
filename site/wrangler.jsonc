@@ -12,13 +12,14 @@
   "workers_dev": false,
   "preview_urls": false,
 
-  // The orb script (pair's WebGL orb) is bundled before every deploy, with the esbuild installed for pair/.
+  // Before every deploy build.mjs puts the site together in dist/: the pages in every language, the
+  // example conversation's voices and the script (with the esbuild installed for pair/). Needs ffmpeg.
   "build": {
-    "command": "npx --prefix ../pair esbuild src/main.ts --bundle --minify --format=esm --target=es2022 --outfile=public/orb.js"
+    "command": "node build.mjs"
   },
 
   "assets": {
-    "directory": "./public",
+    "directory": "./dist",
     "not_found_handling": "404-page"
   },
 

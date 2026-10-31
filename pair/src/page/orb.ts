@@ -93,7 +93,11 @@ void main() {
 /** How fast the cloud drifts: between the watch's idle and listening speeds, calm but visibly alive. */
 const FLOW_SPEED = 0.42;
 
-export function startOrb(host: HTMLElement): void {
+/**
+ * Draws the orb into [host]. [level], if given, is a voice's loudness from 0 to 1 (the website's example
+ * conversation); the cloud stirs with it, like the watch's orb while someone talks.
+ */
+export function startOrb(host: HTMLElement, level?: () => number): void {
   const canvas = document.createElement("canvas");
   const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true, antialias: false });
   if (!gl) return;
@@ -131,7 +135,7 @@ export function startOrb(host: HTMLElement): void {
     gl.uniform2f(resolution, canvas.width, canvas.height);
     gl.uniform1f(time, t);
     // Breathes slowly, like the watch's orb between words.
-    gl.uniform1f(activity, 0.22 + 0.1 * Math.sin(t * 1.7));
+    gl.uniform1f(activity, 0.22 + 0.1 * Math.sin(t * 1.7) + 0.7 * (level?.() ?? 0));
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 

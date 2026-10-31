@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="{{@lang}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#000000">
+  <title>{{meta_title}}</title>
+  <meta name="description" content="{{meta_description}}">
+  <link rel="canonical" href="{{@url}}">
+  {{@alternates}}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{meta_title}}">
+  <meta property="og:description" content="{{meta_description}}">
+  <meta property="og:image" content="https://sayova.app/og.jpg">
+  <meta property="og:url" content="{{@url}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/google-sans-flex-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/lang.js"></script>
+  <script type="module" src="/main.js"></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="{{@path}}"><img src="/orb.png" alt="" width="28" height="28">SayOVA</a>
+    <nav class="nav">
+      <a class="nav-link" href="https://github.com/DevEmperor/SayOVA/wiki">{{nav_guide}}</a>
+      <a class="nav-link" href="https://github.com/DevEmperor/SayOVA">{{nav_source}}</a>
+      <details class="lang">
+        <summary aria-label="{{nav_language}}">
+          <svg viewBox="0 0 960 960" aria-hidden="true"><path d="M480,880Q398,880 325,848.5Q252,817 197.5,762.5Q143,708 111.5,635Q80,562 80,480Q80,397 111.5,324.5Q143,252 197.5,197.5Q252,143 325,111.5Q398,80 480,80Q563,80 635.5,111.5Q708,143 762.5,197.5Q817,252 848.5,324.5Q880,397 880,480Q880,562 848.5,635Q817,708 762.5,762.5Q708,817 635.5,848.5Q563,880 480,880ZM480,798Q506,762 525,723Q544,684 556,640L404,640Q416,684 435,723Q454,762 480,798ZM376,782Q358,749 344.5,713.5Q331,678 322,640L204,640Q233,690 276.5,727Q320,764 376,782ZM584,782Q640,764 683.5,727Q727,690 756,640L638,640Q629,678 615.5,713.5Q602,749 584,782ZM170,560L306,560Q303,540 301.5,520.5Q300,501 300,480Q300,459 301.5,439.5Q303,420 306,400L170,400Q165,420 162.5,439.5Q160,459 160,480Q160,501 162.5,520.5Q165,540 170,560ZM386,560L574,560Q577,540 578.5,520.5Q580,501 580,480Q580,459 578.5,439.5Q577,420 574,400L386,400Q383,420 381.5,439.5Q380,459 380,480Q380,501 381.5,520.5Q383,540 386,560ZM654,560L790,560Q795,540 797.5,520.5Q800,501 800,480Q800,459 797.5,439.5Q795,420 790,400L654,400Q657,420 658.5,439.5Q660,459 660,480Q660,501 658.5,520.5Q657,540 654,560ZM638,320L756,320Q727,270 683.5,233Q640,196 584,178Q602,211 615.5,246.5Q629,282 638,320ZM404,320L556,320Q544,276 525,237Q506,198 480,162Q454,198 435,237Q416,276 404,320ZM204,320L322,320Q331,282 344.5,246.5Q358,211 376,178Q320,196 276.5,233Q233,270 204,320Z"/></svg>
+          <span>{{@langname}}</span>
+        </summary>
+        <ul>
+          {{@menu}}
+        </ul>
+      </details>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>{{hero_title}}</h1>
+
+      <figure class="demo">
+        <div class="watch" data-state="idle">
+          <svg class="arc" viewBox="0 0 400 400" aria-hidden="true">
+            <path id="arc-path" d="M 33 200 A 167 167 0 0 1 367 200" fill="none"/>
+            <text><textPath href="#arc-path" startOffset="50%" text-anchor="middle"><tspan class="arc-time"></tspan><tspan class="arc-status"></tspan></textPath></text>
+          </svg>
+          <button class="orb" type="button" aria-label="{{demo_orb}}"></button>
+          <button class="start" type="button">
+            <svg viewBox="0 0 960 960" aria-hidden="true"><path d="M320,687L320,273Q320,256 332,244.5Q344,233 360,233Q365,233 370.5,234.5Q376,236 381,239L707,446Q716,452 720.5,461Q725,470 725,480Q725,490 720.5,499Q716,508 707,514L381,721Q376,724 370.5,725.5Q365,727 360,727Q344,727 332,715.5Q320,704 320,687Z"/></svg>
+            <span>{{demo_play}}</span>
+          </button>
+          <p class="caption"><span class="meta"></span><span class="notice"></span></p>
+          <div class="lines"><div class="lines-inner"></div></div>
+          <div class="controls">
+            <button class="ctl ctl-text" type="button" aria-pressed="true" aria-label="{{demo_text}}">
+              <svg class="on" viewBox="0 0 960 960" aria-hidden="true"><path d="M160,800Q127,800 103.5,776.5Q80,753 80,720L80,240Q80,207 103.5,183.5Q127,160 160,160L800,160Q833,160 856.5,183.5Q880,207 880,240L880,720Q880,753 856.5,776.5Q833,800 800,800L160,800ZM160,720L800,720L800,240L160,240L160,720ZM280,640L520,640Q537,640 548.5,628.5Q560,617 560,600Q560,583 548.5,571.5Q537,560 520,560L280,560Q263,560 251.5,571.5Q240,583 240,600Q240,617 251.5,628.5Q263,640 280,640ZM440,480L680,480Q697,480 708.5,468.5Q720,457 720,440Q720,423 708.5,411.5Q697,400 680,400L440,400Q423,400 411.5,411.5Q400,423 400,440Q400,457 411.5,468.5Q423,480 440,480ZM280,480Q297,480 308.5,468.5Q320,457 320,440Q320,423 308.5,411.5Q297,400 280,400Q263,400 251.5,411.5Q240,423 240,440Q240,457 251.5,468.5Q263,480 280,480ZM680,640Q697,640 708.5,628.5Q720,617 720,600Q720,583 708.5,571.5Q697,560 680,560Q663,560 651.5,571.5Q640,583 640,600Q640,617 651.5,628.5Q663,640 680,640Z"/></svg>
+              <svg class="off" viewBox="0 0 960 960" aria-hidden="true"><path d="M160,800Q127,800 103.5,776.5Q80,753 80,720L80,240Q80,207 103.5,183.5Q127,160 160,160L240,240L160,240L160,720L606,720L526,640L280,640Q263,640 251.5,628.5Q240,617 240,600Q240,583 251.5,571.5Q263,560 280,560L446,560L54,166Q43,155 42.5,138.5Q42,122 54,110Q65,99 82,99Q99,99 110,110L850,850Q861,861 861.5,877.5Q862,894 850,906Q839,917 822,917Q805,917 794,906L686,800L160,800ZM880,240L880,670Q880,690 867.5,700Q855,710 840,710Q823,710 811.5,698Q800,686 800,669L800,240L371,240Q351,240 341,227.5Q331,215 331,200Q331,183 342.5,171.5Q354,160 371,160L800,160Q833,160 856.5,183.5Q880,207 880,240ZM680,480L611,480Q591,480 581,467.5Q571,455 571,440Q571,425 581,412.5Q591,400 611,400L680,400Q697,400 708.5,411.5Q720,423 720,440Q720,457 708.5,468.5Q697,480 680,480ZM280,480Q263,480 251.5,468.5Q240,457 240,440Q240,423 251.5,411.5Q263,400 280,400Q297,400 308.5,411.5Q320,423 320,440Q320,457 308.5,468.5Q297,480 280,480Z"/></svg>
+            </button>
+            <button class="ctl ctl-end" type="button" aria-label="{{demo_end}}">
+              <svg viewBox="0 0 960 960" aria-hidden="true"><path d="M136,656L44,566Q32,554 32,538Q32,522 44,510Q132,415 247,367.5Q362,320 480,320Q598,320 712.5,367.5Q827,415 916,510Q928,522 928,538Q928,554 916,566L824,656Q813,667 798.5,668Q784,669 772,660L656,572Q648,566 644,558Q640,550 640,540L640,426Q602,414 562,407Q522,400 480,400Q438,400 398,407Q358,414 320,426L320,540Q320,550 316,558Q312,566 304,572L188,660Q176,669 161.5,668Q147,667 136,656Z"/></svg>
+            </button>
+            <button class="ctl ctl-sound" type="button" aria-pressed="true" aria-label="{{demo_sound}}">
+              <svg class="on" viewBox="0 0 960 960" aria-hidden="true"><path d="M760,479Q760,396 716,327.5Q672,259 598,225Q583,218 576,203.5Q569,189 574,174Q580,158 595.5,151Q611,144 627,151Q724,194 782,282.5Q840,371 840,479Q840,587 782,675.5Q724,764 627,807Q611,814 595.5,807Q580,800 574,784Q569,769 576,754.5Q583,740 598,733Q672,699 716,630.5Q760,562 760,479ZM280,600L160,600Q143,600 131.5,588.5Q120,577 120,560L120,400Q120,383 131.5,371.5Q143,360 160,360L280,360L412,228Q431,209 455.5,219.5Q480,230 480,257L480,703Q480,730 455.5,740.5Q431,751 412,732L280,600ZM660,480Q660,522 641,559.5Q622,597 591,621Q581,627 570.5,621.5Q560,616 560,604L560,354Q560,342 570.5,336.5Q581,331 591,337Q622,362 641,400Q660,438 660,480ZM400,354L314,440L200,440L200,520L314,520L400,606L400,354Z"/></svg>
+              <svg class="off" viewBox="0 0 960 960" aria-hidden="true"><path d="M671,783Q660,790 649,796Q638,802 626,807Q611,814 595.5,807Q580,800 574,784Q568,769 575.5,754.5Q583,740 598,733Q605,730 611,726.5Q617,723 623,719L480,592L480,703Q480,730 455.5,740.5Q431,751 412,732L280,600L160,600Q143,600 131.5,588.5Q120,577 120,560L120,400Q120,383 131.5,371.5Q143,360 160,360L248,360L84,196Q73,185 73,168Q73,151 84,140Q95,129 112,129Q129,129 140,140L820,820Q831,831 831,848Q831,865 820,876Q809,887 792,887Q775,887 764,876L671,783ZM760,479Q760,396 716,327.5Q672,259 598,225Q583,218 576,203.5Q569,189 574,174Q580,158 595.5,151Q611,144 627,151Q724,194 782,282Q840,370 840,479Q840,512 834,544.5Q828,577 817,607Q809,629 792.5,634.5Q776,640 762,635Q748,630 739.5,617Q731,604 739,587Q750,561 755,534.5Q760,508 760,479ZM591,337Q624,358 642,400Q660,442 660,480Q660,485 660,490Q660,495 659,500Q657,513 645,517Q633,521 623,511L572,460Q566,454 563,446.5Q560,439 560,431L560,354Q560,342 570.5,336.5Q581,331 591,337ZM390,278Q384,272 384,264Q384,256 390,250L412,228Q431,209 455.5,219.5Q480,230 480,257L480,320Q480,334 468,339Q456,344 446,334L390,278ZM400,606L400,512L328,440L200,440L200,520L314,520L400,606Z"/></svg>
+            </button>
+          </div>
+        </div>
+        <figcaption>{{demo_caption}}</figcaption>
+        <script type="application/json" id="demo-data">{{@demo}}</script>
+      </figure>
+
+      <div class="hero-body">
+        <p class="lead">{{hero_lead}}</p>
+        <div class="cta">
+          {{@play}}
+          <a class="more" href="#video">{{hero_video}}</a>
+        </div>
+        <p class="fine">{{hero_requirements}}</p>
+      </div>
+    </section>
+
+    <section class="talk" aria-labelledby="talk-title">
+      <div class="section-head">
+        <h2 id="talk-title">{{talk_title}}</h2>
+        <p>{{talk_intro}}</p>
+      </div>
+
+      <article class="turn">
+        <h3 class="said">{{f_interrupt_said}}</h3>
+        <p class="answer">{{f_interrupt_text}}</p>
+        <img class="screen" src="/img/interrupt.webp" alt="{{f_interrupt_alt}}" width="432" height="432" loading="lazy">
+      </article>
+
+      <article class="turn">
+        <h3 class="said">{{f_read_said}}</h3>
+        <p class="answer">{{f_read_text}}</p>
+        <img class="screen" src="/img/read-along.webp" alt="{{f_read_alt}}" width="432" height="432" loading="lazy">
+      </article>
+
+      <article class="turn">
+        <h3 class="said">{{f_timer_said}}</h3>
+        <p class="answer">{{f_timer_text}}</p>
+        <img class="screen" src="/img/timer.webp" alt="{{f_timer_alt}}" width="432" height="432" loading="lazy">
+      </article>
+
+      <article class="turn">
+        <h3 class="said">{{f_phone_said}}</h3>
+        <p class="answer">{{f_phone_text}}</p>
+        <img class="screen" src="/img/whatsapp.webp" alt="{{f_phone_alt}}" width="432" height="432" loading="lazy">
+      </article>
+
+      <article class="turn">
+        <h3 class="said">{{f_watch_said}}</h3>
+        <div class="answer">
+          <p>{{f_watch_text}}</p>
+          <p class="asks-title">{{f_watch_more}}</p>
+          <ul class="asks">
+            <li>{{ask_1}}</li>
+            <li>{{ask_2}}</li>
+            <li>{{ask_3}}</li>
+            <li>{{ask_4}}</li>
+            <li>{{ask_5}}</li>
+            <li>{{ask_6}}</li>
+            <li>{{ask_7}}</li>
+            <li>{{ask_8}}</li>
+          </ul>
+        </div>
+        <img class="screen" src="/img/weather.webp" alt="{{f_watch_alt}}" width="432" height="432" loading="lazy">
+      </article>
+
+      <article class="turn">
+        <h3 class="said said-pair"><span lang="{{f_interp_foreign_lang}}">{{f_interp_foreign}}</span> <span class="echo">{{f_interp_own}}</span></h3>
+        <p class="answer">{{f_interp_text}}</p>
+        <img class="screen" src="/img/interpreter.webp" alt="{{f_interp_alt}}" width="432" height="432" loading="lazy">
+      </article>
+
+      <article class="turn">
+        <h3 class="said">{{f_memory_said}}</h3>
+        <p class="answer">{{f_memory_text}}</p>
+        <img class="screen" src="/img/memory.webp" alt="{{f_memory_alt}}" width="432" height="432" loading="lazy">
+      </article>
+    </section>
+
+    <section class="film" id="video" aria-labelledby="video-title">
+      <h2 id="video-title">{{video_title}}</h2>
+      <video controls preload="none" playsinline poster="/media/poster.jpg" width="1920" height="1080" aria-labelledby="video-title">
+        <source src="/media/sayova.mp4" type="video/mp4">
+        <p>{{video_fallback}} <a href="/media/sayova.mp4">sayova.mp4</a></p>
+      </video>
+    </section>
+
+    <section class="setup" aria-labelledby="setup-title">
+      <div class="setup-text">
+        <h2 id="setup-title">{{setup_title}}</h2>
+        <p class="intro">{{setup_intro}}</p>
+        <ol class="steps">
+          <li><h3>{{step1_title}}</h3><p>{{step1_text}}</p></li>
+          <li><h3>{{step2_title}}</h3><p>{{step2_text}}</p></li>
+          <li><h3>{{step3_title}}</h3><p>{{step3_text}}</p></li>
+          <li><h3>{{step4_title}}</h3><p>{{step4_text}}</p></li>
+        </ol>
+        <a class="more" href="https://github.com/DevEmperor/SayOVA/wiki/API-keys">{{setup_key_link}}</a>
+      </div>
+      <div class="setup-pics">
+        <img class="screen" src="/img/pair.webp" alt="{{setup_watch_alt}}" width="432" height="432" loading="lazy">
+        <img class="phone" src="/img/pairing-page.webp" alt="{{setup_phone_alt}}" width="390" height="844" loading="lazy">
+      </div>
+    </section>
+
+    <section class="facts" aria-labelledby="facts-title">
+      <h2 id="facts-title">{{facts_title}}</h2>
+      <div class="facts-body">
+        <dl>
+          <div>
+            <dt>{{fact_key_t}}</dt>
+            <dd>{{fact_key_d}}</dd>
+          </div>
+          <div>
+            <dt>{{fact_cost_t}}</dt>
+            <dd>{{fact_cost_d}}</dd>
+          </div>
+          <div>
+            <dt>{{fact_privacy_t}}</dt>
+            <dd>{{fact_privacy_d}} <a href="https://github.com/DevEmperor/SayOVA/blob/main/PRIVACY_POLICY.md">{{fact_privacy_link}}</a></dd>
+          </div>
+          <div>
+            <dt>{{fact_open_t}}</dt>
+            <dd>{{fact_open_d}} <a href="https://github.com/DevEmperor/SayOVA">{{fact_open_link}}</a></dd>
+          </div>
+          <div>
+            <dt>{{fact_req_t}}</dt>
+            <dd>{{fact_req_d}}</dd>
+          </div>
+        </dl>
+        <img class="screen" src="/img/usage.webp" alt="{{fact_usage_alt}}" width="432" height="432" loading="lazy">
+      </div>
+    </section>
+
+    <section class="details" aria-labelledby="details-title">
+      <h2 id="details-title">{{details_title}}</h2>
+      <div class="details-body">
+        <img class="screen" src="/img/tile.webp" alt="{{details_tile_alt}}" width="432" height="432" loading="lazy">
+        <ul>
+          <li>{{d_1}}</li>
+          <li>{{d_2}}</li>
+          <li>{{d_3}}</li>
+          <li>{{d_4}}</li>
+          <li>{{d_5}}</li>
+          <li>{{d_6}}</li>
+          <li>{{d_7}}</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="closing">
+      <img class="closing-orb" src="/orb.png" alt="" width="96" height="96" loading="lazy">
+      <h2>{{@closing}}</h2>
+      {{@play}}
+      <a class="more" href="https://github.com/DevEmperor/SayOVA/wiki">{{closing_guide}}</a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>© 2026 DevEmperor</p>
+    <ul>
+      <li><a href="https://github.com/DevEmperor/SayOVA/wiki">{{nav_guide}}</a></li>
+      <li><a href="https://github.com/DevEmperor/SayOVA">{{nav_source}}</a></li>
+      <li><a href="https://github.com/DevEmperor/SayOVA/blob/main/PRIVACY_POLICY.md">{{footer_privacy}}</a></li>
+      <li><a href="mailto:contact@devemperor.net">{{footer_contact}}</a></li>
+    </ul>
+  </footer>
+</body>
+</html>

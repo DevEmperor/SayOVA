@@ -29,5 +29,5 @@ pair/public/share.js
 
 # Website
 site/.wrangler/
-site/public/orb.js
+site/dist/
 __pycache__/
