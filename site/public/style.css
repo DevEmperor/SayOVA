@@ -897,6 +897,25 @@ p { margin: 0; text-wrap: pretty; }
 .foot a:hover { color: var(--text); text-decoration: underline; }
 .foot svg { width: 1rem; height: 1rem; fill: currentColor; }
 
+/* Impressum / legal notice */
+
+.legal {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding-block: clamp(2rem, 6vw, 4rem) 1rem;
+  color: var(--soft);
+}
+
+.legal > * { max-width: 40rem; }
+.legal:last-child { padding-bottom: clamp(4rem, 10vw, 7rem); }
+
+.legal h1 { font-size: clamp(2.6rem, 1.6rem + 3vw, 3.8rem); color: var(--text); }
+.legal h2 { margin-top: 1rem; font-size: 1.6rem; color: var(--text); }
+.legal-note { color: var(--muted); }
+.legal address { font-style: normal; font-size: 1.1875rem; line-height: 1.6; color: var(--text); }
+.legal a { color: var(--mint); text-underline-offset: 0.2em; }
+
 /* The page that does not exist */
 
 .notfound {

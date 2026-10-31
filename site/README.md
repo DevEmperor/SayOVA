@@ -6,7 +6,8 @@ pairing page and relay on pair.sayova.app ([pair/](../pair)).
 
 - `src/index.html` is the page, with `{{key}}` for a text from `src/locales/<language>.json` (en.json is the
   source; a text missing in a language falls back to English) and `{{@name}}` for what the build fills in.
-- `public/` holds the files served as they are: style, fonts, screenshots, the video.
+- `public/` holds the files served as they are: style, fonts, screenshots, the video, and the legal notice
+  (`impressum/`, German and English, linked from every page's footer and kept out of search results).
 - `build.mjs` puts it all together in `dist/` (not committed): one page per language (English at `/`, the
   others at `/de/`, `/fr/`, …), `lang.js` that sends a visitor to the page in their browser's language, the
   sitemap, and `main.js` bundled from `src/main.ts`.
