@@ -15,6 +15,7 @@ hear the answer and read it along on your watch — with Google Gemini or OpenAI
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/DevEmperor/SayOVA?color=2EC4B6&labelColor=1b1e2b"></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Wear%20OS%203%2B-2EC4B6?labelColor=1b1e2b&logo=wearos&logoColor=white">
   <a href="https://github.com/DevEmperor/SayOVA/wiki"><img alt="Guide" src="https://img.shields.io/badge/guide-wiki-8B5CF6?labelColor=1b1e2b&logo=bookstack&logoColor=white"></a>
+  <a href="https://github.com/sponsors/DevEmperor"><img alt="Sponsors" src="https://img.shields.io/github/sponsors/DevEmperor?color=2EC4B6&labelColor=1b1e2b&label=sponsors"></a>
   <a href="https://github.com/DevEmperor/SayOVA/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DevEmperor/SayOVA?style=social"></a>
 </p>
 
@@ -25,7 +26,12 @@ hear the answer and read it along on your watch — with Google Gemini or OpenAI
   <img alt="OpenAI Realtime" src="https://img.shields.io/badge/OpenAI%20Realtime-412991?logo=openai&logoColor=white">
 </p>
 
-<a href="https://play.google.com/store/apps/details?id=net.devemperor.sayova&referrer=utm_source%3Dgithub%26utm_medium%3Dbadge%26utm_campaign%3Dreadme"><img alt="Get it on Google Play" width="260" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/></a>
+<table align="center">
+  <tr>
+    <td valign="middle"><a href="https://play.google.com/store/apps/details?id=net.devemperor.sayova&referrer=utm_source%3Dgithub%26utm_medium%3Dbadge%26utm_campaign%3Dreadme"><img alt="Get it on Google Play" width="300" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/></a></td>
+    <td valign="middle"><a href="https://paypal.me/DevEmperor"><img alt="Donate with PayPal" width="200" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png"/></a></td>
+  </tr>
+</table>
 
 </div>
 
