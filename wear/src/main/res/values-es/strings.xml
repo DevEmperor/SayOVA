@@ -354,6 +354,17 @@
     <string name="note_contact">Contactos · %1$s</string>
     <string name="note_calling">Llamada · %1$s</string>
     <string name="note_app_opened">Abierta · %1$s</string>
+    <string name="feature_phone">Preparar en el teléfono</string>
+    <string name="notice_phone">Abriendo en el teléfono…</string>
+    <string name="note_on_phone">%1$s en el teléfono</string>
+    <string name="note_on_phone_detail">%1$s en el teléfono · %2$s</string>
+    <string name="phone_sms">SMS</string>
+    <string name="phone_email">Correo</string>
+    <string name="phone_message">Mensaje</string>
+    <string name="phone_event">Evento</string>
+    <string name="phone_route">Ruta</string>
+    <string name="note_show_timers">Temporizadores abiertos</string>
+    <string name="note_show_alarms">Alarmas abiertas</string>
     <plurals name="note_notifications">
         <item quantity="one">Notificaciones · %1$d</item>
         <item quantity="many">Notificaciones · %1$d</item>

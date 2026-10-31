@@ -3,6 +3,7 @@ package net.devemperor.parley.ui.components
 import android.app.RemoteInput
 import android.content.Context
 import android.content.Intent
+import android.util.Base64
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -68,6 +69,7 @@ import androidx.wear.compose.material3.Text
 import androidx.wear.input.RemoteInputIntentHelper
 import androidx.wear.remote.interactions.RemoteActivityHelper
 import io.nayuki.qrcodegen.QrCode
+import net.devemperor.parley.BuildConfig
 
 /** Keeps the display awake while [enabled] and this composable is on screen. */
 @Composable
@@ -199,6 +201,14 @@ fun openOnPhone(context: Context, url: String, onResult: (Boolean) -> Unit) {
     }
     sent.addListener({ onResult(runCatching { sent.get() }.isSuccess) }, ContextCompat.getMainExecutor(context))
 }
+
+/**
+ * The share page next to the pairing page (pair/public/share.html) with [text], Share (any app) and
+ * Copy: a watch app can only open a link on the phone, not its share sheet. The text travels in the
+ * link's fragment, which the phone's browser never sends to the server.
+ */
+fun shareLink(text: String): String =
+    "${BuildConfig.PAIR_BASE_URL}/share#t=" + Base64.encodeToString(text.toByteArray(), Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
 
 /**
  * Asks the user for text with the system input (keyboard, voice or the phone). [onResult] receives

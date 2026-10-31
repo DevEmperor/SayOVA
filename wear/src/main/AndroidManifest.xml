@@ -52,6 +52,12 @@
         <intent>
             <action android:name="android.intent.action.SET_ALARM" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.SHOW_TIMERS" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SHOW_ALARMS" />
+        </intent>
         <!-- "Open Samsung Health": the installed apps' launcher entries, nothing more. -->
         <intent>
             <action android:name="android.intent.action.MAIN" />

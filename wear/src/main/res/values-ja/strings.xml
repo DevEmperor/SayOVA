@@ -347,6 +347,17 @@
     <string name="note_contact">連絡先 · %1$s</string>
     <string name="note_calling">発信 · %1$s</string>
     <string name="note_app_opened">起動 · %1$s</string>
+    <string name="feature_phone">スマホで準備</string>
+    <string name="notice_phone">スマホで開いています…</string>
+    <string name="note_on_phone">スマホで%1$s</string>
+    <string name="note_on_phone_detail">スマホで%1$s · %2$s</string>
+    <string name="phone_sms">SMS</string>
+    <string name="phone_email">メール</string>
+    <string name="phone_message">メッセージ</string>
+    <string name="phone_event">予定</string>
+    <string name="phone_route">ルート</string>
+    <string name="note_show_timers">タイマーを表示</string>
+    <string name="note_show_alarms">アラームを表示</string>
     <plurals name="note_notifications">
         <item quantity="other">通知 · %1$d 件</item>
     </plurals>

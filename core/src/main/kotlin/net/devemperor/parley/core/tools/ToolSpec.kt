@@ -63,6 +63,7 @@ object ParleyTools {
     const val DEVICE_STATUS = "get_device_status"
     const val SET_TIMER = "set_timer"
     const val SET_ALARM = "set_alarm"
+    const val SHOW_CLOCK = "show_clock"
     const val SAVE_NOTE = "save_note"
     const val END_CONVERSATION = "end_conversation"
     const val SEARCH_WEB = "search_web"
@@ -80,6 +81,9 @@ object ParleyTools {
     const val GET_WEATHER = "get_weather"
     const val GET_AIR_PRESSURE = "get_air_pressure"
     const val GET_NOTIFICATIONS = "get_notifications"
+    const val PREPARE_MESSAGE = "prepare_message"
+    const val PREPARE_EVENT = "prepare_calendar_event"
+    const val PREPARE_ROUTE = "prepare_route"
 
     val deviceStatus = ToolSpec(
         name = DEVICE_STATUS,
@@ -102,7 +106,21 @@ object ParleyTools {
             ToolParam("hour", ParamType.INTEGER, "Hour in 24-hour format, 0 to 23."),
             ToolParam("minute", ParamType.INTEGER, "Minute, 0 to 59."),
             ToolParam("label", ParamType.STRING, "Short name for the alarm.", required = false),
+            ToolParam(
+                "days", ParamType.STRING,
+                "For an alarm that repeats every week: the days it rings on, comma-separated from mon, tue, wed, thu, fri, sat, sun. Leave out for a single alarm.",
+                required = false,
+            ),
         ),
+    )
+
+    // No tool turns an alarm off: the clock's API for it only dismisses one that is ringing (Google's
+    // Wear OS clock took the request for an alarm the next morning and left it on).
+    val showClock = ToolSpec(
+        name = SHOW_CLOCK,
+        description = "Opens the watch's clock app on its timers or its alarms, for what you cannot do yourself: see how long a timer has left, " +
+            "pause or stop it, or turn an alarm off, change or delete it. The conversation ends for it.",
+        parameters = listOf(ToolParam("page", ParamType.STRING, "One of: timers, alarms.")),
     )
 
     val saveNote = ToolSpec(
@@ -225,6 +243,46 @@ object ParleyTools {
             "Read them out briefly, not word for word unless asked.",
     )
 
-    val standard = listOf(deviceStatus, setTimer, setAlarm, saveNote, endConversation)
+    // Prepared on the paired phone, where the user sends or starts it: the watch never sends anything itself.
+    val prepareMessage = ToolSpec(
+        name = PREPARE_MESSAGE,
+        description = "Prepares a message on the user's phone, ready for them to send there: WhatsApp, SMS, e-mail, " +
+            "or any other messenger through the phone's share menu. Only after the user agreed to the text and whom it is for.",
+        parameters = listOf(
+            ToolParam("app", ParamType.STRING, "One of: whatsapp, sms, email, other (any other messenger: the user picks it on the phone)."),
+            ToolParam("text", ParamType.STRING, "The message, written as the user wants to send it, in the language they wrote or spoke it in."),
+            ToolParam(
+                "to", ParamType.STRING,
+                "For whatsapp or sms the phone number, with the country code where you know it (e.g. +49 171 2345678); for email the address. " +
+                    "Leave out to let the user choose on the phone.",
+                required = false,
+            ),
+            ToolParam("name", ParamType.STRING, "Whom it is for, for the screen.", required = false),
+            ToolParam("subject", ParamType.STRING, "Subject of an e-mail.", required = false),
+        ),
+    )
+
+    val prepareEvent = ToolSpec(
+        name = PREPARE_EVENT,
+        description = "Opens a new calendar event in Google Calendar on the user's phone, filled in, for them to save there.",
+        parameters = listOf(
+            ToolParam("title", ParamType.STRING, "What the event is, as the user would write it."),
+            ToolParam("start", ParamType.STRING, "Local start as date and time, e.g. 2026-11-02T15:00, or only a date, e.g. 2026-11-02, for an all-day event."),
+            ToolParam("end", ParamType.STRING, "Local end in the same form; leave out for an hour (or the one day).", required = false),
+            ToolParam("place", ParamType.STRING, "Where it is.", required = false),
+            ToolParam("details", ParamType.STRING, "A note to go with it.", required = false),
+        ),
+    )
+
+    val prepareRoute = ToolSpec(
+        name = PREPARE_ROUTE,
+        description = "Opens the route from where the user is to a place in Google Maps on their phone, ready to start there.",
+        parameters = listOf(
+            ToolParam("destination", ParamType.STRING, "The place or address, as Google Maps would find it."),
+            ToolParam("mode", ParamType.STRING, "One of: walking, driving, transit, bicycling; leave out for Maps' choice.", required = false),
+        ),
+    )
+
+    val standard = listOf(deviceStatus, setTimer, setAlarm, showClock, saveNote, endConversation)
     val memory = listOf(rememberFact, forgetFact)
 }

@@ -351,6 +351,17 @@
     <string name="note_contact">Kişiler · %1$s</string>
     <string name="note_calling">Aranıyor · %1$s</string>
     <string name="note_app_opened">Açıldı · %1$s</string>
+    <string name="feature_phone">Telefonda hazırla</string>
+    <string name="notice_phone">Telefonda açılıyor…</string>
+    <string name="note_on_phone">%1$s telefonda</string>
+    <string name="note_on_phone_detail">%1$s telefonda · %2$s</string>
+    <string name="phone_sms">SMS</string>
+    <string name="phone_email">E-posta</string>
+    <string name="phone_message">Mesaj</string>
+    <string name="phone_event">Etkinlik</string>
+    <string name="phone_route">Rota</string>
+    <string name="note_show_timers">Zamanlayıcılar açıldı</string>
+    <string name="note_show_alarms">Alarmlar açıldı</string>
     <plurals name="note_notifications">
         <item quantity="one">Bildirimler · %1$d</item>
         <item quantity="other">Bildirimler · %1$d</item>

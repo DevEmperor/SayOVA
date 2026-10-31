@@ -54,7 +54,12 @@ First version.
   otherwise a new one-colour orb icon (also in the notification and the tile picker); the kinds with a
   value show this month's cost against the monthly budget. Tile and complication speak the language
   chosen in Parley's settings.
-- Tools: timers, alarms, notes, battery and time, web search.
+- Tools: timers, alarms, notes, battery and time, web search. Alarms can repeat on chosen weekdays, and
+  Parley opens the clock's timers or alarms for what an app cannot do itself: stopping a running timer,
+  turning an alarm off or deleting it.
+- Prepare on phone (a new watch feature): a message for WhatsApp, SMS, e-mail or any other messenger, an
+  event for Google Calendar or a route in Google Maps, opened filled in on the paired phone for you to
+  send, save or start there. Parley reads a message back and prepares it only after your yes.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
   the provider with your key (well under a cent, counted in the statistics) and then kept on the watch.
 - Memory: "Remember that …" keeps a fact about you (up to 30) for every later conversation;

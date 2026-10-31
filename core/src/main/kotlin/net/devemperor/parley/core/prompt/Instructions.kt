@@ -146,7 +146,7 @@ object Instructions {
         appendLine("Context: it is ${now.format(DATE_FORMAT)} (time zone ${now.zone.id}). Use this for anything time-related.")
         appendLine()
         appendLine(
-            "Tools: you can set timers and alarms, save notes, check the watch's battery and time, " +
+            "Tools: you can set timers and alarms, open the watch's timers and alarms, save notes, check the watch's battery and time, " +
                 (if (memory != null) "remember facts about the user, " else "") +
                 WatchFeature.entries.filter { it in features }.joinToString("") { "${it.capability}, " } +
                 "and end the conversation.",
@@ -162,8 +162,16 @@ object Instructions {
                 appendLine("Never call anyone without the user's clear yes to the name and number you found. Read phone numbers out digit by digit.")
             }
             if (WatchFeature.NOTIFICATIONS in features) appendLine("Read notifications only when the user asks for them.")
+            if (WatchFeature.PHONE in features) {
+                appendLine("Before preparing a message, say its text and whom it is for, and prepare it only after the user's yes. It then waits on the phone for the user to send: say so, never that it was sent.")
+                appendLine(
+                    if (WatchFeature.CALLS in features) "For a message to a contact, find the number with find_contact first."
+                    else "For a message to a contact, leave the number out: the user picks the contact on the phone.",
+                )
+            }
         }
         appendLine("For a reminder at a time, set an alarm with what to remember as its label.")
+        appendLine("You cannot see, pause or stop a running timer, nor turn an alarm off, change or delete it: for that, open the timers or alarms with show_clock.")
         if (canSearch) {
             val weather = if (WatchFeature.WEATHER in features) "" else "weather, "
             appendLine("For current information (news, ${weather}prices, opening hours, recent events) search the web before answering.")

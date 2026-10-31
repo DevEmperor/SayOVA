@@ -22,23 +22,29 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
+import android.telephony.PhoneNumberUtils
+import android.telephony.TelephonyManager
 import android.view.KeyEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import net.devemperor.parley.core.phone.PhoneLinks
 import net.devemperor.parley.core.weather.MetNorway
+import net.devemperor.parley.ui.components.openOnPhone
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.text.Normalizer
 import java.time.Instant
 import java.time.ZoneId
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 
 /**
  * The watch's abilities beyond its sensors (see WatchSensors): media keys, the next alarm, contacts and
- * calls, opening apps, the weather from MET Norway, the barometer and the notifications. Callers check
+ * calls, links opened on the phone, opening apps, the weather from MET Norway, the barometer and the
+ * notifications. Callers check
  * the permissions first (see WatchFeatures). Failures are [WatchSensors.Unavailable] with a reason the
  * model can pass on.
  */
@@ -124,6 +130,31 @@ class WatchActions(private val context: Context, private val http: OkHttpClient)
     /** Places the call through the system: no activity of Parley's needs to be on screen for it. */
     fun call(number: String) {
         context.getSystemService(TelecomManager::class.java).placeCall(Uri.fromParts("tel", number, null), Bundle())
+    }
+
+    // ── On the phone ────────────────────────────────────────────────────────────────────────────
+
+    /** Opens [link] on the paired phone; false when no phone took it (none connected, or no answer in time). */
+    suspend fun openOnPhone(link: String): Boolean = withTimeoutOrNull(PHONE_TIMEOUT_MS) {
+        suspendCancellableCoroutine { continuation -> openOnPhone(context, link) { continuation.resume(it) } }
+    } ?: false
+
+    /**
+     * [number] as WhatsApp's links want it: with its country code as written, or else completed for
+     * the country the watch is in (from the mobile network, the SIM, then the time zone, which the
+     * watch takes from the phone). Null when neither tells.
+     */
+    fun internationalNumber(number: String): String? {
+        PhoneLinks.internationalDigits(number)?.let { return it }
+        val telephony = context.getSystemService(TelephonyManager::class.java)
+        val countries = listOfNotNull(
+            telephony?.networkCountryIso,
+            telephony?.simCountryIso,
+            runCatching { android.icu.util.TimeZone.getRegion(TimeZone.getDefault().id) }.getOrNull(),
+        )
+        return countries.filter { it.length == 2 }.firstNotNullOfOrNull { country ->
+            PhoneNumberUtils.formatNumberToE164(PhoneLinks.dialable(number), country.uppercase())?.let(PhoneLinks::internationalDigits)
+        }
     }
 
     // ── Apps ────────────────────────────────────────────────────────────────────────────────────
@@ -243,5 +274,6 @@ class WatchActions(private val context: Context, private val http: OkHttpClient)
         const val MAX_NOTIFICATIONS = 10
         const val WEATHER_TIMEOUT_S = 15L
         const val SENSOR_TIMEOUT_MS = 3_000L
+        const val PHONE_TIMEOUT_MS = 15_000L
     }
 }

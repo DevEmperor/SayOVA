@@ -107,10 +107,12 @@ sensors and data, each only when your question needs it:
   at most ten, without ongoing ones such as music). Android grants this access only in
   its system settings, not through a permission dialog; on some watches it can only be
   granted with developer tools.
+- **Prepare on phone** – a message, a calendar event or a route you asked for, opened on
+  your paired phone for you to send, save or start there (section 2.7).
 
 Each feature needs an Android permission or access, which the watch asks for when you
 switch the feature on under *Settings → Watch features* or when a conversation first
-needs it; weather, air pressure, next alarm, music and apps need none. You can switch
+needs it; weather, air pressure, next alarm, music, apps and preparing on the phone need none. You can switch
 every feature off there (the App then also hands the permission back) or withdraw the
 permission in the watch's system settings. The App reads these data only during the
 conversation in which you ask for them, never in the background, and keeps nothing of
@@ -199,6 +201,17 @@ the phone and sits only in the part of the page's address after "#", which brows
 send to a server: our server delivers the empty page and never sees the text. The page
 removes the text from its address as soon as it has read it, so it does not stay in the
 browser's history.
+
+### 2.7 Preparing a message, an event or a route on your phone
+
+With *Prepare on phone* switched on, you can ask for a message (WhatsApp, SMS, e-mail or any
+other messenger), a calendar event or a route. The App opens it, filled in, on your paired
+phone over the watch's own connection; you send, save or start it there, or not. The App
+itself sends nothing in your name. The phone opens it in the app it belongs to, which then
+receives what is in it as if you had typed it there: WhatsApp (a wa.me link), your messages
+or mail app, Google Calendar's page for a new event or Google Maps, each under its own
+provider's terms. A message for another messenger opens our share page as in section 2.6,
+whose server never sees the text.
 
 ---
 

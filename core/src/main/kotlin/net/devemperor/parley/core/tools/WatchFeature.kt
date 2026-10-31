@@ -16,6 +16,10 @@ enum class WatchFeature(val tools: List<ToolSpec>, val capability: String) {
     CALLS(listOf(ParleyTools.findContact, ParleyTools.callPhone), "look up contacts and make phone calls"),
     APPS(listOf(ParleyTools.openApp), "open apps"),
     NOTIFICATIONS(listOf(ParleyTools.getNotifications), "read the watch's notifications"),
+    PHONE(
+        listOf(ParleyTools.prepareMessage, ParleyTools.prepareEvent, ParleyTools.prepareRoute),
+        "prepare messages, e-mails, calendar events and routes on the user's phone for them to send or start there",
+    ),
     ;
 
     companion object {

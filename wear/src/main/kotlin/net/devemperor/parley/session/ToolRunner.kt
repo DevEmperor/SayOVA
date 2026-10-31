@@ -17,8 +17,10 @@ import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
+import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.R
 import net.devemperor.parley.core.memory.Memory
+import net.devemperor.parley.core.phone.PhoneLinks
 import net.devemperor.parley.core.provider.openai.OpenAiWebSearch
 import net.devemperor.parley.core.session.VoiceEvent
 import net.devemperor.parley.core.tools.ParleyTools
@@ -31,12 +33,15 @@ import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.features.WatchSensors
 import okhttp3.OkHttpClient
 import net.devemperor.parley.parley
+import net.devemperor.parley.ui.components.shareLink
 import net.devemperor.parley.ui.labelRes
 import java.text.NumberFormat
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -78,6 +83,7 @@ class ToolRunner(
         ParleyTools.DEVICE_STATUS -> deviceStatus()
         ParleyTools.SET_TIMER -> setTimer(call.arguments)
         ParleyTools.SET_ALARM -> setAlarm(call.arguments)
+        ParleyTools.SHOW_CLOCK -> showClock(call.arguments)
         ParleyTools.SAVE_NOTE -> saveNote(call.arguments)
         ParleyTools.END_CONVERSATION -> Outcome(ok(), endsConversation = true)
         ParleyTools.SEARCH_WEB -> search(call.arguments)
@@ -128,6 +134,7 @@ class ToolRunner(
                 WatchFeature.CALLS -> if (call.name == ParleyTools.FIND_CONTACT) findContact(args) else callPhone(args)
                 WatchFeature.APPS -> openApp(args)
                 WatchFeature.NOTIFICATIONS -> notifications()
+                WatchFeature.PHONE -> prepareOnPhone(call.name, args)
             }
         } catch (e: WatchSensors.Unavailable) {
             Outcome(error(e.message.orEmpty()))
@@ -366,6 +373,64 @@ class ToolRunner(
         )
     }
 
+    /**
+     * A message, a calendar event or a route, opened filled in on the paired phone; the user sends,
+     * saves or starts it there, so nothing leaves the watch in their name.
+     */
+    private suspend fun prepareOnPhone(tool: String, args: JsonObject): Outcome {
+        fun text(key: String) = args[key]?.jsonPrimitive?.contentOrNull?.trim()?.takeIf { it.isNotEmpty() }
+        val prepared: Prepared = when (tool) {
+            ParleyTools.PREPARE_MESSAGE -> {
+                val body = text("text") ?: return Outcome(error("text is empty"))
+                val to = text("to")
+                val whom = text("name") ?: to
+                when (text("app")?.lowercase()) {
+                    "whatsapp" -> {
+                        val number = to?.let {
+                            actions.internationalNumber(it)
+                                ?: return Outcome(error("WhatsApp needs the number with its country code, e.g. +49 171 2345678. Ask the user for the country, or leave the number out to pick the contact on the phone."))
+                        }
+                        Prepared(PhoneLinks.whatsApp(number, body), "WhatsApp", whom)
+                    }
+                    "sms" -> Prepared(PhoneLinks.sms(to, body), context.getString(R.string.phone_sms), whom)
+                    "email" -> {
+                        if (to != null && !PhoneLinks.isEmailAddress(to)) {
+                            return Outcome(error("\"$to\" is no e-mail address. Leave it out to fill it in on the phone."))
+                        }
+                        Prepared(PhoneLinks.email(to, text("subject"), body), context.getString(R.string.phone_email), whom)
+                    }
+                    "other" -> Prepared(shareLink(body), context.getString(R.string.phone_message), text("name"))
+                    else -> return Outcome(error("app must be one of: whatsapp, sms, email, other."))
+                }
+            }
+            ParleyTools.PREPARE_EVENT -> {
+                val title = text("title") ?: return Outcome(error("title is empty"))
+                val start = PhoneLinks.parseWhen(text("start")) ?: return Outcome(error("start must look like 2026-11-02T15:00, or 2026-11-02 for all day."))
+                val link = PhoneLinks.calendarEvent(title, start, PhoneLinks.parseWhen(text("end")), text("place"), text("details"), ZoneId.systemDefault())
+                Prepared(link, context.getString(R.string.phone_event), title)
+            }
+            else -> {
+                val destination = text("destination") ?: return Outcome(error("destination is empty"))
+                Prepared(PhoneLinks.route(destination, text("mode")), context.getString(R.string.phone_route), destination)
+            }
+        }
+        if (Diagnostics.enabled) android.util.Log.d("ParleyEvent", "on phone: ${prepared.link}")
+        if (!actions.openOnPhone(prepared.link)) {
+            return Outcome(error("No phone is connected to the watch, so nothing could be prepared there."), note = context.getString(R.string.share_no_phone))
+        }
+        return Outcome(
+            buildJsonObject {
+                put("ok", true)
+                put("note", "It is open on the user's phone now, for them to send, save or start there.")
+            },
+            note = prepared.detail?.let { context.getString(R.string.note_on_phone_detail, prepared.what, it) }
+                ?: context.getString(R.string.note_on_phone, prepared.what),
+        )
+    }
+
+    /** A link for the phone, what it opens ("WhatsApp", "Route") and for whom or what, for the transcript. */
+    private data class Prepared(val link: String, val what: String, val detail: String?)
+
     private fun deviceStatus(): Outcome {
         val battery = context.getSystemService(BatteryManager::class.java)
         val now = ZonedDateTime.now()
@@ -392,12 +457,47 @@ class ToolRunner(
         val hour = args["hour"]?.jsonPrimitive?.intOrNull?.takeIf { it in 0..23 } ?: return Outcome(error("hour must be 0 to 23"))
         val minute = args["minute"]?.jsonPrimitive?.intOrNull?.takeIf { it in 0..59 } ?: return Outcome(error("minute must be 0 to 59"))
         val label = args["label"]?.jsonPrimitive?.contentOrNull?.take(60)
+        val days = weekdays(args["days"]?.jsonPrimitive?.contentOrNull)
         val intent = Intent(AlarmClock.ACTION_SET_ALARM)
             .putExtra(AlarmClock.EXTRA_HOUR, hour)
             .putExtra(AlarmClock.EXTRA_MINUTES, minute)
             .putExtra(AlarmClock.EXTRA_SKIP_UI, true)
             .apply { label?.let { putExtra(AlarmClock.EXTRA_MESSAGE, it) } }
-        return launch(intent, context.getString(R.string.note_alarm, "%02d:%02d".format(hour, minute)), "No alarm app on this watch.")
+            .apply { if (days.isNotEmpty()) putExtra(AlarmClock.EXTRA_DAYS, ArrayList(days.map(::calendarDay))) }
+        val time = listOfNotNull("%02d:%02d".format(hour, minute), daysText(days)).joinToString(" · ")
+        return launch(intent, context.getString(R.string.note_alarm, time), "No alarm app on this watch.")
+    }
+
+    /**
+     * The clock app's timers or alarms, for what no intent can do: read, pause or stop a running timer,
+     * turn an alarm off or delete it.
+     */
+    private fun showClock(args: JsonObject): Outcome {
+        if (!PermissionBroker.hostVisible) return Outcome(error("The watch screen is off, so the clock cannot open. Ask the user to look at the watch and ask again."))
+        val alarms = args["page"]?.jsonPrimitive?.contentOrNull?.trim()?.lowercase() == "alarms"
+        return launch(
+            Intent(if (alarms) AlarmClock.ACTION_SHOW_ALARMS else AlarmClock.ACTION_SHOW_TIMERS),
+            context.getString(if (alarms) R.string.note_show_alarms else R.string.note_show_timers),
+            "The clock app on this watch cannot be opened on that page. If you can open apps, open its timer or alarm app by name.",
+            endsConversation = true,
+        )
+    }
+
+    /** "mon, tue" (or the whole names) as days of the week, in order and each once. */
+    private fun weekdays(text: String?): List<DayOfWeek> =
+        text.orEmpty().lowercase().split(',', ' ', ';').mapNotNull { word ->
+            DayOfWeek.entries.firstOrNull { word.length >= 2 && it.name.lowercase().startsWith(word.take(3)) }
+        }.distinct().sorted()
+
+    private fun calendarDay(day: DayOfWeek): Int = day.value % 7 + 1 // java.util.Calendar: Sunday is 1, Monday 2
+
+    /** The days for the transcript in the app's language: a run of three or more as "Mon – Fri". */
+    private fun daysText(days: List<DayOfWeek>): String? {
+        if (days.isEmpty()) return null
+        val locale = context.resources.configuration.locales[0]
+        fun short(day: DayOfWeek) = day.getDisplayName(TextStyle.SHORT, locale)
+        val run = days.size >= 3 && days.zipWithNext().all { (a, b) -> b.value == a.value + 1 }
+        return if (run) "${short(days.first())} – ${short(days.last())}" else days.joinToString(", ", transform = ::short)
     }
 
     private fun saveNote(args: JsonObject): Outcome {
@@ -456,12 +556,12 @@ class ToolRunner(
 
     // Started from the service, so a new task is required; the clock app shows nothing (EXTRA_SKIP_UI).
     @android.annotation.SuppressLint("WearRecents")
-    private fun launch(intent: Intent, note: String, unavailable: String): Outcome {
+    private fun launch(intent: Intent, note: String, unavailable: String, endsConversation: Boolean = false): Outcome {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (intent.resolveActivity(context.packageManager) == null) return Outcome(error(unavailable))
         return try {
             context.startActivity(intent)
-            Outcome(ok(), note = note)
+            Outcome(ok(), note = note, endsConversation = endsConversation)
         } catch (e: Exception) {
             Outcome(error("The watch did not allow it: ${e.message}"))
         }

@@ -3,7 +3,6 @@ package net.devemperor.parley.ui.history
 import android.content.Context
 import android.net.Uri
 import android.text.format.DateUtils
-import android.util.Base64
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +25,6 @@ import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.curvedText
-import net.devemperor.parley.BuildConfig
 import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.R
 import net.devemperor.parley.core.conversation.Conversation
@@ -39,6 +37,7 @@ import net.devemperor.parley.ui.components.Hint
 import net.devemperor.parley.ui.components.ListScreen
 import net.devemperor.parley.ui.components.MenuButton
 import net.devemperor.parley.ui.components.openOnPhone
+import net.devemperor.parley.ui.components.shareLink
 import net.devemperor.parley.ui.components.transformedContent
 import net.devemperor.parley.ui.theme.ParleyColors
 
@@ -267,15 +266,12 @@ private fun OnPhoneDialog(visible: Boolean, onDone: () -> Unit) {
 
 /**
  * Shows [conversations] as plain text on the paired phone, with Share (messengers, notes, mail) and
- * Copy: a watch app can only open a link there, not the share sheet, so the link leads to the share
- * page next to the pairing page (pair/public/share.html). The text travels in the link's fragment,
- * which the phone's browser never sends to the server. [onResult] tells whether a phone took it.
+ * Copy (see shareLink). [onResult] tells whether a phone took it.
  */
 private fun sendToPhone(context: Context, conversations: List<Conversation>, onResult: (Boolean) -> Unit) {
     val text = transcriptText(context, conversations)
     if (Diagnostics.enabled) Log.d("ParleyEvent", "send to phone: ${text.length} characters\n$text")
-    val encoded = Base64.encodeToString(text.toByteArray(), Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
-    openOnPhone(context, "${BuildConfig.PAIR_BASE_URL}/share#t=$encoded", onResult)
+    openOnPhone(context, shareLink(text), onResult)
 }
 
 /**

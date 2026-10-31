@@ -363,6 +363,18 @@
     <string name="note_contact">Contacts · %1$s</string>
     <string name="note_calling">Calling · %1$s</string>
     <string name="note_app_opened">Opened · %1$s</string>
+    <!-- Prepare on phone: a message, an event or a route opened on the paired phone. Then the clock's pages. -->
+    <string name="feature_phone">Prepare on phone</string>
+    <string name="notice_phone">Opening on your phone…</string>
+    <string name="note_on_phone">%1$s on phone</string>
+    <string name="note_on_phone_detail">%1$s on phone · %2$s</string>
+    <string name="phone_sms">SMS</string>
+    <string name="phone_email">Email</string>
+    <string name="phone_message">Message</string>
+    <string name="phone_event">Event</string>
+    <string name="phone_route">Route</string>
+    <string name="note_show_timers">Timers opened</string>
+    <string name="note_show_alarms">Alarms opened</string>
     <plurals name="note_notifications">
         <item quantity="one">Notifications · %1$d</item>
         <item quantity="other">Notifications · %1$d</item>

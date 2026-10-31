@@ -131,6 +131,7 @@ fun WatchFeature.labelRes(): Int = when (this) {
     WatchFeature.CALLS -> R.string.feature_calls
     WatchFeature.APPS -> R.string.feature_apps
     WatchFeature.NOTIFICATIONS -> R.string.feature_notifications
+    WatchFeature.PHONE -> R.string.feature_phone
 }
 
 
@@ -148,6 +149,7 @@ fun WatchFeature.workingRes(): Int = when (this) {
     WatchFeature.CALLS -> R.string.notice_contacts
     WatchFeature.APPS -> R.string.notice_apps
     WatchFeature.NOTIFICATIONS -> R.string.notice_notifications
+    WatchFeature.PHONE -> R.string.notice_phone
 }
 
 @DrawableRes
@@ -163,4 +165,5 @@ fun WatchFeature.iconRes(): Int = when (this) {
     WatchFeature.CALLS -> R.drawable.ic_call
     WatchFeature.APPS -> R.drawable.ic_apps
     WatchFeature.NOTIFICATIONS -> R.drawable.ic_notifications
+    WatchFeature.PHONE -> R.drawable.ic_send_to_mobile
 }

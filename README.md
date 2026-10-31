@@ -39,8 +39,13 @@ your own API key.
   and a monthly budget warns at 80% and asks before every conversation once it is spent.
 - **Quiet when it has to be.** One tap switches Parley's voice off and the answer appears as text;
   push-to-talk keeps the microphone closed until you tap.
-- **Does things on the watch.** Timers, alarms, notes, battery and time, and web search
-  for anything current.
+- **Does things on the watch.** Timers and alarms (also every weekday; "show my timers" opens the
+  clock to stop one or turn an alarm off), notes, battery and time, and web search for anything current.
+- **Prepares things on your phone.** "Text Lena on WhatsApp that I'm ten minutes late", "Put the
+  dentist on Tuesday at three in my calendar", "Route to the station on foot": Parley reads the message
+  back, and after your yes it waits on your phone in WhatsApp, Messages, your mail app, Google Calendar
+  or Google Maps (other messengers through the share menu) for you to send, save or start. Parley
+  itself never sends anything in your name.
 - **Knows the watch it runs on – when you ask.** "What's the weather here?", "What's my
   heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm
   ring?", "How high up am I?", "Pause the music", "Call Lena", "Open the flashlight",

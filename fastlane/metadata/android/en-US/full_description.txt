@@ -13,7 +13,10 @@ Pick two of 21 languages and hold the watch between you and the person you are t
 In a lecture, a meeting or a quiet room? One tap switches Parley's voice off and the answers appear as text.
 
 <b>Gets things done</b>
-Ask Parley to set a timer or an alarm, save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
+Ask Parley to set a timer or an alarm (every weekday, if you like), save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
+
+<b>Prepares things on your phone</b>
+"Text Lena on WhatsApp that I'm ten minutes late", "Put the dentist on Tuesday at three in my calendar", "Route to the station on foot" – Parley reads the message back, and after your yes it waits on your phone, ready for you to send, save or start. Parley never sends anything in your name.
 
 <b>Knows your watch – when you ask</b>
 "What's the weather here?", "What's my heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm ring?", "Pause the music", "Call Lena", "Open the flashlight" – Parley uses your location, the weather, heart rate, steps, calendar, air pressure, next alarm, music, contacts, apps or notifications only for that question, after you allowed it once, and shows an icon while it does. Calls are placed only after you confirmed name and number.

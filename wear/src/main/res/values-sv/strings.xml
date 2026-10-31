@@ -351,6 +351,17 @@
     <string name="note_contact">Kontakter · %1$s</string>
     <string name="note_calling">Ringer · %1$s</string>
     <string name="note_app_opened">Öppnad · %1$s</string>
+    <string name="feature_phone">Förbered på telefonen</string>
+    <string name="notice_phone">Öppnas på telefonen…</string>
+    <string name="note_on_phone">%1$s på telefonen</string>
+    <string name="note_on_phone_detail">%1$s på telefonen · %2$s</string>
+    <string name="phone_sms">Sms</string>
+    <string name="phone_email">Mejl</string>
+    <string name="phone_message">Meddelande</string>
+    <string name="phone_event">Händelse</string>
+    <string name="phone_route">Rutt</string>
+    <string name="note_show_timers">Timrar öppnade</string>
+    <string name="note_show_alarms">Alarm öppnade</string>
     <plurals name="note_notifications">
         <item quantity="one">Aviseringar · %1$d</item>
         <item quantity="other">Aviseringar · %1$d</item>

@@ -350,6 +350,17 @@
     <string name="note_contact">Contacten · %1$s</string>
     <string name="note_calling">Bellen · %1$s</string>
     <string name="note_app_opened">Geopend · %1$s</string>
+    <string name="feature_phone">Klaarzetten op telefoon</string>
+    <string name="notice_phone">Wordt geopend op je telefoon…</string>
+    <string name="note_on_phone">%1$s op telefoon</string>
+    <string name="note_on_phone_detail">%1$s op telefoon · %2$s</string>
+    <string name="phone_sms">Sms</string>
+    <string name="phone_email">E-mail</string>
+    <string name="phone_message">Bericht</string>
+    <string name="phone_event">Afspraak</string>
+    <string name="phone_route">Route</string>
+    <string name="note_show_timers">Timers geopend</string>
+    <string name="note_show_alarms">Wekkers geopend</string>
     <plurals name="note_notifications">
         <item quantity="one">Meldingen · %1$d</item>
         <item quantity="other">Meldingen · %1$d</item>

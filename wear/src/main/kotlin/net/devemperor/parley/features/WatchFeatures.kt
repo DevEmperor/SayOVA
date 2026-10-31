@@ -32,7 +32,7 @@ object WatchFeatures {
         WatchFeature.CALLS -> listOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE)
         // The weather asks for the location only when it is for where the watch is (see ToolRunner).
         WatchFeature.WEATHER, WatchFeature.PRESSURE, WatchFeature.ALARM, WatchFeature.MUSIC, WatchFeature.APPS,
-        WatchFeature.NOTIFICATIONS,
+        WatchFeature.NOTIFICATIONS, WatchFeature.PHONE,
         -> emptyList()
     }
 

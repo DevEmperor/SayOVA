@@ -103,7 +103,7 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update, onContinue: 
                     !usable -> stringResource(R.string.feature_unavailable)
                     !on -> null
                     access[feature] == Access.SYSTEM_SETTING -> stringResource(R.string.feature_system_setting)
-                    // Music, alarm, apps, weather, barometer: nothing to allow.
+                    // Music, alarm, apps, weather, barometer, the phone: nothing to allow.
                     WatchFeatures.permissions(feature).isEmpty() && feature != WatchFeature.NOTIFICATIONS -> null
                     access[feature] == Access.ALLOWED -> stringResource(R.string.feature_allowed)
                     access[feature] == Access.DENIED -> stringResource(R.string.feature_not_allowed)
