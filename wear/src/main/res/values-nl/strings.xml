@@ -12,26 +12,26 @@
     <string name="sample_a2">Wat dacht je van een curry met kikkererwten en spinazie? Dat duurt zo’n twintig minuten en is de volgende dag nog lekkerder.</string>
     <string name="sample_q3">Klinkt goed. Zet een timer van twintig minuten.</string>
     <string name="sample_a3">Je timer loopt. Eet smakelijk!</string>
-    <string name="tour_talk_orb">Onderbreek Parley wanneer je wilt: begin gewoon te praten of tik op de bol.</string>
+    <string name="tour_talk_orb">Onderbreek Talova wanneer je wilt: begin gewoon te praten of tik op de bol.</string>
     <string name="tour_talk_text">Toont of verbergt de tekst.</string>
     <string name="tour_talk_sound">Tik voor stilte. Vasthouden of aan de rand draaien: volume.</string>
     <string name="tour_talk_end">Hangt op. Gesprekken komen in de geschiedenis.</string>
-    <string name="tour_home_orb">Tik en praat. Parley zoekt op het web, zet timers en wekkers, maakt notities en onthoudt wat je vraagt.</string>
+    <string name="tour_home_orb">Tik en praat. Talova zoekt op het web, zet timers en wekkers, maakt notities en onthoudt wat je vraagt.</string>
     <string name="tour_home_line">Model en kosten deze maand. Tik voor de statistieken.</string>
     <string name="tour_home_interpreter">Tolk: kies twee talen en houd het horloge tussen jullie in.</string>
     <string name="tour_home_history">Geschiedenis: teruglezen, voortzetten of naar je telefoon sturen.</string>
     <string name="tour_home_settings">Instellingen: stem, persoonlijkheid, geheugen, horlogefuncties, budget en meer.</string>
     <string name="quick_title">Sneller starten</string>
-    <string name="quick_text">Leg Parley in de horloge-instellingen op twee keer drukken op de knop (op een Galaxy Watch onder Geavanceerde functies). Met ‘%1$s’ aan start twee keer drukken een gesprek.</string>
+    <string name="quick_text">Leg Talova in de horloge-instellingen op twee keer drukken op de knop (op een Galaxy Watch onder Geavanceerde functies). Met ‘%1$s’ aan start twee keer drukken een gesprek.</string>
     <string name="quick_watch_settings">Knop instellen</string>
     <string name="action_continue">Doorgaan</string>
     <string name="permission_title">Microfoon</string>
-    <string name="permission_text">Parley heeft de microfoon nodig om je te horen. Audio wordt alleen gestreamd als er een gesprek open is.</string>
-    <string name="permission_blocked">De microfoon is geblokkeerd. Sta deze toe in de app-instellingen om met Parley te praten.</string>
+    <string name="permission_text">Talova heeft de microfoon nodig om je te horen. Audio wordt alleen gestreamd als er een gesprek open is.</string>
+    <string name="permission_blocked">De microfoon is geblokkeerd. Sta deze toe in de app-instellingen om met Talova te praten.</string>
     <string name="permission_allow">Toestaan</string>
     <string name="permission_settings">Instellingen</string>
     <string name="provider_choose">Kies een aanbieder</string>
-    <string name="provider_choose_hint">Parley gebruikt je eigen API-sleutel, zodat jij de kosten en gegevens in de hand houdt.</string>
+    <string name="provider_choose_hint">Talova gebruikt je eigen API-sleutel, zodat jij de kosten en gegevens in de hand houdt.</string>
     <string name="provider_gemini_note">Aanbevolen · ca. 1–2 ¢ per minuut</string>
     <string name="provider_openai_note">Ca. 2–11 ¢ per minuut</string>
     <string name="provider_connected">Verbonden</string>
@@ -48,7 +48,7 @@
     <string name="pair_checking">Sleutel controleren bij %1$s…</string>
     <string name="pair_connected_title">Verbonden</string>
     <string name="pair_connected_text">%1$s heeft de sleutel geaccepteerd. Deze wordt versleuteld en alleen op dit horloge opgeslagen.</string>
-    <string name="pair_connected_unverified">De sleutel is opgeslagen, maar %1$s was niet bereikbaar om hem te controleren. Parley probeert het als je praat.</string>
+    <string name="pair_connected_unverified">De sleutel is opgeslagen, maar %1$s was niet bereikbaar om hem te controleren. Talova probeert het als je praat.</string>
     <string name="pair_connected_action">Starten</string>
     <string name="pair_failed_expired">De code is verlopen</string>
     <string name="pair_failed_rejected">De aanbieder heeft deze sleutel geweigerd</string>
@@ -101,7 +101,7 @@
     <string name="error_network_text">Controleer wifi of mobiele data en probeer het opnieuw.</string>
     <string name="error_rejected_title">Verzoek geweigerd</string>
     <string name="error_server_title">De aanbieder heeft het gesprek beëindigd</string>
-    <string name="error_no_microphone">Parley heeft de microfoon nodig. Open de app om toegang te geven.</string>
+    <string name="error_no_microphone">Talova heeft de microfoon nodig. Open de app om toegang te geven.</string>
     <string name="error_server_text">Dit kan gebeuren na een heel lang gesprek of door een probleem bij de aanbieder.</string>
 
     <!-- History -->
@@ -160,14 +160,14 @@
     <string name="interpreter_start">Tolken starten</string>
     <string name="interpreter_first">Eerste taal</string>
     <string name="interpreter_second">Tweede taal</string>
-    <string name="interpreter_hint">Houd het horloge tussen jullie in. Parley zegt alles in de andere taal.</string>
+    <string name="interpreter_hint">Houd het horloge tussen jullie in. Talova zegt alles in de andere taal.</string>
     <string name="settings_general">Algemeen</string>
     <string name="settings_history">Geschiedenis bewaren</string>
     <string name="settings_delete_history">Alle geschiedenis wissen</string>
     <string name="settings_delete_history_confirm">Alle gesprekken verwijderen?</string>
     <string name="settings_about">Over</string>
     <string name="language_hint">Automatisch: antwoord in de taal die je spreekt.</string>
-    <string name="barge_in_hint">Hoe je een antwoord onderbreekt. Automatisch onderscheidt je stem van die van Parley, die de microfoon via de horlogespeaker hoort.</string>
+    <string name="barge_in_hint">Hoe je een antwoord onderbreekt. Automatisch onderscheidt je stem van die van Talova, die de microfoon via de horlogespeaker hoort.</string>
     <string name="history_hint">Gesprekken worden alleen op dit horloge opgeslagen.</string>
     <string name="history_keep_off">Niet opslaan</string>
     <plurals name="usage_conversations">
@@ -184,7 +184,7 @@
         <item quantity="other">%1$d seconden</item>
     </plurals>
     <string name="auto_end_never">Nooit</string>
-    <string name="persona_custom_label">Hoe moet Parley zich gedragen?</string>
+    <string name="persona_custom_label">Hoe moet Talova zich gedragen?</string>
     <string name="provider_title">Aanbieder</string>
     <string name="provider_keys">Sleutels</string>
     <string name="provider_key_hint">Sleutel %1$s</string>
@@ -197,7 +197,7 @@
 
     <!-- About -->
     <string name="about_version">Versie %1$s</string>
-    <string name="about_privacy_summary">Je stem gaat rechtstreeks van dit horloge naar de gekozen aanbieder, met je eigen sleutel. Parley heeft geen server die je gesprekken ziet.</string>
+    <string name="about_privacy_summary">Je stem gaat rechtstreeks van dit horloge naar de gekozen aanbieder, met je eigen sleutel. Talova heeft geen server die je gesprekken ziet.</string>
     <string name="about_privacy">Privacybeleid</string>
     <string name="about_on_phone">Opent op je telefoon</string>
     <string name="about_source">Broncode</string>
@@ -210,12 +210,12 @@
     <string name="notification_channel">Gesprek</string>
     <string name="notification_text">Luistert en antwoordt</string>
     <string name="ongoing_status">In gesprek</string>
-    <string name="tile_label">Parley</string>
-    <string name="tile_description">Met één tik met Parley praten</string>
+    <string name="tile_label">Talova</string>
+    <string name="tile_description">Met één tik met Talova praten</string>
     <string name="tile_latest">Laatst: %1$s</string>
-    <string name="complication_label">Praat met Parley</string>
+    <string name="complication_label">Praat met Talova</string>
     <string name="complication_short">Praat</string>
-    <string name="complication_description">Start een gesprek met Parley</string>
+    <string name="complication_description">Start een gesprek met Talova</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">Vriendelijk</string>
@@ -232,7 +232,7 @@
     <string name="persona_custom_description">Je eigen instructie</string>
     <string name="language_auto">Automatisch</string>
     <string name="barge_in_auto">Automatisch</string>
-    <string name="barge_in_auto_description">Praat door Parley heen om te onderbreken</string>
+    <string name="barge_in_auto_description">Praat door Talova heen om te onderbreken</string>
     <string name="barge_in_on">Open microfoon</string>
     <string name="barge_in_on_description">Voor koptelefoon; de speaker kan zichzelf onderbreken</string>
     <string name="barge_in_off">Alleen tikken</string>
@@ -288,7 +288,7 @@
     <string name="error_no_key_for">Nog geen sleutel voor %1$s.</string>
     <string name="error_microphone_unavailable">De microfoon is niet beschikbaar.</string>
 
-    <!-- Memory: facts Parley was asked to remember. -->
+    <!-- Memory: facts Talova was asked to remember. -->
     <string name="memory_title">Geheugen</string>
     <string name="memory_use">Geheugen gebruiken</string>
     <string name="memory_use_note">Alleen wat je vraagt: “Onthoud dat …”</string>
@@ -298,8 +298,8 @@
     <string name="memory_count">Onthouden · %1$d/%2$d</string>
     <string name="memory_forget_confirm">Dit vergeten?</string>
     <string name="memory_forget_all">Alles vergeten</string>
-    <string name="memory_forget_all_confirm">Alles vergeten wat Parley over je weet?</string>
-    <string name="memory_privacy">Alleen op dit horloge opgeslagen. Parley geeft deze items in elk gesprek mee aan je AI-aanbieder.</string>
+    <string name="memory_forget_all_confirm">Alles vergeten wat Talova over je weet?</string>
+    <string name="memory_privacy">Alleen op dit horloge opgeslagen. Talova geeft deze items in elk gesprek mee aan je AI-aanbieder.</string>
     <string name="notice_remembered">Onthouden</string>
     <string name="notice_forgotten">Vergeten</string>
     <string name="note_remembered">Onthouden: %1$s</string>
@@ -312,9 +312,9 @@
 
     <!-- Watch features: the watch's own sensors and data as tools. -->
     <string name="features_title">Horlogefuncties</string>
-    <string name="features_examples">Zo beantwoordt Parley vragen als “Wat voor weer is het hier?”, “Wat is mijn hartslag?” of “Wat staat er vandaag nog op de agenda?”</string>
-    <string name="features_hint">Parley gebruikt ze alleen als je vraag ze nodig heeft. De eerste keer vraagt het horloge om toestemming.</string>
-    <string name="features_privacy">Wat Parley leest, gaat alleen in het gesprek waarin je erom vraagt naar je AI-aanbieder.</string>
+    <string name="features_examples">Zo beantwoordt Talova vragen als “Wat voor weer is het hier?”, “Wat is mijn hartslag?” of “Wat staat er vandaag nog op de agenda?”</string>
+    <string name="features_hint">Talova gebruikt ze alleen als je vraag ze nodig heeft. De eerste keer vraagt het horloge om toestemming.</string>
+    <string name="features_privacy">Wat Talova leest, gaat alleen in het gesprek waarin je erom vraagt naar je AI-aanbieder.</string>
     <string name="features_allow_now">Nu toestaan</string>
     <string name="features_open_settings">Toestaan in instellingen</string>
     <string name="features_none">Uit</string>

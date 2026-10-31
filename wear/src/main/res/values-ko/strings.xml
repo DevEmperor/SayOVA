@@ -13,26 +13,26 @@
     <string name="sample_a2">시금치를 넣은 병아리콩 커리는 어때요? 이십 분 정도 걸리고, 다음 날 먹으면 더 맛있어요.</string>
     <string name="sample_q3">좋아. 이십 분 타이머 맞춰 줘.</string>
     <string name="sample_a3">타이머를 시작했어요. 맛있게 드세요!</string>
-    <string name="tour_talk_orb">언제든 Parley의 말을 끊을 수 있어요. 그냥 말하거나 오브를 탭하세요.</string>
+    <string name="tour_talk_orb">언제든 Talova의 말을 끊을 수 있어요. 그냥 말하거나 오브를 탭하세요.</string>
     <string name="tour_talk_text">텍스트를 표시하거나 숨깁니다.</string>
     <string name="tour_talk_sound">탭하면 소리가 꺼집니다. 길게 누르거나 베젤을 돌리면 볼륨을 조절합니다.</string>
     <string name="tour_talk_end">대화를 끝냅니다. 대화는 기록에 남습니다.</string>
-    <string name="tour_home_orb">탭하고 말하세요. Parley는 웹 검색, 타이머와 알람 설정, 메모, 부탁한 내용 기억까지 해 줍니다.</string>
+    <string name="tour_home_orb">탭하고 말하세요. Talova는 웹 검색, 타이머와 알람 설정, 메모, 부탁한 내용 기억까지 해 줍니다.</string>
     <string name="tour_home_line">이번 달 모델과 비용. 탭하면 통계가 보입니다.</string>
     <string name="tour_home_interpreter">통역: 두 언어를 고르고 시계를 두 사람 사이에 두세요.</string>
     <string name="tour_home_history">기록: 다시 읽기, 이어서 대화, 휴대전화로 보내기.</string>
     <string name="tour_home_settings">설정: 음성, 성격, 기억, 시계 기능, 예산 등.</string>
     <string name="quick_title">더 빠르게 시작</string>
-    <string name="quick_text">시계 설정에서 버튼 두 번 누르기에 Parley를 지정하세요(Galaxy Watch는 ‘유용한 기능’). ‘%1$s’ 옵션을 켜면 두 번 누르기로 대화가 시작됩니다.</string>
+    <string name="quick_text">시계 설정에서 버튼 두 번 누르기에 Talova를 지정하세요(Galaxy Watch는 ‘유용한 기능’). ‘%1$s’ 옵션을 켜면 두 번 누르기로 대화가 시작됩니다.</string>
     <string name="quick_watch_settings">버튼 설정</string>
     <string name="action_continue">계속</string>
     <string name="permission_title">마이크</string>
-    <string name="permission_text">Parley가 사용자의 말을 들으려면 마이크가 필요합니다. 오디오는 대화 중에만 전송됩니다.</string>
-    <string name="permission_blocked">마이크가 차단되어 있습니다. Parley와 대화하려면 앱 설정에서 허용하세요.</string>
+    <string name="permission_text">Talova가 사용자의 말을 들으려면 마이크가 필요합니다. 오디오는 대화 중에만 전송됩니다.</string>
+    <string name="permission_blocked">마이크가 차단되어 있습니다. Talova와 대화하려면 앱 설정에서 허용하세요.</string>
     <string name="permission_allow">허용</string>
     <string name="permission_settings">설정</string>
     <string name="provider_choose">제공업체 선택</string>
-    <string name="provider_choose_hint">Parley는 사용자 본인의 API 키를 사용하므로 비용과 데이터를 직접 관리할 수 있습니다.</string>
+    <string name="provider_choose_hint">Talova는 사용자 본인의 API 키를 사용하므로 비용과 데이터를 직접 관리할 수 있습니다.</string>
     <string name="provider_gemini_note">추천 · 분당 약 1–2센트</string>
     <string name="provider_openai_note">분당 약 2–11센트</string>
     <string name="provider_connected">연결됨</string>
@@ -49,7 +49,7 @@
     <string name="pair_checking">%1$s에서 키 확인 중…</string>
     <string name="pair_connected_title">연결됨</string>
     <string name="pair_connected_text">%1$s에서 키를 승인했습니다. 키는 이 시계에만 암호화되어 저장됩니다.</string>
-    <string name="pair_connected_unverified">키는 저장되었지만 %1$s에 연결할 수 없어 확인하지 못했습니다. 대화를 시작하면 Parley가 다시 확인합니다.</string>
+    <string name="pair_connected_unverified">키는 저장되었지만 %1$s에 연결할 수 없어 확인하지 못했습니다. 대화를 시작하면 Talova가 다시 확인합니다.</string>
     <string name="pair_connected_action">시작</string>
     <string name="pair_failed_expired">코드가 만료되었습니다</string>
     <string name="pair_failed_rejected">제공업체에서 이 키를 거부했습니다</string>
@@ -102,7 +102,7 @@
     <string name="error_network_text">Wi-Fi 또는 모바일 데이터를 확인하고 다시 시도하세요.</string>
     <string name="error_rejected_title">요청 거부됨</string>
     <string name="error_server_title">제공업체에서 대화를 종료함</string>
-    <string name="error_no_microphone">Parley에 마이크가 필요합니다. 앱을 열어 허용하세요.</string>
+    <string name="error_no_microphone">Talova에 마이크가 필요합니다. 앱을 열어 허용하세요.</string>
     <string name="error_server_text">대화가 매우 길어졌거나 제공업체 측에 문제가 있으면 발생할 수 있습니다.</string>
 
     <!-- History -->
@@ -161,14 +161,14 @@
     <string name="interpreter_start">통역 시작</string>
     <string name="interpreter_first">첫 번째 언어</string>
     <string name="interpreter_second">두 번째 언어</string>
-    <string name="interpreter_hint">워치를 두 사람 사이에 두세요. Parley가 모든 말을 다른 언어로 전합니다.</string>
+    <string name="interpreter_hint">워치를 두 사람 사이에 두세요. Talova가 모든 말을 다른 언어로 전합니다.</string>
     <string name="settings_general">일반</string>
     <string name="settings_history">기록 보관</string>
     <string name="settings_delete_history">모든 기록 삭제</string>
     <string name="settings_delete_history_confirm">모든 대화를 삭제하시겠습니까?</string>
     <string name="settings_about">정보</string>
     <string name="language_hint">자동으로 설정하면 사용자가 말하는 언어로 답변합니다.</string>
-    <string name="barge_in_hint">답변을 중간에 끊는 방법입니다. 자동은 시계 스피커에서 나와 마이크에 들리는 Parley의 음성과 사용자의 음성을 구별합니다.</string>
+    <string name="barge_in_hint">답변을 중간에 끊는 방법입니다. 자동은 시계 스피커에서 나와 마이크에 들리는 Talova의 음성과 사용자의 음성을 구별합니다.</string>
     <string name="history_hint">대화는 이 시계에만 저장됩니다.</string>
     <string name="history_keep_off">저장 안 함</string>
     <plurals name="usage_conversations">
@@ -182,7 +182,7 @@
         <item quantity="other">%1$d초</item>
     </plurals>
     <string name="auto_end_never">안 함</string>
-    <string name="persona_custom_label">Parley가 어떻게 행동할까요?</string>
+    <string name="persona_custom_label">Talova가 어떻게 행동할까요?</string>
     <string name="provider_title">제공업체</string>
     <string name="provider_keys">키</string>
     <string name="provider_key_hint">키 %1$s</string>
@@ -195,7 +195,7 @@
 
     <!-- About -->
     <string name="about_version">버전 %1$s</string>
-    <string name="about_privacy_summary">음성은 사용자 본인의 키로 이 시계에서 선택한 제공업체로 바로 전송됩니다. Parley에는 대화 내용을 볼 수 있는 서버가 없습니다.</string>
+    <string name="about_privacy_summary">음성은 사용자 본인의 키로 이 시계에서 선택한 제공업체로 바로 전송됩니다. Talova에는 대화 내용을 볼 수 있는 서버가 없습니다.</string>
     <string name="about_privacy">개인정보처리방침</string>
     <string name="about_on_phone">휴대전화에서 열림</string>
     <string name="about_source">소스 코드</string>
@@ -208,12 +208,12 @@
     <string name="notification_channel">대화</string>
     <string name="notification_text">듣고 답변하는 중</string>
     <string name="ongoing_status">대화 중</string>
-    <string name="tile_label">Parley</string>
-    <string name="tile_description">탭 한 번으로 Parley와 대화</string>
+    <string name="tile_label">Talova</string>
+    <string name="tile_description">탭 한 번으로 Talova와 대화</string>
     <string name="tile_latest">최근: %1$s</string>
-    <string name="complication_label">Parley와 대화</string>
+    <string name="complication_label">Talova와 대화</string>
     <string name="complication_short">대화</string>
-    <string name="complication_description">Parley와 대화 시작</string>
+    <string name="complication_description">Talova와 대화 시작</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">친근함</string>
@@ -230,7 +230,7 @@
     <string name="persona_custom_description">직접 입력한 지침</string>
     <string name="language_auto">자동</string>
     <string name="barge_in_auto">자동</string>
-    <string name="barge_in_auto_description">Parley가 말할 때 말하면 중단됨</string>
+    <string name="barge_in_auto_description">Talova가 말할 때 말하면 중단됨</string>
     <string name="barge_in_on">마이크 항상 켜기</string>
     <string name="barge_in_on_description">헤드폰용. 스피커 소리로 스스로 중단될 수 있음</string>
     <string name="barge_in_off">탭만 사용</string>
@@ -286,7 +286,7 @@
     <string name="error_no_key_for">아직 %1$s 키가 없습니다.</string>
     <string name="error_microphone_unavailable">마이크를 사용할 수 없습니다.</string>
 
-    <!-- Memory: facts Parley was asked to remember. -->
+    <!-- Memory: facts Talova was asked to remember. -->
     <string name="memory_title">기억</string>
     <string name="memory_use">기억 사용</string>
     <string name="memory_use_note">요청한 것만 기억: “…라고 기억해 줘”</string>
@@ -296,8 +296,8 @@
     <string name="memory_count">기억 · %1$d/%2$d</string>
     <string name="memory_forget_confirm">이 항목을 잊으시겠습니까?</string>
     <string name="memory_forget_all">모두 잊기</string>
-    <string name="memory_forget_all_confirm">Parley가 알고 있는 내용을 모두 잊으시겠습니까?</string>
-    <string name="memory_privacy">이 시계에만 저장됩니다. Parley는 대화할 때마다 이 항목을 AI 제공업체에 전달합니다.</string>
+    <string name="memory_forget_all_confirm">Talova가 알고 있는 내용을 모두 잊으시겠습니까?</string>
+    <string name="memory_privacy">이 시계에만 저장됩니다. Talova는 대화할 때마다 이 항목을 AI 제공업체에 전달합니다.</string>
     <string name="notice_remembered">기억함</string>
     <string name="notice_forgotten">잊음</string>
     <string name="note_remembered">기억함: %1$s</string>
@@ -311,7 +311,7 @@
     <string name="features_title">시계 기능</string>
     <string name="features_examples">“여기 날씨 어때?”, “내 심박수는?”, “오늘 일정 뭐 있어?” 같은 질문에 답할 수 있습니다.</string>
     <string name="features_hint">질문에 필요할 때만 사용합니다. 처음에는 시계가 권한을 요청합니다.</string>
-    <string name="features_privacy">Parley가 읽은 내용은 요청한 대화에서만 AI 제공업체로 전송됩니다.</string>
+    <string name="features_privacy">Talova가 읽은 내용은 요청한 대화에서만 AI 제공업체로 전송됩니다.</string>
     <string name="features_allow_now">지금 허용</string>
     <string name="features_open_settings">시계 설정에서 허용</string>
     <string name="features_none">꺼짐</string>

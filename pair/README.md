@@ -1,6 +1,6 @@
-# Parley pairing page and relay
+# Talova pairing page and relay
 
-Hands an API key from a browser to the Parley watch app, end-to-end encrypted.
+Hands an API key from a browser to the Talova watch app, end-to-end encrypted.
 
 ```
 watch ── POST /v1/pair/:id/open ──────────────►┐
@@ -36,12 +36,12 @@ npm run typecheck
 
 ```bash
 npx wrangler login
-npm run deploy     # prints the address, e.g. https://parley-pair.<account>.workers.dev
+npm run deploy     # prints the address, e.g. https://talova-pair.<account>.workers.dev
 ```
 
 Then build the watch app against that address:
-`./gradlew :wear:assembleRelease -Pparley.pairBaseUrl=https://parley-pair.<account>.workers.dev`
-(or set `parley.pairBaseUrl` in `gradle.properties`). A custom domain can be added later in
+`./gradlew :wear:assembleRelease -Ptalova.pairBaseUrl=https://talova-pair.<account>.workers.dev`
+(or set `talova.pairBaseUrl` in `gradle.properties`). A custom domain can be added later in
 `wrangler.jsonc` under `routes`; old app versions keep the address they were built with.
 
 The free Workers plan is enough: one pairing costs a handful of requests and a few seconds of a

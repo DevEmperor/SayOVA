@@ -1,6 +1,6 @@
 /*
  * The cloud orb at the top of the page, alive like the one on the watch: the same shader (orb-ui's
- * MIT-licensed CloudTheme in Parley's colours, see wear/…/CloudOrbView.kt) drawn with WebGL. Without
+ * MIT-licensed CloudTheme in Talova's colours, see wear/…/CloudOrbView.kt) drawn with WebGL. Without
  * WebGL the still frame in style.css stays; with reduced motion one frame is drawn and kept.
  */
 

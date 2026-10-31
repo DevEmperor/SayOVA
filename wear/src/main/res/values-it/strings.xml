@@ -12,26 +12,26 @@
     <string name="sample_a2">Che ne dici di un curry di ceci con spinaci? Ci vogliono circa venti minuti e il giorno dopo è ancora più buono.</string>
     <string name="sample_q3">Perfetto. Imposta un timer di venti minuti.</string>
     <string name="sample_a3">Il tuo timer è partito. Buon appetito!</string>
-    <string name="tour_talk_orb">Interrompi Parley quando vuoi: basta parlare o toccare la sfera.</string>
+    <string name="tour_talk_orb">Interrompi Talova quando vuoi: basta parlare o toccare la sfera.</string>
     <string name="tour_talk_text">Mostra o nasconde il testo.</string>
     <string name="tour_talk_sound">Tocca per silenziare. Tieni premuto o ruota la ghiera per il volume.</string>
     <string name="tour_talk_end">Riaggancia. Le conversazioni finiscono nella cronologia.</string>
-    <string name="tour_home_orb">Tocca e parla. Parley cerca sul web, imposta timer e sveglie, prende appunti e ricorda ciò che gli chiedi.</string>
+    <string name="tour_home_orb">Tocca e parla. Talova cerca sul web, imposta timer e sveglie, prende appunti e ricorda ciò che gli chiedi.</string>
     <string name="tour_home_line">Modello e costo del mese. Tocca per le statistiche.</string>
     <string name="tour_home_interpreter">Interprete: scegli due lingue e tieni l\'orologio tra voi.</string>
     <string name="tour_home_history">Cronologia: rileggi, continua o invia al telefono.</string>
     <string name="tour_home_settings">Impostazioni: voce, personalità, memoria, funzioni dell’orologio, budget e altro.</string>
     <string name="quick_title">Avvio più rapido</string>
-    <string name="quick_text">Nelle impostazioni dell\'orologio assegna Parley alla doppia pressione del tasto (su un Galaxy Watch in Funzioni avanzate). Con «%1$s» attivo, una doppia pressione avvia una conversazione.</string>
+    <string name="quick_text">Nelle impostazioni dell\'orologio assegna Talova alla doppia pressione del tasto (su un Galaxy Watch in Funzioni avanzate). Con «%1$s» attivo, una doppia pressione avvia una conversazione.</string>
     <string name="quick_watch_settings">Imposta il tasto</string>
     <string name="action_continue">Continua</string>
     <string name="permission_title">Microfono</string>
-    <string name="permission_text">Parley ha bisogno del microfono per sentirti. L\'audio viene trasmesso solo a conversazione aperta.</string>
-    <string name="permission_blocked">Il microfono è bloccato. Consentilo nelle impostazioni dell\'app per parlare con Parley.</string>
+    <string name="permission_text">Talova ha bisogno del microfono per sentirti. L\'audio viene trasmesso solo a conversazione aperta.</string>
+    <string name="permission_blocked">Il microfono è bloccato. Consentilo nelle impostazioni dell\'app per parlare con Talova.</string>
     <string name="permission_allow">Consenti</string>
     <string name="permission_settings">Impostazioni</string>
     <string name="provider_choose">Scegli un provider</string>
-    <string name="provider_choose_hint">Parley usa la tua chiave API: costi e dati restano sotto il tuo controllo.</string>
+    <string name="provider_choose_hint">Talova usa la tua chiave API: costi e dati restano sotto il tuo controllo.</string>
     <string name="provider_gemini_note">Consigliato · circa 1–2 ¢ al minuto</string>
     <string name="provider_openai_note">Circa 2–11 ¢ al minuto</string>
     <string name="provider_connected">Connesso</string>
@@ -48,7 +48,7 @@
     <string name="pair_checking">Verifica della chiave con %1$s…</string>
     <string name="pair_connected_title">Connesso</string>
     <string name="pair_connected_text">%1$s ha accettato la chiave. È crittografata e salvata solo su questo orologio.</string>
-    <string name="pair_connected_unverified">Chiave salvata, ma %1$s non è raggiungibile per verificarla. Parley riproverà quando parli.</string>
+    <string name="pair_connected_unverified">Chiave salvata, ma %1$s non è raggiungibile per verificarla. Talova riproverà quando parli.</string>
     <string name="pair_connected_action">Inizia</string>
     <string name="pair_failed_expired">Il codice è scaduto</string>
     <string name="pair_failed_rejected">Il provider ha rifiutato questa chiave</string>
@@ -101,7 +101,7 @@
     <string name="error_network_text">Controlla il Wi-Fi o i dati mobili e riprova.</string>
     <string name="error_rejected_title">Richiesta rifiutata</string>
     <string name="error_server_title">Il provider ha chiuso la chiamata</string>
-    <string name="error_no_microphone">Parley ha bisogno del microfono. Apri l\'app per consentirlo.</string>
+    <string name="error_no_microphone">Talova ha bisogno del microfono. Apri l\'app per consentirlo.</string>
     <string name="error_server_text">Può succedere dopo una conversazione molto lunga o per un problema del provider.</string>
 
     <!-- History -->
@@ -160,14 +160,14 @@
     <string name="interpreter_start">Avvia interpretazione</string>
     <string name="interpreter_first">Prima lingua</string>
     <string name="interpreter_second">Seconda lingua</string>
-    <string name="interpreter_hint">Tieni l\'orologio tra voi. Parley ripete tutto nell\'altra lingua.</string>
+    <string name="interpreter_hint">Tieni l\'orologio tra voi. Talova ripete tutto nell\'altra lingua.</string>
     <string name="settings_general">Generale</string>
     <string name="settings_history">Salva cronologia</string>
     <string name="settings_delete_history">Elimina cronologia</string>
     <string name="settings_delete_history_confirm">Eliminare tutte le conversazioni?</string>
     <string name="settings_about">Informazioni</string>
     <string name="language_hint">In automatico risponde nella lingua che parli.</string>
-    <string name="barge_in_hint">Come interrompere una risposta. In automatico distingue la tua voce da quella di Parley, che il microfono sente dall\'altoparlante dell\'orologio.</string>
+    <string name="barge_in_hint">Come interrompere una risposta. In automatico distingue la tua voce da quella di Talova, che il microfono sente dall\'altoparlante dell\'orologio.</string>
     <string name="history_hint">Le conversazioni vengono salvate solo su questo orologio.</string>
     <string name="history_keep_off">Non salvare</string>
     <plurals name="usage_conversations">
@@ -187,7 +187,7 @@
         <item quantity="other">%1$d secondi</item>
     </plurals>
     <string name="auto_end_never">Mai</string>
-    <string name="persona_custom_label">Come deve comportarsi Parley?</string>
+    <string name="persona_custom_label">Come deve comportarsi Talova?</string>
     <string name="provider_title">Provider</string>
     <string name="provider_keys">Chiavi</string>
     <string name="provider_key_hint">Chiave %1$s</string>
@@ -200,7 +200,7 @@
 
     <!-- About -->
     <string name="about_version">Versione %1$s</string>
-    <string name="about_privacy_summary">La tua voce va direttamente da questo orologio al provider che hai scelto, con la tua chiave. Parley non ha server che vedono le tue conversazioni.</string>
+    <string name="about_privacy_summary">La tua voce va direttamente da questo orologio al provider che hai scelto, con la tua chiave. Talova non ha server che vedono le tue conversazioni.</string>
     <string name="about_privacy">Norme sulla privacy</string>
     <string name="about_on_phone">Si apre sul telefono</string>
     <string name="about_source">Codice sorgente</string>
@@ -213,12 +213,12 @@
     <string name="notification_channel">Conversazione</string>
     <string name="notification_text">Ascolta e risponde</string>
     <string name="ongoing_status">In conversazione</string>
-    <string name="tile_label">Parley</string>
-    <string name="tile_description">Parla con Parley con un tocco</string>
+    <string name="tile_label">Talova</string>
+    <string name="tile_description">Parla con Talova con un tocco</string>
     <string name="tile_latest">Ultima: %1$s</string>
-    <string name="complication_label">Parla con Parley</string>
+    <string name="complication_label">Parla con Talova</string>
     <string name="complication_short">Parla</string>
-    <string name="complication_description">Avvia una conversazione con Parley</string>
+    <string name="complication_description">Avvia una conversazione con Talova</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">Amichevole</string>
@@ -235,7 +235,7 @@
     <string name="persona_custom_description">Le tue istruzioni</string>
     <string name="language_auto">Automatica</string>
     <string name="barge_in_auto">Automatico</string>
-    <string name="barge_in_auto_description">Parla sopra Parley per interromperlo</string>
+    <string name="barge_in_auto_description">Parla sopra Talova per interromperlo</string>
     <string name="barge_in_on">Microfono aperto</string>
     <string name="barge_in_on_description">Per le cuffie; con l\'altoparlante può interrompersi da solo</string>
     <string name="barge_in_off">Solo tocco</string>
@@ -291,7 +291,7 @@
     <string name="error_no_key_for">Ancora nessuna chiave per %1$s.</string>
     <string name="error_microphone_unavailable">Il microfono non è disponibile.</string>
 
-    <!-- Memory: facts Parley was asked to remember. -->
+    <!-- Memory: facts Talova was asked to remember. -->
     <string name="memory_title">Memoria</string>
     <string name="memory_use">Usa la memoria</string>
     <string name="memory_use_note">Solo ciò che chiedi: «Ricorda che…»</string>
@@ -301,8 +301,8 @@
     <string name="memory_count">In memoria · %1$d/%2$d</string>
     <string name="memory_forget_confirm">Dimenticare questo?</string>
     <string name="memory_forget_all">Dimentica tutto</string>
-    <string name="memory_forget_all_confirm">Dimenticare tutto ciò che Parley sa di te?</string>
-    <string name="memory_privacy">Salvata solo su questo orologio. Parley invia queste voci al tuo provider di IA in ogni conversazione.</string>
+    <string name="memory_forget_all_confirm">Dimenticare tutto ciò che Talova sa di te?</string>
+    <string name="memory_privacy">Salvata solo su questo orologio. Talova invia queste voci al tuo provider di IA in ogni conversazione.</string>
     <string name="notice_remembered">Memorizzato</string>
     <string name="notice_forgotten">Dimenticato</string>
     <string name="note_remembered">Memorizzato: %1$s</string>
@@ -316,9 +316,9 @@
 
     <!-- Watch features: the watch's own sensors and data as tools. -->
     <string name="features_title">Funzioni dell’orologio</string>
-    <string name="features_examples">Così Parley risponde a domande come «Che tempo fa qui?», «Com’è il mio battito?» o «Cosa ho in programma oggi?»</string>
-    <string name="features_hint">Parley le usa solo quando la tua domanda ne ha bisogno. La prima volta l’orologio ti chiede il permesso.</string>
-    <string name="features_privacy">Ciò che Parley legge arriva al tuo provider di IA solo nella conversazione in cui lo chiedi.</string>
+    <string name="features_examples">Così Talova risponde a domande come «Che tempo fa qui?», «Com’è il mio battito?» o «Cosa ho in programma oggi?»</string>
+    <string name="features_hint">Talova le usa solo quando la tua domanda ne ha bisogno. La prima volta l’orologio ti chiede il permesso.</string>
+    <string name="features_privacy">Ciò che Talova legge arriva al tuo provider di IA solo nella conversazione in cui lo chiedi.</string>
     <string name="features_allow_now">Consenti ora</string>
     <string name="features_open_settings">Consenti nelle impostazioni</string>
     <string name="features_none">Disattivate</string>

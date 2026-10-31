@@ -13,26 +13,26 @@
     <string name="sample_a2">来一份菠菜鹰嘴豆咖喱怎么样？大约二十分钟就能做好，第二天吃更香。</string>
     <string name="sample_q3">听起来不错。设一个二十分钟的计时器。</string>
     <string name="sample_a3">计时器已开始。祝你用餐愉快！</string>
-    <string name="tour_talk_orb">随时都能打断 Parley：直接开口说话，或点按光球。</string>
+    <string name="tour_talk_orb">随时都能打断 Talova：直接开口说话，或点按光球。</string>
     <string name="tour_talk_text">显示或隐藏文字。</string>
     <string name="tour_talk_sound">点按可静音。长按或转动表圈可调节音量。</string>
     <string name="tour_talk_end">挂断。对话会保存在历史记录中。</string>
-    <string name="tour_home_orb">点按即可开口。Parley 能上网搜索、设置计时器和闹钟、记笔记，还会记住你让它记住的事。</string>
+    <string name="tour_home_orb">点按即可开口。Talova 能上网搜索、设置计时器和闹钟、记笔记，还会记住你让它记住的事。</string>
     <string name="tour_home_line">本月的模型和费用。点按查看统计。</string>
     <string name="tour_home_interpreter">口译：选择两种语言，把手表放在你们之间。</string>
     <string name="tour_home_history">历史记录：重温、继续对话或发送到手机。</string>
     <string name="tour_home_settings">设置：语音、个性、记忆、手表功能、预算等。</string>
     <string name="quick_title">更快启动</string>
-    <string name="quick_text">在手表设置中，把双击按键分配给 Parley（Galaxy Watch 位于“高级功能”）。开启“%1$s”后，双击按键即可开始对话。</string>
+    <string name="quick_text">在手表设置中，把双击按键分配给 Talova（Galaxy Watch 位于“高级功能”）。开启“%1$s”后，双击按键即可开始对话。</string>
     <string name="quick_watch_settings">设置按键</string>
     <string name="action_continue">继续</string>
     <string name="permission_title">麦克风</string>
-    <string name="permission_text">Parley 需要使用麦克风才能听到您说话。仅在对话进行时才会传输音频。</string>
-    <string name="permission_blocked">麦克风已被禁止使用。请在应用设置中允许访问，才能与 Parley 对话。</string>
+    <string name="permission_text">Talova 需要使用麦克风才能听到您说话。仅在对话进行时才会传输音频。</string>
+    <string name="permission_blocked">麦克风已被禁止使用。请在应用设置中允许访问，才能与 Talova 对话。</string>
     <string name="permission_allow">允许</string>
     <string name="permission_settings">设置</string>
     <string name="provider_choose">选择服务商</string>
-    <string name="provider_choose_hint">Parley 使用您自己的 API 密钥，费用和数据均由您掌控。</string>
+    <string name="provider_choose_hint">Talova 使用您自己的 API 密钥，费用和数据均由您掌控。</string>
     <string name="provider_gemini_note">推荐 · 约 1–2 美分/分钟</string>
     <string name="provider_openai_note">约 2–11 美分/分钟</string>
     <string name="provider_connected">已连接</string>
@@ -49,7 +49,7 @@
     <string name="pair_checking">正在向 %1$s 验证密钥…</string>
     <string name="pair_connected_title">已连接</string>
     <string name="pair_connected_text">%1$s 已接受该密钥。密钥经过加密，仅存储在这块手表上。</string>
-    <string name="pair_connected_unverified">密钥已保存，但无法连接 %1$s 进行验证。Parley 会在您对话时重试。</string>
+    <string name="pair_connected_unverified">密钥已保存，但无法连接 %1$s 进行验证。Talova 会在您对话时重试。</string>
     <string name="pair_connected_action">开始</string>
     <string name="pair_failed_expired">代码已过期</string>
     <string name="pair_failed_rejected">服务商拒绝了此密钥</string>
@@ -102,7 +102,7 @@
     <string name="error_network_text">请检查 WLAN 或移动数据网络，然后重试。</string>
     <string name="error_rejected_title">请求被拒绝</string>
     <string name="error_server_title">服务商结束了通话</string>
-    <string name="error_no_microphone">Parley 需要使用麦克风。请打开应用并授予权限。</string>
+    <string name="error_no_microphone">Talova 需要使用麦克风。请打开应用并授予权限。</string>
     <string name="error_server_text">这可能是因为对话时间过长，或服务商那边出现了问题。</string>
 
     <!-- History -->
@@ -161,14 +161,14 @@
     <string name="interpreter_start">开始口译</string>
     <string name="interpreter_first">第一种语言</string>
     <string name="interpreter_second">第二种语言</string>
-    <string name="interpreter_hint">把手表放在你们之间。Parley 会把说的话用另一种语言说出来。</string>
+    <string name="interpreter_hint">把手表放在你们之间。Talova 会把说的话用另一种语言说出来。</string>
     <string name="settings_general">通用</string>
     <string name="settings_history">保留历史记录</string>
     <string name="settings_delete_history">删除所有历史记录</string>
     <string name="settings_delete_history_confirm">要删除所有对话吗？</string>
     <string name="settings_about">关于</string>
     <string name="language_hint">选择“自动”时，会以您所说的语言回答。</string>
-    <string name="barge_in_hint">设置如何打断回答。“自动”可区分您的声音和 Parley 自身的声音（麦克风会收录手表扬声器播放的声音）。</string>
+    <string name="barge_in_hint">设置如何打断回答。“自动”可区分您的声音和 Talova 自身的声音（麦克风会收录手表扬声器播放的声音）。</string>
     <string name="history_hint">对话仅存储在此手表上。</string>
     <string name="history_keep_off">不保存</string>
     <plurals name="usage_conversations">
@@ -182,7 +182,7 @@
         <item quantity="other">%1$d 秒</item>
     </plurals>
     <string name="auto_end_never">永不</string>
-    <string name="persona_custom_label">您希望 Parley 如何表现？</string>
+    <string name="persona_custom_label">您希望 Talova 如何表现？</string>
     <string name="provider_title">服务商</string>
     <string name="provider_keys">密钥</string>
     <string name="provider_key_hint">密钥 %1$s</string>
@@ -195,7 +195,7 @@
 
     <!-- About -->
     <string name="about_version">版本 %1$s</string>
-    <string name="about_privacy_summary">您的语音会通过您自己的密钥，从此手表直接发送至您选择的服务商。Parley 没有任何能查看您对话的服务器。</string>
+    <string name="about_privacy_summary">您的语音会通过您自己的密钥，从此手表直接发送至您选择的服务商。Talova 没有任何能查看您对话的服务器。</string>
     <string name="about_privacy">隐私权政策</string>
     <string name="about_on_phone">在手机上打开</string>
     <string name="about_source">源代码</string>
@@ -208,12 +208,12 @@
     <string name="notification_channel">对话</string>
     <string name="notification_text">正在聆听和回答</string>
     <string name="ongoing_status">对话中</string>
-    <string name="tile_label">Parley</string>
-    <string name="tile_description">点按一下即可与 Parley 对话</string>
+    <string name="tile_label">Talova</string>
+    <string name="tile_description">点按一下即可与 Talova 对话</string>
     <string name="tile_latest">上次：%1$s</string>
-    <string name="complication_label">与 Parley 对话</string>
+    <string name="complication_label">与 Talova 对话</string>
     <string name="complication_short">对话</string>
-    <string name="complication_description">开始与 Parley 对话</string>
+    <string name="complication_description">开始与 Talova 对话</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">友好</string>
@@ -230,7 +230,7 @@
     <string name="persona_custom_description">您自己的指令</string>
     <string name="language_auto">自动</string>
     <string name="barge_in_auto">自动</string>
-    <string name="barge_in_auto_description">在 Parley 说话时开口即可打断</string>
+    <string name="barge_in_auto_description">在 Talova 说话时开口即可打断</string>
     <string name="barge_in_on">麦克风常开</string>
     <string name="barge_in_on_description">适合耳机；用扬声器时可能会自我打断</string>
     <string name="barge_in_off">仅点按</string>
@@ -286,7 +286,7 @@
     <string name="error_no_key_for">尚无 %1$s 的密钥。</string>
     <string name="error_microphone_unavailable">麦克风不可用。</string>
 
-    <!-- Memory: facts Parley was asked to remember. -->
+    <!-- Memory: facts Talova was asked to remember. -->
     <string name="memory_title">记忆</string>
     <string name="memory_use">使用记忆</string>
     <string name="memory_use_note">只记你要求的：“记住……”</string>
@@ -296,8 +296,8 @@
     <string name="memory_count">已记住 · %1$d/%2$d</string>
     <string name="memory_forget_confirm">要忘记这条吗？</string>
     <string name="memory_forget_all">全部忘记</string>
-    <string name="memory_forget_all_confirm">要忘记 Parley 知道的关于你的所有信息吗？</string>
-    <string name="memory_privacy">仅存储在此手表上。每次对话时，Parley 都会把这些内容发送给你的 AI 服务商。</string>
+    <string name="memory_forget_all_confirm">要忘记 Talova 知道的关于你的所有信息吗？</string>
+    <string name="memory_privacy">仅存储在此手表上。每次对话时，Talova 都会把这些内容发送给你的 AI 服务商。</string>
     <string name="notice_remembered">已记住</string>
     <string name="notice_forgotten">已忘记</string>
     <string name="note_remembered">已记住：%1$s</string>
@@ -309,9 +309,9 @@
 
     <!-- Watch features: the watch's own sensors and data as tools. -->
     <string name="features_title">手表功能</string>
-    <string name="features_examples">这样 Parley 就能回答“这里天气怎么样？”“我的心率是多少？”“今天还有什么安排？”之类的问题。</string>
+    <string name="features_examples">这样 Talova 就能回答“这里天气怎么样？”“我的心率是多少？”“今天还有什么安排？”之类的问题。</string>
     <string name="features_hint">仅在你的问题需要时使用。首次使用时，手表会请求你的授权。</string>
-    <string name="features_privacy">Parley 读取的内容只会在你提出请求的那次对话中发送给你的 AI 服务商。</string>
+    <string name="features_privacy">Talova 读取的内容只会在你提出请求的那次对话中发送给你的 AI 服务商。</string>
     <string name="features_allow_now">立即授权</string>
     <string name="features_open_settings">在手表设置中授权</string>
     <string name="features_none">已关闭</string>

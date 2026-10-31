@@ -1,34 +1,34 @@
-Parley turns your Wear OS watch into a real conversation partner. Raise your wrist, talk naturally, interrupt whenever you like – and hear the answer while you read it along on your watch.
+Talova turns your Wear OS watch into a real conversation partner. Raise your wrist, talk naturally, interrupt whenever you like – and hear the answer while you read it along on your watch.
 
 <b>Real conversations, not commands</b>
-Parley streams your voice live to a speech-to-speech model – Google Gemini Live or OpenAI Realtime – and plays the answer as it is generated. Speak over it to interrupt, just like with a person, or tap the orb.
+Talova streams your voice live to a speech-to-speech model – Google Gemini Live or OpenAI Realtime – and plays the answer as it is generated. Speak over it to interrupt, just like with a person, or tap the orb.
 
 <b>Hear it and read it</b>
 Both sides of the conversation appear on the screen as you talk. The part of the answer you have already heard is bright, the rest is still dim, so you never lose your place.
 
 <b>Your interpreter on the wrist</b>
-Pick two of 21 languages and hold the watch between you and the person you are talking to. Parley says everything in the other language and shows both sides as text.
+Pick two of 21 languages and hold the watch between you and the person you are talking to. Talova says everything in the other language and shows both sides as text.
 
 <b>Quiet when it has to be</b>
-In a lecture, a meeting or a quiet room? One tap switches Parley's voice off and the answers appear as text.
+In a lecture, a meeting or a quiet room? One tap switches Talova's voice off and the answers appear as text.
 
 <b>Gets things done</b>
-Ask Parley to set a timer or an alarm (every weekday, if you like), save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
+Ask Talova to set a timer or an alarm (every weekday, if you like), save a note, check the battery – or search the web for news, weather, opening hours and anything else that is current.
 
 <b>Prepares things on your phone</b>
-"Text Lena on WhatsApp that I'm ten minutes late", "Put the dentist on Tuesday at three in my calendar", "Route to the station on foot" – Parley reads the message back, and after your yes it waits on your phone in your own apps, ready for you to send, add or start. Parley never sends anything in your name.
+"Text Lena on WhatsApp that I'm ten minutes late", "Put the dentist on Tuesday at three in my calendar", "Route to the station on foot" – Talova reads the message back, and after your yes it waits on your phone in your own apps, ready for you to send, add or start. Talova never sends anything in your name.
 
 <b>Knows your watch – when you ask</b>
-"What's the weather here?", "What's my heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm ring?", "Pause the music", "Call Lena", "Open the flashlight" – Parley uses your location, the weather, heart rate, steps, calendar, air pressure, next alarm, music, contacts, apps or notifications only for that question, after you allowed it once, and shows an icon while it does. Calls are placed only after you confirmed name and number.
+"What's the weather here?", "What's my heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm ring?", "Pause the music", "Call Lena", "Open the flashlight" – Talova uses your location, the weather, heart rate, steps, calendar, air pressure, next alarm, music, contacts, apps or notifications only for that question, after you allowed it once, and shows an icon while it does. Calls are placed only after you confirmed name and number.
 
 <b>Remembers what you ask it to</b>
 Say "Remember that I'm vegetarian" and every later conversation knows. Only what you ask for is kept, on the watch, and you can read or delete every fact in the settings.
 
 <b>Your provider, your key, your data</b>
-Parley works with your own API key from Google Gemini (from about a cent a minute; a free tier is available) or OpenAI. Your voice goes straight from the watch to the provider – there is no Parley server in between, no account, no tracking and no ads.
+Talova works with your own API key from Google Gemini (from about a cent a minute; a free tier is available) or OpenAI. Your voice goes straight from the watch to the provider – there is no Talova server in between, no account, no tracking and no ads.
 
 <b>Hear it first</b>
-Before you set anything up, Parley plays a sample conversation on your watch, both sides spoken. A short tour shows the rest.
+Before you set anything up, Talova plays a sample conversation on your watch, both sides spoken. A short tour shows the rest.
 
 <b>Setup in a minute</b>
 Scan the QR code on your watch with your phone, paste your key, compare a six-digit code, done. The key is encrypted in your browser for your watch alone – no companion app, no typing on a tiny keyboard.
@@ -43,6 +43,6 @@ Scan the QR code on your watch with your phone, paste your key, compare a six-di
 • History stored only on the watch, for as long as you choose
 
 <b>Open source</b>
-Parley is open source under the Apache License 2.0. You can read exactly what it does with your voice and your key: github.com/DevEmperor/Parley
+Talova is open source under the Apache License 2.0. You can read exactly what it does with your voice and your key: github.com/DevEmperor/Talova
 
 Requires a Wear OS 3 or newer watch with a microphone and an API key from Google Gemini or OpenAI. Usage is billed by your provider. The Gemini API is for users aged 18 and over.

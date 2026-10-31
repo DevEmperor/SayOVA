@@ -13,26 +13,26 @@
     <string name="sample_a2">ほうれん草とひよこ豆のカレーはいかがですか？二十分ほどでできて、翌日はさらにおいしくなります。</string>
     <string name="sample_q3">いいね。二十分のタイマーをセットして。</string>
     <string name="sample_a3">タイマーをスタートしました。おいしくできますように！</string>
-    <string name="tour_talk_orb">Parley の話はいつでも遮れます。話し始めるか、オーブをタップしてください。</string>
+    <string name="tour_talk_orb">Talova の話はいつでも遮れます。話し始めるか、オーブをタップしてください。</string>
     <string name="tour_talk_text">テキストの表示と非表示を切り替えます。</string>
     <string name="tour_talk_sound">タップで消音。長押しするかベゼルを回すと音量を調整できます。</string>
     <string name="tour_talk_end">会話を終了します。会話は履歴に残ります。</string>
-    <string name="tour_home_orb">タップして話しかけましょう。Parley はウェブ検索、タイマーやアラームの設定、メモ、頼んだことの記憶ができます。</string>
+    <string name="tour_home_orb">タップして話しかけましょう。Talova はウェブ検索、タイマーやアラームの設定、メモ、頼んだことの記憶ができます。</string>
     <string name="tour_home_line">今月のモデルと費用。タップで統計を表示します。</string>
     <string name="tour_home_interpreter">通訳：2 つの言語を選び、ウォッチを相手との間に持ちます。</string>
     <string name="tour_home_history">履歴：読み返す、続きを話す、スマートフォンに送る。</string>
     <string name="tour_home_settings">設定：音声、パーソナリティ、メモリ、ウォッチ機能、予算など。</string>
     <string name="quick_title">すばやく起動</string>
-    <string name="quick_text">ウォッチの設定で、ボタンのダブルプレスに Parley を割り当てます（Galaxy Watch では「便利な機能」）。「%1$s」をオンにすると、ダブルプレスで会話が始まります。</string>
+    <string name="quick_text">ウォッチの設定で、ボタンのダブルプレスに Talova を割り当てます（Galaxy Watch では「便利な機能」）。「%1$s」をオンにすると、ダブルプレスで会話が始まります。</string>
     <string name="quick_watch_settings">ボタンを設定</string>
     <string name="action_continue">続ける</string>
     <string name="permission_title">マイク</string>
-    <string name="permission_text">Parley が音声を聞き取るにはマイクが必要です。音声は会話中にのみ送信されます。</string>
-    <string name="permission_blocked">マイクがブロックされています。Parley と話すには、アプリの設定で許可してください。</string>
+    <string name="permission_text">Talova が音声を聞き取るにはマイクが必要です。音声は会話中にのみ送信されます。</string>
+    <string name="permission_blocked">マイクがブロックされています。Talova と話すには、アプリの設定で許可してください。</string>
     <string name="permission_allow">許可</string>
     <string name="permission_settings">設定</string>
     <string name="provider_choose">プロバイダを選択</string>
-    <string name="provider_choose_hint">Parley はご自身の API キーを使うため、費用とデータを自分で管理できます。</string>
+    <string name="provider_choose_hint">Talova はご自身の API キーを使うため、費用とデータを自分で管理できます。</string>
     <string name="provider_gemini_note">おすすめ · 1 分あたり約 1～2 セント</string>
     <string name="provider_openai_note">1 分あたり約 2～11 セント</string>
     <string name="provider_connected">接続済み</string>
@@ -49,7 +49,7 @@
     <string name="pair_checking">%1$s でキーを確認しています…</string>
     <string name="pair_connected_title">接続しました</string>
     <string name="pair_connected_text">%1$s がキーを承認しました。キーは暗号化され、このウォッチにのみ保存されます。</string>
-    <string name="pair_connected_unverified">キーは保存されましたが、%1$s に接続できず確認できませんでした。会話時に Parley が再確認します。</string>
+    <string name="pair_connected_unverified">キーは保存されましたが、%1$s に接続できず確認できませんでした。会話時に Talova が再確認します。</string>
     <string name="pair_connected_action">開始</string>
     <string name="pair_failed_expired">コードの有効期限が切れました</string>
     <string name="pair_failed_rejected">プロバイダがこのキーを拒否しました</string>
@@ -102,7 +102,7 @@
     <string name="error_network_text">Wi-Fi またはモバイル データを確認して、もう一度お試しください。</string>
     <string name="error_rejected_title">リクエストが拒否されました</string>
     <string name="error_server_title">プロバイダが会話を終了しました</string>
-    <string name="error_no_microphone">Parley にはマイクが必要です。アプリを開いて許可してください。</string>
+    <string name="error_no_microphone">Talova にはマイクが必要です。アプリを開いて許可してください。</string>
     <string name="error_server_text">非常に長い会話の後や、プロバイダ側の問題で発生することがあります。</string>
 
     <!-- History -->
@@ -161,14 +161,14 @@
     <string name="interpreter_start">通訳を開始</string>
     <string name="interpreter_first">1つ目の言語</string>
     <string name="interpreter_second">2つ目の言語</string>
-    <string name="interpreter_hint">ウォッチを2人の間に持ってください。Parley が話した内容をもう一方の言語で伝えます。</string>
+    <string name="interpreter_hint">ウォッチを2人の間に持ってください。Talova が話した内容をもう一方の言語で伝えます。</string>
     <string name="settings_general">一般</string>
     <string name="settings_history">履歴を保存</string>
     <string name="settings_delete_history">履歴をすべて削除</string>
     <string name="settings_delete_history_confirm">すべての会話を削除しますか？</string>
     <string name="settings_about">アプリについて</string>
     <string name="language_hint">「自動」では、話した言語で回答します。</string>
-    <string name="barge_in_hint">回答を途中で止める方法です。「自動」では、ウォッチのスピーカーから流れてマイクが拾う Parley の声とユーザーの声を区別します。</string>
+    <string name="barge_in_hint">回答を途中で止める方法です。「自動」では、ウォッチのスピーカーから流れてマイクが拾う Talova の声とユーザーの声を区別します。</string>
     <string name="history_hint">会話はこのウォッチにのみ保存されます。</string>
     <string name="history_keep_off">保存しない</string>
     <plurals name="usage_conversations">
@@ -182,7 +182,7 @@
         <item quantity="other">%1$d 秒</item>
     </plurals>
     <string name="auto_end_never">しない</string>
-    <string name="persona_custom_label">Parley にどう振る舞ってほしいですか？</string>
+    <string name="persona_custom_label">Talova にどう振る舞ってほしいですか？</string>
     <string name="provider_title">プロバイダ</string>
     <string name="provider_keys">キー</string>
     <string name="provider_key_hint">キー %1$s</string>
@@ -195,7 +195,7 @@
 
     <!-- About -->
     <string name="about_version">バージョン %1$s</string>
-    <string name="about_privacy_summary">音声は、ご自身のキーを使ってこのウォッチから選択したプロバイダへ直接送信されます。Parley には会話を閲覧できるサーバーはありません。</string>
+    <string name="about_privacy_summary">音声は、ご自身のキーを使ってこのウォッチから選択したプロバイダへ直接送信されます。Talova には会話を閲覧できるサーバーはありません。</string>
     <string name="about_privacy">プライバシー ポリシー</string>
     <string name="about_on_phone">スマートフォンで開きます</string>
     <string name="about_source">ソースコード</string>
@@ -208,12 +208,12 @@
     <string name="notification_channel">会話</string>
     <string name="notification_text">音声を聞き取って応答しています</string>
     <string name="ongoing_status">会話中</string>
-    <string name="tile_label">Parley</string>
-    <string name="tile_description">ワンタップで Parley と話す</string>
+    <string name="tile_label">Talova</string>
+    <string name="tile_description">ワンタップで Talova と話す</string>
     <string name="tile_latest">前回：%1$s</string>
-    <string name="complication_label">Parley と話す</string>
+    <string name="complication_label">Talova と話す</string>
     <string name="complication_short">話す</string>
-    <string name="complication_description">Parley との会話を開始</string>
+    <string name="complication_description">Talova との会話を開始</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">フレンドリー</string>
@@ -230,7 +230,7 @@
     <string name="persona_custom_description">独自の指示</string>
     <string name="language_auto">自動</string>
     <string name="barge_in_auto">自動</string>
-    <string name="barge_in_auto_description">Parley に話しかけて中断</string>
+    <string name="barge_in_auto_description">Talova に話しかけて中断</string>
     <string name="barge_in_on">マイク常時オン</string>
     <string name="barge_in_on_description">ヘッドホン向け。スピーカーでは自分の声で中断することがあります</string>
     <string name="barge_in_off">タップのみ</string>
@@ -286,7 +286,7 @@
     <string name="error_no_key_for">%1$s のキーがまだありません。</string>
     <string name="error_microphone_unavailable">マイクを使用できません。</string>
 
-    <!-- Memory: facts Parley was asked to remember. -->
+    <!-- Memory: facts Talova was asked to remember. -->
     <string name="memory_title">記憶</string>
     <string name="memory_use">記憶を使う</string>
     <string name="memory_use_note">頼んだことだけ：「〇〇を覚えておいて」</string>
@@ -296,8 +296,8 @@
     <string name="memory_count">記憶 · %1$d/%2$d</string>
     <string name="memory_forget_confirm">これを忘れますか？</string>
     <string name="memory_forget_all">すべて忘れる</string>
-    <string name="memory_forget_all_confirm">Parley があなたについて知っていることをすべて忘れますか？</string>
-    <string name="memory_privacy">このウォッチにのみ保存されます。Parley は会話のたびに、これらの項目を AI プロバイダに送ります。</string>
+    <string name="memory_forget_all_confirm">Talova があなたについて知っていることをすべて忘れますか？</string>
+    <string name="memory_privacy">このウォッチにのみ保存されます。Talova は会話のたびに、これらの項目を AI プロバイダに送ります。</string>
     <string name="notice_remembered">覚えました</string>
     <string name="notice_forgotten">忘れました</string>
     <string name="note_remembered">覚えました：%1$s</string>
@@ -311,7 +311,7 @@
     <string name="features_title">ウォッチ機能</string>
     <string name="features_examples">「ここの天気は？」「心拍数は？」「今日の予定は？」のような質問に答えられます。</string>
     <string name="features_hint">質問に必要なときだけ使います。初回はウォッチが許可を求めます。</string>
-    <string name="features_privacy">Parley が読み取った内容は、それを尋ねた会話でのみ AI プロバイダに送られます。</string>
+    <string name="features_privacy">Talova が読み取った内容は、それを尋ねた会話でのみ AI プロバイダに送られます。</string>
     <string name="features_allow_now">今すぐ許可</string>
     <string name="features_open_settings">ウォッチの設定で許可</string>
     <string name="features_none">オフ</string>

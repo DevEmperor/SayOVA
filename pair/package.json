@@ -1,8 +1,8 @@
 {
-  "name": "parley-pair",
+  "name": "talova-pair",
   "version": "1.0.0",
   "private": true,
-  "description": "Parley's pairing page and relay: hands an API key from a browser to the watch, end-to-end encrypted.",
+  "description": "Talova's pairing page and relay: hands an API key from a browser to the watch, end-to-end encrypted.",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {

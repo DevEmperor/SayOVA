@@ -22,11 +22,11 @@ val keystoreProperties = rootProject.file("keystore.properties").takeIf { it.exi
     Properties().apply { file.inputStream().use(::load) }
 }
 
-// Where the pairing page and its relay live (pair/ in this repository), set as `parley.pairBaseUrl`
+// Where the pairing page and its relay live (pair/ in this repository), set as `talova.pairBaseUrl`
 // in gradle.properties. The address is compiled into the app and is the same for the QR code and
 // for the watch's own requests.
-val pairBaseUrl = (findProperty("parley.pairBaseUrl") as String?)?.trimEnd('/')
-    ?: error("parley.pairBaseUrl is not set (see gradle.properties)")
+val pairBaseUrl = (findProperty("talova.pairBaseUrl") as String?)?.trimEnd('/')
+    ?: error("talova.pairBaseUrl is not set (see gradle.properties)")
 
 kotlin {
     compilerOptions {
@@ -35,13 +35,13 @@ kotlin {
 }
 
 android {
-    namespace = "net.devemperor.parley"
+    namespace = "net.devemperor.talova"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "net.devemperor.parley"
+        applicationId = "net.devemperor.talova"
         // Wear OS 3 is the oldest release Play still distributes new watch apps to, so this reaches
-        // every watch that can install Parley at all.
+        // every watch that can install Talova at all.
         minSdk = 30
         targetSdk = 36
         versionCode = appVersionCode
@@ -84,14 +84,14 @@ android {
     }
 
     androidResources {
-        // The languages Parley is translated into; every new string gets all of them. The generated
-        // locale config lets the user pick Parley's language apart from the watch's.
+        // The languages Talova is translated into; every new string gets all of them. The generated
+        // locale config lets the user pick Talova's language apart from the watch's.
         localeFilters += listOf("en", "de", "fr", "es", "it", "pt-rBR", "nl", "pl", "sv", "tr", "ja", "ko", "zh-rCN")
         generateLocaleConfig = true
     }
 
     bundle {
-        // Play would otherwise install only the watch's languages from the bundle, and Parley's own
+        // Play would otherwise install only the watch's languages from the bundle, and Talova's own
         // language setting would then switch to strings that are not there. All 13 together are small.
         language {
             enableSplit = false

@@ -1,7 +1,7 @@
 /*
  * The page the watch opens on the phone. With #t=… it holds a conversation sent from the watch
  * (history → Send to phone): Share hands it to the phone's share sheet (messengers, notes, mail), Copy
- * puts it on the clipboard. With #e=… it holds a calendar event Parley prepared: no calendar app
+ * puts it on the clipboard. With #e=… it holds a calendar event Talova prepared: no calendar app
  * takes a link for a new event, so Add to calendar hands the phone's own calendar app a calendar file.
  * Both come in the address fragment (UTF-8 in base64url), which browsers never send to a server, and
  * are removed from the address at once.
@@ -141,10 +141,10 @@ function calendarFile(event: CalendarEvent): string {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Parley//Watch//EN",
+    "PRODID:-//Talova//Watch//EN",
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
-    `UID:${Date.now()}-${Math.random().toString(36).slice(2)}@parley`,
+    `UID:${Date.now()}-${Math.random().toString(36).slice(2)}@talova`,
     `DTSTAMP:${icsUtc(new Date())}`,
     ...(allDay(event)
       ? [`DTSTART;VALUE=DATE:${icsDay(local(event.start))}`, `DTEND;VALUE=DATE:${icsDay(dayAfter(event.end))}`]

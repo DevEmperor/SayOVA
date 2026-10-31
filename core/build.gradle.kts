@@ -15,7 +15,7 @@ kotlin {
 }
 
 android {
-    namespace = "net.devemperor.parley.core"
+    namespace = "net.devemperor.talova.core"
     compileSdk = 37
 
     defaultConfig {

@@ -1,5 +1,5 @@
 /*
- * The browser half of Parley's key handover (the watch half is core/.../pairing/Pairing.kt).
+ * The browser half of Talova's key handover (the watch half is core/.../pairing/Pairing.kt).
  *
  * HPKE (RFC 9180) base mode with DHKEM-X25519-HKDF-SHA256, HKDF-SHA256 and AES-128-GCM, encrypting to
  * the watch's one-time public key from the QR code. The sealed message is the 32-byte encapsulated key
@@ -38,7 +38,7 @@ export function base64UrlDecode(text: string): Uint8Array {
 }
 
 export function info(pairingId: string): Uint8Array {
-  return new TextEncoder().encode(`parley-pair-v${PAIRING_VERSION}|${pairingId}`);
+  return new TextEncoder().encode(`talova-pair-v${PAIRING_VERSION}|${pairingId}`);
 }
 
 /**

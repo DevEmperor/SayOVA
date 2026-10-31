@@ -19,12 +19,12 @@ import sys
 import time
 import wave
 
-sys.path.insert(0, os.path.expanduser("~/.cache/parley-emulator-venv/stubs"))
+sys.path.insert(0, os.path.expanduser("~/.cache/talova-emulator-venv/stubs"))
 import grpc  # noqa: E402
 import emulator_controller_pb2 as pb  # noqa: E402
 import emulator_controller_pb2_grpc as rpc  # noqa: E402
 
-GRPC = os.environ.get("PARLEY_EMU_GRPC", "localhost:8554")
+GRPC = os.environ.get("TALOVA_EMU_GRPC", "localhost:8554")
 RATE = 16_000
 CHUNK_MS = 20
 

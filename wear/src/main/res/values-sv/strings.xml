@@ -13,26 +13,26 @@
     <string name="sample_a2">Vad sägs om en kikärtscurry med spenat? Den tar ungefär tjugo minuter och blir ännu godare dagen efter.</string>
     <string name="sample_q3">Låter bra. Ställ en timer på tjugo minuter.</string>
     <string name="sample_a3">Din timer är igång. Smaklig måltid!</string>
-    <string name="tour_talk_orb">Avbryt Parley när du vill: börja bara prata eller tryck på klotet.</string>
+    <string name="tour_talk_orb">Avbryt Talova när du vill: börja bara prata eller tryck på klotet.</string>
     <string name="tour_talk_text">Visar eller döljer texten.</string>
     <string name="tour_talk_sound">Tryck för tyst. Håll in eller vrid ramen för volymen.</string>
     <string name="tour_talk_end">Lägger på. Samtalen hamnar i historiken.</string>
-    <string name="tour_home_orb">Tryck och prata. Parley söker på webben, ställer timer och alarm, gör anteckningar och kommer ihåg det du ber om.</string>
+    <string name="tour_home_orb">Tryck och prata. Talova söker på webben, ställer timer och alarm, gör anteckningar och kommer ihåg det du ber om.</string>
     <string name="tour_home_line">Modell och kostnad den här månaden. Tryck för statistiken.</string>
     <string name="tour_home_interpreter">Tolk: välj två språk och håll klockan mellan er.</string>
     <string name="tour_home_history">Historik: läs igen, fortsätt eller skicka till telefonen.</string>
     <string name="tour_home_settings">Inställningar: röst, personlighet, minne, klockfunktioner, budget med mera.</string>
     <string name="quick_title">Starta snabbare</string>
-    <string name="quick_text">I klockans inställningar lägger du Parley på ett dubbeltryck på knappen (på en Galaxy Watch under Avancerade funktioner). Med ”%1$s” på startar ett dubbeltryck ett samtal.</string>
+    <string name="quick_text">I klockans inställningar lägger du Talova på ett dubbeltryck på knappen (på en Galaxy Watch under Avancerade funktioner). Med ”%1$s” på startar ett dubbeltryck ett samtal.</string>
     <string name="quick_watch_settings">Ställ in knappen</string>
     <string name="action_continue">Fortsätt</string>
     <string name="permission_title">Mikrofon</string>
-    <string name="permission_text">Parley behöver mikrofonen för att höra dig. Ljud strömmas bara medan ett samtal är öppet.</string>
-    <string name="permission_blocked">Mikrofonen är blockerad. Tillåt den i appinställningarna för att prata med Parley.</string>
+    <string name="permission_text">Talova behöver mikrofonen för att höra dig. Ljud strömmas bara medan ett samtal är öppet.</string>
+    <string name="permission_blocked">Mikrofonen är blockerad. Tillåt den i appinställningarna för att prata med Talova.</string>
     <string name="permission_allow">Tillåt</string>
     <string name="permission_settings">Inställningar</string>
     <string name="provider_choose">Välj leverantör</string>
-    <string name="provider_choose_hint">Parley använder din egen API-nyckel, så du har kontroll över kostnad och data.</string>
+    <string name="provider_choose_hint">Talova använder din egen API-nyckel, så du har kontroll över kostnad och data.</string>
     <string name="provider_gemini_note">Rekommenderas · ca 1–2 ¢ per minut</string>
     <string name="provider_openai_note">Ca 2–11 ¢ per minut</string>
     <string name="provider_connected">Ansluten</string>
@@ -49,7 +49,7 @@
     <string name="pair_checking">Kontrollerar nyckeln med %1$s…</string>
     <string name="pair_connected_title">Ansluten</string>
     <string name="pair_connected_text">%1$s godkände nyckeln. Den lagras krypterad bara på den här klockan.</string>
-    <string name="pair_connected_unverified">Nyckeln har sparats, men %1$s gick inte att nå för kontroll. Parley försöker igen när du pratar.</string>
+    <string name="pair_connected_unverified">Nyckeln har sparats, men %1$s gick inte att nå för kontroll. Talova försöker igen när du pratar.</string>
     <string name="pair_connected_action">Starta</string>
     <string name="pair_failed_expired">Koden har gått ut</string>
     <string name="pair_failed_rejected">Leverantören avvisade nyckeln</string>
@@ -102,7 +102,7 @@
     <string name="error_network_text">Kontrollera wifi eller mobildata och försök igen.</string>
     <string name="error_rejected_title">Begäran nekades</string>
     <string name="error_server_title">Leverantören avslutade samtalet</string>
-    <string name="error_no_microphone">Parley behöver mikrofonen. Öppna appen för att tillåta den.</string>
+    <string name="error_no_microphone">Talova behöver mikrofonen. Öppna appen för att tillåta den.</string>
     <string name="error_server_text">Det kan hända efter ett mycket långt samtal eller vid problem hos leverantören.</string>
 
     <!-- History -->
@@ -161,14 +161,14 @@
     <string name="interpreter_start">Börja tolka</string>
     <string name="interpreter_first">Första språk</string>
     <string name="interpreter_second">Andra språk</string>
-    <string name="interpreter_hint">Håll klockan mellan er. Parley säger allt på det andra språket.</string>
+    <string name="interpreter_hint">Håll klockan mellan er. Talova säger allt på det andra språket.</string>
     <string name="settings_general">Allmänt</string>
     <string name="settings_history">Spara historik</string>
     <string name="settings_delete_history">Ta bort all historik</string>
     <string name="settings_delete_history_confirm">Ta bort alla samtal?</string>
     <string name="settings_about">Om</string>
     <string name="language_hint">Med Automatiskt får du svar på det språk du talar.</string>
-    <string name="barge_in_hint">Hur du avbryter ett svar. Automatiskt skiljer din röst från Parleys egen, som mikrofonen hör i klockans högtalare.</string>
+    <string name="barge_in_hint">Hur du avbryter ett svar. Automatiskt skiljer din röst från Talovas egen, som mikrofonen hör i klockans högtalare.</string>
     <string name="history_hint">Samtal sparas bara på den här klockan.</string>
     <string name="history_keep_off">Spara inte</string>
     <plurals name="usage_conversations">
@@ -185,7 +185,7 @@
         <item quantity="other">%1$d sekunder</item>
     </plurals>
     <string name="auto_end_never">Aldrig</string>
-    <string name="persona_custom_label">Hur ska Parley bete sig?</string>
+    <string name="persona_custom_label">Hur ska Talova bete sig?</string>
     <string name="provider_title">Leverantör</string>
     <string name="provider_keys">Nycklar</string>
     <string name="provider_key_hint">Nyckel %1$s</string>
@@ -198,7 +198,7 @@
 
     <!-- About -->
     <string name="about_version">Version %1$s</string>
-    <string name="about_privacy_summary">Din röst går direkt från klockan till den leverantör du valt, med din egen nyckel. Parley har ingen server som ser dina samtal.</string>
+    <string name="about_privacy_summary">Din röst går direkt från klockan till den leverantör du valt, med din egen nyckel. Talova har ingen server som ser dina samtal.</string>
     <string name="about_privacy">Integritetspolicy</string>
     <string name="about_on_phone">Öppnas på telefonen</string>
     <string name="about_source">Källkod</string>
@@ -211,12 +211,12 @@
     <string name="notification_channel">Samtal</string>
     <string name="notification_text">Lyssnar och svarar</string>
     <string name="ongoing_status">Pratar</string>
-    <string name="tile_label">Parley</string>
-    <string name="tile_description">Prata med Parley med ett tryck</string>
+    <string name="tile_label">Talova</string>
+    <string name="tile_description">Prata med Talova med ett tryck</string>
     <string name="tile_latest">Senast: %1$s</string>
-    <string name="complication_label">Prata med Parley</string>
+    <string name="complication_label">Prata med Talova</string>
     <string name="complication_short">Prata</string>
-    <string name="complication_description">Starta ett samtal med Parley</string>
+    <string name="complication_description">Starta ett samtal med Talova</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">Vänlig</string>
@@ -233,7 +233,7 @@
     <string name="persona_custom_description">Din egen instruktion</string>
     <string name="language_auto">Automatiskt</string>
     <string name="barge_in_auto">Automatiskt</string>
-    <string name="barge_in_auto_description">Prata över Parley för att avbryta</string>
+    <string name="barge_in_auto_description">Prata över Talova för att avbryta</string>
     <string name="barge_in_on">Öppen mikrofon</string>
     <string name="barge_in_on_description">För hörlurar; högtalaren kan avbryta sig själv</string>
     <string name="barge_in_off">Bara tryck</string>
@@ -289,7 +289,7 @@
     <string name="error_no_key_for">Ingen nyckel för %1$s än.</string>
     <string name="error_microphone_unavailable">Mikrofonen är inte tillgänglig.</string>
 
-    <!-- Memory: facts Parley was asked to remember. -->
+    <!-- Memory: facts Talova was asked to remember. -->
     <string name="memory_title">Minne</string>
     <string name="memory_use">Använd minnet</string>
     <string name="memory_use_note">Bara det du ber om: ”Kom ihåg att …”</string>
@@ -299,8 +299,8 @@
     <string name="memory_count">Sparat · %1$d/%2$d</string>
     <string name="memory_forget_confirm">Glömma detta?</string>
     <string name="memory_forget_all">Glöm allt</string>
-    <string name="memory_forget_all_confirm">Glömma allt Parley vet om dig?</string>
-    <string name="memory_privacy">Sparas bara på den här klockan. Parley skickar med posterna till din AI-leverantör i varje samtal.</string>
+    <string name="memory_forget_all_confirm">Glömma allt Talova vet om dig?</string>
+    <string name="memory_privacy">Sparas bara på den här klockan. Talova skickar med posterna till din AI-leverantör i varje samtal.</string>
     <string name="notice_remembered">Sparat</string>
     <string name="notice_forgotten">Glömt</string>
     <string name="note_remembered">Sparat: %1$s</string>
@@ -313,9 +313,9 @@
 
     <!-- Watch features: the watch's own sensors and data as tools. -->
     <string name="features_title">Klockfunktioner</string>
-    <string name="features_examples">Då kan Parley svara på frågor som ”Vad är det för väder här?”, ”Vad har jag för puls?” eller ”Vad har jag i dag?”</string>
-    <string name="features_hint">Parley använder dem bara när din fråga behöver dem. Första gången ber klockan om lov.</string>
-    <string name="features_privacy">Det Parley läser går bara till din AI-leverantör i samtalet där du frågar efter det.</string>
+    <string name="features_examples">Då kan Talova svara på frågor som ”Vad är det för väder här?”, ”Vad har jag för puls?” eller ”Vad har jag i dag?”</string>
+    <string name="features_hint">Talova använder dem bara när din fråga behöver dem. Första gången ber klockan om lov.</string>
+    <string name="features_privacy">Det Talova läser går bara till din AI-leverantör i samtalet där du frågar efter det.</string>
     <string name="features_allow_now">Tillåt nu</string>
     <string name="features_open_settings">Tillåt i inställningarna</string>
     <string name="features_none">Av</string>
