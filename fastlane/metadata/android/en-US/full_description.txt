@@ -38,11 +38,11 @@ Scan the QR code on your watch with your phone, paste your key, compare a six-di
 • Keeps talking with the screen off, with an icon on the watch face
 • Tile and complication to start talking with one tap
 • Works with Bluetooth headphones
-• Personalities (friendly, concise, tutor, language partner or your own), 40 voices to listen to before you choose, answer language
-• Running cost estimate and monthly total
+• Personalities (friendly, concise, detailed, tutor, language partner or your own), 40 voices to listen to before you choose, answer language
+• Running cost estimate, usage statistics and a monthly budget
 • History stored only on the watch, for as long as you choose
 
 <b>Open source</b>
-SayOVA is open source under the Apache License 2.0. You can read exactly what it does with your voice and your key: github.com/DevEmperor/SayOVA
+SayOVA is open source under the Apache License 2.0. You can read exactly what it does with your voice and your key: github.com/DevEmperor/SayOVA – and every function is explained step by step, with pictures, in the guide: github.com/DevEmperor/SayOVA/wiki
 
 Requires a Wear OS 3 or newer watch with a microphone and an API key from Google Gemini or OpenAI. Usage is billed by your provider. The Gemini API is for users aged 18 and over.

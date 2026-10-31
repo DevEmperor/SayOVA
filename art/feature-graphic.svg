@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="500" viewBox="0 0 1024 500">
+  <!-- Play's feature graphic, rendered by tools/render-store-assets.sh, which fills in @SCREENSHOT@,
+       @TAGLINE@, @PROVIDERS@ and @FONT@. Colours as on the website and the pairing page. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050608"/>
+      <stop offset="1" stop-color="#0E1220"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="275" cy="250" r="270" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7394FA" stop-opacity="0.26"/>
+      <stop offset="0.6" stop-color="#8CDBDB" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#8CDBDB" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="900" cy="40" r="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2EC4B6"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <clipPath id="screen"><circle cx="275" cy="250" r="186"/></clipPath>
+  </defs>
+  <rect width="1024" height="500" fill="url(#bg)"/>
+  <rect width="1024" height="500" fill="url(#glow2)"/>
+  <circle cx="275" cy="250" r="270" fill="url(#glow)"/>
+  <circle cx="275" cy="250" r="200" fill="#181A20" stroke="#2E323C" stroke-width="4"/>
+  <image x="89" y="64" width="372" height="372" clip-path="url(#screen)" xlink:href="@SCREENSHOT@"/>
+  <text x="526" y="200" font-family="@FONT@" font-weight="700" font-size="80" letter-spacing="-1.5" fill="#F2F4F8">SayOVA</text>
+  <text x="531" y="236" font-family="Noto Sans" font-weight="700" font-size="17" letter-spacing="3.4" fill="url(#brand)">ORB VOICE ASSISTANT</text>
+  <text x="530" y="292" font-family="@FONT@" font-weight="500" font-size="26" fill="#C9CFDB">@TAGLINE@</text>
+  <text x="531" y="336" font-family="@FONT@" font-weight="500" font-size="18" fill="#2EC4B6">@PROVIDERS@</text>
+</svg>

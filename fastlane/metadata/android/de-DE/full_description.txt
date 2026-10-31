@@ -1,0 +1,48 @@
+SayOVA – dein Orb Voice Assistant – macht deine Wear-OS-Uhr zum echten Gesprächspartner. Handgelenk heben, natürlich reden, jederzeit unterbrechen – und die Antwort hören, während du sie mitliest.
+
+<b>Echte Gespräche statt Befehle</b>
+SayOVA streamt deine Stimme live an ein Speech-to-Speech-Modell – Google Gemini Live oder OpenAI Realtime – und spielt die Antwort ab, während sie entsteht. Fall ihm einfach ins Wort, wie einem Menschen, oder tippe auf den Orb.
+
+<b>Hören und mitlesen</b>
+Beide Seiten des Gesprächs erscheinen live auf dem Display. Schon Gehörtes leuchtet hell, der Rest ist noch gedimmt – so verlierst du nie den Faden.
+
+<b>Dein Dolmetscher am Handgelenk</b>
+Wähle zwei von 21 Sprachen und halte die Uhr zwischen dich und dein Gegenüber. SayOVA sagt alles in der anderen Sprache und zeigt beide Seiten als Text.
+
+<b>Leise, wenn es sein muss</b>
+In der Vorlesung, im Meeting oder in einem stillen Raum? Ein Tipp, und SayOVA antwortet lautlos als Text.
+
+<b>Nimmt dir Arbeit ab</b>
+SayOVA stellt Timer und Wecker (auf Wunsch werktags), speichert Notizen, prüft den Akku – oder sucht im Web nach Nachrichten, Wetter, Öffnungszeiten und allem, was aktuell ist.
+
+<b>Bereitet alles am Handy vor</b>
+„Schreib Lena auf WhatsApp, dass ich zehn Minuten später komme“, „Trag Dienstag um drei den Zahnarzt in meinen Kalender ein“, „Navigier mich zu Fuß zum Bahnhof“ – SayOVA liest die Nachricht vor, und nach deinem Ja liegt alles in deinen eigenen Apps am Handy bereit: zum Senden, Eintragen oder Starten. SayOVA verschickt nie etwas in deinem Namen.
+
+<b>Kennt deine Uhr – wenn du fragst</b>
+„Wie wird das Wetter hier?“, „Wie ist mein Puls?“, „Wie viele Schritte heute?“, „Was steht heute Nachmittag an?“, „Wann klingelt mein Wecker?“, „Pausier die Musik“, „Ruf Lena an“, „Öffne die Taschenlampe“ – SayOVA nutzt Standort, Wetter, Puls, Schritte, Kalender, Luftdruck, nächsten Wecker, Musik, Kontakte, Apps oder Benachrichtigungen nur für diese Frage, nach einmaliger Erlaubnis, und zeigt dabei ein Symbol. Angerufen wird erst nach deinem Ja zu Name und Nummer.
+
+<b>Merkt sich, worum du es bittest</b>
+Sag „Merk dir, dass ich Vegetarier bin“, und jedes spätere Gespräch weiß es. Gespeichert wird nur das, und zwar auf der Uhr; in den Einstellungen kannst du jeden Eintrag lesen oder löschen.
+
+<b>Dein Anbieter, dein Schlüssel, deine Daten</b>
+SayOVA nutzt deinen eigenen API-Schlüssel von Google Gemini (ab etwa einem Cent pro Minute, mit kostenlosem Kontingent) oder OpenAI. Deine Stimme geht direkt von der Uhr zum Anbieter – kein SayOVA-Server dazwischen, kein Konto, kein Tracking, keine Werbung.
+
+<b>Erst mal reinhören</b>
+Schon vor der Einrichtung spielt SayOVA dir ein Beispielgespräch vor, beide Seiten gesprochen. Eine kurze Tour zeigt den Rest.
+
+<b>In einer Minute eingerichtet</b>
+QR-Code auf der Uhr mit dem Handy scannen, Schlüssel einfügen, sechsstelligen Code vergleichen, fertig. Der Schlüssel wird in deinem Browser nur für deine Uhr verschlüsselt – keine Begleit-App, kein Tippen auf Mini-Tastaturen.
+
+<b>Gemacht für die Uhr</b>
+• Nutzt im Gespräch WLAN oder LTE für flüssigen Ton
+• Spricht bei dunklem Display weiter, mit Symbol auf dem Zifferblatt
+• Kachel und Komplikation: mit einem Tipp losreden
+• Funktioniert mit Bluetooth-Kopfhörern
+• Persönlichkeiten (freundlich, knapp, ausführlich, Tutor, Sprachpartner oder eigene), 40 Stimmen zum Probehören, Antwortsprache
+• Laufende Kostenschätzung, Nutzungsstatistik und Monatsbudget
+• Verlauf nur auf der Uhr, so lange du willst
+
+<b>Open Source</b>
+SayOVA ist Open Source unter der Apache License 2.0. Lies genau nach, was es mit deiner Stimme und deinem Schlüssel macht: github.com/DevEmperor/SayOVA – und die Anleitung erklärt jede Funktion Schritt für Schritt mit Bildern: github.com/DevEmperor/SayOVA/wiki
+
+Erfordert eine Uhr mit Wear OS 3 oder neuer und Mikrofon sowie einen API-Schlüssel von Google Gemini oder OpenAI. Die Nutzung rechnet dein Anbieter ab. Die Gemini API ist für Nutzer ab 18 Jahren.

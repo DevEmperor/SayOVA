@@ -1,0 +1,1 @@
+Primera versión de SayOVA: conversaciones de voz en tiempo real con Google Gemini u OpenAI en tu reloj, con tu propia clave de API. Interrumpe cuando quieras, lee a la vez, intérprete, memoria, temporizadores y alarmas, funciones del reloj, cosas preparadas en tu teléfono, tarjeta y complicación.

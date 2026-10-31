@@ -1,0 +1,1 @@
+Erste Version von SayOVA: Sprachgespräche in Echtzeit mit Google Gemini oder OpenAI auf deiner Uhr, mit deinem eigenen API-Schlüssel. Jederzeit unterbrechen, mitlesen, Dolmetscher, Gedächtnis, Timer und Wecker, Uhr-Funktionen, am Handy vorbereiten, Kachel und Komplikation.

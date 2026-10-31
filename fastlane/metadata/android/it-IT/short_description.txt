@@ -1,0 +1,1 @@
+Parla con Gemini o OpenAI dal polso: voce e testo live, con la tua chiave API.

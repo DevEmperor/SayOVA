@@ -1,0 +1,48 @@
+O SayOVA – seu Orb Voice Assistant – transforma seu relógio Wear OS em um verdadeiro parceiro de conversa. Levante o pulso, fale naturalmente, interrompa quando quiser – e ouça a resposta enquanto a lê no relógio.
+
+<b>Conversas de verdade, não comandos</b>
+O SayOVA transmite sua voz ao vivo para um modelo de voz para voz – Google Gemini Live ou OpenAI Realtime – e toca a resposta enquanto ela é gerada. Fale por cima para interromper, como com uma pessoa, ou toque na esfera.
+
+<b>Ouça e leia</b>
+A conversa toda aparece na tela enquanto você fala. O que você já ouviu fica claro e o resto ainda apagado, então você nunca se perde.
+
+<b>Seu intérprete no pulso</b>
+Escolha dois de 21 idiomas e segure o relógio entre você e a outra pessoa. O SayOVA diz tudo no outro idioma e mostra os dois lados em texto.
+
+<b>Silencioso quando necessário</b>
+Numa aula, numa reunião ou num lugar silencioso? Um toque desliga a voz do SayOVA e as respostas aparecem em texto.
+
+<b>Resolve as coisas</b>
+Peça ao SayOVA um timer ou alarme (todo dia útil, se quiser), uma nota ou o nível da bateria – ou que pesquise na web notícias, previsão do tempo, horários de funcionamento e tudo o que for atual.
+
+<b>Deixa tudo pronto no celular</b>
+“Avise a Lena no WhatsApp que vou me atrasar dez minutos”, “Coloque o dentista na terça às três na agenda”, “Rota a pé até a estação” – o SayOVA lê a mensagem e, depois do seu sim, ela fica pronta no celular, nos seus próprios apps, para você enviar, adicionar ou iniciar. O SayOVA nunca envia nada em seu nome.
+
+<b>Conhece seu relógio – quando você pede</b>
+“Como está o tempo aqui?”, “Como estão meus batimentos?”, “Quantos passos dei hoje?”, “O que tenho hoje à tarde?”, “Quando toca meu alarme?”, “Pause a música”, “Ligue para a Lena”, “Abra a lanterna” – o SayOVA usa localização, tempo, batimentos, passos, agenda, pressão atmosférica, próximo alarme, música, contatos, apps ou notificações só para aquela pergunta, após você permitir uma vez, e mostra um ícone enquanto isso. Só liga depois que você confirma nome e número.
+
+<b>Lembra o que você pedir</b>
+Diga “Lembre que eu sou vegetariano” e todas as conversas seguintes vão saber. Só fica salvo o que você pedir, no relógio, e você pode ler ou excluir cada item nas configurações.
+
+<b>Seu provedor, sua chave, seus dados</b>
+O SayOVA funciona com sua própria chave de API do Google Gemini (a partir de cerca de um centavo por minuto; há um nível gratuito) ou da OpenAI. Sua voz vai direto do relógio para o provedor – sem servidor do SayOVA no meio, sem conta, sem rastreamento e sem anúncios.
+
+<b>Ouça antes</b>
+Antes de configurar, o SayOVA toca no relógio uma conversa de exemplo, com os dois lados falados. Um tour rápido mostra o resto.
+
+<b>Configuração em um minuto</b>
+Escaneie com o celular o QR code do relógio, cole sua chave, compare um código de seis dígitos e pronto. A chave é criptografada no navegador só para o seu relógio – sem app complementar, sem digitar em um teclado minúsculo.
+
+<b>Feito para o relógio</b>
+• Usa Wi-Fi ou LTE durante a conversa para um áudio fluido
+• Continua a conversa com a tela desligada, com um ícone no mostrador
+• Bloco e complicação para começar a falar com um toque
+• Funciona com fones de ouvido Bluetooth
+• Personalidades (amigável, concisa, detalhada, tutor, parceiro de idiomas ou a sua), 40 vozes para ouvir antes de escolher, idioma das respostas
+• Estimativa de custos em tempo real, estatísticas de uso e orçamento mensal
+• Histórico salvo só no relógio, pelo tempo que você quiser
+
+<b>Código aberto</b>
+O SayOVA é de código aberto, sob a Licença Apache 2.0. Você pode ver exatamente o que ele faz com sua voz e sua chave: github.com/DevEmperor/SayOVA – e cada função é explicada passo a passo, com imagens, no guia: github.com/DevEmperor/SayOVA/wiki
+
+Requer um relógio com Wear OS 3 ou mais recente, com microfone, e uma chave de API do Google Gemini ou da OpenAI. O uso é cobrado pelo seu provedor. A API do Gemini é para maiores de 18 anos.
