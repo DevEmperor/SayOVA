@@ -166,6 +166,7 @@
     <string name="settings_history">기록 보관</string>
     <string name="settings_delete_history">모든 기록 삭제</string>
     <string name="settings_delete_history_confirm">모든 대화를 삭제하시겠습니까?</string>
+    <string name="settings_help">도움말 및 가이드</string>
     <string name="settings_about">정보</string>
     <string name="language_hint">자동으로 설정하면 사용자가 말하는 언어로 답변합니다.</string>
     <string name="barge_in_hint">답변을 중간에 끊는 방법입니다. 자동은 시계 스피커에서 나와 마이크에 들리는 SayOVA의 음성과 사용자의 음성을 구별합니다.</string>

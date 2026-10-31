@@ -166,6 +166,7 @@
     <string name="settings_history">Geçmişi sakla</string>
     <string name="settings_delete_history">Tüm geçmişi sil</string>
     <string name="settings_delete_history_confirm">Tüm sohbetler silinsin mi?</string>
+    <string name="settings_help">Yardım ve kılavuz</string>
     <string name="settings_about">Hakkında</string>
     <string name="language_hint">Otomatik, konuştuğunuz dilde yanıt verir.</string>
     <string name="barge_in_hint">Bir yanıtı nasıl keseceğiniz. Otomatik, sesinizi mikrofonun saat hoparlöründen duyduğu SayOVA sesinden ayırt eder.</string>

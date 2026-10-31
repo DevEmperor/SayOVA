@@ -12,6 +12,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.wear.compose.material3.OpenOnPhoneDialog
+import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
+import androidx.wear.compose.material3.curvedText
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -40,6 +43,7 @@ import net.devemperor.sayova.ui.components.MenuButton
 import net.devemperor.sayova.ui.components.RadioItem
 import net.devemperor.sayova.ui.components.SubHeader
 import net.devemperor.sayova.ui.components.SwitchItem
+import net.devemperor.sayova.ui.components.openOnPhone
 import net.devemperor.sayova.ui.components.rememberTextInput
 import net.devemperor.sayova.ui.descriptionRes
 import net.devemperor.sayova.ui.labelRes
@@ -53,6 +57,9 @@ enum class Choice { MODEL, VOICE, LANGUAGE, APP_LANGUAGE, PERSONA, BARGE_IN, AUT
 private enum class SampleState { LOADING, PLAYING, FAILED }
 
 private const val SAMPLE_FAILED_MS = 3_000L
+
+/** The guide to every function, with pictures: too much for the watch, so it opens on the phone. */
+private const val WIKI = "https://github.com/DevEmperor/SayOVA/wiki"
 
 @Composable
 fun SettingsScreen(
@@ -71,6 +78,7 @@ fun SettingsScreen(
 ) {
     val provider = settings.providerInfo
     var confirmDelete by remember { mutableStateOf(false) }
+    var helpOpened by remember { mutableStateOf(false) }
     ListScreen { spec ->
         item { Header(stringResource(R.string.settings_title), spec) }
         item {
@@ -167,8 +175,22 @@ fun SettingsScreen(
                 )
             }
         }
+        item {
+            val context = LocalContext.current
+            MenuButton(
+                stringResource(R.string.settings_help), spec, { openOnPhone(context, WIKI) { helpOpened = it } },
+                stringResource(R.string.about_on_phone), R.drawable.ic_help,
+            )
+        }
         item { MenuButton(stringResource(R.string.settings_about), spec, onOpenAbout, "${stringResource(R.string.app_name)} ${BuildConfig.VERSION_NAME}", R.drawable.ic_info) }
     }
+    val continueOnPhone = stringResource(R.string.about_continue_on_phone)
+    OpenOnPhoneDialog(
+        visible = helpOpened,
+        onDismissRequest = { helpOpened = false },
+        curvedText = { curvedText(continueOnPhone) },
+        content = { OpenOnPhoneDialogDefaults.Icon() },
+    )
     ConfirmDialog(
         visible = confirmDelete,
         title = stringResource(R.string.settings_delete_history_confirm),

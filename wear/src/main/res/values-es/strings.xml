@@ -165,6 +165,7 @@
     <string name="settings_history">Guardar historial</string>
     <string name="settings_delete_history">Borrar todo el historial</string>
     <string name="settings_delete_history_confirm">¿Eliminar todas las conversaciones?</string>
+    <string name="settings_help">Ayuda y guía</string>
     <string name="settings_about">Acerca de</string>
     <string name="language_hint">Automático responde en el idioma que hables.</string>
     <string name="barge_in_hint">Cómo cortas una respuesta. Automático distingue tu voz de la de SayOVA, que el micrófono oye por el altavoz del reloj.</string>

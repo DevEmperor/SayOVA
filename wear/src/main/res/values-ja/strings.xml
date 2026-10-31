@@ -166,6 +166,7 @@
     <string name="settings_history">履歴を保存</string>
     <string name="settings_delete_history">履歴をすべて削除</string>
     <string name="settings_delete_history_confirm">すべての会話を削除しますか？</string>
+    <string name="settings_help">ヘルプとガイド</string>
     <string name="settings_about">アプリについて</string>
     <string name="language_hint">「自動」では、話した言語で回答します。</string>
     <string name="barge_in_hint">回答を途中で止める方法です。「自動」では、ウォッチのスピーカーから流れてマイクが拾う SayOVA の声とユーザーの声を区別します。</string>

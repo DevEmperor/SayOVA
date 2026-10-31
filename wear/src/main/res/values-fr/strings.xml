@@ -166,6 +166,7 @@
     <string name="settings_history">Conserver l\'historique</string>
     <string name="settings_delete_history">Supprimer l\'historique</string>
     <string name="settings_delete_history_confirm">Supprimer toutes les conversations ?</string>
+    <string name="settings_help">Aide et guide</string>
     <string name="settings_about">À propos</string>
     <string name="language_hint">En mode automatique, SayOVA répond dans la langue que vous parlez.</string>
     <string name="barge_in_hint">Comment couper court à une réponse. Le mode automatique distingue votre voix de celle de SayOVA, que le micro capte via le haut-parleur de la montre.</string>

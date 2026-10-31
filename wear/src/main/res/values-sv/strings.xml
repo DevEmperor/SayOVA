@@ -166,6 +166,7 @@
     <string name="settings_history">Spara historik</string>
     <string name="settings_delete_history">Ta bort all historik</string>
     <string name="settings_delete_history_confirm">Ta bort alla samtal?</string>
+    <string name="settings_help">Hjälp och guide</string>
     <string name="settings_about">Om</string>
     <string name="language_hint">Med Automatiskt får du svar på det språk du talar.</string>
     <string name="barge_in_hint">Hur du avbryter ett svar. Automatiskt skiljer din röst från SayOVAs egen, som mikrofonen hör i klockans högtalare.</string>

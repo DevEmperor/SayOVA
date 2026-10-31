@@ -165,6 +165,7 @@
     <string name="settings_history">Zapisuj historię</string>
     <string name="settings_delete_history">Usuń całą historię</string>
     <string name="settings_delete_history_confirm">Usunąć wszystkie rozmowy?</string>
+    <string name="settings_help">Pomoc i przewodnik</string>
     <string name="settings_about">Informacje</string>
     <string name="language_hint">Automatycznie: odpowiedź w języku, w którym mówisz.</string>
     <string name="barge_in_hint">Jak przerywać odpowiedź. Tryb automatyczny odróżnia Twój głos od głosu SayOVA, który mikrofon słyszy z głośnika zegarka.</string>

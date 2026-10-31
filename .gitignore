@@ -26,4 +26,8 @@ pair/.wrangler/
 pair/.dev.vars
 pair/public/app.js
 pair/public/share.js
+
+# Website
+site/.wrangler/
+site/public/orb.js
 __pycache__/

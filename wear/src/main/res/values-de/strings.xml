@@ -165,6 +165,7 @@
     <string name="settings_history">Verlauf speichern</string>
     <string name="settings_delete_history">Gesamten Verlauf löschen</string>
     <string name="settings_delete_history_confirm">Alle Gespräche löschen?</string>
+    <string name="settings_help">Hilfe &amp; Anleitung</string>
     <string name="settings_about">Info</string>
     <string name="language_hint">„Automatisch“ antwortet in der Sprache, die du sprichst.</string>
     <string name="barge_in_hint">Wie du eine Antwort abbrichst. „Automatisch“ unterscheidet deine Stimme von SayOVAs eigener, die das Mikrofon über den Uhrlautsprecher hört.</string>

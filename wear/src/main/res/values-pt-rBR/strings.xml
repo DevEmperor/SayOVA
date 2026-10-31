@@ -165,6 +165,7 @@
     <string name="settings_history">Manter histórico</string>
     <string name="settings_delete_history">Excluir histórico</string>
     <string name="settings_delete_history_confirm">Excluir todas as conversas?</string>
+    <string name="settings_help">Ajuda e guia</string>
     <string name="settings_about">Sobre</string>
     <string name="language_hint">No automático, responde no idioma em que você fala.</string>
     <string name="barge_in_hint">Como você interrompe uma resposta. O automático distingue sua voz da voz do SayOVA, que o microfone capta pelo alto-falante do relógio.</string>

@@ -165,6 +165,7 @@
     <string name="settings_history">Geschiedenis bewaren</string>
     <string name="settings_delete_history">Alle geschiedenis wissen</string>
     <string name="settings_delete_history_confirm">Alle gesprekken verwijderen?</string>
+    <string name="settings_help">Hulp en handleiding</string>
     <string name="settings_about">Over</string>
     <string name="language_hint">Automatisch: antwoord in de taal die je spreekt.</string>
     <string name="barge_in_hint">Hoe je een antwoord onderbreekt. Automatisch onderscheidt je stem van die van SayOVA, die de microfoon via de horlogespeaker hoort.</string>

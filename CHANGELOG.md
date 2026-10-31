@@ -35,6 +35,8 @@ First version.
   watch between two people, and SayOVA says everything in the other language, nothing else; both
   sides show as text, the pair in the info line ("DE ⇄ ES").
 - Settings grouped anew: a Costs section (usage, monthly budget, show cost), vibration under General.
+- Help & guide (Settings → General) opens SayOVA's guide on the paired phone: every function, step by
+  step, with pictures (github.com/DevEmperor/SayOVA/wiki).
 - Volume: one step below the lowest switches the sound off and reads 0 (the call volume over the
   watch speaker never reaches 0 by itself); turned with the bezel, the volume panel goes after a
   second instead of two and a half.

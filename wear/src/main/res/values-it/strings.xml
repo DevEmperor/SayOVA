@@ -165,6 +165,7 @@
     <string name="settings_history">Salva cronologia</string>
     <string name="settings_delete_history">Elimina cronologia</string>
     <string name="settings_delete_history_confirm">Eliminare tutte le conversazioni?</string>
+    <string name="settings_help">Aiuto e guida</string>
     <string name="settings_about">Informazioni</string>
     <string name="language_hint">In automatico risponde nella lingua che parli.</string>
     <string name="barge_in_hint">Come interrompere una risposta. In automatico distingue la tua voce da quella di SayOVA, che il microfono sente dall\'altoparlante dell\'orologio.</string>

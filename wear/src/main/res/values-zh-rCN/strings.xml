@@ -166,6 +166,7 @@
     <string name="settings_history">保留历史记录</string>
     <string name="settings_delete_history">删除所有历史记录</string>
     <string name="settings_delete_history_confirm">要删除所有对话吗？</string>
+    <string name="settings_help">帮助与指南</string>
     <string name="settings_about">关于</string>
     <string name="language_hint">选择“自动”时，会以您所说的语言回答。</string>
     <string name="barge_in_hint">设置如何打断回答。“自动”可区分您的声音和 SayOVA 自身的声音（麦克风会收录手表扬声器播放的声音）。</string>

@@ -176,6 +176,7 @@
     <string name="settings_history">Keep history</string>
     <string name="settings_delete_history">Delete all history</string>
     <string name="settings_delete_history_confirm">Delete all conversations?</string>
+    <string name="settings_help">Help &amp; guide</string>
     <string name="settings_about">About</string>
     <string name="language_hint">Automatic answers in the language you speak.</string>
     <string name="barge_in_hint">How you cut an answer short. Automatic tells your voice apart from SayOVA’s own, which the microphone hears on the watch speaker.</string>
