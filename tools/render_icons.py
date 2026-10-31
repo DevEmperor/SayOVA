@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Renders Talova's icons from its cloud orb shader: the watch's launcher icon (adaptive foreground in five
+"""Renders SayOVA's icons from its cloud orb shader: the watch's launcher icon (adaptive foreground in five
 densities), the round orb for the tile preview, the pairing page's favicon and touch icon, the README logo
 and the Play Store icon. Run from the repository root; needs NumPy and Pillow.
 

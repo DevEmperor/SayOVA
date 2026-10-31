@@ -1,10 +1,10 @@
-# Privacy Policy for Talova
+# Privacy Policy for SayOVA
 
 **Effective date:** [date of the first Play release]
 **Last updated:** 29 October 2026
 
-This Privacy Policy explains how **Talova** (the "App", application ID
-`net.devemperor.talova`), a voice assistant for Wear OS watches, handles your
+This Privacy Policy explains how **SayOVA** (the "App", application ID
+`net.devemperor.sayova`), a voice assistant for Wear OS watches, handles your
 information. The App is developed and maintained by **Jannis Zahn**, trading as
 DevEmperor (the "Developer", "we", "us"), Talstraße 84, 35625 Hüttenberg, Germany —
 the data controller for the limited purposes described below.
@@ -27,7 +27,7 @@ If you have any questions about this policy, contact us at
   minutes (section 2.3).
 - **Your conversation history stays on your watch**, for as long as you choose
   (default 30 days), and is never backed up to the cloud.
-- **What you ask Talova to remember stays on your watch** too. It is given to your
+- **What you ask SayOVA to remember stays on your watch** too. It is given to your
   provider at the start of each conversation, and you can delete it at any time
   (section 2.4).
 - **Your location, heart rate, steps, calendar, contacts, notifications and the other
@@ -277,9 +277,9 @@ statistics and crash reports to fix errors and improve the App (Art. 6(1)(f) GDP
 | `INTERNET`, `ACCESS_NETWORK_STATE`, `CHANGE_NETWORK_STATE` | To talk to the provider, and to ask for Wi-Fi or LTE during a conversation instead of the slower Bluetooth link to the phone. |
 | `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_MICROPHONE`, `WAKE_LOCK` | To keep a conversation running while the screen is off. |
 | `POST_NOTIFICATIONS` | To show that a conversation is running (watch-face icon and notification). |
-| `VIBRATE` | Short vibrations when Talova starts listening, answers or does something. |
+| `VIBRATE` | Short vibrations when SayOVA starts listening, answers or does something. |
 | `SET_ALARM` | To set timers and alarms in the clock app when you ask for it. |
-| `MODIFY_AUDIO_SETTINGS` | To set Talova's own volume and run a conversation on the watch speaker as a call (echo cancelling). |
+| `MODIFY_AUDIO_SETTINGS` | To set SayOVA's own volume and run a conversation on the watch speaker as a call (echo cancelling). |
 | `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION` | Location and the weather here (section 2.2), only if you allow it. |
 | `BODY_SENSORS` (up to Android 15), `health.READ_HEART_RATE` | Heart rate (section 2.2), only if you allow it. |
 | `ACTIVITY_RECOGNITION` | Today's steps (section 2.2), only if you allow it. |
@@ -309,9 +309,9 @@ It requests **no storage, SMS or account permissions**.
 
 ## 8. You do not have to take our word for any of this
 
-Talova is open source, under the Apache License 2.0:
+SayOVA is open source, under the Apache License 2.0:
 
-**<https://github.com/DevEmperor/Talova>**
+**<https://github.com/DevEmperor/SayOVA>**
 
 You can read every line this policy describes: where audio goes
 (`core/src/main/kotlin/…/provider/`), how the key is encrypted on the page and on the
@@ -368,4 +368,4 @@ location.
 **Jannis Zahn** (DevEmperor) — contact@devemperor.net
 Talstraße 84, 35625 Hüttenberg, Germany
 
-Project repository: https://github.com/DevEmperor/Talova
+Project repository: https://github.com/DevEmperor/SayOVA

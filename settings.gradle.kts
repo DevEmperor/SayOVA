@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Talova"
+rootProject.name = "SayOVA"
 include(":core", ":wear")

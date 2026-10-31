@@ -1,5 +1,5 @@
 /*
- * Talova pairing relay.
+ * SayOVA pairing relay.
  *
  * Hands one sealed API key from the pairing page to a watch. The page encrypts the key in the browser
  * with the watch's public key (HPKE, see src/page/main.ts); this Worker only ever sees the ciphertext,

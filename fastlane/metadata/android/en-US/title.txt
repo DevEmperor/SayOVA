@@ -1,1 +1,1 @@
-Talova: AI Voice Assistant
+SayOVA: AI Voice Assistant

@@ -1,11 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "talova-pair",
+  "name": "sayova-pair",
   "main": "src/worker.ts",
   "compatibility_date": "2026-10-01",
 
-  // Reachable as talova-pair.<account>.workers.dev for now; a custom domain can be added later. The
-  // address is compiled into the watch app (talova.pairBaseUrl in gradle.properties).
+  // Reachable as sayova-pair.<account>.workers.dev for now; a custom domain can be added later. The
+  // address is compiled into the watch app (sayova.pairBaseUrl in gradle.properties).
   "workers_dev": true,
   // No preview URLs per version: only the deployed page and relay are reachable.
   "preview_urls": false,

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Wear OS emulator shaped like a Galaxy Watch6 (round 432 × 432 px, 340 dpi, Wear OS 6), with a
-# silent audio loop: speech goes into the watch's microphone and Talova's voice is recorded, both over the
+# silent audio loop: speech goes into the watch's microphone and Sayova's voice is recorded, both over the
 # emulator's own gRPC bridge (tools/emu_audio.py), so a whole conversation can be tested without a sound in
 # the room and without touching the desktop's audio devices.
 #
@@ -12,26 +12,26 @@
 #   tools/emulator.sh play <file.wav>  play a recording into the watch
 #   tools/emulator.sh record <out.wav> <seconds>   record what the watch says
 #   tools/emulator.sh shot <out.png>   screenshot
-#   tools/emulator.sh log              follow Talova's conversation log (TalovaEvent, TalovaPair)
+#   tools/emulator.sh log              follow Sayova's conversation log (SayovaEvent, SayovaPair)
 #   tools/emulator.sh stop             shut the emulator down
 #   tools/emulator.sh remove           stop, then delete the AVD, the system image, the emulator and the venv
 #
 # emu_audio.py needs a venv with grpcio and stubs generated from emulator/lib/emulator_controller.proto in
-# ~/.cache/talova-emulator-venv; `start` creates it the first time.
+# ~/.cache/sayova-emulator-venv; `start` creates it the first time.
 set -euo pipefail
 
 SDK=${ANDROID_SDK_ROOT:-$HOME/.android/SDK}
 ADB=$SDK/platform-tools/adb
-AVD=Talova_Watch6
+AVD=Sayova_Watch6
 IMAGE="system-images;android-36;android-wear-signed;x86_64"
 PORT=5560
 SERIAL=emulator-$PORT
 GRPC_PORT=8554
-VENV=$HOME/.cache/talova-emulator-venv
+VENV=$HOME/.cache/sayova-emulator-venv
 TOOLS=$(cd "$(dirname "$0")" && pwd)
-STATE=${XDG_RUNTIME_DIR:-/tmp}/talova-emulator
+STATE=${XDG_RUNTIME_DIR:-/tmp}/sayova-emulator
 APK=$(cd "$(dirname "$0")/.." && pwd)/wear/build/outputs/apk/debug/wear-debug.apk
-PKG=net.devemperor.talova.debug
+PKG=net.devemperor.sayova.debug
 mkdir -p "$STATE"
 
 venv_up() {
@@ -110,7 +110,7 @@ case "${1:-}" in
     "$VENV/bin/python" "$TOOLS/emu_video.py" "$2" "${3:-10}"
     ;;
   log)
-    "$ADB" -s "$SERIAL" logcat -s TalovaEvent:V TalovaPair:V AndroidRuntime:E
+    "$ADB" -s "$SERIAL" logcat -s SayovaEvent:V SayovaPair:V AndroidRuntime:E
     ;;
   stop)
     "$ADB" -s "$SERIAL" emu kill > /dev/null 2>&1 || true

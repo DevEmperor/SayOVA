@@ -13,26 +13,26 @@
     <string name="sample_a2">Ispanaklı nohut körisine ne dersiniz? Yaklaşık yirmi dakika sürer ve ertesi gün daha da lezzetli olur.</string>
     <string name="sample_q3">Güzel. Yirmi dakikalık bir zamanlayıcı kur.</string>
     <string name="sample_a3">Zamanlayıcınız çalışıyor. Afiyet olsun!</string>
-    <string name="tour_talk_orb">Talova\'nın sözünü istediğiniz an kesin: konuşmaya başlayın ya da küreye dokunun.</string>
+    <string name="tour_talk_orb">SayOVA\'nın sözünü istediğiniz an kesin: konuşmaya başlayın ya da küreye dokunun.</string>
     <string name="tour_talk_text">Metni gösterir veya gizler.</string>
     <string name="tour_talk_sound">Sesi kapatmak için dokunun. Ses düzeyi için basılı tutun veya çerçeveyi çevirin.</string>
     <string name="tour_talk_end">Görüşmeyi bitirir. Konuşmalar geçmişe kaydedilir.</string>
-    <string name="tour_home_orb">Dokunun ve konuşun. Talova web\'de arar, zamanlayıcı ve alarm kurar, not alır ve istediğiniz şeyleri hatırlar.</string>
+    <string name="tour_home_orb">Dokunun ve konuşun. SayOVA web\'de arar, zamanlayıcı ve alarm kurar, not alır ve istediğiniz şeyleri hatırlar.</string>
     <string name="tour_home_line">Bu ayın modeli ve maliyeti. İstatistikler için dokunun.</string>
     <string name="tour_home_interpreter">Tercüman: iki dil seçin ve saati aranızda tutun.</string>
     <string name="tour_home_history">Geçmiş: yeniden okuyun, devam edin veya telefona gönderin.</string>
     <string name="tour_home_settings">Ayarlar: ses, kişilik, hafıza, saat özellikleri, bütçe ve daha fazlası.</string>
     <string name="quick_title">Daha hızlı başlatın</string>
-    <string name="quick_text">Saat ayarlarında Talova\'yı tuşa iki kez basmaya atayın (Galaxy Watch\'ta Gelişmiş özellikler altında). “%1$s” açıkken iki kez basmak bir konuşma başlatır.</string>
+    <string name="quick_text">Saat ayarlarında SayOVA\'yı tuşa iki kez basmaya atayın (Galaxy Watch\'ta Gelişmiş özellikler altında). “%1$s” açıkken iki kez basmak bir konuşma başlatır.</string>
     <string name="quick_watch_settings">Tuşu ayarla</string>
     <string name="action_continue">Devam</string>
     <string name="permission_title">Mikrofon</string>
-    <string name="permission_text">Talova\'nın sizi duyması için mikrofon gerekir. Ses yalnızca bir sohbet açıkken aktarılır.</string>
-    <string name="permission_blocked">Mikrofon engellendi. Talova ile konuşmak için uygulama ayarlarından izin verin.</string>
+    <string name="permission_text">SayOVA\'nın sizi duyması için mikrofon gerekir. Ses yalnızca bir sohbet açıkken aktarılır.</string>
+    <string name="permission_blocked">Mikrofon engellendi. SayOVA ile konuşmak için uygulama ayarlarından izin verin.</string>
     <string name="permission_allow">İzin ver</string>
     <string name="permission_settings">Ayarlar</string>
     <string name="provider_choose">Sağlayıcı seçin</string>
-    <string name="provider_choose_hint">Talova kendi API anahtarınızı kullanır; maliyet ve veriler sizin kontrolünüzde kalır.</string>
+    <string name="provider_choose_hint">SayOVA kendi API anahtarınızı kullanır; maliyet ve veriler sizin kontrolünüzde kalır.</string>
     <string name="provider_gemini_note">Önerilen · dakikada yaklaşık 1–2 ¢</string>
     <string name="provider_openai_note">Dakikada yaklaşık 2–11 ¢</string>
     <string name="provider_connected">Bağlandı</string>
@@ -49,7 +49,7 @@
     <string name="pair_checking">Anahtar %1$s ile kontrol ediliyor…</string>
     <string name="pair_connected_title">Bağlandı</string>
     <string name="pair_connected_text">%1$s anahtarı kabul etti. Anahtar şifrelenmiş olarak yalnızca bu saatte saklanır.</string>
-    <string name="pair_connected_unverified">Anahtar kaydedildi ancak kontrol için %1$s ile bağlantı kurulamadı. Talova, konuştuğunuzda tekrar dener.</string>
+    <string name="pair_connected_unverified">Anahtar kaydedildi ancak kontrol için %1$s ile bağlantı kurulamadı. SayOVA, konuştuğunuzda tekrar dener.</string>
     <string name="pair_connected_action">Başla</string>
     <string name="pair_failed_expired">Kodun süresi doldu</string>
     <string name="pair_failed_rejected">Sağlayıcı bu anahtarı reddetti</string>
@@ -102,7 +102,7 @@
     <string name="error_network_text">Wi-Fi\'ı veya mobil veriyi kontrol edip tekrar deneyin.</string>
     <string name="error_rejected_title">İstek reddedildi</string>
     <string name="error_server_title">Sağlayıcı görüşmeyi sonlandırdı</string>
-    <string name="error_no_microphone">Talova\'nın mikrofona ihtiyacı var. İzin vermek için uygulamayı açın.</string>
+    <string name="error_no_microphone">SayOVA\'nın mikrofona ihtiyacı var. İzin vermek için uygulamayı açın.</string>
     <string name="error_server_text">Bu, çok uzun bir sohbetten sonra veya sağlayıcı tarafındaki bir sorun nedeniyle olabilir.</string>
 
     <!-- History -->
@@ -161,14 +161,14 @@
     <string name="interpreter_start">Tercümeyi başlat</string>
     <string name="interpreter_first">Birinci dil</string>
     <string name="interpreter_second">İkinci dil</string>
-    <string name="interpreter_hint">Saati aranızda tutun. Talova söylenen her şeyi diğer dilde söyler.</string>
+    <string name="interpreter_hint">Saati aranızda tutun. SayOVA söylenen her şeyi diğer dilde söyler.</string>
     <string name="settings_general">Genel</string>
     <string name="settings_history">Geçmişi sakla</string>
     <string name="settings_delete_history">Tüm geçmişi sil</string>
     <string name="settings_delete_history_confirm">Tüm sohbetler silinsin mi?</string>
     <string name="settings_about">Hakkında</string>
     <string name="language_hint">Otomatik, konuştuğunuz dilde yanıt verir.</string>
-    <string name="barge_in_hint">Bir yanıtı nasıl keseceğiniz. Otomatik, sesinizi mikrofonun saat hoparlöründen duyduğu Talova sesinden ayırt eder.</string>
+    <string name="barge_in_hint">Bir yanıtı nasıl keseceğiniz. Otomatik, sesinizi mikrofonun saat hoparlöründen duyduğu SayOVA sesinden ayırt eder.</string>
     <string name="history_hint">Sohbetler yalnızca bu saatte saklanır.</string>
     <string name="history_keep_off">Kaydetme</string>
     <plurals name="usage_conversations">
@@ -185,7 +185,7 @@
         <item quantity="other">%1$d saniye</item>
     </plurals>
     <string name="auto_end_never">Hiçbir zaman</string>
-    <string name="persona_custom_label">Talova nasıl davranmalı?</string>
+    <string name="persona_custom_label">SayOVA nasıl davranmalı?</string>
     <string name="provider_title">Sağlayıcı</string>
     <string name="provider_keys">Anahtarlar</string>
     <string name="provider_key_hint">Anahtar %1$s</string>
@@ -198,7 +198,7 @@
 
     <!-- About -->
     <string name="about_version">Sürüm %1$s</string>
-    <string name="about_privacy_summary">Sesiniz kendi anahtarınızla doğrudan bu saatten seçtiğiniz sağlayıcıya gider. Talova\'nın sohbetlerinizi gören bir sunucusu yoktur.</string>
+    <string name="about_privacy_summary">Sesiniz kendi anahtarınızla doğrudan bu saatten seçtiğiniz sağlayıcıya gider. SayOVA\'nın sohbetlerinizi gören bir sunucusu yoktur.</string>
     <string name="about_privacy">Gizlilik politikası</string>
     <string name="about_on_phone">Telefonunuzda açılır</string>
     <string name="about_source">Kaynak kodu</string>
@@ -211,12 +211,12 @@
     <string name="notification_channel">Sohbet</string>
     <string name="notification_text">Dinliyor ve yanıtlıyor</string>
     <string name="ongoing_status">Sohbette</string>
-    <string name="tile_label">Talova</string>
-    <string name="tile_description">Tek dokunuşla Talova ile konuşun</string>
+    <string name="tile_label">SayOVA</string>
+    <string name="tile_description">Tek dokunuşla SayOVA ile konuşun</string>
     <string name="tile_latest">Son: %1$s</string>
-    <string name="complication_label">Talova ile konuş</string>
+    <string name="complication_label">SayOVA ile konuş</string>
     <string name="complication_short">Konuş</string>
-    <string name="complication_description">Talova ile sohbet başlatın</string>
+    <string name="complication_description">SayOVA ile sohbet başlatın</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">Samimi</string>
@@ -233,7 +233,7 @@
     <string name="persona_custom_description">Kendi talimatınız</string>
     <string name="language_auto">Otomatik</string>
     <string name="barge_in_auto">Otomatik</string>
-    <string name="barge_in_auto_description">Talova konuşurken araya girin</string>
+    <string name="barge_in_auto_description">SayOVA konuşurken araya girin</string>
     <string name="barge_in_on">Açık mikrofon</string>
     <string name="barge_in_on_description">Kulaklık için; hoparlör kendini kesebilir</string>
     <string name="barge_in_off">Yalnızca dokunma</string>
@@ -289,7 +289,7 @@
     <string name="error_no_key_for">Henüz %1$s anahtarı yok.</string>
     <string name="error_microphone_unavailable">Mikrofon kullanılamıyor.</string>
 
-    <!-- Memory: facts Talova was asked to remember. -->
+    <!-- Memory: facts SayOVA was asked to remember. -->
     <string name="memory_title">Hafıza</string>
     <string name="memory_use">Hafızayı kullan</string>
     <string name="memory_use_note">İsteyince: “Aklında tut …”</string>
@@ -299,8 +299,8 @@
     <string name="memory_count">Hafızada · %1$d/%2$d</string>
     <string name="memory_forget_confirm">Bu unutulsun mu?</string>
     <string name="memory_forget_all">Her şeyi unut</string>
-    <string name="memory_forget_all_confirm">Talova\'nın hakkınızda bildiği her şey unutulsun mu?</string>
-    <string name="memory_privacy">Yalnızca bu saatte saklanır. Talova bu kayıtları her sohbette yapay zekâ sağlayıcınıza iletir.</string>
+    <string name="memory_forget_all_confirm">SayOVA\'nın hakkınızda bildiği her şey unutulsun mu?</string>
+    <string name="memory_privacy">Yalnızca bu saatte saklanır. SayOVA bu kayıtları her sohbette yapay zekâ sağlayıcınıza iletir.</string>
     <string name="notice_remembered">Hafızaya alındı</string>
     <string name="notice_forgotten">Unutuldu</string>
     <string name="note_remembered">Hafızaya alındı: %1$s</string>
@@ -313,9 +313,9 @@
 
     <!-- Watch features: the watch's own sensors and data as tools. -->
     <string name="features_title">Saat özellikleri</string>
-    <string name="features_examples">Böylece Talova “Burada hava nasıl?”, “Nabzım kaç?” ya da “Bugün neler var?” gibi soruları yanıtlar.</string>
-    <string name="features_hint">Talova bunları yalnızca sorunuz gerektirdiğinde kullanır. İlk seferde saat izninizi ister.</string>
-    <string name="features_privacy">Talova\'nın okudukları yalnızca sorduğunuz sohbette yapay zekâ sağlayıcınıza gider.</string>
+    <string name="features_examples">Böylece SayOVA “Burada hava nasıl?”, “Nabzım kaç?” ya da “Bugün neler var?” gibi soruları yanıtlar.</string>
+    <string name="features_hint">SayOVA bunları yalnızca sorunuz gerektirdiğinde kullanır. İlk seferde saat izninizi ister.</string>
+    <string name="features_privacy">SayOVA\'nın okudukları yalnızca sorduğunuz sohbette yapay zekâ sağlayıcınıza gider.</string>
     <string name="features_allow_now">Şimdi izin ver</string>
     <string name="features_open_settings">Ayarlardan izin ver</string>
     <string name="features_none">Kapalı</string>

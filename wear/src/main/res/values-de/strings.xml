@@ -12,26 +12,26 @@
     <string name="sample_a2">Wie wär’s mit einem Kichererbsen-Curry mit Spinat? Das dauert etwa zwanzig Minuten und schmeckt am nächsten Tag sogar noch besser.</string>
     <string name="sample_q3">Klingt gut. Stell einen Timer auf zwanzig Minuten.</string>
     <string name="sample_a3">Dein Timer läuft. Guten Appetit!</string>
-    <string name="tour_talk_orb">Unterbrich Talova jederzeit: einfach losreden oder auf den Orb tippen.</string>
+    <string name="tour_talk_orb">Unterbrich SayOVA jederzeit: einfach losreden oder auf den Orb tippen.</string>
     <string name="tour_talk_text">Blendet den Text ein und aus.</string>
     <string name="tour_talk_sound">Antippen schaltet den Ton aus. Gedrückt halten oder die Lünette drehen: Lautstärke.</string>
     <string name="tour_talk_end">Legt auf. Gespräche landen im Verlauf.</string>
-    <string name="tour_home_orb">Tippen und lossprechen. Talova sucht im Netz, stellt Timer und Wecker, macht Notizen und merkt sich, worum du es bittest.</string>
+    <string name="tour_home_orb">Tippen und lossprechen. SayOVA sucht im Netz, stellt Timer und Wecker, macht Notizen und merkt sich, worum du es bittest.</string>
     <string name="tour_home_line">Modell und Kosten diesen Monat. Antippen für die Statistik.</string>
     <string name="tour_home_interpreter">Dolmetscher: zwei Sprachen wählen und die Uhr zwischen euch halten.</string>
     <string name="tour_home_history">Verlauf: nachlesen, fortsetzen oder ans Handy senden.</string>
     <string name="tour_home_settings">Einstellungen: Stimme, Persönlichkeit, Gedächtnis, Uhr-Funktionen, Budget und mehr.</string>
     <string name="quick_title">Schneller starten</string>
-    <string name="quick_text">Leg Talova in den Uhreinstellungen auf einen Doppeldruck der Taste (bei der Galaxy Watch unter „Erweiterte Funktionen“). Mit „%1$s“ beginnt dann ein Gespräch per Doppeldruck.</string>
+    <string name="quick_text">Leg SayOVA in den Uhreinstellungen auf einen Doppeldruck der Taste (bei der Galaxy Watch unter „Erweiterte Funktionen“). Mit „%1$s“ beginnt dann ein Gespräch per Doppeldruck.</string>
     <string name="quick_watch_settings">Taste einrichten</string>
     <string name="action_continue">Weiter</string>
     <string name="permission_title">Mikrofon</string>
-    <string name="permission_text">Talova braucht das Mikrofon, um dich zu hören. Audio wird nur übertragen, solange ein Gespräch offen ist.</string>
-    <string name="permission_blocked">Das Mikrofon ist blockiert. Erlaube es in den App-Einstellungen, um mit Talova zu sprechen.</string>
+    <string name="permission_text">SayOVA braucht das Mikrofon, um dich zu hören. Audio wird nur übertragen, solange ein Gespräch offen ist.</string>
+    <string name="permission_blocked">Das Mikrofon ist blockiert. Erlaube es in den App-Einstellungen, um mit SayOVA zu sprechen.</string>
     <string name="permission_allow">Zulassen</string>
     <string name="permission_settings">Einstellungen</string>
     <string name="provider_choose">Anbieter wählen</string>
-    <string name="provider_choose_hint">Talova nutzt deinen eigenen API-Schlüssel – so behältst du Kosten und Daten im Griff.</string>
+    <string name="provider_choose_hint">SayOVA nutzt deinen eigenen API-Schlüssel – so behältst du Kosten und Daten im Griff.</string>
     <string name="provider_gemini_note">Empfohlen · ca. 1–2 ¢ pro Minute</string>
     <string name="provider_openai_note">Ca. 2–11 ¢ pro Minute</string>
     <string name="provider_connected">Verbunden</string>
@@ -48,7 +48,7 @@
     <string name="pair_checking">Schlüssel wird bei %1$s geprüft…</string>
     <string name="pair_connected_title">Verbunden</string>
     <string name="pair_connected_text">%1$s hat den Schlüssel akzeptiert. Er ist verschlüsselt nur auf dieser Uhr gespeichert.</string>
-    <string name="pair_connected_unverified">Der Schlüssel ist gespeichert, aber %1$s war zur Prüfung nicht erreichbar. Talova versucht es, wenn du sprichst.</string>
+    <string name="pair_connected_unverified">Der Schlüssel ist gespeichert, aber %1$s war zur Prüfung nicht erreichbar. SayOVA versucht es, wenn du sprichst.</string>
     <string name="pair_connected_action">Starten</string>
     <string name="pair_failed_expired">Der Code ist abgelaufen</string>
     <string name="pair_failed_rejected">Der Anbieter hat diesen Schlüssel abgelehnt</string>
@@ -101,7 +101,7 @@
     <string name="error_network_text">Prüfe WLAN oder mobile Daten und versuch es noch mal.</string>
     <string name="error_rejected_title">Anfrage abgelehnt</string>
     <string name="error_server_title">Der Anbieter hat das Gespräch beendet</string>
-    <string name="error_no_microphone">Talova braucht das Mikrofon. Öffne die App, um es zu erlauben.</string>
+    <string name="error_no_microphone">SayOVA braucht das Mikrofon. Öffne die App, um es zu erlauben.</string>
     <string name="error_server_text">Das kann nach einem sehr langen Gespräch oder bei einem Problem beim Anbieter passieren.</string>
 
     <!-- History -->
@@ -160,14 +160,14 @@
     <string name="interpreter_start">Dolmetschen starten</string>
     <string name="interpreter_first">Erste Sprache</string>
     <string name="interpreter_second">Zweite Sprache</string>
-    <string name="interpreter_hint">Halte die Uhr zwischen euch. Talova sagt alles Gesagte in der anderen Sprache.</string>
+    <string name="interpreter_hint">Halte die Uhr zwischen euch. SayOVA sagt alles Gesagte in der anderen Sprache.</string>
     <string name="settings_general">Allgemein</string>
     <string name="settings_history">Verlauf speichern</string>
     <string name="settings_delete_history">Gesamten Verlauf löschen</string>
     <string name="settings_delete_history_confirm">Alle Gespräche löschen?</string>
     <string name="settings_about">Info</string>
     <string name="language_hint">„Automatisch“ antwortet in der Sprache, die du sprichst.</string>
-    <string name="barge_in_hint">Wie du eine Antwort abbrichst. „Automatisch“ unterscheidet deine Stimme von Talovas eigener, die das Mikrofon über den Uhrlautsprecher hört.</string>
+    <string name="barge_in_hint">Wie du eine Antwort abbrichst. „Automatisch“ unterscheidet deine Stimme von SayOVAs eigener, die das Mikrofon über den Uhrlautsprecher hört.</string>
     <string name="history_hint">Gespräche werden nur auf dieser Uhr gespeichert.</string>
     <string name="history_keep_off">Nicht speichern</string>
     <plurals name="usage_conversations">
@@ -184,7 +184,7 @@
         <item quantity="other">%1$d Sekunden</item>
     </plurals>
     <string name="auto_end_never">Nie</string>
-    <string name="persona_custom_label">Wie soll sich Talova verhalten?</string>
+    <string name="persona_custom_label">Wie soll sich SayOVA verhalten?</string>
     <string name="provider_title">Anbieter</string>
     <string name="provider_keys">Schlüssel</string>
     <string name="provider_key_hint">Schlüssel %1$s</string>
@@ -197,7 +197,7 @@
 
     <!-- About -->
     <string name="about_version">Version %1$s</string>
-    <string name="about_privacy_summary">Deine Stimme geht mit deinem eigenen Schlüssel direkt von dieser Uhr zum gewählten Anbieter. Talova hat keinen Server, der deine Gespräche sieht.</string>
+    <string name="about_privacy_summary">Deine Stimme geht mit deinem eigenen Schlüssel direkt von dieser Uhr zum gewählten Anbieter. SayOVA hat keinen Server, der deine Gespräche sieht.</string>
     <string name="about_privacy">Datenschutzerklärung</string>
     <string name="about_on_phone">Öffnet sich auf dem Smartphone</string>
     <string name="about_source">Quellcode</string>
@@ -210,12 +210,12 @@
     <string name="notification_channel">Gespräch</string>
     <string name="notification_text">Hört zu und antwortet</string>
     <string name="ongoing_status">Im Gespräch</string>
-    <string name="tile_label">Talova</string>
-    <string name="tile_description">Per Tippen mit Talova sprechen</string>
+    <string name="tile_label">SayOVA</string>
+    <string name="tile_description">Per Tippen mit SayOVA sprechen</string>
     <string name="tile_latest">Zuletzt: %1$s</string>
-    <string name="complication_label">Mit Talova sprechen</string>
+    <string name="complication_label">Mit SayOVA sprechen</string>
     <string name="complication_short">Reden</string>
-    <string name="complication_description">Gespräch mit Talova starten</string>
+    <string name="complication_description">Gespräch mit SayOVA starten</string>
 
     <!-- Names of settings defined in core and the network (ui/Labels.kt). -->
     <string name="persona_friendly">Freundlich</string>
@@ -232,7 +232,7 @@
     <string name="persona_custom_description">Deine eigene Anweisung</string>
     <string name="language_auto">Automatisch</string>
     <string name="barge_in_auto">Automatisch</string>
-    <string name="barge_in_auto_description">Fall Talova einfach ins Wort</string>
+    <string name="barge_in_auto_description">Fall SayOVA einfach ins Wort</string>
     <string name="barge_in_on">Offenes Mikrofon</string>
     <string name="barge_in_on_description">Für Kopfhörer – über Lautsprecher störanfällig</string>
     <string name="barge_in_off">Nur Tippen</string>
@@ -288,7 +288,7 @@
     <string name="error_no_key_for">Noch kein Schlüssel für %1$s.</string>
     <string name="error_microphone_unavailable">Das Mikrofon ist nicht verfügbar.</string>
 
-    <!-- Memory: facts Talova was asked to remember. -->
+    <!-- Memory: facts SayOVA was asked to remember. -->
     <string name="memory_title">Gedächtnis</string>
     <string name="memory_use">Gedächtnis nutzen</string>
     <string name="memory_use_note">Nur, worum du bittest: „Merk dir …“</string>
@@ -298,8 +298,8 @@
     <string name="memory_count">Gemerkt · %1$d/%2$d</string>
     <string name="memory_forget_confirm">Vergessen?</string>
     <string name="memory_forget_all">Alles vergessen</string>
-    <string name="memory_forget_all_confirm">Alles vergessen, was Talova über dich weiß?</string>
-    <string name="memory_privacy">Nur auf dieser Uhr gespeichert. Talova gibt die Einträge in jedem Gespräch an deinen KI-Anbieter mit.</string>
+    <string name="memory_forget_all_confirm">Alles vergessen, was SayOVA über dich weiß?</string>
+    <string name="memory_privacy">Nur auf dieser Uhr gespeichert. SayOVA gibt die Einträge in jedem Gespräch an deinen KI-Anbieter mit.</string>
     <string name="notice_remembered">Gemerkt</string>
     <string name="notice_forgotten">Vergessen</string>
     <string name="note_remembered">Gemerkt: %1$s</string>
@@ -312,9 +312,9 @@
 
     <!-- Watch features: the watch's own sensors and data as tools. -->
     <string name="features_title">Uhr-Funktionen</string>
-    <string name="features_examples">Damit beantwortet Talova Fragen wie „Wie wird das Wetter hier?“, „Wie ist mein Puls?“ oder „Was steht heute noch an?“</string>
-    <string name="features_hint">Talova nutzt sie nur, wenn deine Frage sie braucht. Beim ersten Mal fragt dich die Uhr um Erlaubnis.</string>
-    <string name="features_privacy">Was Talova liest, geht nur in dem Gespräch an deinen KI-Anbieter, in dem du danach fragst.</string>
+    <string name="features_examples">Damit beantwortet SayOVA Fragen wie „Wie wird das Wetter hier?“, „Wie ist mein Puls?“ oder „Was steht heute noch an?“</string>
+    <string name="features_hint">SayOVA nutzt sie nur, wenn deine Frage sie braucht. Beim ersten Mal fragt dich die Uhr um Erlaubnis.</string>
+    <string name="features_privacy">Was SayOVA liest, geht nur in dem Gespräch an deinen KI-Anbieter, in dem du danach fragst.</string>
     <string name="features_allow_now">Jetzt erlauben</string>
     <string name="features_open_settings">In den Uhreinstellungen erlauben</string>
     <string name="features_none">Aus</string>

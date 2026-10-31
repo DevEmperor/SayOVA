@@ -8,7 +8,7 @@ import sys
 import threading
 import time
 
-sys.path.insert(0, f"{__import__('os').path.expanduser('~')}/.cache/talova-emulator-venv/stubs")
+sys.path.insert(0, f"{__import__('os').path.expanduser('~')}/.cache/sayova-emulator-venv/stubs")
 import grpc  # noqa: E402
 import emulator_controller_pb2 as pb  # noqa: E402
 import emulator_controller_pb2_grpc as rpc  # noqa: E402
