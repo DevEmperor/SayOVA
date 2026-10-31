@@ -366,7 +366,7 @@
     <string name="phone_email">E-mail</string>
     <string name="phone_message">Wiadomość</string>
     <string name="phone_event">Wydarzenie</string>
-    <string name="phone_route">Trasa</string>
+    <string name="phone_map">Mapa</string>
     <string name="note_show_timers">Otwarto minutniki</string>
     <string name="note_show_alarms">Otwarto alarmy</string>
     <plurals name="note_notifications">

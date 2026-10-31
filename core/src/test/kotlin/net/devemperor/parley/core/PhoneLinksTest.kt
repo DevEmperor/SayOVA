@@ -42,24 +42,22 @@ class PhoneLinksTest {
         val zone = ZoneId.of("Europe/Berlin")
         val start = PhoneLinks.parseWhen("2026-11-02 15:00")!!
         assertEquals(When.Time(LocalDateTime.of(2026, 11, 2, 15, 0)), start)
-        val timed = PhoneLinks.calendarEvent("Zahnarzt", start, null, "Hauptstraße 1", null, zone)
         assertEquals(
-            "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Zahnarzt&dates=20261102T150000/20261102T160000" +
-                "&ctz=Europe%2FBerlin&location=Hauptstra%C3%9Fe%201",
-            timed,
+            """{"title":"Zahnarzt","start":"2026-11-02T15:00","end":"2026-11-02T16:00","place":"Hauptstraße 1","zone":"Europe/Berlin"}""",
+            PhoneLinks.event("Zahnarzt", start, null, "Hauptstraße 1", " ", zone).toString(),
         )
         // An end before the start is ignored.
-        assertTrue("dates=20261102T150000/20261102T160000" in PhoneLinks.calendarEvent("A", start, PhoneLinks.parseWhen("2026-11-02T14:00"), null, null, zone))
+        val early = PhoneLinks.event("A", start, PhoneLinks.parseWhen("2026-11-02T14:00"), null, null, zone)
+        assertEquals("\"2026-11-02T16:00\"", early["end"].toString())
         val day = PhoneLinks.parseWhen("2026-12-24")!!
         assertEquals(When.Day(LocalDate.of(2026, 12, 24)), day)
-        assertTrue("dates=20261224/20261225" in PhoneLinks.calendarEvent("Heiligabend", day, null, null, null, zone))
-        assertTrue("dates=20261224/20261227" in PhoneLinks.calendarEvent("Feiertage", day, PhoneLinks.parseWhen("2026-12-26"), null, null, zone))
+        assertEquals("\"2026-12-24\"", PhoneLinks.event("Heiligabend", day, null, null, null, zone)["end"].toString())
+        assertEquals("\"2026-12-26\"", PhoneLinks.event("Feiertage", day, PhoneLinks.parseWhen("2026-12-26"), null, null, zone)["end"].toString())
         assertNull(PhoneLinks.parseWhen("next Monday"))
     }
 
     @Test
-    fun `routes take a known travel mode only`() {
-        assertEquals("https://www.google.com/maps/dir/?api=1&destination=K%C3%B6ln%20Hbf&travelmode=walking", PhoneLinks.route("Köln Hbf", "Walking"))
-        assertEquals("https://www.google.com/maps/dir/?api=1&destination=Berlin", PhoneLinks.route("Berlin", "teleport"))
+    fun `places open in the maps app`() {
+        assertEquals("geo:0,0?q=K%C3%B6lner%20Dom%2C%20K%C3%B6ln", PhoneLinks.place("Kölner Dom, Köln"))
     }
 }

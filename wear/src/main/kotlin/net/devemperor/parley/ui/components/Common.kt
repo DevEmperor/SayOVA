@@ -207,8 +207,13 @@ fun openOnPhone(context: Context, url: String, onResult: (Boolean) -> Unit) {
  * Copy: a watch app can only open a link on the phone, not its share sheet. The text travels in the
  * link's fragment, which the phone's browser never sends to the server.
  */
-fun shareLink(text: String): String =
-    "${BuildConfig.PAIR_BASE_URL}/share#t=" + Base64.encodeToString(text.toByteArray(), Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
+fun shareLink(text: String): String = sharePage("t", text)
+
+/** The share page with a calendar event (see PhoneLinks.event), which it hands the phone's calendar app as a file. */
+fun eventLink(event: String): String = sharePage("e", event)
+
+private fun sharePage(key: String, value: String): String =
+    "${BuildConfig.PAIR_BASE_URL}/share#$key=" + Base64.encodeToString(value.toByteArray(), Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
 
 /**
  * Asks the user for text with the system input (keyboard, voice or the phone). [onResult] receives

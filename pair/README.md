@@ -19,7 +19,9 @@ browser ── GET  /v1/pair/:id/status ───────────►│ 
   scripts; a strict Content-Security-Policy is set in `public/_headers`.
 - `src/page/share.ts`, `public/share.html` — the share page at `/share`, built to `public/share.js`:
   the watch's "Send to phone" opens it with a conversation as UTF-8 in base64url after `#t=`, which
-  never reaches the server; the page shows it with Share (the phone's share sheet) and Copy.
+  never reaches the server; the page shows it with Share (the phone's share sheet) and Copy. With a
+  calendar event after `#e=` (JSON, see `PhoneLinks.event` in `core/`) it shows the event, and Add to
+  calendar hands the phone's own calendar app an iCalendar file; Google Calendar's page is offered too.
 - `src/worker.ts` — the relay. It sees only ciphertext and keeps no logs.
 
 ## Local development

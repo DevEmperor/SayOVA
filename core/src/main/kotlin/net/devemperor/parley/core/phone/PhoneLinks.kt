@@ -1,5 +1,8 @@
 package net.devemperor.parley.core.phone
 
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import java.net.URLEncoder
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -9,9 +12,10 @@ import java.time.format.DateTimeParseException
 
 /**
  * Links that open something prepared on the paired phone for the user to send or start there: a
- * message, an e-mail, a calendar entry or a route. A watch can only open a browsable link on the
- * phone, so each is one the phone's apps know: wa.me for WhatsApp, sms: and mailto: for the messages
- * and mail apps, Google Calendar's new-event page and Google Maps' directions.
+ * message, an e-mail, a calendar event or a place to go. A watch can only open a browsable link on
+ * the phone, so each is one the phone's own default apps take: wa.me for WhatsApp, sms: and mailto:
+ * for the messages and mail apps, geo: for the maps app. No calendar app takes such a link for a new
+ * event, so an event goes to the share page as [event], which hands the calendar app a calendar file.
  */
 object PhoneLinks {
 
@@ -26,39 +30,31 @@ object PhoneLinks {
     }
 
     /**
-     * Google Calendar's page for a new event, filled in; the user saves it there. [start] is a local
-     * date and time or, for an all-day event, a date (see [parseWhen]); without [end] a timed event
-     * lasts an hour and an all-day one the day.
+     * An event for the share page (pair/src/page/share.ts), which turns it into a calendar file for the
+     * phone's calendar app. [start] is a local date and time or, for an all-day event, a date (see
+     * [parseWhen]); without [end] a timed event lasts an hour and an all-day one the day. Times stay
+     * local without a zone: the phone is where the watch is. [zone] only fills Google Calendar's link,
+     * which the page offers too.
      */
-    fun calendarEvent(title: String, start: When, end: When?, place: String?, details: String?, zone: ZoneId): String {
-        val dates = when (start) {
+    fun event(title: String, start: When, end: When?, place: String?, details: String?, zone: ZoneId): JsonObject = buildJsonObject {
+        put("title", title)
+        when (start) {
             is When.Day -> {
-                val last = (end as? When.Day)?.date?.takeIf { it >= start.date } ?: start.date
-                // Google takes the day after the last as the end.
-                "${start.date.format(DAY)}/${last.plusDays(1).format(DAY)}"
+                put("start", start.date.toString())
+                put("end", ((end as? When.Day)?.date?.takeIf { it >= start.date } ?: start.date).toString())
             }
             is When.Time -> {
-                val until = (end as? When.Time)?.time?.takeIf { it > start.time } ?: start.time.plusHours(1)
-                "${start.time.format(TIME)}/${until.format(TIME)}"
+                put("start", start.time.format(MINUTES))
+                put("end", ((end as? When.Time)?.time?.takeIf { it > start.time } ?: start.time.plusHours(1)).format(MINUTES))
             }
         }
-        return buildString {
-            append("https://calendar.google.com/calendar/render?action=TEMPLATE")
-            append("&text=").append(encode(title))
-            append("&dates=").append(dates)
-            append("&ctz=").append(encode(zone.id))
-            place?.takeIf { it.isNotBlank() }?.let { append("&location=").append(encode(it)) }
-            details?.takeIf { it.isNotBlank() }?.let { append("&details=").append(encode(it)) }
-        }
+        place?.takeIf { it.isNotBlank() }?.let { put("place", it) }
+        details?.takeIf { it.isNotBlank() }?.let { put("details", it) }
+        put("zone", zone.id)
     }
 
-    /** Google Maps' route from where the phone is to [destination]; [mode] is one of [TRAVEL_MODES] or left to Maps. */
-    fun route(destination: String, mode: String?): String = buildString {
-        append("https://www.google.com/maps/dir/?api=1&destination=").append(encode(destination))
-        mode?.lowercase()?.takeIf { it in TRAVEL_MODES }?.let { append("&travelmode=").append(it) }
-    }
-
-    val TRAVEL_MODES = setOf("driving", "walking", "bicycling", "transit")
+    /** The phone's maps app on [place] (geo: is what every maps app takes), from where the route is a tap away. */
+    fun place(place: String): String = "geo:0,0?q=${encode(place)}"
 
     /** A date or a date and time the model passed, local to the watch. */
     sealed interface When {
@@ -99,6 +95,5 @@ object PhoneLinks {
     private fun encode(text: String): String = URLEncoder.encode(text, "UTF-8").replace("+", "%20")
 
     private val EMAIL = Regex("[^\\s@?&#/]+@[^\\s@?&#/]+\\.[^\\s@?&#/]+")
-    private val DAY = DateTimeFormatter.ofPattern("yyyyMMdd")
-    private val TIME = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")
+    private val MINUTES = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
 }

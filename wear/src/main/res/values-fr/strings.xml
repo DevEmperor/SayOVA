@@ -363,7 +363,7 @@
     <string name="phone_email">E-mail</string>
     <string name="phone_message">Message</string>
     <string name="phone_event">Événement</string>
-    <string name="phone_route">Itinéraire</string>
+    <string name="phone_map">Carte</string>
     <string name="note_show_timers">Minuteurs ouverts</string>
     <string name="note_show_alarms">Alarmes ouvertes</string>
     <plurals name="note_notifications">

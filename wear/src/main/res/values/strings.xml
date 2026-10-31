@@ -372,7 +372,7 @@
     <string name="phone_email">Email</string>
     <string name="phone_message">Message</string>
     <string name="phone_event">Event</string>
-    <string name="phone_route">Route</string>
+    <string name="phone_map">Map</string>
     <string name="note_show_timers">Timers opened</string>
     <string name="note_show_alarms">Alarms opened</string>
     <plurals name="note_notifications">

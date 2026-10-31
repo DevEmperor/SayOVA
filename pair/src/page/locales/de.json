@@ -55,5 +55,11 @@
   "share_button": "Teilen",
   "copy_button": "Kopieren",
   "copied": "Kopiert",
-  "share_note": "Der Text bleibt auf diesem Handy: Er steht nur in der Adresse dieser Seite, und die wird nie an einen Server geschickt."
+  "share_note": "Der Text bleibt auf diesem Handy: Er steht nur in der Adresse dieser Seite, und die wird nie an einen Server geschickt.",
+  "event_title": "Neuer Termin",
+  "event_all_day": "Ganztägig",
+  "event_add": "Zum Kalender hinzufügen",
+  "event_hint": "Deine Kalender-App übernimmt den Termin: Fragt das Handy, öffne die heruntergeladene Datei mit ihr.",
+  "event_google": "Lieber in Google Kalender",
+  "event_note": "Der Termin bleibt auf diesem Handy: Er steht nur in der Adresse dieser Seite, und die wird nie an einen Server geschickt."
 }

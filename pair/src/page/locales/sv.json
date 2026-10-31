@@ -55,5 +55,11 @@
   "share_button": "Dela",
   "copy_button": "Kopiera",
   "copied": "Kopierat",
-  "share_note": "Texten stannar på den här telefonen: den finns bara i sidans adress, som aldrig skickas till en server."
+  "share_note": "Texten stannar på den här telefonen: den finns bara i sidans adress, som aldrig skickas till en server.",
+  "event_title": "Ny händelse",
+  "event_all_day": "Heldag",
+  "event_add": "Lägg till i kalendern",
+  "event_hint": "Din kalenderapp tar över händelsen: om telefonen frågar, öppna den nedladdade filen med den.",
+  "event_google": "Hellre i Google Kalender",
+  "event_note": "Händelsen stannar på den här telefonen: den finns bara i sidans adress, som aldrig skickas till en server."
 }

@@ -55,5 +55,11 @@
   "share_button": "Delen",
   "copy_button": "Kopiëren",
   "copied": "Gekopieerd",
-  "share_note": "De tekst blijft op deze telefoon: hij staat alleen in het adres van deze pagina, dat nooit naar een server wordt gestuurd."
+  "share_note": "De tekst blijft op deze telefoon: hij staat alleen in het adres van deze pagina, dat nooit naar een server wordt gestuurd.",
+  "event_title": "Nieuwe afspraak",
+  "event_all_day": "Hele dag",
+  "event_add": "Aan agenda toevoegen",
+  "event_hint": "Je agenda-app neemt de afspraak over: vraagt de telefoon erom, open het gedownloade bestand er dan mee.",
+  "event_google": "Liever in Google Agenda",
+  "event_note": "De afspraak blijft op deze telefoon: hij staat alleen in het adres van deze pagina, dat nooit naar een server wordt gestuurd."
 }

@@ -359,7 +359,7 @@
     <string name="phone_email">E-posta</string>
     <string name="phone_message">Mesaj</string>
     <string name="phone_event">Etkinlik</string>
-    <string name="phone_route">Rota</string>
+    <string name="phone_map">Harita</string>
     <string name="note_show_timers">Zamanlayıcılar açıldı</string>
     <string name="note_show_alarms">Alarmlar açıldı</string>
     <plurals name="note_notifications">

@@ -55,5 +55,11 @@
   "share_button": "Compartilhar",
   "copy_button": "Copiar",
   "copied": "Copiado",
-  "share_note": "O texto fica neste celular: ele está só no endereço desta página, que nunca é enviado a um servidor."
+  "share_note": "O texto fica neste celular: ele está só no endereço desta página, que nunca é enviado a um servidor.",
+  "event_title": "Novo evento",
+  "event_all_day": "Dia inteiro",
+  "event_add": "Adicionar à agenda",
+  "event_hint": "Seu app de agenda recebe o evento: se o celular perguntar, abra com ele o arquivo baixado.",
+  "event_google": "Usar o Google Agenda",
+  "event_note": "O evento fica neste celular: ele está só no endereço desta página, que nunca é enviado a um servidor."
 }

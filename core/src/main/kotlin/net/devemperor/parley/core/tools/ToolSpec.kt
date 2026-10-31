@@ -264,7 +264,7 @@ object ParleyTools {
 
     val prepareEvent = ToolSpec(
         name = PREPARE_EVENT,
-        description = "Opens a new calendar event in Google Calendar on the user's phone, filled in, for them to save there.",
+        description = "Prepares a calendar event on the user's phone, filled in, for them to add to their calendar app there.",
         parameters = listOf(
             ToolParam("title", ParamType.STRING, "What the event is, as the user would write it."),
             ToolParam("start", ParamType.STRING, "Local start as date and time, e.g. 2026-11-02T15:00, or only a date, e.g. 2026-11-02, for an all-day event."),
@@ -276,10 +276,9 @@ object ParleyTools {
 
     val prepareRoute = ToolSpec(
         name = PREPARE_ROUTE,
-        description = "Opens the route from where the user is to a place in Google Maps on their phone, ready to start there.",
+        description = "Opens a place in the maps app on the user's phone, from where they start the route there with a tap.",
         parameters = listOf(
-            ToolParam("destination", ParamType.STRING, "The place or address, as Google Maps would find it."),
-            ToolParam("mode", ParamType.STRING, "One of: walking, driving, transit, bicycling; leave out for Maps' choice.", required = false),
+            ToolParam("destination", ParamType.STRING, "The place or address, as a maps app would find it."),
         ),
     )
 

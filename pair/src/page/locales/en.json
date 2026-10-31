@@ -55,5 +55,11 @@
   "share_button": "Share",
   "copy_button": "Copy",
   "copied": "Copied",
-  "share_note": "The text stays on this phone: it is only in this page's address, which is never sent to a server."
+  "share_note": "The text stays on this phone: it is only in this page's address, which is never sent to a server.",
+  "event_title": "New event",
+  "event_all_day": "All day",
+  "event_add": "Add to calendar",
+  "event_hint": "Your calendar app takes the event: if the phone asks, open the downloaded file with it.",
+  "event_google": "Use Google Calendar instead",
+  "event_note": "The event stays on this phone: it is only in this page's address, which is never sent to a server."
 }

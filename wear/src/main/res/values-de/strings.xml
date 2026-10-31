@@ -358,7 +358,7 @@
     <string name="phone_email">E-Mail</string>
     <string name="phone_message">Nachricht</string>
     <string name="phone_event">Termin</string>
-    <string name="phone_route">Route</string>
+    <string name="phone_map">Karte</string>
     <string name="note_show_timers">Timer geöffnet</string>
     <string name="note_show_alarms">Wecker geöffnet</string>
     <plurals name="note_notifications">

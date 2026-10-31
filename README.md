@@ -43,9 +43,9 @@ your own API key.
   clock to stop one or turn an alarm off), notes, battery and time, and web search for anything current.
 - **Prepares things on your phone.** "Text Lena on WhatsApp that I'm ten minutes late", "Put the
   dentist on Tuesday at three in my calendar", "Route to the station on foot": Parley reads the message
-  back, and after your yes it waits on your phone in WhatsApp, Messages, your mail app, Google Calendar
-  or Google Maps (other messengers through the share menu) for you to send, save or start. Parley
-  itself never sends anything in your name.
+  back, and after your yes it waits on your phone in WhatsApp, your messages or mail app, your own
+  calendar app (one tap hands it the event) or your maps app (other messengers through the share menu)
+  for you to send, add or start. Parley itself never sends anything in your name.
 - **Knows the watch it runs on – when you ask.** "What's the weather here?", "What's my
   heart rate?", "How many steps today?", "What's on this afternoon?", "When does my alarm
   ring?", "How high up am I?", "Pause the music", "Call Lena", "Open the flashlight",

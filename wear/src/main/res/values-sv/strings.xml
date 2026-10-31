@@ -359,7 +359,7 @@
     <string name="phone_email">Mejl</string>
     <string name="phone_message">Meddelande</string>
     <string name="phone_event">Händelse</string>
-    <string name="phone_route">Rutt</string>
+    <string name="phone_map">Karta</string>
     <string name="note_show_timers">Timrar öppnade</string>
     <string name="note_show_alarms">Alarm öppnade</string>
     <plurals name="note_notifications">

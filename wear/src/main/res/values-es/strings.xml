@@ -362,7 +362,7 @@
     <string name="phone_email">Correo</string>
     <string name="phone_message">Mensaje</string>
     <string name="phone_event">Evento</string>
-    <string name="phone_route">Ruta</string>
+    <string name="phone_map">Mapa</string>
     <string name="note_show_timers">Temporizadores abiertos</string>
     <string name="note_show_alarms">Alarmas abiertas</string>
     <plurals name="note_notifications">

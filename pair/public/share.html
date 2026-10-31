@@ -42,6 +42,23 @@
       </p>
     </section>
 
+    <!-- A calendar event from the watch (#e=…): handed to the phone's own calendar app as a file. -->
+    <section class="card" data-state="event" hidden>
+      <p class="eyebrow" data-i18n="event_title">New event</p>
+      <h2 id="event-name"></h2>
+      <p class="event-line" id="event-when"></p>
+      <p class="event-line muted" id="event-place" hidden></p>
+      <p class="event-line muted" id="event-details" hidden></p>
+      <button type="button" class="primary" id="event-add" data-i18n="event_add">Add to calendar</button>
+      <p class="muted event-hint" data-i18n="event_hint">Your calendar app takes the event: if the phone asks, open the downloaded file with it.</p>
+      <p class="event-other"><a id="event-google" href="#" target="_blank" rel="noopener noreferrer" data-i18n="event_google">Use Google Calendar instead</a></p>
+      <p class="privacy">
+        <!-- Material Symbols Rounded "lock", Apache License 2.0 -->
+        <svg viewBox="0 -960 960 960" aria-hidden="true"><path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z"/></svg>
+        <span data-i18n="event_note">The event stays on this phone: it is only in this page's address, which is never sent to a server.</span>
+      </p>
+    </section>
+
     <footer>
       <a href="https://github.com/DevEmperor/Parley/blob/main/PRIVACY_POLICY.md" target="_blank" rel="noopener noreferrer" data-i18n="footer_privacy">Privacy</a>
       <span aria-hidden="true">·</span>

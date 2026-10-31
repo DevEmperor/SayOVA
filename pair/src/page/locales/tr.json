@@ -55,5 +55,11 @@
   "share_button": "Paylaş",
   "copy_button": "Kopyala",
   "copied": "Kopyalandı",
-  "share_note": "Metin bu telefonda kalır: yalnızca bu sayfanın adresinde bulunur ve bu adres hiçbir zaman bir sunucuya gönderilmez."
+  "share_note": "Metin bu telefonda kalır: yalnızca bu sayfanın adresinde bulunur ve bu adres hiçbir zaman bir sunucuya gönderilmez.",
+  "event_title": "Yeni etkinlik",
+  "event_all_day": "Tüm gün",
+  "event_add": "Takvime ekle",
+  "event_hint": "Takvim uygulaman etkinliği alır: telefon sorarsa indirilen dosyayı onunla aç.",
+  "event_google": "Google Takvim'i kullan",
+  "event_note": "Etkinlik bu telefonda kalır: yalnızca bu sayfanın adresinde bulunur ve bu adres hiçbir zaman bir sunucuya gönderilmez."
 }

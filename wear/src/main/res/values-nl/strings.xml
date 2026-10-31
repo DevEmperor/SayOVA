@@ -358,7 +358,7 @@
     <string name="phone_email">E-mail</string>
     <string name="phone_message">Bericht</string>
     <string name="phone_event">Afspraak</string>
-    <string name="phone_route">Route</string>
+    <string name="phone_map">Kaart</string>
     <string name="note_show_timers">Timers geopend</string>
     <string name="note_show_alarms">Wekkers geopend</string>
     <plurals name="note_notifications">

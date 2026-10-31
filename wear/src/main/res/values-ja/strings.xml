@@ -355,7 +355,7 @@
     <string name="phone_email">メール</string>
     <string name="phone_message">メッセージ</string>
     <string name="phone_event">予定</string>
-    <string name="phone_route">ルート</string>
+    <string name="phone_map">地図</string>
     <string name="note_show_timers">タイマーを表示</string>
     <string name="note_show_alarms">アラームを表示</string>
     <plurals name="note_notifications">

@@ -55,5 +55,11 @@
   "share_button": "Compartir",
   "copy_button": "Copiar",
   "copied": "Copiado",
-  "share_note": "El texto se queda en este teléfono: solo está en la dirección de esta página, que nunca se envía a un servidor."
+  "share_note": "El texto se queda en este teléfono: solo está en la dirección de esta página, que nunca se envía a un servidor.",
+  "event_title": "Nuevo evento",
+  "event_all_day": "Todo el día",
+  "event_add": "Añadir al calendario",
+  "event_hint": "Tu app de calendario recoge el evento: si el teléfono lo pregunta, abre con ella el archivo descargado.",
+  "event_google": "Usar Google Calendar",
+  "event_note": "El evento se queda en este teléfono: solo está en la dirección de esta página, que nunca se envía a un servidor."
 }

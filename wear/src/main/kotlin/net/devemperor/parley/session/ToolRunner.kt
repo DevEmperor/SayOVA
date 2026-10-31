@@ -33,6 +33,7 @@ import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.features.WatchSensors
 import okhttp3.OkHttpClient
 import net.devemperor.parley.parley
+import net.devemperor.parley.ui.components.eventLink
 import net.devemperor.parley.ui.components.shareLink
 import net.devemperor.parley.ui.labelRes
 import java.text.NumberFormat
@@ -406,12 +407,12 @@ class ToolRunner(
             ParleyTools.PREPARE_EVENT -> {
                 val title = text("title") ?: return Outcome(error("title is empty"))
                 val start = PhoneLinks.parseWhen(text("start")) ?: return Outcome(error("start must look like 2026-11-02T15:00, or 2026-11-02 for all day."))
-                val link = PhoneLinks.calendarEvent(title, start, PhoneLinks.parseWhen(text("end")), text("place"), text("details"), ZoneId.systemDefault())
-                Prepared(link, context.getString(R.string.phone_event), title)
+                val event = PhoneLinks.event(title, start, PhoneLinks.parseWhen(text("end")), text("place"), text("details"), ZoneId.systemDefault())
+                Prepared(eventLink(event.toString()), context.getString(R.string.phone_event), title)
             }
             else -> {
                 val destination = text("destination") ?: return Outcome(error("destination is empty"))
-                Prepared(PhoneLinks.route(destination, text("mode")), context.getString(R.string.phone_route), destination)
+                Prepared(PhoneLinks.place(destination), context.getString(R.string.phone_map), destination)
             }
         }
         if (Diagnostics.enabled) android.util.Log.d("ParleyEvent", "on phone: ${prepared.link}")
@@ -421,14 +422,14 @@ class ToolRunner(
         return Outcome(
             buildJsonObject {
                 put("ok", true)
-                put("note", "It is open on the user's phone now, for them to send, save or start there.")
+                put("note", "It is open on the user's phone now, for them to send, add or start there.")
             },
             note = prepared.detail?.let { context.getString(R.string.note_on_phone_detail, prepared.what, it) }
                 ?: context.getString(R.string.note_on_phone, prepared.what),
         )
     }
 
-    /** A link for the phone, what it opens ("WhatsApp", "Route") and for whom or what, for the transcript. */
+    /** A link for the phone, what it opens ("WhatsApp", "Map") and for whom or what, for the transcript. */
     private data class Prepared(val link: String, val what: String, val detail: String?)
 
     private fun deviceStatus(): Outcome {

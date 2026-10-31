@@ -55,5 +55,11 @@
   "share_button": "Partager",
   "copy_button": "Copier",
   "copied": "Copié",
-  "share_note": "Le texte reste sur ce téléphone : il figure seulement dans l’adresse de cette page, qui n’est jamais envoyée à un serveur."
+  "share_note": "Le texte reste sur ce téléphone : il figure seulement dans l’adresse de cette page, qui n’est jamais envoyée à un serveur.",
+  "event_title": "Nouvel événement",
+  "event_all_day": "Toute la journée",
+  "event_add": "Ajouter à l’agenda",
+  "event_hint": "Votre application d’agenda reprend l’événement : si le téléphone le demande, ouvrez avec elle le fichier téléchargé.",
+  "event_google": "Utiliser plutôt Google Agenda",
+  "event_note": "L’événement reste sur ce téléphone : il figure seulement dans l’adresse de cette page, qui n’est jamais envoyée à un serveur."
 }

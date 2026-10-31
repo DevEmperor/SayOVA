@@ -355,7 +355,7 @@
     <string name="phone_email">이메일</string>
     <string name="phone_message">메시지</string>
     <string name="phone_event">일정</string>
-    <string name="phone_route">경로</string>
+    <string name="phone_map">지도</string>
     <string name="note_show_timers">타이머 열림</string>
     <string name="note_show_alarms">알람 열림</string>
     <plurals name="note_notifications">

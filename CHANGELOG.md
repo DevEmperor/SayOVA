@@ -57,9 +57,11 @@ First version.
 - Tools: timers, alarms, notes, battery and time, web search. Alarms can repeat on chosen weekdays, and
   Parley opens the clock's timers or alarms for what an app cannot do itself: stopping a running timer,
   turning an alarm off or deleting it.
-- Prepare on phone (a new watch feature): a message for WhatsApp, SMS, e-mail or any other messenger, an
-  event for Google Calendar or a route in Google Maps, opened filled in on the paired phone for you to
-  send, save or start there. Parley reads a message back and prepares it only after your yes.
+- Prepare on phone (a new watch feature): a message for WhatsApp, SMS, e-mail or any other messenger, a
+  calendar event or a place to go, opened filled in on the paired phone in its own default apps for you
+  to send, add or start there. An event opens a page whose Add to calendar hands it to the phone's
+  calendar app as a file (Google Calendar offered as well); a place opens in the phone's maps app.
+  Parley reads a message back and prepares it only after your yes.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
   the provider with your key (well under a cent, counted in the statistics) and then kept on the watch.
 - Memory: "Remember that …" keeps a fact about you (up to 30) for every later conversation;

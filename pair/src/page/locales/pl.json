@@ -55,5 +55,11 @@
   "share_button": "Udostępnij",
   "copy_button": "Kopiuj",
   "copied": "Skopiowano",
-  "share_note": "Tekst zostaje na tym telefonie: jest tylko w adresie tej strony, który nigdy nie trafia na serwer."
+  "share_note": "Tekst zostaje na tym telefonie: jest tylko w adresie tej strony, który nigdy nie trafia na serwer.",
+  "event_title": "Nowe wydarzenie",
+  "event_all_day": "Cały dzień",
+  "event_add": "Dodaj do kalendarza",
+  "event_hint": "Twoja aplikacja kalendarza przejmie wydarzenie: jeśli telefon zapyta, otwórz nią pobrany plik.",
+  "event_google": "Wolę Kalendarz Google",
+  "event_note": "Wydarzenie zostaje na tym telefonie: jest tylko w adresie tej strony, który nigdy nie trafia na serwer."
 }
