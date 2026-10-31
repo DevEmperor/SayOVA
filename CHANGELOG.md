@@ -40,6 +40,13 @@ First version.
   second instead of two and a half.
 - Choosing from a list in the settings goes straight back, also with a quick tap; only the voices stay
   open to listen to several.
+- Introduction: the welcome page plays a sample conversation (remembering, a dinner idea, a timer) in
+  Parley's real voice and the app's language, without key, network or microphone, then points out the
+  orb, the text and sound buttons and hanging up. After the microphone and the key come the watch
+  features to choose and allow at once, how to start Parley with a double press of the watch's button
+  ("Talk when opened" right there), and a tour of the home screen. Settings → General → Introduction
+  shows it again; the steps already done are skipped.
+- Showing and hiding the transcript is one animation both ways.
 - Tools: timers, alarms, notes, battery and time, web search.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
   the provider with your key (well under a cent, counted in the statistics) and then kept on the watch.

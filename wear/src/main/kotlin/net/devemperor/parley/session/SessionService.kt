@@ -38,7 +38,6 @@ import net.devemperor.parley.core.usage.Budget
 import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.BargeIn
-import net.devemperor.parley.demo.DemoSession
 import net.devemperor.parley.features.WatchFeatures
 import net.devemperor.parley.parley
 import net.devemperor.parley.tile.ParleyTileService
@@ -73,7 +72,6 @@ class SessionService : LifecycleService() {
                 val first = InterpretLanguage.fromCode(intent.getStringExtra(EXTRA_INTERPRET_FIRST))
                 val second = InterpretLanguage.fromCode(intent.getStringExtra(EXTRA_INTERPRET_SECOND))
                 begin(
-                    demo = Diagnostics.enabled && intent.getBooleanExtra(EXTRA_DEMO, false),
                     continueId = intent.getStringExtra(EXTRA_CONTINUE),
                     interpret = if (first != null && second != null) first to second else null,
                 )
@@ -84,12 +82,12 @@ class SessionService : LifecycleService() {
     }
 
     /** [interpret]: Parley interprets between the two languages instead of answering (see Instructions.interpreter). */
-    private fun begin(demo: Boolean, continueId: String?, interpret: Pair<InterpretLanguage, InterpretLanguage>?) = lifecycleScope.launch {
+    private fun begin(continueId: String?, interpret: Pair<InterpretLanguage, InterpretLanguage>?) = lifecycleScope.launch {
         val app = parley
         val settings = app.settings.current()
         val earlier = continueId?.takeIf { interpret == null }?.let(app.history::find)
         val provider = settings.providerInfo
-        val apiKey = if (demo) "demo" else app.keys.get(provider.id)
+        val apiKey = app.keys.get(provider.id)
         if (apiKey == null) {
             SessionHub.publish(ConversationUiState(phase = Phase.ERROR, error = SessionError(ErrorKind.AUTH, getString(R.string.error_no_key_for, provider.displayName))))
             stopEverything()
@@ -97,7 +95,7 @@ class SessionService : LifecycleService() {
         }
         // Waking the Wi-Fi runs alongside opening the speaker and the microphone; only the connection
         // itself waits for it (usually it is up already, see NetworkSelector.prewarm).
-        val network = if (demo) null else async { app.network.acquire() }
+        val network = async { app.network.acquire() }
         val spentUsd = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
         // Interpreting wants the quickest model: a thorough one thinks before every sentence.
         val chosen = if (interpret != null) provider.economyModel else provider.model(settings.modelId())
@@ -105,7 +103,7 @@ class SessionService : LifecycleService() {
         val model = if (settings.budgetSave && Budget.level(spentUsd, settings.budgetUsd) >= BudgetLevel.NEAR) provider.economyModel else chosen
         val canSearch = settings.webSearch && interpret == null
         val memory = app.memory.takeIf { settings.memory && interpret == null }
-        features = if (demo || interpret != null) emptySet() else settings.features.filter { WatchFeatures.available(this@SessionService, it) }.toSet()
+        features = if (interpret != null) emptySet() else settings.features.filter { WatchFeatures.available(this@SessionService, it) }.toSet()
         widenForegroundType()
         val config = SessionConfig(
             apiKey = apiKey,
@@ -130,8 +128,8 @@ class SessionService : LifecycleService() {
             thinkingLevel = model.thinkingLevel,
         )
         val client = app.network.client(app.http)
-        val session = if (demo) DemoSession() else Sessions.create(provider.id, config, client)
-        val search = if (provider.id == ProviderId.OPENAI && canSearch && !demo) {
+        val session = Sessions.create(provider.id, config, client)
+        val search = if (provider.id == ProviderId.OPENAI && canSearch) {
             ToolRunner.searchWith(OpenAiWebSearch(client), apiKey)
         } else {
             null
@@ -169,8 +167,6 @@ class SessionService : LifecycleService() {
                 transport = app.network.transport,
                 onSave = { conversation, usd, talkMs ->
                     conversation?.let { app.history.save(it) }
-                    // Demo conversations count too: only adb can start them (see Diagnostics), and tests
-                    // check the statistics with them.
                     app.usage.record(usd, talkMs)
                     ParleyTileService.refresh(this@SessionService)
                 },
@@ -182,7 +178,7 @@ class SessionService : LifecycleService() {
         SessionHub.engine = newEngine
         launch { newEngine.state.collectLatest { SessionHub.publish(it) } }
         withContext(Dispatchers.Default) { newEngine.start() }
-        network?.await()
+        network.await()
         if (Diagnostics.enabled) android.util.Log.d("ParleyEvent", "connecting over ${app.network.transport.value} to ${model.id}")
         newEngine.connect()
     }
@@ -253,7 +249,6 @@ class SessionService : LifecycleService() {
     companion object {
         private const val ACTION_START = "net.devemperor.parley.START"
         private const val ACTION_STOP = "net.devemperor.parley.STOP"
-        private const val EXTRA_DEMO = "demo"
         private const val EXTRA_CONTINUE = "continue"
         private const val EXTRA_INTERPRET_FIRST = "interpret_first"
         private const val EXTRA_INTERPRET_SECOND = "interpret_second"
@@ -263,12 +258,10 @@ class SessionService : LifecycleService() {
 
         fun startIntent(
             context: Context,
-            demo: Boolean,
             continueId: String? = null,
             interpret: Pair<InterpretLanguage, InterpretLanguage>? = null,
         ): Intent =
             Intent(context, SessionService::class.java).setAction(ACTION_START)
-                .putExtra(EXTRA_DEMO, demo)
                 .putExtra(EXTRA_CONTINUE, continueId)
                 .putExtra(EXTRA_INTERPRET_FIRST, interpret?.first?.code)
                 .putExtra(EXTRA_INTERPRET_SECOND, interpret?.second?.code)

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import net.devemperor.parley.demo.SampleVoices
 import net.devemperor.parley.features.PermissionBroker
 import net.devemperor.parley.features.StepTracking
 import net.devemperor.parley.features.WatchFeatures
@@ -47,6 +48,10 @@ class MainActivity : ComponentActivity() {
             emptyList()
         }
         setContent { ParleyUi(launch, routes, relaunches) }
+        // With diagnostics on, records the sample conversation's voice in every language (see SampleVoices).
+        if (Diagnostics.enabled && savedInstanceState == null && intent.getBooleanExtra(EXTRA_RECORD_SAMPLE, false)) {
+            lifecycleScope.launch { SampleVoices.record(this@MainActivity) }
+        }
         // A conversation needs a watch feature the user has not allowed yet (see PermissionBroker).
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -87,7 +92,8 @@ class MainActivity : ComponentActivity() {
     private fun launchOf(intent: Intent?): Launch {
         val action = intent?.getStringExtra(ParleyTileService.EXTRA_ACTION) ?: intent?.action
         return when {
-            Diagnostics.enabled && intent?.getBooleanExtra(EXTRA_DEMO, false) == true -> Launch.DEMO
+            // With diagnostics on, the introduction's sample conversation at once, for tests and store pictures.
+            Diagnostics.enabled && intent?.getBooleanExtra(EXTRA_DEMO, false) == true -> Launch.SAMPLE
             action == ACTION_TALK -> Launch.TALK
             else -> Launch.OPEN
         }
@@ -98,6 +104,7 @@ class MainActivity : ComponentActivity() {
         private const val EXTRA_DEMO = "demo"
         private const val EXTRA_ROUTES = "routes"
         private const val EXTRA_SAY = "say"
+        private const val EXTRA_RECORD_SAMPLE = "record_sample"
 
         fun talkIntent(context: Context): Intent =
             Intent(context, MainActivity::class.java)

@@ -26,10 +26,10 @@ object SessionHub {
      * history, [interpret] makes Parley the interpreter between two languages. Call only while an
      * activity is visible.
      */
-    fun start(context: Context, demo: Boolean = false, continueId: String? = null, interpret: Pair<InterpretLanguage, InterpretLanguage>? = null) {
+    fun start(context: Context, continueId: String? = null, interpret: Pair<InterpretLanguage, InterpretLanguage>? = null) {
         if (running) return
         _state.value = ConversationUiState(interpreting = interpret?.let(::interpretLabel))
-        ContextCompat.startForegroundService(context, SessionService.startIntent(context, demo, continueId, interpret))
+        ContextCompat.startForegroundService(context, SessionService.startIntent(context, continueId, interpret))
     }
 
     /** The pair in short, as the conversation shows it: "DE ⇄ ES". */

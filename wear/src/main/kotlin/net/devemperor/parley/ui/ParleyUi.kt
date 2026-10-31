@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import net.devemperor.parley.core.usage.Budget
 import net.devemperor.parley.core.usage.BudgetLevel
 import net.devemperor.parley.core.usage.Usage
 import net.devemperor.parley.data.ParleySettings
+import net.devemperor.parley.demo.SampleConversation
 import net.devemperor.parley.parley
 import net.devemperor.parley.session.ConversationUiState
 import net.devemperor.parley.session.SessionHub
@@ -60,9 +62,14 @@ import net.devemperor.parley.ui.setup.PairingScreen
 import net.devemperor.parley.ui.setup.PairingViewModel
 import net.devemperor.parley.ui.setup.PermissionScreen
 import net.devemperor.parley.ui.setup.ProviderChoiceScreen
+import net.devemperor.parley.ui.setup.QuickStartScreen
+import net.devemperor.parley.ui.setup.SampleScreen
 import net.devemperor.parley.ui.setup.WelcomeScreen
 import net.devemperor.parley.ui.setup.hasMicrophone
 import net.devemperor.parley.ui.theme.ParleyTheme
+import net.devemperor.parley.ui.tour.Spotlight
+import net.devemperor.parley.ui.tour.TourStep
+import net.devemperor.parley.ui.tour.TourTarget
 import net.devemperor.parley.ui.usage.UsageScreen
 import java.time.YearMonth
 
@@ -85,6 +92,8 @@ object Routes {
     const val MEMORY = "memory"
     const val FEATURES = "features"
     const val INTERPRETER = "interpreter"
+    const val SETUP_FEATURES = "setup_features"
+    const val QUICK_START = "quick_start"
 
     fun pair(provider: ProviderId) = "pair/${provider.key}"
     fun detail(id: String) = "history/$id"
@@ -92,11 +101,23 @@ object Routes {
     fun choice(choice: Choice) = "choice/${choice.name}"
 }
 
-/** What the app was opened for: from the launcher, or straight into a conversation (tile, complication). */
-enum class Launch { OPEN, TALK, DEMO }
+/**
+ * What the app was opened for: from the launcher, straight into a conversation (tile, complication),
+ * or (tests and store pictures, see MainActivity) into the introduction's sample conversation.
+ */
+enum class Launch { OPEN, TALK, SAMPLE }
 
 /** A conversation that waits for the user's yes, because this month's budget is spent (see Budget). */
-private data class HeldStart(val demo: Boolean, val continueId: String?, val interpret: Pair<InterpretLanguage, InterpretLanguage>?)
+private data class HeldStart(val continueId: String?, val interpret: Pair<InterpretLanguage, InterpretLanguage>?)
+
+/** The tour of the home screen at the end of the introduction. */
+private val HOME_TOUR = listOf(
+    TourStep(TourTarget.HOME_ORB, R.string.tour_home_orb),
+    TourStep(TourTarget.HOME_LINE, R.string.tour_home_line),
+    TourStep(TourTarget.HOME_INTERPRETER, R.string.tour_home_interpreter),
+    TourStep(TourTarget.HOME_HISTORY, R.string.tour_home_history),
+    TourStep(TourTarget.HOME_SETTINGS, R.string.tour_home_settings),
+)
 
 /** [relaunches]: the tile or complication tapped while Parley is already open. */
 @Composable
@@ -120,10 +141,25 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
             /** A conversation shows in place of the home screen (see startConversation). */
             var homeTalk by rememberSaveable { mutableStateOf(false) }
             var held by remember { mutableStateOf<HeldStart?>(null) }
+            /** The introduction's last step: the tour over the home screen. */
+            var homeTour by rememberSaveable { mutableStateOf(false) }
+            var autoSample by remember { mutableStateOf(launch == Launch.SAMPLE) }
+
+            /**
+             * The introduction after its first page: what is still missing (the microphone, a key), then
+             * the watch features, starting faster, and the tour of the home screen. Run again from the
+             * settings, the steps already done are skipped.
+             */
+            fun continueIntro() {
+                when {
+                    !context.hasMicrophone() -> navController.navigate(Routes.PERMISSION)
+                    app.keys.connected.value.isEmpty() -> navController.navigate(Routes.CHOOSE_PROVIDER)
+                    else -> navController.navigate(Routes.SETUP_FEATURES)
+                }
+            }
 
             /** [interpret]: as the interpreter between these two languages; [anyway]: the user said yes although the month's budget is spent. */
             fun startConversation(
-                demo: Boolean = false,
                 continueId: String? = null,
                 interpret: Pair<InterpretLanguage, InterpretLanguage>? = null,
                 anyway: Boolean = false,
@@ -137,10 +173,10 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 // which may have loaded a frame before the screen saw it.
                 val spent = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
                 if (!anyway && !SessionHub.running && Budget.level(spent, settings?.budgetUsd ?: 0) == BudgetLevel.REACHED) {
-                    held = HeldStart(demo, continueId, interpret)
+                    held = HeldStart(continueId, interpret)
                     return
                 }
-                SessionHub.start(context, demo, continueId, interpret)
+                SessionHub.start(context, continueId, interpret)
                 when (navController.currentDestination?.route) {
                     // Started from the home screen, the conversation takes its place and the home orb
                     // grows into the conversation's: a page of its own would come in with Wear's
@@ -189,9 +225,9 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
             // skip the "Connected" screen.
             val start = remember {
                 when {
-                    launch == Launch.DEMO -> Routes.HOME
                     SessionHub.running -> Routes.CONVERSATION
-                    !ready -> Routes.WELCOME
+                    // Until the introduction is through once, also on a watch set up before it existed.
+                    launch == Launch.SAMPLE || !ready || !current.introDone -> Routes.WELCOME
                     else -> Routes.HOME
                 }
             }
@@ -201,34 +237,43 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
                     // Swiping back during a conversation shows the home screen again; it keeps running.
                     BackHandler(enabled = homeTalk) { homeTalk = false }
-                    AnimatedContent(
-                        targetState = homeTalk && session != null,
-                        transitionSpec = {
-                            // The ended conversation's orb has landed on the home orb: the conversation
-                            // goes only once the home screen has come in, so the orb never dims.
-                            val landed = !targetState && OrbHandoff.takeLanded()
-                            fadeIn(tween(HOME_FADE_MS)) togetherWith fadeOut(tween(HOME_FADE_MS, delayMillis = if (landed) HOME_FADE_MS else 0))
-                        },
-                        label = "home",
-                    ) { talking ->
-                        val state = session
-                        if (talking && state != null) {
-                            Conversation(state, s, onHome = true, onDone = { homeTalk = false })
-                        } else {
-                            // A conversation is likely to start from here: wake the Wi-Fi already.
-                            LifecycleResumeEffect(Unit) {
-                                app.network.prewarm()
-                                onPauseOrDispose { }
+                    Box {
+                        AnimatedContent(
+                            targetState = homeTalk && session != null,
+                            transitionSpec = {
+                                // The ended conversation's orb has landed on the home orb: the conversation
+                                // goes only once the home screen has come in, so the orb never dims.
+                                val landed = !targetState && OrbHandoff.takeLanded()
+                                fadeIn(tween(HOME_FADE_MS)) togetherWith fadeOut(tween(HOME_FADE_MS, delayMillis = if (landed) HOME_FADE_MS else 0))
+                            },
+                            label = "home",
+                        ) { talking ->
+                            val state = session
+                            if (talking && state != null) {
+                                Conversation(state, s, onHome = true, onDone = { homeTalk = false })
+                            } else {
+                                // A conversation is likely to start from here: wake the Wi-Fi already.
+                                LifecycleResumeEffect(Unit) {
+                                    app.network.prewarm()
+                                    onPauseOrDispose { }
+                                }
+                                HomeScreen(
+                                    settings = s,
+                                    monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
+                                    onUsage = whenResumed { navController.navigate(Routes.USAGE) },
+                                    onTalk = whenResumed { startConversation() },
+                                    onInterpreter = whenResumed { navController.navigate(Routes.INTERPRETER) },
+                                    onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
+                                    onSettings = whenResumed { navController.navigate(Routes.SETTINGS) },
+                                )
                             }
-                            HomeScreen(
-                                settings = s,
-                                monthUsd = Usage.month(usage, YearMonth.now()).costUsd,
-                                onUsage = whenResumed { navController.navigate(Routes.USAGE) },
-                                onTalk = whenResumed { startConversation() },
-                                onInterpreter = whenResumed { navController.navigate(Routes.INTERPRETER) },
-                                onHistory = whenResumed { navController.navigate(Routes.HISTORY) },
-                                onSettings = whenResumed { navController.navigate(Routes.SETTINGS) },
-                            )
+                        }
+                        // Through the tour or skipped by swiping back, the introduction is done.
+                        if (homeTour && !homeTalk) {
+                            Spotlight(HOME_TOUR, onDone = {
+                                homeTour = false
+                                update { it.copy(introDone = true) }
+                            })
                         }
                     }
                 }
@@ -244,15 +289,40 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     }
                 }
                 composable(Routes.WELCOME) {
-                    WelcomeScreen(onStart = whenResumed {
-                        navController.navigate(if (context.hasMicrophone()) Routes.CHOOSE_PROVIDER else Routes.PERMISSION)
-                    })
+                    // The sample conversation takes the welcome page's place, its orb grown out of the
+                    // page's own, as a conversation does on the home screen.
+                    var sample by remember { mutableStateOf<SampleConversation?>(null) }
+                    fun playSample() {
+                        OrbHandoff.launch()
+                        sample = SampleConversation(context, scope, current.speechVolume).also { it.start() }
+                    }
+                    LaunchedEffect(Unit) {
+                        if (autoSample) {
+                            autoSample = false
+                            playSample()
+                        }
+                    }
+                    AnimatedContent(
+                        targetState = sample,
+                        transitionSpec = {
+                            val landed = targetState == null && OrbHandoff.takeLanded()
+                            fadeIn(tween(HOME_FADE_MS)) togetherWith fadeOut(tween(HOME_FADE_MS, delayMillis = if (landed) HOME_FADE_MS else 0))
+                        },
+                        label = "welcome",
+                    ) { playing ->
+                        if (playing != null) {
+                            SampleScreen(playing, onDone = { sample = null })
+                        } else {
+                            WelcomeScreen(onStart = whenResumed { continueIntro() }, onSample = whenResumed { playSample() })
+                        }
+                    }
                 }
                 composable(Routes.PERMISSION) {
                     PermissionScreen(onGranted = {
                         if (navController.currentDestination?.route == Routes.PERMISSION) {
                             navController.popBackStack()
-                            if (connected.isEmpty()) navController.navigate(Routes.CHOOSE_PROVIDER)
+                            // Asked for by the introduction, which goes on; or by a conversation about to start.
+                            if (settings?.introDone != true) continueIntro()
                         }
                     })
                 }
@@ -262,7 +332,36 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 composable(Routes.PAIR) { entry ->
                     val provider = ProviderId.fromKey(entry.arguments?.getString("provider")) ?: ProviderId.GEMINI
                     val viewModel: PairingViewModel = viewModel()
-                    PairingScreen(viewModel, provider, onDone = whenResumed { navController.navigateHome() })
+                    // During the introduction it goes on to the watch features; a provider added from the
+                    // settings later leads home.
+                    val intro = !current.introDone
+                    PairingScreen(
+                        viewModel,
+                        provider,
+                        doneLabel = stringResource(if (intro) R.string.action_continue else R.string.pair_connected_action),
+                        onDone = whenResumed {
+                            if (intro) {
+                                navController.navigate(Routes.SETUP_FEATURES) { popUpTo(Routes.WELCOME) }
+                            } else {
+                                navController.navigateHome()
+                            }
+                        },
+                    )
+                }
+                composable(Routes.SETUP_FEATURES) {
+                    val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
+                    WatchFeaturesScreen(s, update, onContinue = whenResumed { navController.navigate(Routes.QUICK_START) })
+                }
+                composable(Routes.QUICK_START) {
+                    val s by app.settings.settings.collectAsStateWithLifecycle(initialValue = current)
+                    QuickStartScreen(
+                        startOnLaunch = s.startOnLaunch,
+                        onStartOnLaunch = { on -> update { it.copy(startOnLaunch = on) } },
+                        onContinue = whenResumed {
+                            homeTour = true
+                            navController.navigateHome()
+                        },
+                    )
                 }
                 composable(Routes.HISTORY) {
                     HistoryScreen(
@@ -306,6 +405,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                         memoryFacts = facts.size,
                         onOpenMemory = whenResumed { navController.navigate(Routes.MEMORY) },
                         onOpenFeatures = whenResumed { navController.navigate(Routes.FEATURES) },
+                        onOpenIntro = whenResumed { navController.navigate(Routes.WELCOME) },
                     )
                 }
                 composable(Routes.PROVIDER) {
@@ -379,7 +479,7 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 onConfirm = {
                     val start = held
                     held = null
-                    if (start != null) startConversation(start.demo, start.continueId, start.interpret, anyway = true)
+                    if (start != null) startConversation(start.continueId, start.interpret, anyway = true)
                 },
                 onDismiss = { held = null },
             )
@@ -389,8 +489,10 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 app.usage.awaitLoaded()
                 when (launch) {
                     Launch.TALK -> if (ready) startConversation()
-                    Launch.DEMO -> startConversation(demo = true)
-                    Launch.OPEN -> if (ready && current.startOnLaunch && !SessionHub.running) startConversation()
+                    // The welcome page plays it (see autoSample).
+                    Launch.SAMPLE -> Unit
+                    // Not while the introduction shows: it would start over the welcome page.
+                    Launch.OPEN -> if (ready && current.introDone && current.startOnLaunch && !SessionHub.running) startConversation()
                 }
                 initialRoutes.forEach { runCatching { navController.navigate(it) } }
             }

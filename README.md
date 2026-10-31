@@ -52,8 +52,14 @@ your own API key.
 - **Your provider, your key, your data.** Choose Google Gemini (from about a cent a
   minute) or OpenAI. Audio goes straight from the watch to the provider; there is no
   Parley server in between.
+- **Hear it before you set it up.** The welcome page plays a sample conversation in Parley's
+  real voice, in your language, with no key and no network; a short tour then points out the
+  conversation's controls.
 - **Easy, secure setup.** Scan a QR code on the watch, paste your key on your phone, and
-  it arrives end-to-end encrypted. No companion app, no typing on a tiny keyboard.
+  it arrives end-to-end encrypted. No companion app, no typing on a tiny keyboard. The
+  introduction then lets you choose and allow the watch features, shows how to start Parley with
+  a double press of the watch's button, and tours the home screen; it is under Settings → General
+  to see again.
 - **Made for the watch.** Wi-Fi or LTE is used during a conversation instead of the slow
   Bluetooth link; conversations continue with the screen off; tile, complication and
   watch-face icon; personalities that also set how long Parley talks (from Concise to Detailed),
@@ -122,11 +128,15 @@ The address of the pairing page is compiled into the app from `parley.pairBaseUr
 `gradle.properties` (currently `https://parley-pair.flat-pine-028f.workers.dev`). See [pair/README.md](pair/README.md)
 for the relay.
 
-Debug builds can play a scripted conversation for screenshots:
+Debug builds open the introduction's sample conversation straight away, for tests and screenshots:
 
 ```bash
 adb shell am start -n net.devemperor.parley.debug/net.devemperor.parley.MainActivity --ez demo true
 ```
+
+The sample's voice is Gemini's default voice (Kore), recorded once per app language with
+`--ez record_sample true` (see `SampleVoices`) and kept as Opus in `wear/src/main/assets/sample/`;
+when its answers change in the strings, record it again.
 
 ## Credits
 

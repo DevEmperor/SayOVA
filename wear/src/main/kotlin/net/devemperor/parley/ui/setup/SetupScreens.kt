@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,8 +34,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,6 +51,7 @@ import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.EdgeButton
 import androidx.wear.compose.material3.EdgeButtonSize
 import androidx.wear.compose.material3.FilledTonalButton
+import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
@@ -63,24 +72,35 @@ import net.devemperor.parley.ui.components.ListScreen
 import net.devemperor.parley.ui.components.MenuButton
 import net.devemperor.parley.ui.components.MessageScreen
 import net.devemperor.parley.ui.components.Orb
+import net.devemperor.parley.ui.components.OrbHandoff
 import net.devemperor.parley.ui.components.QrCodeImage
+import net.devemperor.parley.ui.components.SwitchItem
 import net.devemperor.parley.ui.components.openOnPhone
 import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.theme.ParleyColors
 
+/**
+ * The first page of the introduction: Parley, one line on what it is, the way into the setup, and the
+ * sample conversation for anyone who wants to hear Parley first. The sample grows out of this orb and
+ * shrinks back onto it, like a conversation on the home screen (see OrbHandoff).
+ */
 @Composable
-fun WelcomeScreen(onStart: () -> Unit) {
+fun WelcomeScreen(onStart: () -> Unit, onSample: () -> Unit) {
     EdgeButtonScaffold(
         edgeButton = {
             EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.ExtraSmall) { FitText(stringResource(R.string.welcome_start)) }
         },
     ) { padding ->
+        // The scaffold keeps room for a larger edge button than this extra-small one; the sample's
+        // button needs that room.
         Column(
-            Modifier.fillMaxSize().padding(padding),
+            Modifier.fillMaxSize().padding(top = padding.calculateTopPadding(), bottom = screenWidth() * 0.25f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Orb(phase = null, level = 0f, modifier = Modifier.size(screenWidth() * 0.32f))
+            Box(Modifier.size(screenWidth() * 0.22f).onGloballyPositioned { OrbHandoff.homeBounds = it.boundsInWindow() }) {
+                Orb(phase = null, level = 0f, modifier = Modifier.fillMaxSize())
+            }
             Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleMedium)
             Text(
                 stringResource(R.string.welcome_tagline),
@@ -88,6 +108,69 @@ fun WelcomeScreen(onStart: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(8.dp))
+            // A small pill as wide as its words: the edge button stays the one main action.
+            Row(
+                Modifier
+                    .widthIn(max = screenWidth() * 0.78f)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
+                    .clickable(role = Role.Button, onClick = onSample)
+                    .padding(horizontal = 12.dp, vertical = 7.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_volume_up),
+                    contentDescription = null,
+                    tint = ParleyColors.TealBright,
+                    modifier = Modifier.size(16.dp),
+                )
+                Spacer(Modifier.width(6.dp))
+                // Smaller rather than cut off where the words run long.
+                FitText(stringResource(R.string.welcome_sample), style = MaterialTheme.typography.labelMedium, minScale = 0.6f)
+            }
+        }
+    }
+}
+
+/**
+ * The introduction's tip for starting faster. The watch's own button settings cannot be opened at the
+ * right page from outside, so the way there is described and the watch settings open at their start;
+ * "Talk when opened" is switched right here.
+ */
+@Composable
+fun QuickStartScreen(startOnLaunch: Boolean, onStartOnLaunch: (Boolean) -> Unit, onContinue: () -> Unit) {
+    val context = LocalContext.current
+    val talkWhenOpened = stringResource(R.string.settings_start_on_launch)
+    ListScreen { spec ->
+        item { Header(stringResource(R.string.quick_title), spec) }
+        item { Hint(stringResource(R.string.quick_text, talkWhenOpened), spec) }
+        item {
+            SwitchItem(
+                label = talkWhenOpened,
+                checked = startOnLaunch,
+                onCheckedChange = onStartOnLaunch,
+                spec = spec,
+                icon = R.drawable.ic_mic,
+            )
+        }
+        item {
+            MenuButton(
+                label = stringResource(R.string.quick_watch_settings),
+                icon = R.drawable.ic_watch,
+                spec = spec,
+                onClick = { runCatching { context.startActivity(Intent(Settings.ACTION_SETTINGS)) } },
+            )
+        }
+        item { Hint(stringResource(R.string.quick_more), spec) }
+        item {
+            MenuButton(
+                label = stringResource(R.string.action_continue),
+                icon = R.drawable.ic_arrow_forward,
+                spec = spec,
+                highlighted = true,
+                onClick = onContinue,
             )
         }
     }
@@ -163,7 +246,7 @@ fun ProviderChoiceScreen(connected: Set<ProviderId>, onChoose: (ProviderId) -> U
  * arrives (compare, check, done) happens on this one screen.
  */
 @Composable
-fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () -> Unit) {
+fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, doneLabel: String, onDone: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(provider) { viewModel.start(provider) }
 
@@ -183,7 +266,7 @@ fun PairingScreen(viewModel: PairingViewModel, provider: ProviderId, onDone: () 
                 if (s.verified) R.string.pair_connected_text else R.string.pair_connected_unverified,
                 PairingViewModel.providerName(s.provider),
             ),
-            actionLabel = stringResource(R.string.pair_connected_action),
+            actionLabel = doneLabel,
             onAction = onDone,
         )
         is PairingState.Failed -> MessageScreen(

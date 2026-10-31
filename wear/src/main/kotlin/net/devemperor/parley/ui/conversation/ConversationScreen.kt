@@ -109,6 +109,8 @@ import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.iconRes
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.theme.ParleyColors
+import net.devemperor.parley.ui.tour.TourTarget
+import net.devemperor.parley.ui.tour.tourTarget
 import kotlin.math.abs
 
 /**
@@ -141,6 +143,8 @@ fun ConversationScreen(
     onDone: () -> Unit,
     onRetry: () -> Unit,
     onFixProvider: () -> Unit,
+    /** One volume step (+1 louder, -1 quieter), the volume after it; null without a conversation to ask. */
+    onStepVolume: (Int) -> Int? = SessionHub::stepVolume,
 ) {
     KeepScreenOn(state.active)
 
@@ -199,7 +203,7 @@ fun ConversationScreen(
             // the volume above zero. One step up from there brings the sound back.
             delta < 0 && !state.soundOff && volume.current() <= volume.min -> onToggleSound()
             delta > 0 && state.soundOff -> onToggleSound()
-            else -> volumeLevel = SessionHub.stepVolume(delta) ?: volume.current()
+            else -> volumeLevel = onStepVolume(delta) ?: volume.current()
         }
         volumeOpen = true
         volumeHoldMs = if (bezel) VOLUME_PANEL_BEZEL_MS else VOLUME_PANEL_MS
@@ -260,6 +264,7 @@ fun ConversationScreen(
                     Modifier
                         .size(orbSize)
                         .onGloballyPositioned { orbBounds = it.boundsInWindow() }
+                        .tourTarget(TourTarget.TALK_ORB)
                         .graphicsLayer {
                             val own = orbBounds
                             if (own == null || own.width <= 0f) {
@@ -460,7 +465,7 @@ private fun Controls(
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             },
-            modifier = raised,
+            modifier = raised.tourTarget(TourTarget.TALK_TEXT, visual = side),
         ) {
             Icon(
                 painterResource(if (transcript) R.drawable.ic_subtitles else R.drawable.ic_subtitles_off),
@@ -472,7 +477,7 @@ private fun Controls(
             onClick = onEnd,
             enabled = state.active,
             colors = IconButtonDefaults.filledIconButtonColors(containerColor = ParleyColors.HangUp, contentColor = Color.White),
-            modifier = Modifier.size(width * 0.19f),
+            modifier = Modifier.size(width * 0.19f).tourTarget(TourTarget.TALK_END, visual = width * 0.19f),
         ) {
             Icon(painterResource(R.drawable.ic_call_end), contentDescription = stringResource(R.string.action_end), modifier = Modifier.size(width * 0.1f))
         }
@@ -491,7 +496,7 @@ private fun Controls(
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             },
-            modifier = raised,
+            modifier = raised.tourTarget(TourTarget.TALK_SOUND, visual = side),
         ) {
             Icon(
                 painterResource(if (state.soundOff) R.drawable.ic_volume_off else volumeIcon),
@@ -597,6 +602,8 @@ private fun orbDescription(state: ConversationUiState): String = when {
 @Composable
 private fun Caption(state: ConversationUiState, modifier: Modifier = Modifier) {
     val meta = buildList {
+        // The introduction's sample says so, in the place the network would take.
+        if (state.sample) add(stringResource(R.string.sample_label))
         if (state.elapsedMs > 0) add(formatElapsed(state.elapsedMs))
         // Interpreting, the language pair takes the network's place: the line has room for three.
         state.interpreting?.let(::add)

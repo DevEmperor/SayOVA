@@ -5,6 +5,36 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Talk to AI from your wrist.</string>
     <string name="welcome_start">Start</string>
+    <string name="welcome_sample">Hear an example</string>
+    <!-- The introduction's sample conversation (see SampleConversation). The answers are recorded as speech
+         too (assets/sample/…, see SampleVoices): change them only together with the recordings.
+         sample_voice is not translated: it names the folder of this language's recordings. -->
+    <string name="sample_voice">en</string>
+    <string name="sample_label">Example</string>
+    <string name="sample_q1">Remember that I\'m vegetarian.</string>
+    <string name="sample_fact">Vegetarian</string>
+    <string name="sample_a1">Got it, I\'ll keep that in mind.</string>
+    <string name="sample_q2">What could I cook tonight?</string>
+    <string name="sample_a2">How about a chickpea curry with spinach? It takes about twenty minutes and tastes even better the next day.</string>
+    <string name="sample_q3">Sounds good. Set a timer for twenty minutes.</string>
+    <string name="sample_a3">Your timer is running. Enjoy your meal!</string>
+    <!-- The tour: a few words on the one control it highlights. -->
+    <string name="tour_talk_orb">Interrupt Parley any time: just start talking, or tap the orb.</string>
+    <string name="tour_talk_text">Shows or hides the text.</string>
+    <string name="tour_talk_sound">Tap for silence. Hold it, or turn the bezel, for the volume.</string>
+    <string name="tour_talk_end">Hangs up. Conversations go to the history.</string>
+    <string name="tour_home_orb">Tap and talk. Parley searches the web, sets timers and alarms, takes notes and remembers what you ask it to.</string>
+    <string name="tour_home_line">Model and cost this month. Tap for the statistics.</string>
+    <string name="tour_home_interpreter">Interpreter: pick two languages and hold the watch between you.</string>
+    <string name="tour_home_history">History: read, continue or send to your phone.</string>
+    <string name="tour_home_settings">Voice, personality, memory, budget – and this introduction.</string>
+    <!-- %1$s: the setting "Talk when opened". -->
+    <string name="quick_title">Start faster</string>
+    <string name="quick_text">In the watch settings, put Parley on a double press of the button (on a Galaxy Watch under Advanced features). With “%1$s” on, a double press starts a conversation.</string>
+    <string name="quick_more">Parley’s tile and its complication on the watch face start a conversation with one tap, too.</string>
+    <string name="quick_watch_settings">Watch settings</string>
+    <string name="action_continue">Continue</string>
+    <string name="settings_intro">Introduction</string>
     <string name="permission_title">Microphone</string>
     <string name="permission_text">Parley needs the microphone to hear you. Audio is only streamed while a conversation is open.</string>
     <string name="permission_blocked">The microphone is blocked. Allow it in the app settings to talk to Parley.</string>

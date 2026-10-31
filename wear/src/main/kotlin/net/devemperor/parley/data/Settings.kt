@@ -69,6 +69,8 @@ data class ParleySettings(
     /** The interpreter's two languages as codes (see InterpretLanguage); empty until first chosen. */
     val interpretFirst: String = "",
     val interpretSecond: String = "",
+    /** The introduction (watch features, quick start, the tour of the home screen) has been through once. */
+    val introDone: Boolean = false,
 ) {
     val providerInfo: Provider get() = ProviderCatalog.get(provider)
 
@@ -138,6 +140,7 @@ class SettingsRepository(private val context: Context) {
         val startOnLaunch = booleanPreferencesKey("start_on_launch")
         val interpretFirst = stringPreferencesKey("interpret_first")
         val interpretSecond = stringPreferencesKey("interpret_second")
+        val introDone = booleanPreferencesKey("intro_done")
         // Before the statistics (UsageStore), only the current month's cost was kept here.
         val legacyCostMonth = stringPreferencesKey("cost_month")
         val legacyCostMonthUsd = doublePreferencesKey("cost_month_usd")
@@ -186,6 +189,7 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.startOnLaunch] = updated.startOnLaunch
             prefs[Keys.interpretFirst] = updated.interpretFirst
             prefs[Keys.interpretSecond] = updated.interpretSecond
+            prefs[Keys.introDone] = updated.introDone
         }
     }
 
@@ -235,6 +239,7 @@ class SettingsRepository(private val context: Context) {
             startOnLaunch = prefs[Keys.startOnLaunch] ?: d.startOnLaunch,
             interpretFirst = prefs[Keys.interpretFirst] ?: d.interpretFirst,
             interpretSecond = prefs[Keys.interpretSecond] ?: d.interpretSecond,
+            introDone = prefs[Keys.introDone] ?: d.introDone,
         )
     }
 

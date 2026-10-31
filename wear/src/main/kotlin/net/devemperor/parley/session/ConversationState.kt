@@ -55,6 +55,8 @@ data class ConversationUiState(
     val callAudio: Boolean = false,
     val error: SessionError? = null,
     val saved: Boolean = false,
+    /** The introduction's scripted sample (see SampleConversation), marked as such on screen. */
+    val sample: Boolean = false,
 ) {
     val active: Boolean get() = phase != Phase.ENDED && phase != Phase.ERROR
 }

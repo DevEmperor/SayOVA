@@ -49,6 +49,8 @@ import net.devemperor.parley.ui.components.screenWidth
 import net.devemperor.parley.ui.labelRes
 import net.devemperor.parley.ui.stringOr
 import net.devemperor.parley.ui.theme.ParleyColors
+import net.devemperor.parley.ui.tour.TourTarget
+import net.devemperor.parley.ui.tour.tourTarget
 
 /**
  * The start screen: the orb (tap it, or the edge button, to talk) and round buttons for the
@@ -93,6 +95,7 @@ fun HomeScreen(
                 Modifier
                     .size(width * 0.26f)
                     .onGloballyPositioned { OrbHandoff.homeBounds = it.boundsInWindow() }
+                    .tourTarget(TourTarget.HOME_ORB)
                     .semantics { contentDescription = talkLabel }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
@@ -123,23 +126,23 @@ fun HomeScreen(
                     else -> MaterialTheme.colorScheme.onSurfaceVariant
                 },
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).clickable(onClick = onUsage).padding(vertical = 3.dp),
+                modifier = Modifier.padding(horizontal = 24.dp).tourTarget(TourTarget.HOME_LINE).clickable(onClick = onUsage).padding(vertical = 3.dp),
             )
             Spacer(Modifier.height(4.dp))
             // Large enough to hit; at the size of a small icon they were easy to miss.
             val size = width * 0.2f
             Row(horizontalArrangement = Arrangement.spacedBy(width * 0.04f)) {
-                Action(R.drawable.ic_translate, stringResource(R.string.interpreter_title), size, onInterpreter)
-                Action(R.drawable.ic_history, stringResource(R.string.home_history), size, onHistory)
-                Action(R.drawable.ic_settings, stringResource(R.string.home_settings), size, onSettings)
+                Action(R.drawable.ic_translate, stringResource(R.string.interpreter_title), size, TourTarget.HOME_INTERPRETER, onInterpreter)
+                Action(R.drawable.ic_history, stringResource(R.string.home_history), size, TourTarget.HOME_HISTORY, onHistory)
+                Action(R.drawable.ic_settings, stringResource(R.string.home_settings), size, TourTarget.HOME_SETTINGS, onSettings)
             }
         }
     }
 }
 
 @Composable
-private fun Action(icon: Int, label: String, size: Dp, onClick: () -> Unit) {
-    FilledTonalIconButton(onClick = onClick, modifier = Modifier.size(size)) {
+private fun Action(icon: Int, label: String, size: Dp, target: TourTarget, onClick: () -> Unit) {
+    FilledTonalIconButton(onClick = onClick, modifier = Modifier.size(size).tourTarget(target, visual = size)) {
         Icon(painterResource(icon), contentDescription = label, modifier = Modifier.size(size * 0.45f))
     }
 }

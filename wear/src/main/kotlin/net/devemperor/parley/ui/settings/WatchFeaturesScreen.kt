@@ -41,9 +41,12 @@ import net.devemperor.parley.ui.labelRes
  * Android shows its dialog at most twice per permission; after the second "no" a request comes back
  * without one. Only then does the button lead to the watch's settings, where the permission can still
  * be given.
+ *
+ * [onContinue]: shown as a step of the introduction, with a button to go on (allowing now is optional:
+ * a feature still asks when first used).
  */
 @Composable
-fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
+fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update, onContinue: (() -> Unit)? = null) {
     val context = LocalContext.current
     val activity = LocalActivity.current ?: return
     // Android does not report permission changes; read them again whenever the screen comes back
@@ -145,6 +148,18 @@ fun WatchFeaturesScreen(settings: ParleySettings, onUpdate: Update) {
                     onClick = { if (askable.isEmpty()) openSystemSettings() else ask(askable) },
                     icon = R.drawable.ic_check,
                     highlighted = true,
+                )
+            }
+        }
+        if (onContinue != null) {
+            item {
+                MenuButton(
+                    label = stringResource(R.string.action_continue),
+                    spec = spec,
+                    onClick = onContinue,
+                    icon = R.drawable.ic_arrow_forward,
+                    // One highlighted button at a time: allowing first, while anything still waits.
+                    highlighted = waiting.isEmpty(),
                 )
             }
         }
