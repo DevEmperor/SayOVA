@@ -45,8 +45,9 @@ First version.
   its real voice, without key, network or microphone, then points out the orb, the text and sound
   buttons and hanging up. After the microphone and the key come the watch
   features to choose and allow at once, how to start Parley with a double press of the watch's button
-  ("Talk when opened" right there), and a tour of the home screen. Settings → General → Introduction
-  shows it again; the steps already done are skipped.
+  ("Talk when opened" right there), and a tour of the home screen. The tours are paged by hand: swipe
+  left or turn the bezel to go on, swipe right to go back. Settings → General → Introduction shows it
+  again; the steps already done are skipped.
 - Showing and hiding the transcript is one animation both ways.
 - Tools: timers, alarms, notes, battery and time, web search.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
