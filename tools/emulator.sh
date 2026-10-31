@@ -4,7 +4,9 @@
 # emulator's own gRPC bridge (tools/emu_audio.py), so a whole conversation can be tested without a sound in
 # the room and without touching the desktop's audio devices.
 #
-#   tools/emulator.sh start [--headless]   create the AVD if needed and boot it, in a window by default
+#   tools/emulator.sh start [--headless|--no-audio]   create the AVD if needed and boot it, in a window by default
+#                                      (--no-audio for UI tours: stable, but nothing to speak into)
+#   tools/emulator.sh video <out.mp4> <seconds>   record the screen over gRPC (screenrecord crashes it)
 #   tools/emulator.sh install          install the debug build and grant its permissions
 #   tools/emulator.sh say "<text>" [voice]   speak into the watch (espeak-ng, default voice en-us)
 #   tools/emulator.sh play <file.wav>  play a recording into the watch
@@ -61,7 +63,12 @@ case "${1:-}" in
     venv_up
     # `-grpc <port>` opens the bridge on localhost without a token; tools/emu_audio.py speaks into the
     # microphone and records through it. The host microphone stays off (no -allow-host-audio).
-    if [ "${2:-}" = --headless ]; then
+    if [ "${2:-}" = --no-audio ]; then
+      # No sound device in the guest at all: conversations then run without crashing the emulator
+      # (its audio capture crashed it every few starts), with no way to speak into the watch.
+      QEMU_AUDIO_DRV=none setsid nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" \
+        -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 -no-audio > "$STATE/emulator.log" 2>&1 &
+    elif [ "${2:-}" = --headless ]; then
       # Headless qemu: no window at all, and no host audio driver either.
       setsid nohup "$SDK/emulator/emulator" -avd "$AVD" -port "$PORT" -grpc "$GRPC_PORT" -no-window -no-boot-anim \
         -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$STATE/emulator.log" 2>&1 &
@@ -98,6 +105,9 @@ case "${1:-}" in
     ;;
   shot)
     "$ADB" -s "$SERIAL" exec-out screencap -p > "$2"
+    ;;
+  video)
+    "$VENV/bin/python" "$TOOLS/emu_video.py" "$2" "${3:-10}"
     ;;
   log)
     "$ADB" -s "$SERIAL" logcat -s ParleyEvent:V ParleyPair:V AndroidRuntime:E

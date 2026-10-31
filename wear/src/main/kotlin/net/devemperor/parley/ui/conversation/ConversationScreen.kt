@@ -4,7 +4,6 @@ import android.os.SystemClock
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -78,6 +77,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.wear.compose.material3.FilledIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
@@ -228,7 +228,11 @@ fun ConversationScreen(
         },
     ) { _ ->
         val width = screenWidth()
-        val orbSize by animateDpAsState(if (transcript) width * 0.2f else width * 0.46f, label = "orb")
+        // One motion both ways: the orb shrinks towards the top while the transcript fades in below it,
+        // and goes back the same way. Switching the layout instead made the way back another animation
+        // (the small orb jumped to the middle and grew there).
+        val textShare by animateFloatAsState(if (transcript) 1f else 0f, label = "transcript")
+        val orbSize = lerp(width * 0.46f, width * 0.2f, textShare)
         val bezel = Modifier
             .onRotaryScrollEvent { event ->
                 // One step per bezel click; a crown turned in the other direction starts over.
@@ -249,7 +253,8 @@ fun ConversationScreen(
             ) {
                 Spacer(Modifier.height(width * 0.12f))
                 // The orb keeps its place in the composition either way, so switching only resizes it.
-                if (!transcript) Spacer(Modifier.weight(1f))
+                // The free space above it shrinks away as the transcript comes in (a weight cannot be 0).
+                if (textShare < 1f) Spacer(Modifier.weight((1f - textShare) * (1f - textShare)))
                 val orbLabel = orbDescription(state)
                 Box(
                     Modifier
@@ -290,10 +295,10 @@ fun ConversationScreen(
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-                if (!transcript) Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(6.dp * (1f - textShare)))
                 Caption(state, rest)
-                if (transcript) {
-                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth().then(rest))
+                if (textShare > 0f) {
+                    Transcript(state, width, Modifier.weight(1f).fillMaxWidth().then(rest).graphicsLayer { alpha = textShare })
                 } else {
                     Spacer(Modifier.weight(1f))
                 }
