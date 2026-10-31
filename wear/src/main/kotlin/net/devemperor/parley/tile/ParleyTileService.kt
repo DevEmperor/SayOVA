@@ -21,6 +21,7 @@ import android.content.Context
 import net.devemperor.parley.MainActivity
 import net.devemperor.parley.R
 import net.devemperor.parley.parley
+import net.devemperor.parley.ui.settings.AppLanguages
 
 /**
  * Tile in the watch carousel: one tap on the edge button starts talking; above it the latest
@@ -33,18 +34,19 @@ class ParleyTileService : Material3TileService(allowDynamicTheme = false, defaul
         app.history.load()
         val latest = app.history.conversations.value.firstOrNull()?.title
         val talk = clickable(action = launch(MainActivity.ACTION_TALK), id = "talk")
+        val strings = AppLanguages.localized(this@ParleyTileService)
 
         val layout = primaryLayout(
-            titleSlot = { text(getString(R.string.app_name).layoutString) },
+            titleSlot = { text(strings.getString(R.string.app_name).layoutString) },
             mainSlot = {
                 text(
-                    (latest?.let { getString(R.string.tile_latest, it) } ?: getString(R.string.tile_description)).layoutString,
+                    (latest?.let { strings.getString(R.string.tile_latest, it) } ?: strings.getString(R.string.tile_description)).layoutString,
                     typography = Typography.BODY_MEDIUM,
                     maxLines = 3,
                 )
             },
             bottomSlot = {
-                textEdgeButton(onClick = talk, labelContent = { text(getString(R.string.home_talk).layoutString) })
+                textEdgeButton(onClick = talk, labelContent = { text(strings.getString(R.string.home_talk).layoutString) })
             },
         )
         return tile(timeline = timeline(timelineEntry(layout)))

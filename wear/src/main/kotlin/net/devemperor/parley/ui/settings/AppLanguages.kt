@@ -2,6 +2,7 @@ package net.devemperor.parley.ui.settings
 
 import android.app.LocaleManager
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.LocaleList
 import java.util.Locale
@@ -22,6 +23,16 @@ object AppLanguages {
         val chosen = context.getSystemService(LocaleManager::class.java).applicationLocales.get(0) ?: return null
         return TAGS.firstOrNull { it.equals(chosen.toLanguageTag(), ignoreCase = true) }
             ?: TAGS.firstOrNull { Locale.forLanguageTag(it).language == chosen.language }
+    }
+
+    /**
+     * [context] speaking the chosen language. Screens get it from Android; the tile and complication
+     * services got it only at times (a watch face showed "Reden" one moment and "Talk" the next).
+     */
+    fun localized(context: Context): Context {
+        val tag = current(context) ?: return context
+        val config = Configuration(context.resources.configuration).apply { setLocale(Locale.forLanguageTag(tag)) }
+        return context.createConfigurationContext(config)
     }
 
     /** Switches to [tag], or back to the watch's language for null; Android recreates the screens. */

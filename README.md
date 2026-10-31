@@ -61,7 +61,8 @@ your own API key.
   a double press of the watch's button (on a Galaxy Watch it opens that setting directly), and tours
   the home screen.
 - **Made for the watch.** Wi-Fi or LTE is used during a conversation instead of the slow
-  Bluetooth link; conversations continue with the screen off; tile, complication and
+  Bluetooth link; conversations continue with the screen off; tile, a complication for every kind
+  of watch-face slot (the slots with a value show the month's cost against your budget) and
   watch-face icon; personalities that also set how long Parley talks (from Concise to Detailed),
   40 voices to listen to before you pick one, answer language, haptics.
 - **History on the watch only**, kept as long as you like, never backed up to the cloud; send a

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import net.devemperor.parley.complication.ParleyComplicationService
 import net.devemperor.parley.demo.SampleVoices
 import net.devemperor.parley.features.PermissionBroker
 import net.devemperor.parley.features.StepTracking
@@ -74,6 +75,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         PermissionBroker.hostVisible = false
+        // The monthly budget may have changed, which watch faces show against the month's cost.
+        ParleyComplicationService.refresh(this)
         super.onStop()
     }
 

@@ -49,6 +49,11 @@ First version.
   setting), and a tour of the home screen. The tours are paged by hand: swipe left or turn the bezel to
   go on, swipe right to go back. The introduction runs once; setting up a new key later skips it.
 - Showing and hiding the transcript is one animation both ways.
+- Complication for every watch face: short and long text, ranged value, goal progress and weighted
+  elements (Wear OS 4+), monochrome icon, small image and photo. In colour it shows the orb itself,
+  otherwise a new one-colour orb icon (also in the notification and the tile picker); the kinds with a
+  value show this month's cost against the monthly budget. Tile and complication speak the language
+  chosen in Parley's settings.
 - Tools: timers, alarms, notes, battery and time, web search.
 - Voice samples: tapping a voice in the settings chooses it and plays a short sample, spoken once by
   the provider with your key (well under a cent, counted in the statistics) and then kept on the watch.

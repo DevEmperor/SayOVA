@@ -24,6 +24,7 @@ import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.MainActivity
 import net.devemperor.parley.R
 import net.devemperor.parley.audio.Haptics
+import net.devemperor.parley.complication.ParleyComplicationService
 import net.devemperor.parley.core.prompt.Instructions
 import net.devemperor.parley.core.prompt.InterpretLanguage
 import net.devemperor.parley.core.provider.ProviderId
@@ -169,6 +170,7 @@ class SessionService : LifecycleService() {
                     conversation?.let { app.history.save(it) }
                     app.usage.record(usd, talkMs)
                     ParleyTileService.refresh(this@SessionService)
+                    ParleyComplicationService.refresh(this@SessionService)
                 },
                 onVolume = { level, call -> app.settings.update { if (call) it.copy(callVolume = level) else it.copy(speechVolume = level) } },
                 onFinished = { stopEverything() },
