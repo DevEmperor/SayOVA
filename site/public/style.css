@@ -1,0 +1,149 @@
+/* SayOVA's website: the palette of the watch app and the pairing page (pair/public/style.css). */
+:root {
+  --bg: #050608;
+  --surface: #101218;
+  --line: #242833;
+  --text: #f2f4f8;
+  --muted: #9aa2b3;
+  --teal: #2ec4b6;
+  --violet: #8b5cf6;
+  --radius: 24px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(70rem 45rem at 50% -14rem, rgb(46 196 182 / 0.16), transparent 60%),
+    radial-gradient(45rem 32rem at 88% 12%, rgb(139 92 246 / 0.14), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  flex: 1;
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  padding: max(4rem, env(safe-area-inset-top)) 16px 2.5rem;
+}
+
+.hero { text-align: center; }
+
+/* The app's cloud orb, breathing slowly as it does while it listens. */
+.orb {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 1.75rem;
+  border-radius: 50%;
+  background: url("/orb.png") center / cover no-repeat;
+  box-shadow: 0 0 60px rgb(115 148 250 / 0.38), 0 0 120px rgb(140 219 219 / 0.2);
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 60px rgb(115 148 250 / 0.38), 0 0 120px rgb(140 219 219 / 0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 0 80px rgb(115 148 250 / 0.5), 0 0 150px rgb(140 219 219 / 0.28); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none; }
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 9vw, 3.6rem);
+  font-weight: 680;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.expansion {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--teal), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 1.4rem auto 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.lead a { color: var(--teal); }
+
+.soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0 0;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 0.95rem;
+  font-weight: 550;
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px var(--teal);
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin: 3.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  padding: 1.4rem 1.5rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.points h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 640;
+}
+
+.points p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.5rem 16px max(1.5rem, env(safe-area-inset-bottom));
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+footer a { color: var(--muted); }
+footer a:hover { color: var(--text); }

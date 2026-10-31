@@ -1,0 +1,21 @@
+{
+  "$schema": "../pair/node_modules/wrangler/config-schema.json",
+  "name": "sayova-site",
+  "compatibility_date": "2026-10-01",
+
+  // SayOVA's website on sayova.app (and www), kept apart from the pairing page on pair.sayova.app (pair/).
+  // Static files only, no Worker code.
+  "routes": [
+    { "pattern": "sayova.app", "custom_domain": true },
+    { "pattern": "www.sayova.app", "custom_domain": true }
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  },
+
+  "observability": { "enabled": false }
+}

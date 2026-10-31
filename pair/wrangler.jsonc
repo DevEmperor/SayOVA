@@ -4,8 +4,10 @@
   "main": "src/worker.ts",
   "compatibility_date": "2026-10-01",
 
-  // Reachable as sayova-pair.<account>.workers.dev for now; a custom domain can be added later. The
-  // address is compiled into the watch app (sayova.pairBaseUrl in gradle.properties).
+  // Served on pair.sayova.app, the address compiled into the watch app (sayova.pairBaseUrl in
+  // gradle.properties); the website lives apart on sayova.app (site/). The workers.dev address stays
+  // reachable for tests.
+  "routes": [{ "pattern": "pair.sayova.app", "custom_domain": true }],
   "workers_dev": true,
   // No preview URLs per version: only the deployed page and relay are reachable.
   "preview_urls": false,

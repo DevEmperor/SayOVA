@@ -131,8 +131,8 @@ JAVA_HOME=/usr/lib/jvm/java-21-openjdk ./gradlew :core:testDebugUnitTest :wear:t
 ```
 
 The address of the pairing page is compiled into the app from `sayova.pairBaseUrl` in
-`gradle.properties` (currently `https://sayova-pair.flat-pine-028f.workers.dev`). See [pair/README.md](pair/README.md)
-for the relay.
+`gradle.properties` (`https://pair.sayova.app`). See [pair/README.md](pair/README.md) for the relay and
+[site/](site/) for the website on sayova.app.
 
 Debug builds open the introduction's sample conversation straight away, for tests and screenshots:
 

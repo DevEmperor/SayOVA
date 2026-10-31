@@ -36,13 +36,12 @@ npm run typecheck
 
 ```bash
 npx wrangler login
-npm run deploy     # prints the address, e.g. https://sayova-pair.<account>.workers.dev
+npm run deploy     # https://pair.sayova.app (custom domain) and https://sayova-pair.<account>.workers.dev
 ```
 
-Then build the watch app against that address:
-`./gradlew :wear:assembleRelease -Psayova.pairBaseUrl=https://sayova-pair.<account>.workers.dev`
-(or set `sayova.pairBaseUrl` in `gradle.properties`). A custom domain can be added later in
-`wrangler.jsonc` under `routes`; old app versions keep the address they were built with.
+The watch app is built against `sayova.pairBaseUrl` in `gradle.properties` (`https://pair.sayova.app`;
+for a test against another deployment pass `-Psayova.pairBaseUrl=…`). Every app version keeps the address
+it was built with, so the custom domain under `routes` in `wrangler.jsonc` stays.
 
 The free Workers plan is enough: one pairing costs a handful of requests and a few seconds of a
 Durable Object.
