@@ -1,5 +1,3 @@
-# Interpreter
-
 Two people, two languages, one watch. In interpreter mode SayOVA doesn't answer — it **says everything
 in the other language**: what you say in yours, it repeats in theirs, and what they answer, it repeats
 in yours. Both sides appear as text, so you can read along.

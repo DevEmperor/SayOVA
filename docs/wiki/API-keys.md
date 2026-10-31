@@ -1,5 +1,3 @@
-# API keys
-
 SayOVA talks to the AI with **your own API key**. That is why there is no subscription and no SayOVA
 server: you pay your provider directly for what you use — usually a cent or two a minute — and your
 conversations go straight to them. This page shows how to get a key, how to hand it to the watch and how

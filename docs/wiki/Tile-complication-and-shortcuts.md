@@ -1,5 +1,3 @@
-# Tile, complication and shortcuts
-
 The quicker you can start talking, the more often SayOVA is worth it. There are four ways to start a
 conversation without opening the app first.
 

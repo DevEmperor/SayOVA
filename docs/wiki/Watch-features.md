@@ -1,5 +1,3 @@
-# Watch features
-
 With its watch features, SayOVA uses the watch it runs on: where you are, the weather there, your heart
 rate, your steps, your calendar and more. Each one is used **only when your question needs it**, and the
 first time it does, the watch asks for its permission — once.

@@ -1,5 +1,3 @@
-# History
-
 Every conversation is saved in the history **on the watch** — to read again, to continue, or to send to
 your phone. It is never uploaded and never backed up to the cloud.
 

@@ -1,5 +1,3 @@
-# Costs and budget
-
 SayOVA itself is a one-time purchase. Talking is billed by your provider, with your own key, for what you
 actually use — and SayOVA shows you exactly what that is, so there are no surprises.
 

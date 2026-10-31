@@ -1,5 +1,3 @@
-# Settings
-
 Open the settings from the home screen (the right-hand button). This page goes through them from top
 to bottom.
 

@@ -1,5 +1,3 @@
-# Conversations
-
 A conversation with SayOVA works like a phone call: you start it, talk back and forth as long as you
 like, and hang up. There are no commands to learn and no wake word — just speak.
 

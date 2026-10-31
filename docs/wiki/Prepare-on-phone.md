@@ -1,5 +1,3 @@
-# Prepare on phone
-
 Some things are better finished on the phone: a message you want to send from your own account, an
 appointment for your calendar, a route to follow. SayOVA **prepares them on your phone** — filled in,
 one tap away — and you send, add or start them there. **SayOVA itself never sends anything in your name.**

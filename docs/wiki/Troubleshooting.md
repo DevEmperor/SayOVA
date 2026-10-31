@@ -1,5 +1,3 @@
-# Troubleshooting
-
 ## Messages on the watch
 
 | Message | What it means | What to do |

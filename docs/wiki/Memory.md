@@ -1,5 +1,3 @@
-# Memory
-
 SayOVA can remember things about you across conversations — but **only what you ask it to**. It doesn't
 quietly collect facts from what you say; you decide what it knows, and you can see and delete every
 single fact.

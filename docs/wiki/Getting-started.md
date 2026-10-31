@@ -1,5 +1,3 @@
-# Getting started
-
 From installing SayOVA to your first conversation takes about five minutes. You need your watch, your
 phone (for one QR-code scan) and an API key — if you don't have one yet, [API keys](API-keys) shows how
 to get one in two minutes. You can also get it during step 4: the page on your phone links straight to

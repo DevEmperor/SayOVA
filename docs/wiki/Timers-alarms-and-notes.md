@@ -1,5 +1,3 @@
-# Timers, alarms and notes
-
 Some things SayOVA can always do, without any permission and without switching anything on: timers,
 alarms, notes, the time and the battery, and — if you like — searching the web. For everything that
 reads the watch's sensors or your data, see [Watch features](Watch-features).

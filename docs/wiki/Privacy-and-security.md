@@ -1,5 +1,3 @@
-# Privacy and security
-
 SayOVA is built so that there is as little as possible to trust: no account, no server of ours in your
 conversations, no analytics, no ads. This page explains where each kind of data goes. The binding text
 is the [privacy policy](https://github.com/DevEmperor/SayOVA/blob/main/PRIVACY_POLICY.md).
