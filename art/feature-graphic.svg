@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="500" viewBox="0 0 1024 500">
-  <!-- Play's feature graphic, rendered by tools/render-store-assets.sh, which fills in @SCREENSHOT@,
-       @TAGLINE@, @PROVIDERS@ and @FONT@. Colours as on the website and the pairing page. -->
+  <!-- Play's feature graphic (English only, shown in every language), rendered by
+       tools/render-store-assets.sh, which fills in @SCREENSHOT@, @TAGLINE@, @PROVIDERS@ and @FONT@.
+       Colours as on the website and the pairing page. -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#050608"/>
