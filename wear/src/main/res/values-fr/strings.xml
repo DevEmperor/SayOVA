@@ -21,13 +21,11 @@
     <string name="tour_home_line">Modèle et coût du mois. Touchez pour les statistiques.</string>
     <string name="tour_home_interpreter">Interprète : choisissez deux langues et tenez la montre entre vous.</string>
     <string name="tour_home_history">Historique : relire, continuer ou envoyer sur le téléphone.</string>
-    <string name="tour_home_settings">Voix, personnalité, mémoire, budget – et cette introduction.</string>
+    <string name="tour_home_settings">Paramètres : voix, personnalité, mémoire, fonctions de la montre, budget et plus.</string>
     <string name="quick_title">Démarrer plus vite</string>
     <string name="quick_text">Dans les paramètres de la montre, attribuez Parley à un double appui sur le bouton (sur une Galaxy Watch : Fonctions avancées). Avec « %1$s » activé, un double appui lance une conversation.</string>
-    <string name="quick_more">La tuile de Parley et sa complication sur le cadran lancent aussi une conversation d’un seul toucher.</string>
-    <string name="quick_watch_settings">Paramètres de la montre</string>
+    <string name="quick_watch_settings">Régler le bouton</string>
     <string name="action_continue">Continuer</string>
-    <string name="settings_intro">Introduction</string>
     <string name="permission_title">Micro</string>
     <string name="permission_text">Parley a besoin du micro pour vous entendre. L\'audio n\'est transmis que pendant une conversation.</string>
     <string name="permission_blocked">Le micro est bloqué. Autorisez-le dans les paramètres de l\'appli pour parler à Parley.</string>

@@ -58,8 +58,8 @@ your own API key.
 - **Easy, secure setup.** Scan a QR code on the watch, paste your key on your phone, and
   it arrives end-to-end encrypted. No companion app, no typing on a tiny keyboard. The
   introduction then lets you choose and allow the watch features, shows how to start Parley with
-  a double press of the watch's button, and tours the home screen; it is under Settings → General
-  to see again.
+  a double press of the watch's button (on a Galaxy Watch it opens that setting directly), and tours
+  the home screen.
 - **Made for the watch.** Wi-Fi or LTE is used during a conversation instead of the slow
   Bluetooth link; conversations continue with the screen off; tile, complication and
   watch-face icon; personalities that also set how long Parley talks (from Concise to Detailed),

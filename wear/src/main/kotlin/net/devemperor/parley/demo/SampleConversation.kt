@@ -6,6 +6,7 @@ import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.os.SystemClock
 import android.util.Log
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.devemperor.parley.Diagnostics
 import net.devemperor.parley.R
 import net.devemperor.parley.audio.SpeechPlayer
@@ -62,7 +62,8 @@ class SampleConversation(private val context: Context, private val scope: Corout
         ),
     )
 
-    private val _state = MutableStateFlow(ConversationUiState(showCost = false, sample = true))
+    // A sample has nothing to connect to: it listens from the first frame.
+    private val _state = MutableStateFlow(ConversationUiState(phase = Phase.LISTENING, showCost = false, sample = true))
     val state: StateFlow<ConversationUiState> = _state.asStateFlow()
 
     private val _scriptDone = MutableStateFlow(false)
@@ -73,7 +74,7 @@ class SampleConversation(private val context: Context, private val scope: Corout
     private var player: SpeechPlayer? = null
     private var script: Job? = null
     private val turns = mutableListOf<UiTurn>()
-    private var phase = Phase.CONNECTING
+    private var phase = Phase.LISTENING
     /** The question being spoken, in full; its turn shows as much of it as has been heard. */
     private var question: UiTurn? = null
     private var answerKey: String? = null
@@ -85,18 +86,19 @@ class SampleConversation(private val context: Context, private val scope: Corout
 
     fun start() {
         volume.begin(savedVolume)
+        readyAt = SystemClock.elapsedRealtime()
         script = scope.launch {
-            // Both voices come as Opus at the same rate (48 kHz), so one player plays them all.
-            val clips = withContext(Dispatchers.IO) {
-                exchanges.map { decode("$voice/q${it.number}.ogg").first to decode("$voice/a${it.number}.ogg") }
-            }
-            player = SpeechPlayer(clips.first().second.second).apply { setMuted(soundOff) }
-            delay(CONNECT_MS)
-            phase = Phase.LISTENING
-            readyAt = SystemClock.elapsedRealtime()
+            // Decoded one by one in the order they are needed, the first during the first pause:
+            // decoding all six before starting showed "Connecting" on a watch for seconds.
+            val clips = exchanges.flatMap { listOf("q${it.number}", "a${it.number}") }
+                .associateWith { CompletableDeferred<Pair<ByteArray, Int>>() }
+            launch(Dispatchers.IO) { clips.forEach { (name, clip) -> clip.complete(decode("$voice/$name.ogg")) } }
             exchanges.forEachIndexed { index, exchange ->
                 delay(PAUSE_MS)
-                speak("user-$index", exchange.question, clips[index].first)
+                val (question, rate) = clips.getValue("q${exchange.number}").await()
+                // Both voices come as Opus at the same rate (48 kHz), so one player plays them all.
+                if (player == null) player = SpeechPlayer(rate).apply { setMuted(soundOff) }
+                speak("user-$index", exchange.question, question)
                 phase = Phase.THINKING
                 delay(THINK_MS)
                 exchange.action?.let { (shown, line) ->
@@ -104,7 +106,7 @@ class SampleConversation(private val context: Context, private val scope: Corout
                     turns += UiTurn("tool-$index", Role.TOOL, line)
                     delay(ACTION_MS)
                 }
-                answer("parley-$index", exchange.answer, clips[index].second.first)
+                answer("parley-$index", exchange.answer, clips.getValue("a${exchange.number}").await().first)
             }
             _scriptDone.value = true
         }
@@ -260,7 +262,6 @@ class SampleConversation(private val context: Context, private val scope: Corout
 
     private companion object {
         const val TICK_MS = 66L
-        const val CONNECT_MS = 700L
         /** Before each of the user's questions. */
         const val PAUSE_MS = 900L
         const val THINK_MS = 700L

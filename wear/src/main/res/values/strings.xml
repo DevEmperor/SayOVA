@@ -26,14 +26,12 @@
     <string name="tour_home_line">Model and cost this month. Tap for the statistics.</string>
     <string name="tour_home_interpreter">Interpreter: pick two languages and hold the watch between you.</string>
     <string name="tour_home_history">History: read, continue or send to your phone.</string>
-    <string name="tour_home_settings">Voice, personality, memory, budget – and this introduction.</string>
+    <string name="tour_home_settings">Settings: voice, personality, memory, watch features, budget and more.</string>
     <!-- %1$s: the setting "Talk when opened". -->
     <string name="quick_title">Start faster</string>
     <string name="quick_text">In the watch settings, put Parley on a double press of the button (on a Galaxy Watch under Advanced features). With “%1$s” on, a double press starts a conversation.</string>
-    <string name="quick_more">Parley’s tile and its complication on the watch face start a conversation with one tap, too.</string>
-    <string name="quick_watch_settings">Watch settings</string>
+    <string name="quick_watch_settings">Set up the button</string>
     <string name="action_continue">Continue</string>
-    <string name="settings_intro">Introduction</string>
     <string name="permission_title">Microphone</string>
     <string name="permission_text">Parley needs the microphone to hear you. Audio is only streamed while a conversation is open.</string>
     <string name="permission_blocked">The microphone is blocked. Allow it in the app settings to talk to Parley.</string>

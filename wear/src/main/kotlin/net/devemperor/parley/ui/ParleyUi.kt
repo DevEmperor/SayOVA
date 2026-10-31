@@ -146,14 +146,15 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
             var autoSample by remember { mutableStateOf(launch == Launch.SAMPLE) }
 
             /**
-             * The introduction after its first page: what is still missing (the microphone, a key), then
-             * the watch features, starting faster, and the tour of the home screen. Run again from the
-             * settings, the steps already done are skipped.
+             * The introduction after the sample: what is still missing (the microphone, a key), then the
+             * watch features, starting faster, and the tour of the home screen. Once through, it runs no
+             * more; a watch that lost its key or microphone later only sets that up again.
              */
             fun continueIntro() {
                 when {
                     !context.hasMicrophone() -> navController.navigate(Routes.PERMISSION)
                     app.keys.connected.value.isEmpty() -> navController.navigate(Routes.CHOOSE_PROVIDER)
+                    settings?.introDone == true -> navController.navigateHome()
                     else -> navController.navigate(Routes.SETUP_FEATURES)
                 }
             }
@@ -324,16 +325,19 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                                 },
                             )
                         } else {
-                            WelcomeScreen(onStart = whenResumed { playSample() })
+                            // The sample only the first time: after a key was removed, Start sets up again.
+                            WelcomeScreen(onStart = whenResumed { if (current.introDone) continueIntro() else playSample() })
                         }
                     }
                 }
                 composable(Routes.PERMISSION) {
                     PermissionScreen(onGranted = {
                         if (navController.currentDestination?.route == Routes.PERMISSION) {
+                            // Asked for on the way from the welcome page, which goes on with the setup; or
+                            // by a conversation about to start, which the user starts again.
+                            val fromWelcome = navController.previousBackStackEntry?.destination?.route == Routes.WELCOME
                             navController.popBackStack()
-                            // Asked for by the introduction, which goes on; or by a conversation about to start.
-                            if (settings?.introDone != true) continueIntro()
+                            if (fromWelcome) continueIntro()
                         }
                     })
                 }
@@ -416,7 +420,6 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                         memoryFacts = facts.size,
                         onOpenMemory = whenResumed { navController.navigate(Routes.MEMORY) },
                         onOpenFeatures = whenResumed { navController.navigate(Routes.FEATURES) },
-                        onOpenIntro = whenResumed { navController.navigate(Routes.WELCOME) },
                     )
                 }
                 composable(Routes.PROVIDER) {

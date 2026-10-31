@@ -21,13 +21,11 @@
     <string name="tour_home_line">Modell och kostnad den här månaden. Tryck för statistiken.</string>
     <string name="tour_home_interpreter">Tolk: välj två språk och håll klockan mellan er.</string>
     <string name="tour_home_history">Historik: läs igen, fortsätt eller skicka till telefonen.</string>
-    <string name="tour_home_settings">Röst, personlighet, minne, budget – och den här introduktionen.</string>
+    <string name="tour_home_settings">Inställningar: röst, personlighet, minne, klockfunktioner, budget med mera.</string>
     <string name="quick_title">Starta snabbare</string>
     <string name="quick_text">I klockans inställningar lägger du Parley på ett dubbeltryck på knappen (på en Galaxy Watch under Avancerade funktioner). Med ”%1$s” på startar ett dubbeltryck ett samtal.</string>
-    <string name="quick_more">Parleys ruta och komplikationen på urtavlan startar också ett samtal med ett tryck.</string>
-    <string name="quick_watch_settings">Klockans inställningar</string>
+    <string name="quick_watch_settings">Ställ in knappen</string>
     <string name="action_continue">Fortsätt</string>
-    <string name="settings_intro">Introduktion</string>
     <string name="permission_title">Mikrofon</string>
     <string name="permission_text">Parley behöver mikrofonen för att höra dig. Ljud strömmas bara medan ett samtal är öppet.</string>
     <string name="permission_blocked">Mikrofonen är blockerad. Tillåt den i appinställningarna för att prata med Parley.</string>

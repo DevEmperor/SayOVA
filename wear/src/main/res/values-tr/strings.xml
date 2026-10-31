@@ -21,13 +21,11 @@
     <string name="tour_home_line">Bu ayın modeli ve maliyeti. İstatistikler için dokunun.</string>
     <string name="tour_home_interpreter">Tercüman: iki dil seçin ve saati aranızda tutun.</string>
     <string name="tour_home_history">Geçmiş: yeniden okuyun, devam edin veya telefona gönderin.</string>
-    <string name="tour_home_settings">Ses, kişilik, hafıza, bütçe – ve bu tanıtım.</string>
+    <string name="tour_home_settings">Ayarlar: ses, kişilik, hafıza, saat özellikleri, bütçe ve daha fazlası.</string>
     <string name="quick_title">Daha hızlı başlatın</string>
     <string name="quick_text">Saat ayarlarında Parley\'yi tuşa iki kez basmaya atayın (Galaxy Watch\'ta Gelişmiş özellikler altında). “%1$s” açıkken iki kez basmak bir konuşma başlatır.</string>
-    <string name="quick_more">Parley\'nin kutucuğu ve kadrandaki komplikasyonu da tek dokunuşla konuşma başlatır.</string>
-    <string name="quick_watch_settings">Saat ayarları</string>
+    <string name="quick_watch_settings">Tuşu ayarla</string>
     <string name="action_continue">Devam</string>
-    <string name="settings_intro">Tanıtım</string>
     <string name="permission_title">Mikrofon</string>
     <string name="permission_text">Parley\'nin sizi duyması için mikrofon gerekir. Ses yalnızca bir sohbet açıkken aktarılır.</string>
     <string name="permission_blocked">Mikrofon engellendi. Parley ile konuşmak için uygulama ayarlarından izin verin.</string>

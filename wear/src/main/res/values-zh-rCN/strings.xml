@@ -21,13 +21,11 @@
     <string name="tour_home_line">本月的模型和费用。点按查看统计。</string>
     <string name="tour_home_interpreter">口译：选择两种语言，把手表放在你们之间。</string>
     <string name="tour_home_history">历史记录：重温、继续对话或发送到手机。</string>
-    <string name="tour_home_settings">语音、个性、记忆、预算，以及这份介绍。</string>
+    <string name="tour_home_settings">设置：语音、个性、记忆、手表功能、预算等。</string>
     <string name="quick_title">更快启动</string>
     <string name="quick_text">在手表设置中，把双击按键分配给 Parley（Galaxy Watch 位于“高级功能”）。开启“%1$s”后，双击按键即可开始对话。</string>
-    <string name="quick_more">Parley 的卡片和表盘上的复杂功能也能一键开始对话。</string>
-    <string name="quick_watch_settings">手表设置</string>
+    <string name="quick_watch_settings">设置按键</string>
     <string name="action_continue">继续</string>
-    <string name="settings_intro">介绍</string>
     <string name="permission_title">麦克风</string>
     <string name="permission_text">Parley 需要使用麦克风才能听到您说话。仅在对话进行时才会传输音频。</string>
     <string name="permission_blocked">麦克风已被禁止使用。请在应用设置中允许访问，才能与 Parley 对话。</string>

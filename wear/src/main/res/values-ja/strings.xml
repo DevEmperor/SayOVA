@@ -21,13 +21,11 @@
     <string name="tour_home_line">今月のモデルと費用。タップで統計を表示します。</string>
     <string name="tour_home_interpreter">通訳：2 つの言語を選び、ウォッチを相手との間に持ちます。</string>
     <string name="tour_home_history">履歴：読み返す、続きを話す、スマートフォンに送る。</string>
-    <string name="tour_home_settings">音声、パーソナリティ、メモリ、予算、そしてこの紹介。</string>
+    <string name="tour_home_settings">設定：音声、パーソナリティ、メモリ、ウォッチ機能、予算など。</string>
     <string name="quick_title">すばやく起動</string>
     <string name="quick_text">ウォッチの設定で、ボタンのダブルプレスに Parley を割り当てます（Galaxy Watch では「便利な機能」）。「%1$s」をオンにすると、ダブルプレスで会話が始まります。</string>
-    <string name="quick_more">Parley のタイルや文字盤のコンプリケーションからも、ワンタップで会話を始められます。</string>
-    <string name="quick_watch_settings">ウォッチの設定</string>
+    <string name="quick_watch_settings">ボタンを設定</string>
     <string name="action_continue">続ける</string>
-    <string name="settings_intro">紹介</string>
     <string name="permission_title">マイク</string>
     <string name="permission_text">Parley が音声を聞き取るにはマイクが必要です。音声は会話中にのみ送信されます。</string>
     <string name="permission_blocked">マイクがブロックされています。Parley と話すには、アプリの設定で許可してください。</string>

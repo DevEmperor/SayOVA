@@ -104,9 +104,8 @@ fun WelcomeScreen(onStart: () -> Unit) {
 }
 
 /**
- * The introduction's tip for starting faster. The watch's own button settings cannot be opened at the
- * right page from outside, so the way there is described and the watch settings open at their start;
- * "Talk when opened" is switched right here.
+ * The introduction's tip for starting faster: putting Parley on a double press of the watch's button
+ * (see [openButtonSettings]), with "Talk when opened" switched right here.
  */
 @Composable
 fun QuickStartScreen(startOnLaunch: Boolean, onStartOnLaunch: (Boolean) -> Unit, onContinue: () -> Unit) {
@@ -129,10 +128,9 @@ fun QuickStartScreen(startOnLaunch: Boolean, onStartOnLaunch: (Boolean) -> Unit,
                 label = stringResource(R.string.quick_watch_settings),
                 icon = R.drawable.ic_watch,
                 spec = spec,
-                onClick = { runCatching { context.startActivity(Intent(Settings.ACTION_SETTINGS)) } },
+                onClick = { openButtonSettings(context) },
             )
         }
-        item { Hint(stringResource(R.string.quick_more), spec) }
         item {
             MenuButton(
                 label = stringResource(R.string.action_continue),
@@ -209,6 +207,20 @@ fun ProviderChoiceScreen(connected: Set<ProviderId>, onChoose: (ProviderId) -> U
         }
     }
 }
+
+/**
+ * The watch's own settings for its button, as close to the double press as this watch allows: on a
+ * Galaxy Watch Samsung's page for it (exported for this, found on the Watch6), elsewhere the buttons
+ * and gestures, at least the settings' start.
+ */
+private fun openButtonSettings(context: Context) {
+    for (action in listOf(SAMSUNG_DOUBLE_PRESS, BUTTONS_GESTURES, Settings.ACTION_SETTINGS)) {
+        if (runCatching { context.startActivity(Intent(action)) }.isSuccess) return
+    }
+}
+
+private const val SAMSUNG_DOUBLE_PRESS = "com.samsung.android.clockwork.settings.action.DOUBLE_PRESS_HOME"
+private const val BUTTONS_GESTURES = "android.settings.BUTTONS_GESTURES_SETTINGS"
 
 /**
  * Shows the QR code for the pairing page and walks through the handover. Everything after the code

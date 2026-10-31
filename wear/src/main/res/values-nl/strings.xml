@@ -20,13 +20,11 @@
     <string name="tour_home_line">Model en kosten deze maand. Tik voor de statistieken.</string>
     <string name="tour_home_interpreter">Tolk: kies twee talen en houd het horloge tussen jullie in.</string>
     <string name="tour_home_history">Geschiedenis: teruglezen, voortzetten of naar je telefoon sturen.</string>
-    <string name="tour_home_settings">Stem, persoonlijkheid, geheugen, budget – en deze introductie.</string>
+    <string name="tour_home_settings">Instellingen: stem, persoonlijkheid, geheugen, horlogefuncties, budget en meer.</string>
     <string name="quick_title">Sneller starten</string>
     <string name="quick_text">Leg Parley in de horloge-instellingen op twee keer drukken op de knop (op een Galaxy Watch onder Geavanceerde functies). Met ‘%1$s’ aan start twee keer drukken een gesprek.</string>
-    <string name="quick_more">Ook de tegel van Parley en de complicatie op de wijzerplaat starten met één tik een gesprek.</string>
-    <string name="quick_watch_settings">Horloge-instellingen</string>
+    <string name="quick_watch_settings">Knop instellen</string>
     <string name="action_continue">Doorgaan</string>
-    <string name="settings_intro">Introductie</string>
     <string name="permission_title">Microfoon</string>
     <string name="permission_text">Parley heeft de microfoon nodig om je te horen. Audio wordt alleen gestreamd als er een gesprek open is.</string>
     <string name="permission_blocked">De microfoon is geblokkeerd. Sta deze toe in de app-instellingen om met Parley te praten.</string>

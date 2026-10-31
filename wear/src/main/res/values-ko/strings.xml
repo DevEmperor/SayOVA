@@ -21,13 +21,11 @@
     <string name="tour_home_line">이번 달 모델과 비용. 탭하면 통계가 보입니다.</string>
     <string name="tour_home_interpreter">통역: 두 언어를 고르고 시계를 두 사람 사이에 두세요.</string>
     <string name="tour_home_history">기록: 다시 읽기, 이어서 대화, 휴대전화로 보내기.</string>
-    <string name="tour_home_settings">음성, 성격, 기억, 예산, 그리고 이 소개.</string>
+    <string name="tour_home_settings">설정: 음성, 성격, 기억, 시계 기능, 예산 등.</string>
     <string name="quick_title">더 빠르게 시작</string>
     <string name="quick_text">시계 설정에서 버튼 두 번 누르기에 Parley를 지정하세요(Galaxy Watch는 ‘유용한 기능’). ‘%1$s’ 옵션을 켜면 두 번 누르기로 대화가 시작됩니다.</string>
-    <string name="quick_more">Parley 타일과 워치 페이스의 컴플리케이션으로도 한 번 탭해 대화를 시작할 수 있어요.</string>
-    <string name="quick_watch_settings">시계 설정</string>
+    <string name="quick_watch_settings">버튼 설정</string>
     <string name="action_continue">계속</string>
-    <string name="settings_intro">소개</string>
     <string name="permission_title">마이크</string>
     <string name="permission_text">Parley가 사용자의 말을 들으려면 마이크가 필요합니다. 오디오는 대화 중에만 전송됩니다.</string>
     <string name="permission_blocked">마이크가 차단되어 있습니다. Parley와 대화하려면 앱 설정에서 허용하세요.</string>

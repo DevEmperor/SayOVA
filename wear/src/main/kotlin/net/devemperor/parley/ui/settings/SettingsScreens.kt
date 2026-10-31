@@ -68,8 +68,6 @@ fun SettingsScreen(
     memoryFacts: Int,
     onOpenMemory: () -> Unit,
     onOpenFeatures: () -> Unit,
-    /** The introduction again, from its first page (the steps already done are skipped). */
-    onOpenIntro: () -> Unit,
 ) {
     val provider = settings.providerInfo
     var confirmDelete by remember { mutableStateOf(false) }
@@ -169,7 +167,6 @@ fun SettingsScreen(
                 )
             }
         }
-        item { MenuButton(stringResource(R.string.settings_intro), spec, onOpenIntro, icon = R.drawable.ic_touch_app) }
         item { MenuButton(stringResource(R.string.settings_about), spec, onOpenAbout, "${stringResource(R.string.app_name)} ${BuildConfig.VERSION_NAME}", R.drawable.ic_info) }
     }
     ConfirmDialog(
