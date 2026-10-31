@@ -90,6 +90,14 @@ android {
         generateLocaleConfig = true
     }
 
+    bundle {
+        // Play would otherwise install only the watch's languages from the bundle, and Parley's own
+        // language setting would then switch to strings that are not there. All 13 together are small.
+        language {
+            enableSplit = false
+        }
+    }
+
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
