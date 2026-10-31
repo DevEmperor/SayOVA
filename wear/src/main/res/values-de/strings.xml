@@ -3,7 +3,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Sprich mit KI am Handgelenk.</string>
     <string name="welcome_start">Starten</string>
-    <string name="welcome_sample">Beispiel anhören</string>
     <string name="sample_voice">de</string>
     <string name="sample_label">Beispiel</string>
     <string name="sample_q1">Merk dir, dass ich vegetarisch esse.</string>

@@ -4,7 +4,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Parlez à l\'IA depuis votre poignet.</string>
     <string name="welcome_start">Commencer</string>
-    <string name="welcome_sample">Écouter un exemple</string>
     <string name="sample_voice">fr</string>
     <string name="sample_label">Exemple</string>
     <string name="sample_q1">Retiens que je suis végétarien.</string>

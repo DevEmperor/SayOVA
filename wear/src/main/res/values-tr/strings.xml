@@ -4,7 +4,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Bileğinizden yapay zekayla konuşun.</string>
     <string name="welcome_start">Başla</string>
-    <string name="welcome_sample">Bir örnek dinleyin</string>
     <string name="sample_voice">tr</string>
     <string name="sample_label">Örnek</string>
     <string name="sample_q1">Vejetaryen olduğumu unutma.</string>

@@ -25,7 +25,7 @@ Say "Remember that I'm vegetarian" and every later conversation knows. Only what
 Parley works with your own API key from Google Gemini (from about a cent a minute; a free tier is available) or OpenAI. Your voice goes straight from the watch to the provider – there is no Parley server in between, no account, no tracking and no ads.
 
 <b>Hear it first</b>
-The welcome page plays a sample conversation in Parley's real voice, before you set anything up. A short tour shows the rest.
+Before you set anything up, Parley plays a sample conversation on your watch, both sides spoken. A short tour shows the rest.
 
 <b>Setup in a minute</b>
 Scan the QR code on your watch with your phone, paste your key, compare a six-digit code, done. The key is encrypted in your browser for your watch alone – no companion app, no typing on a tiny keyboard.

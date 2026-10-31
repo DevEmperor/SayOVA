@@ -25,18 +25,19 @@ private val TALK_TOUR = listOf(
 )
 
 /**
- * The introduction's sample conversation on the conversation screen, with the text shown, since the
- * user's side of it is never heard. Its controls work as in a conversation, only for the sample; the
- * orb shows no reaction to a tap, there being nobody to interrupt for real.
+ * The introduction's sample conversation on the conversation screen, with the text shown, so both
+ * sides can be read along. Its controls work as in a conversation, only for the sample; the orb shows
+ * no reaction to a tap, there being nobody to interrupt for real. [onDone]: hung up, or through the
+ * tour; [onBack]: swiped away before that.
  */
 @Composable
-fun SampleScreen(sample: SampleConversation, onDone: () -> Unit) {
+fun SampleScreen(sample: SampleConversation, onDone: () -> Unit, onBack: () -> Unit) {
     val state by sample.state.collectAsStateWithLifecycle()
     val scriptDone by sample.scriptDone.collectAsStateWithLifecycle()
     var showText by remember { mutableStateOf(true) }
     // Left in any way (swiped back, the activity gone), the sample stops and gives the volume back.
     DisposableEffect(sample) { onDispose(sample::end) }
-    BackHandler(enabled = state.active, onBack = sample::end)
+    BackHandler(enabled = state.active, onBack = onBack)
     Box {
         ConversationScreen(
             state = state,

@@ -3,7 +3,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Rozmowa z AI prosto z nadgarstka.</string>
     <string name="welcome_start">Rozpocznij</string>
-    <string name="welcome_sample">Posłuchaj przykładu</string>
     <string name="sample_voice">pl</string>
     <string name="sample_label">Przykład</string>
     <string name="sample_q1">Zapamiętaj, że jestem wegetarianinem.</string>

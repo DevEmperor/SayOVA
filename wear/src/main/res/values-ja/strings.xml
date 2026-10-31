@@ -4,7 +4,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">手首から AI と話そう。</string>
     <string name="welcome_start">開始</string>
-    <string name="welcome_sample">例を聞く</string>
     <string name="sample_voice">ja</string>
     <string name="sample_label">例</string>
     <string name="sample_q1">私がベジタリアンだって覚えておいて。</string>

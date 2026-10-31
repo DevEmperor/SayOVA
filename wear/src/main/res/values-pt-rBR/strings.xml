@@ -3,7 +3,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Fale com a IA pelo pulso.</string>
     <string name="welcome_start">Começar</string>
-    <string name="welcome_sample">Ouvir um exemplo</string>
     <string name="sample_voice">pt-BR</string>
     <string name="sample_label">Exemplo</string>
     <string name="sample_q1">Lembre que eu sou vegetariano.</string>

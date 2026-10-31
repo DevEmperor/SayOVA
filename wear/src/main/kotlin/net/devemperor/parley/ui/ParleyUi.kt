@@ -289,8 +289,9 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                     }
                 }
                 composable(Routes.WELCOME) {
-                    // The sample conversation takes the welcome page's place, its orb grown out of the
-                    // page's own, as a conversation does on the home screen.
+                    // Start plays the sample conversation first. It takes the welcome page's place, its
+                    // orb grown out of the page's own as a conversation does on the home screen; hung up
+                    // (or through its tour) it goes on with the setup, swiped back it returns here.
                     var sample by remember { mutableStateOf<SampleConversation?>(null) }
                     fun playSample() {
                         OrbHandoff.launch()
@@ -311,9 +312,19 @@ fun ParleyUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                         label = "welcome",
                     ) { playing ->
                         if (playing != null) {
-                            SampleScreen(playing, onDone = { sample = null })
+                            SampleScreen(
+                                playing,
+                                onDone = {
+                                    sample = null
+                                    continueIntro()
+                                },
+                                onBack = {
+                                    playing.end()
+                                    sample = null
+                                },
+                            )
                         } else {
-                            WelcomeScreen(onStart = whenResumed { continueIntro() }, onSample = whenResumed { playSample() })
+                            WelcomeScreen(onStart = whenResumed { playSample() })
                         }
                     }
                 }

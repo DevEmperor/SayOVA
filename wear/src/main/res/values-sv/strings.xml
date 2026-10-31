@@ -4,7 +4,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Prata med AI från handleden.</string>
     <string name="welcome_start">Starta</string>
-    <string name="welcome_sample">Hör ett exempel</string>
     <string name="sample_voice">sv</string>
     <string name="sample_label">Exempel</string>
     <string name="sample_q1">Kom ihåg att jag är vegetarian.</string>

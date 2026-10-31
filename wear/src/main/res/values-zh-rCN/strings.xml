@@ -4,7 +4,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">抬腕即可与 AI 对话。</string>
     <string name="welcome_start">开始</string>
-    <string name="welcome_sample">听一个示例</string>
     <string name="sample_voice">zh-CN</string>
     <string name="sample_label">示例</string>
     <string name="sample_q1">记住我吃素。</string>

@@ -52,9 +52,9 @@ your own API key.
 - **Your provider, your key, your data.** Choose Google Gemini (from about a cent a
   minute) or OpenAI. Audio goes straight from the watch to the provider; there is no
   Parley server in between.
-- **Hear it before you set it up.** The welcome page plays a sample conversation in Parley's
-  real voice, in your language, with no key and no network; a short tour then points out the
-  conversation's controls.
+- **Hear it before you set it up.** Start on the welcome page first plays a sample conversation
+  in your language, both sides spoken (Parley in its real voice), with no key and no network; a
+  short tour then points out the conversation's controls.
 - **Easy, secure setup.** Scan a QR code on the watch, paste your key on your phone, and
   it arrives end-to-end encrypted. No companion app, no typing on a tiny keyboard. The
   introduction then lets you choose and allow the watch features, shows how to start Parley with
@@ -134,9 +134,9 @@ Debug builds open the introduction's sample conversation straight away, for test
 adb shell am start -n net.devemperor.parley.debug/net.devemperor.parley.MainActivity --ez demo true
 ```
 
-The sample's voice is Gemini's default voice (Kore), recorded once per app language with
-`--ez record_sample true` (see `SampleVoices`) and kept as Opus in `wear/src/main/assets/sample/`;
-when its answers change in the strings, record it again.
+The sample's voices are Gemini's (Parley's answers in its default voice Kore, the user's questions in
+Puck), recorded once per app language with `--ez record_sample true` (see `SampleVoices`) and kept as
+Opus in `wear/src/main/assets/sample/`; when its lines change in the strings, record them again.
 
 ## Credits
 

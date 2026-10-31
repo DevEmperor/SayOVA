@@ -4,7 +4,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">손목에서 AI와 대화하세요.</string>
     <string name="welcome_start">시작</string>
-    <string name="welcome_sample">예시 듣기</string>
     <string name="sample_voice">ko</string>
     <string name="sample_label">예시</string>
     <string name="sample_q1">나 채식주의자라는 거 기억해 줘.</string>

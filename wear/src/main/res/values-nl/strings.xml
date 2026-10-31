@@ -3,7 +3,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Praat met AI vanaf je pols.</string>
     <string name="welcome_start">Starten</string>
-    <string name="welcome_sample">Voorbeeld horen</string>
     <string name="sample_voice">nl</string>
     <string name="sample_label">Voorbeeld</string>
     <string name="sample_q1">Onthoud dat ik vegetarisch eet.</string>

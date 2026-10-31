@@ -5,7 +5,6 @@
     <!-- Welcome and setup -->
     <string name="welcome_tagline">Talk to AI from your wrist.</string>
     <string name="welcome_start">Start</string>
-    <string name="welcome_sample">Hear an example</string>
     <!-- The introduction's sample conversation (see SampleConversation). The answers are recorded as speech
          too (assets/sample/…, see SampleVoices): change them only together with the recordings.
          sample_voice is not translated: it names the folder of this language's recordings. -->

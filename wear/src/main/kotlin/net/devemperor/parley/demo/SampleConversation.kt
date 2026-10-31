@@ -26,8 +26,6 @@ import net.devemperor.parley.session.Phase
 import net.devemperor.parley.session.ToolRunner
 import net.devemperor.parley.session.UiTurn
 import java.io.ByteArrayOutputStream
-import kotlin.math.abs
-import kotlin.math.sin
 
 /**
  * The introduction's sample conversation, for before there is a key: three short exchanges that show
@@ -35,15 +33,16 @@ import kotlin.math.sin
  * conversation screen, marked as an example. Nothing goes to the network, the microphone stays off,
  * and no timer is set, nothing remembered, saved or counted.
  *
- * The words come from the strings, so they are in the app's language, and the voice reads exactly
- * them: recorded once per language with Gemini's default voice (assets/sample/<language>/a1.ogg and so
- * on, made with SampleVoices). Which folder is a string too, so voice and words always match. Played
- * back, a clip lights its answer up word by word like a live one.
+ * The words come from the strings, so they are in the app's language, and the voices read exactly
+ * them, recorded once per language (assets/sample/<language>/, made with SampleVoices): the user's
+ * questions in one Gemini voice, so the sample can be followed by ear, Parley's answers in its default
+ * voice. Which folder is a string too, so voices and words always match. The user's words appear as
+ * they are spoken, and an answer lights up word by word like a live one.
  */
 class SampleConversation(private val context: Context, private val scope: CoroutineScope, private val savedVolume: Int) {
 
     /** What the user says, what Parley does about it (the notice and the transcript's line), and its answer. */
-    private class Exchange(val question: String, val action: Pair<String, String>?, val answer: String, val clip: String)
+    private class Exchange(val question: String, val action: Pair<String, String>?, val answer: String, val number: Int)
 
     private val voice = "sample/${context.getString(R.string.sample_voice)}"
     private val exchanges = listOf(
@@ -52,14 +51,14 @@ class SampleConversation(private val context: Context, private val scope: Corout
             action = context.getString(R.string.notice_remembered) to
                 context.getString(R.string.note_remembered, context.getString(R.string.sample_fact)),
             answer = context.getString(R.string.sample_a1),
-            clip = "$voice/a1.ogg",
+            number = 1,
         ),
-        Exchange(context.getString(R.string.sample_q2), null, context.getString(R.string.sample_a2), "$voice/a2.ogg"),
+        Exchange(context.getString(R.string.sample_q2), null, context.getString(R.string.sample_a2), 2),
         Exchange(
             question = context.getString(R.string.sample_q3),
             action = context.getString(R.string.note_timer, ToolRunner.formatDuration(20 * 60)).let { it to it },
             answer = context.getString(R.string.sample_a3),
-            clip = "$voice/a3.ogg",
+            number = 3,
         ),
     )
 
@@ -75,7 +74,8 @@ class SampleConversation(private val context: Context, private val scope: Corout
     private var script: Job? = null
     private val turns = mutableListOf<UiTurn>()
     private var phase = Phase.CONNECTING
-    private var userSpeaking = false
+    /** The question being spoken, in full; its turn shows as much of it as has been heard. */
+    private var question: UiTurn? = null
     private var answerKey: String? = null
     private var notice: String? = null
     private var noticeUntil = 0L
@@ -86,14 +86,17 @@ class SampleConversation(private val context: Context, private val scope: Corout
     fun start() {
         volume.begin(savedVolume)
         script = scope.launch {
-            val clips = withContext(Dispatchers.IO) { exchanges.map { decode(it.clip) } }
-            player = SpeechPlayer(clips.first().second).apply { setMuted(soundOff) }
+            // Both voices come as Opus at the same rate (48 kHz), so one player plays them all.
+            val clips = withContext(Dispatchers.IO) {
+                exchanges.map { decode("$voice/q${it.number}.ogg").first to decode("$voice/a${it.number}.ogg") }
+            }
+            player = SpeechPlayer(clips.first().second.second).apply { setMuted(soundOff) }
             delay(CONNECT_MS)
             phase = Phase.LISTENING
             readyAt = SystemClock.elapsedRealtime()
             exchanges.forEachIndexed { index, exchange ->
                 delay(PAUSE_MS)
-                speak("user-$index", exchange.question)
+                speak("user-$index", exchange.question, clips[index].first)
                 phase = Phase.THINKING
                 delay(THINK_MS)
                 exchange.action?.let { (shown, line) ->
@@ -101,7 +104,7 @@ class SampleConversation(private val context: Context, private val scope: Corout
                     turns += UiTurn("tool-$index", Role.TOOL, line)
                     delay(ACTION_MS)
                 }
-                answer("parley-$index", exchange.answer, clips[index].first)
+                answer("parley-$index", exchange.answer, clips[index].second.first)
             }
             _scriptDone.value = true
         }
@@ -138,34 +141,39 @@ class SampleConversation(private val context: Context, private val scope: Corout
 
     fun stepVolume(direction: Int): Int = volume.step(direction)
 
-    /** The user's words appear as they would while spoken: word by word, or a few characters at a time without spaces. */
-    private suspend fun speak(key: String, text: String) {
-        val pieces = if (' ' in text) text.split(' ').runningReduce { shown, word -> "$shown $word" } else text.indices.map { text.substring(0, it + 1) }
-        val step = (text.length * MS_PER_CHAR / pieces.size).coerceAtLeast(40)
-        userSpeaking = true
-        pieces.forEach { shown ->
-            setTurn(UiTurn(key, Role.USER, shown))
-            delay(step)
-        }
-        userSpeaking = false
+    /** The user asks: heard in its own voice, its words appearing as they are said (see [publish]). */
+    private suspend fun speak(key: String, text: String, pcm: ByteArray) {
+        val turn = UiTurn(key, Role.USER, text)
+        question = turn
+        turns += turn
+        // Tests lay the voices under a screen recording by these lines (the emulator plays no sound).
+        if (Diagnostics.enabled) Log.d("ParleyEvent", "sample question $key")
+        player?.enqueue(key, pcm)
+        playOut()
+        question = null
     }
 
     private suspend fun answer(key: String, text: String, pcm: ByteArray) {
         answerKey = key
         turns += UiTurn(key, Role.ASSISTANT, text, spokenChars = 0)
-        // Tests lay the voice under a screen recording by this (the emulator plays no sound).
         if (Diagnostics.enabled) Log.d("ParleyEvent", "sample answer $key")
         player?.enqueue(key, pcm)
         phase = Phase.SPEAKING
-        delay(TICK_MS)
-        while (player?.isPlaying == true) delay(TICK_MS)
+        playOut()
         delay(SPEAKING_TAIL_MS)
         phase = Phase.LISTENING
     }
 
-    private fun setTurn(turn: UiTurn) {
-        val at = turns.indexOfFirst { it.key == turn.key }
-        if (at >= 0) turns[at] = turn else turns += turn
+    private suspend fun playOut() {
+        delay(TICK_MS)
+        while (player?.isPlaying == true) delay(TICK_MS)
+    }
+
+    /** As much of [text] as [heard] (0 to 1) covers, the word being said already whole, as live transcripts come. */
+    private fun heardPart(text: String, heard: Double): String {
+        val chars = (text.length * heard).toInt().coerceIn(0, text.length)
+        if (' ' !in text) return text.take(chars)
+        return text.take(text.indexOf(' ', chars).takeIf { it >= 0 } ?: text.length)
     }
 
     private fun showNotice(text: String, durationMs: Long) {
@@ -177,18 +185,26 @@ class SampleConversation(private val context: Context, private val scope: Corout
         val now = SystemClock.elapsedRealtime()
         val player = player
         if (notice != null && now > noticeUntil) notice = null
-        val shown = turns.map { turn ->
-            if (turn.key != answerKey || player == null || phase != Phase.SPEAKING) return@map turn.copy(spokenChars = turn.text.length)
-            val received = player.receivedMs(turn.key)
-            val heard = if (received <= 0) 0 else (turn.text.length * player.playedMs(turn.key).toDouble() / received).toInt()
-            turn.copy(spokenChars = heard.coerceIn(0, turn.text.length))
+        fun heard(key: String): Double {
+            val received = player?.receivedMs(key) ?: 0
+            return if (player == null || received <= 0) 0.0 else player.playedMs(key).toDouble() / received
         }
+        val asking = question
+        val shown = turns.mapNotNull { turn ->
+            when {
+                turn.key == asking?.key -> turn.copy(text = heardPart(turn.text, heard(turn.key))).takeIf { it.text.isNotBlank() }
+                turn.key == answerKey && phase == Phase.SPEAKING ->
+                    turn.copy(spokenChars = (turn.text.length * heard(turn.key)).toInt().coerceIn(0, turn.text.length))
+                else -> turn.copy(spokenChars = turn.text.length)
+            }
+        }
+        // The user's voice moves the orb as the microphone would, Parley's as its answer.
+        val level = player?.level ?: 0f
         _state.value = _state.value.copy(
             phase = phase,
             turns = shown,
-            // Something like a voice for the orb to listen to while the user's words appear.
-            micLevel = if (userSpeaking) 0.5f + 0.3f * abs(sin(now / 110.0)).toFloat() else 0f,
-            speechLevel = player?.level ?: 0f,
+            micLevel = if (asking != null) level else 0f,
+            speechLevel = if (asking != null) 0f else level,
             elapsedMs = if (readyAt > 0) now - readyAt else 0,
             soundOff = soundOff,
             notice = notice,
@@ -247,8 +263,6 @@ class SampleConversation(private val context: Context, private val scope: Corout
         const val CONNECT_MS = 700L
         /** Before each of the user's questions. */
         const val PAUSE_MS = 900L
-        /** About the pace of speech, read as text. */
-        const val MS_PER_CHAR = 60L
         const val THINK_MS = 700L
         const val ACTION_MS = 600L
         const val NOTICE_MS = 2_500L
