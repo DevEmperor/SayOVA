@@ -12,7 +12,7 @@ hear the answer and read it along on your watch — with Google Gemini or OpenAI
 <p>
   <a href="https://sayova.app"><img alt="Website" src="https://img.shields.io/badge/website-sayova.app-2EC4B6?labelColor=1b1e2b&logo=googlechrome&logoColor=white"></a>
   <a href="https://github.com/DevEmperor/SayOVA/releases"><img alt="Latest release" src="https://img.shields.io/github/v/release/DevEmperor/SayOVA?color=2EC4B6&labelColor=1b1e2b&label=release"></a>
-  <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/DevEmperor/SayOVA?color=2EC4B6&labelColor=1b1e2b"></a>
+  <a href="LICENSE"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/license-Apache--2.0-2EC4B6?labelColor=1b1e2b"></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Wear%20OS%203%2B-2EC4B6?labelColor=1b1e2b&logo=wearos&logoColor=white">
   <a href="https://github.com/DevEmperor/SayOVA/wiki"><img alt="Guide" src="https://img.shields.io/badge/guide-wiki-8B5CF6?labelColor=1b1e2b&logo=bookstack&logoColor=white"></a>
   <a href="https://github.com/sponsors/DevEmperor"><img alt="Sponsors" src="https://img.shields.io/github/sponsors/DevEmperor?color=2EC4B6&labelColor=1b1e2b&label=sponsors"></a>
