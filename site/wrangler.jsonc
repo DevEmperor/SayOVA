@@ -12,6 +12,11 @@
   "workers_dev": false,
   "preview_urls": false,
 
+  // The orb script (pair's WebGL orb) is bundled before every deploy, with the esbuild installed for pair/.
+  "build": {
+    "command": "npx --prefix ../pair esbuild src/main.ts --bundle --minify --format=esm --target=es2022 --outfile=public/orb.js"
+  },
+
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page"
