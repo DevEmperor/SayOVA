@@ -1,7 +1,7 @@
-SayOVA (Orb Voice Assistant), Wear OS saatinizi gerçek bir sohbet arkadaşına dönüştürür. Bileğinizi kaldırın, doğalca konuşun, istediğiniz an araya girin – yanıtı dinlerken saatinizden de okuyun.
+SayOVA (Orb Voice Assistant), Wear OS saatinizi gerçek bir sohbet arkadaşına dönüştürür. Bileğinizi kaldırın, doğalca konuşun, istediğiniz an araya girin — yanıtı dinlerken saatinizden de okuyun.
 
 <b>Komut değil, gerçek sohbet</b>
-SayOVA sesinizi canlı olarak sesten sese çalışan bir modele – Google Gemini Live veya OpenAI Realtime – aktarır ve yanıtı daha oluşturulurken seslendirir. Bir insanla konuşur gibi araya girip sözünü kesin ya da küreye dokunun.
+SayOVA sesinizi canlı olarak sesten sese çalışan bir modele — Google Gemini Live veya OpenAI Realtime — aktarır ve yanıtı daha oluşturulurken seslendirir. Bir insanla konuşur gibi araya girip sözünü kesin ya da küreye dokunun.
 
 <b>Hem dinleyin hem okuyun</b>
 Konuştukça sohbetin iki tarafı da ekranda belirir. Yanıtın duyduğunuz kısmı parlak, kalanı soluk görünür; böylece nerede kaldığınızı hiç kaybetmezsiniz.
@@ -16,22 +16,22 @@ Derste, toplantıda ya da sessiz bir odada mısınız? Tek dokunuşla SayOVA'nı
 SayOVA'dan zamanlayıcı veya alarm kurmasını (isterseniz hafta içi her gün), not almasını, pili kontrol etmesini ya da haberler, hava durumu, açılış saatleri ve güncel her şey için web'de arama yapmasını isteyin.
 
 <b>Telefonunuzda hazırlar</b>
-“Elif'e WhatsApp'tan on dakika geç kalacağımı yaz”, “Salı saat üçe dişçiyi takvime yaz”, “İstasyona yürüyerek yol tarifi ver” – SayOVA mesajı size okur; siz “evet” deyince her şey telefonunuzda, kendi uygulamalarınızda göndermeniz, eklemeniz ya da başlatmanız için hazır bekler. SayOVA asla sizin adınıza bir şey göndermez.
+“Elif'e WhatsApp'tan on dakika geç kalacağımı yaz”, “Salı saat üçe dişçiyi takvime yaz”, “İstasyona yürüyerek yol tarifi ver” — SayOVA mesajı size okur; siz “evet” deyince her şey telefonunuzda, kendi uygulamalarınızda göndermeniz, eklemeniz ya da başlatmanız için hazır bekler. SayOVA asla sizin adınıza bir şey göndermez.
 
-<b>Saatinizi tanır – siz sorduğunuzda</b>
-“Burada hava nasıl?”, “Nabzım kaç?”, “Bugün kaç adım attım?”, “Bu öğleden sonra neler var?”, “Alarmım ne zaman çalacak?”, “Müziği duraklat”, “Elif'i ara”, “El fenerini aç” – SayOVA konumunuzu, hava durumunu, nabzınızı, adımlarınızı, takviminizi, hava basıncını, sonraki alarmı, müziği, kişileri, uygulamaları veya bildirimleri, bir kez izin verdikten sonra yalnızca o soru için kullanır ve bu sırada bir simge gösterir. Arama ancak adı ve numarayı onayladığınızda yapılır.
+<b>Saatinizi tanır — siz sorduğunuzda</b>
+“Burada hava nasıl?”, “Nabzım kaç?”, “Bugün kaç adım attım?”, “Bu öğleden sonra neler var?”, “Alarmım ne zaman çalacak?”, “Müziği duraklat”, “Elif'i ara”, “El fenerini aç” — SayOVA konumunuzu, hava durumunu, nabzınızı, adımlarınızı, takviminizi, hava basıncını, sonraki alarmı, müziği, kişileri, uygulamaları veya bildirimleri, bir kez izin verdikten sonra yalnızca o soru için kullanır ve bu sırada bir simge gösterir. Arama ancak adı ve numarayı onayladığınızda yapılır.
 
 <b>İstediğinizi hatırlar</b>
 “Aklında tut, ben vejetaryenim” deyin; sonraki tüm sohbetler bunu bilir. Yalnızca istedikleriniz saklanır, o da saatte; her kaydı ayarlardan okuyabilir veya silebilirsiniz.
 
 <b>Sağlayıcınız, anahtarınız, verileriniz</b>
-SayOVA, Google Gemini (dakikası yaklaşık 1 sentten başlar, ücretsiz katmanı da var) veya OpenAI'dan alacağınız kendi API anahtarınızla çalışır. Sesiniz saatten doğrudan sağlayıcıya gider – arada SayOVA sunucusu yok; hesap, takip ve reklam da yok.
+SayOVA, Google Gemini (dakikası yaklaşık 1 sentten başlar, ücretsiz katmanı da var) veya OpenAI'dan alacağınız kendi API anahtarınızla çalışır. Sesiniz saatten doğrudan sağlayıcıya gider — arada SayOVA sunucusu yok; hesap, takip ve reklam da yok.
 
 <b>Önce dinleyin</b>
 Hiçbir şeyi ayarlamadan önce SayOVA saatinizde örnek bir sohbet çalar; iki taraf da seslendirilir. Gerisini kısa bir tur gösterir.
 
 <b>Bir dakikada kurulum</b>
-Saatinizdeki QR kodunu telefonunuzla tarayın, anahtarınızı yapıştırın, altı haneli kodu karşılaştırın, bitti. Anahtar tarayıcınızda yalnızca saatiniz için şifrelenir – yardımcı uygulama yok, minik klavyede yazmak yok.
+Saatinizdeki QR kodunu telefonunuzla tarayın, anahtarınızı yapıştırın, altı haneli kodu karşılaştırın, bitti. Anahtar tarayıcınızda yalnızca saatiniz için şifrelenir — yardımcı uygulama yok, minik klavyede yazmak yok.
 
 <b>Saat için tasarlandı</b>
 • Akıcı ses için sohbet sırasında Wi-Fi veya LTE kullanır
@@ -43,6 +43,6 @@ Saatinizdeki QR kodunu telefonunuzla tarayın, anahtarınızı yapıştırın, a
 • Geçmiş yalnızca saatte, istediğiniz süre boyunca saklanır
 
 <b>Açık kaynak</b>
-SayOVA, Apache Lisansı 2.0 altında açık kaynaklıdır. Sesinizle ve anahtarınızla tam olarak ne yaptığını okuyabilirsiniz: github.com/DevEmperor/SayOVA – ve her işlev, kılavuzda resimlerle adım adım açıklanır: github.com/DevEmperor/SayOVA/wiki
+SayOVA, Apache Lisansı 2.0 altında açık kaynaklıdır. Sesinizle ve anahtarınızla tam olarak ne yaptığını okuyabilirsiniz: github.com/DevEmperor/SayOVA — ve her işlev, kılavuzda resimlerle adım adım açıklanır: github.com/DevEmperor/SayOVA/wiki
 
 Mikrofonlu, Wear OS 3 veya daha yeni bir saat ve Google Gemini ya da OpenAI'dan bir API anahtarı gerekir. Kullanım ücretini sağlayıcınız faturalandırır. Gemini API, 18 yaş ve üzeri kullanıcılar içindir.

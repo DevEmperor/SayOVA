@@ -1,7 +1,7 @@
-SayOVA – tu Orb Voice Assistant – convierte tu reloj Wear OS en un auténtico compañero de conversación. Levanta la muñeca, habla con naturalidad, interrumpe cuando quieras y escucha la respuesta mientras la lees en el reloj.
+SayOVA — tu Orb Voice Assistant — convierte tu reloj Wear OS en un auténtico compañero de conversación. Levanta la muñeca, habla con naturalidad, interrumpe cuando quieras y escucha la respuesta mientras la lees en el reloj.
 
 <b>Conversaciones de verdad, no comandos</b>
-SayOVA transmite tu voz en directo a un modelo de voz a voz – Google Gemini Live u OpenAI Realtime – y reproduce la respuesta mientras se genera. Interrúmpelo hablando, como a una persona, o tocando el orbe.
+SayOVA transmite tu voz en directo a un modelo de voz a voz — Google Gemini Live u OpenAI Realtime — y reproduce la respuesta mientras se genera. Interrúmpelo hablando, como a una persona, o tocando el orbe.
 
 <b>Escúchalo y léelo</b>
 Toda la conversación aparece en pantalla mientras hablas. Lo que ya has oído brilla y el resto sigue atenuado, así nunca pierdes el hilo.
@@ -43,6 +43,6 @@ Escanea con el teléfono el código QR del reloj, pega tu clave, compara un cód
 • Historial guardado solo en el reloj, durante el tiempo que elijas
 
 <b>Código abierto</b>
-SayOVA es de código abierto bajo la Licencia Apache 2.0. Puedes ver exactamente qué hace con tu voz y tu clave: github.com/DevEmperor/SayOVA – y la guía explica cada función paso a paso, con imágenes: github.com/DevEmperor/SayOVA/wiki
+SayOVA es de código abierto bajo la Licencia Apache 2.0. Puedes ver exactamente qué hace con tu voz y tu clave: github.com/DevEmperor/SayOVA — y la guía explica cada función paso a paso, con imágenes: github.com/DevEmperor/SayOVA/wiki
 
 Requiere un reloj con Wear OS 3 o posterior con micrófono y una clave de API de Google Gemini u OpenAI. El uso lo factura tu proveedor. La API de Gemini es para mayores de 18 años.

@@ -1,10 +1,10 @@
-SayOVA – je Orb Voice Assistant – maakt van je Wear OS-horloge een echte gesprekspartner. Pols omhoog, gewoon praten, onderbreken wanneer je wilt – en het antwoord horen terwijl je het meeleest.
+SayOVA — je Orb Voice Assistant — maakt van je Wear OS-horloge een echte gesprekspartner. Pols omhoog, gewoon praten, onderbreken wanneer je wilt — en het antwoord horen terwijl je het meeleest.
 
 <b>Echte gesprekken, geen commando’s</b>
-SayOVA streamt je stem live naar een speech-to-speech-model – Google Gemini Live of OpenAI Realtime – en speelt het antwoord af terwijl het ontstaat. Praat er gewoon doorheen om te onderbreken, net als bij een mens, of tik op de bol.
+SayOVA streamt je stem live naar een speech-to-speech-model — Google Gemini Live of OpenAI Realtime — en speelt het antwoord af terwijl het ontstaat. Praat er gewoon doorheen om te onderbreken, net als bij een mens, of tik op de bol.
 
 <b>Horen én meelezen</b>
-Het hele gesprek verschijnt live op het scherm. Wat je al gehoord hebt, licht op, de rest is nog gedimd – zo raak je nooit de draad kwijt.
+Het hele gesprek verschijnt live op het scherm. Wat je al gehoord hebt, licht op, de rest is nog gedimd — zo raak je nooit de draad kwijt.
 
 <b>Je tolk om je pols</b>
 Kies twee van de 21 talen en houd het horloge tussen jou en je gesprekspartner in. SayOVA zegt alles in de andere taal en toont beide kanten als tekst.
@@ -13,25 +13,25 @@ Kies twee van de 21 talen en houd het horloge tussen jou en je gesprekspartner i
 In een college, een vergadering of een stille ruimte? Eén tik en SayOVA antwoordt alleen nog in tekst.
 
 <b>Regelt dingen voor je</b>
-SayOVA zet timers en wekkers (desgewenst elke werkdag), maakt notities, checkt de batterij – of zoekt online naar nieuws, weer, openingstijden en alles wat actueel is.
+SayOVA zet timers en wekkers (desgewenst elke werkdag), maakt notities, checkt de batterij — of zoekt online naar nieuws, weer, openingstijden en alles wat actueel is.
 
 <b>Zet dingen klaar op je telefoon</b>
-“Stuur Lena via WhatsApp dat ik tien minuten later ben”, “Zet de tandarts dinsdag om drie uur in mijn agenda”, “Looproute naar het station” – SayOVA leest het bericht voor, en na je ja staat alles klaar in je eigen apps op je telefoon, om zelf te versturen, toe te voegen of te starten. SayOVA verstuurt nooit iets uit jouw naam.
+“Stuur Lena via WhatsApp dat ik tien minuten later ben”, “Zet de tandarts dinsdag om drie uur in mijn agenda”, “Looproute naar het station” — SayOVA leest het bericht voor, en na je ja staat alles klaar in je eigen apps op je telefoon, om zelf te versturen, toe te voegen of te starten. SayOVA verstuurt nooit iets uit jouw naam.
 
-<b>Kent je horloge – als je erom vraagt</b>
-“Wat voor weer is het hier?”, “Wat is mijn hartslag?”, “Hoeveel stappen vandaag?”, “Wat staat er vanmiddag op de agenda?”, “Wanneer gaat mijn wekker?”, “Pauzeer de muziek”, “Bel Lena”, “Open de zaklamp” – SayOVA gebruikt locatie, weer, hartslag, stappen, agenda, luchtdruk, volgend alarm, muziek, contacten, apps of meldingen alleen voor die vraag, na één keer toestemming, en toont dan een icoon. Bellen gebeurt pas als je naam en nummer hebt bevestigd.
+<b>Kent je horloge — als je erom vraagt</b>
+“Wat voor weer is het hier?”, “Wat is mijn hartslag?”, “Hoeveel stappen vandaag?”, “Wat staat er vanmiddag op de agenda?”, “Wanneer gaat mijn wekker?”, “Pauzeer de muziek”, “Bel Lena”, “Open de zaklamp” — SayOVA gebruikt locatie, weer, hartslag, stappen, agenda, luchtdruk, volgend alarm, muziek, contacten, apps of meldingen alleen voor die vraag, na één keer toestemming, en toont dan een icoon. Bellen gebeurt pas als je naam en nummer hebt bevestigd.
 
 <b>Onthoudt wat je vraagt</b>
 Zeg “Onthoud dat ik vegetariër ben” en elk later gesprek weet het. Alleen wat je vraagt wordt bewaard, op het horloge, en in de instellingen kun je elk item lezen of verwijderen.
 
 <b>Jouw aanbieder, jouw sleutel, jouw gegevens</b>
-SayOVA werkt met je eigen API-sleutel van Google Gemini (vanaf zo’n cent per minuut, ook met een gratis niveau) of OpenAI. Je stem gaat rechtstreeks van het horloge naar de aanbieder – geen SayOVA-server ertussen, geen account, geen tracking en geen advertenties.
+SayOVA werkt met je eigen API-sleutel van Google Gemini (vanaf zo’n cent per minuut, ook met een gratis niveau) of OpenAI. Je stem gaat rechtstreeks van het horloge naar de aanbieder — geen SayOVA-server ertussen, geen account, geen tracking en geen advertenties.
 
 <b>Eerst even luisteren</b>
 Nog voor je iets instelt, speelt SayOVA op je horloge een voorbeeldgesprek af, met beide kanten ingesproken. Een korte rondleiding laat de rest zien.
 
 <b>In een minuut ingesteld</b>
-Scan de QR-code op je horloge met je telefoon, plak je sleutel, vergelijk een zescijferige code, klaar. De sleutel wordt in je browser versleuteld, alleen voor jouw horloge – geen begeleidende app, geen getik op een piepklein toetsenbord.
+Scan de QR-code op je horloge met je telefoon, plak je sleutel, vergelijk een zescijferige code, klaar. De sleutel wordt in je browser versleuteld, alleen voor jouw horloge — geen begeleidende app, geen getik op een piepklein toetsenbord.
 
 <b>Gemaakt voor het horloge</b>
 • Wifi of LTE tijdens een gesprek voor vloeiend geluid
@@ -43,6 +43,6 @@ Scan de QR-code op je horloge met je telefoon, plak je sleutel, vergelijk een ze
 • Geschiedenis alleen op het horloge, zo lang als jij wilt
 
 <b>Open source</b>
-SayOVA is open source onder de Apache License 2.0. Lees precies na wat het met je stem en je sleutel doet: github.com/DevEmperor/SayOVA – en de handleiding legt elke functie stap voor stap uit, met afbeeldingen: github.com/DevEmperor/SayOVA/wiki
+SayOVA is open source onder de Apache License 2.0. Lees precies na wat het met je stem en je sleutel doet: github.com/DevEmperor/SayOVA — en de handleiding legt elke functie stap voor stap uit, met afbeeldingen: github.com/DevEmperor/SayOVA/wiki
 
 Vereist een horloge met Wear OS 3 of nieuwer en een microfoon, plus een API-sleutel van Google Gemini of OpenAI. Je aanbieder factureert het gebruik. De Gemini API is voor gebruikers van 18 jaar en ouder.

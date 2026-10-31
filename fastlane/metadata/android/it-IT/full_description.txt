@@ -1,7 +1,7 @@
-SayOVA – il tuo Orb Voice Assistant – trasforma il tuo orologio Wear OS in un vero interlocutore. Alza il polso, parla in modo naturale, interrompi quando vuoi – e ascolta la risposta mentre la leggi.
+SayOVA — il tuo Orb Voice Assistant — trasforma il tuo orologio Wear OS in un vero interlocutore. Alza il polso, parla in modo naturale, interrompi quando vuoi — e ascolta la risposta mentre la leggi.
 
 <b>Vere conversazioni, non comandi</b>
-SayOVA trasmette la tua voce in diretta a un modello speech-to-speech – Google Gemini Live o OpenAI Realtime – e riproduce la risposta mentre viene generata. Parlagli sopra per interromperlo, come con una persona, o tocca la sfera.
+SayOVA trasmette la tua voce in diretta a un modello speech-to-speech — Google Gemini Live o OpenAI Realtime — e riproduce la risposta mentre viene generata. Parlagli sopra per interromperlo, come con una persona, o tocca la sfera.
 
 <b>Ascolta e leggi</b>
 Tutta la conversazione compare in diretta. Ciò che hai già sentito è luminoso, il resto ancora attenuato: così non perdi mai il filo.
@@ -13,25 +13,25 @@ Scegli due delle 21 lingue e tieni l’orologio tra te e il tuo interlocutore. S
 A lezione, in riunione o dove serve silenzio? Un tocco e SayOVA risponde solo per iscritto.
 
 <b>Ti dà una mano</b>
-SayOVA imposta timer e sveglie (anche ogni giorno feriale), prende appunti, controlla la batteria – o cerca sul web notizie, meteo, orari di apertura e qualsiasi altra informazione aggiornata.
+SayOVA imposta timer e sveglie (anche ogni giorno feriale), prende appunti, controlla la batteria — o cerca sul web notizie, meteo, orari di apertura e qualsiasi altra informazione aggiornata.
 
 <b>Prepara tutto sul telefono</b>
-«Scrivi a Lena su WhatsApp che arrivo con dieci minuti di ritardo», «Segna in calendario il dentista martedì alle tre», «Portami alla stazione a piedi» – SayOVA ti rilegge il messaggio e, dopo il tuo sì, lo trovi sul telefono nelle tue app, pronto da inviare, aggiungere o avviare. SayOVA non invia mai nulla a tuo nome.
+«Scrivi a Lena su WhatsApp che arrivo con dieci minuti di ritardo», «Segna in calendario il dentista martedì alle tre», «Portami alla stazione a piedi» — SayOVA ti rilegge il messaggio e, dopo il tuo sì, lo trovi sul telefono nelle tue app, pronto da inviare, aggiungere o avviare. SayOVA non invia mai nulla a tuo nome.
 
-<b>Conosce il tuo orologio – quando glielo chiedi</b>
-«Che tempo fa qui?», «Com’è il mio battito?», «Quanti passi ho fatto oggi?», «Che impegni ho oggi pomeriggio?», «Quando suona la sveglia?», «Metti in pausa la musica», «Chiama Lena», «Apri la torcia» – SayOVA usa posizione, meteo, battito, passi, calendario, pressione, prossima sveglia, musica, contatti, app o notifiche solo per quella domanda, con il tuo consenso dato una volta, e intanto mostra un’icona. Le chiamate partono solo dopo la conferma di nome e numero.
+<b>Conosce il tuo orologio — quando glielo chiedi</b>
+«Che tempo fa qui?», «Com’è il mio battito?», «Quanti passi ho fatto oggi?», «Che impegni ho oggi pomeriggio?», «Quando suona la sveglia?», «Metti in pausa la musica», «Chiama Lena», «Apri la torcia» — SayOVA usa posizione, meteo, battito, passi, calendario, pressione, prossima sveglia, musica, contatti, app o notifiche solo per quella domanda, con il tuo consenso dato una volta, e intanto mostra un’icona. Le chiamate partono solo dopo la conferma di nome e numero.
 
 <b>Ricorda ciò che gli chiedi</b>
 Di’ «Ricorda che sono vegetariano» e ogni conversazione successiva lo saprà. Viene salvato solo ciò che chiedi, sull’orologio, e nelle impostazioni puoi leggere o eliminare ogni voce.
 
 <b>Il tuo provider, la tua chiave, i tuoi dati</b>
-SayOVA usa la tua chiave API di Google Gemini (da circa un centesimo al minuto, con un livello gratuito) o di OpenAI. La tua voce va direttamente dall’orologio al provider – nessun server SayOVA in mezzo, nessun account, nessun tracciamento, nessuna pubblicità.
+SayOVA usa la tua chiave API di Google Gemini (da circa un centesimo al minuto, con un livello gratuito) o di OpenAI. La tua voce va direttamente dall’orologio al provider — nessun server SayOVA in mezzo, nessun account, nessun tracciamento, nessuna pubblicità.
 
 <b>Prima ascolta</b>
 Prima di ogni configurazione, SayOVA ti fa ascoltare una conversazione di esempio, a due voci. Un breve tour mostra il resto.
 
 <b>Pronto in un minuto</b>
-Scansiona con il telefono il codice QR sull’orologio, incolla la chiave, confronta un codice di sei cifre, fatto. La chiave viene crittografata nel tuo browser solo per il tuo orologio – nessuna app companion, niente digitazione su tastiere minuscole.
+Scansiona con il telefono il codice QR sull’orologio, incolla la chiave, confronta un codice di sei cifre, fatto. La chiave viene crittografata nel tuo browser solo per il tuo orologio — nessuna app companion, niente digitazione su tastiere minuscole.
 
 <b>Fatto per l’orologio</b>
 • Wi-Fi o LTE in conversazione per un audio fluido
@@ -43,6 +43,6 @@ Scansiona con il telefono il codice QR sull’orologio, incolla la chiave, confr
 • Cronologia solo sull’orologio, per quanto tempo vuoi
 
 <b>Open source</b>
-SayOVA è open source con licenza Apache 2.0. Puoi vedere esattamente cosa fa con la tua voce e la tua chiave: github.com/DevEmperor/SayOVA – e la guida spiega ogni funzione passo passo, con immagini: github.com/DevEmperor/SayOVA/wiki
+SayOVA è open source con licenza Apache 2.0. Puoi vedere esattamente cosa fa con la tua voce e la tua chiave: github.com/DevEmperor/SayOVA — e la guida spiega ogni funzione passo passo, con immagini: github.com/DevEmperor/SayOVA/wiki
 
 Richiede un orologio Wear OS 3 o successivo con microfono e una chiave API di Google Gemini o OpenAI. L’utilizzo viene fatturato dal tuo provider. L’API Gemini è riservata agli utenti dai 18 anni in su.
