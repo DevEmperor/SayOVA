@@ -1,0 +1,1 @@
+Pierwsza wersja SayOVA: rozmowy głosowe w czasie rzeczywistym z Google Gemini lub OpenAI na zegarku, z Twoim własnym kluczem API. Przerywanie w każdej chwili, tekst na bieżąco, tłumacz, pamięć, minutniki i alarmy, funkcje zegarka, sprawy przygotowane na telefonie, kafelek i komplikacja.

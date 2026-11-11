@@ -1,0 +1,1 @@
+SayOVA'nın ilk sürümü: kendi API anahtarınızla saatinizde Google Gemini veya OpenAI ile gerçek zamanlı sesli sohbetler. İstediğiniz an araya girme, metinden takip, tercüman, hafıza, zamanlayıcı ve alarmlar, saat özellikleri, telefonda hazırlanan işler, kutucuk ve komplikasyon.

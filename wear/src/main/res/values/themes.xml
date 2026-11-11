@@ -6,7 +6,9 @@
 
     <style name="Theme.Sayova.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@android:color/black</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <!-- The whole launcher icon at 48 dp, as Google Play's Wear review asks; the foreground layer
+             alone failed TunerToGo's review ("Missing app icon in splash screen"). -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
         <item name="postSplashScreenTheme">@style/Theme.Sayova</item>
     </style>
 </resources>

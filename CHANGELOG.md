@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.1 — 2026-11-11
+
+Fixes for Google Play's Wear OS review, which turned 1.0.0 down before it was published.
+
+- On small round watches the first and last entry of every list can be scrolled fully inside the
+  display: list items declare Material 3's minimum list padding. The review had found "Continue" at the
+  end of the introduction's quick-start page and OpenAI in the provider choice under the curved edge.
+- The splash screen shows the whole SayOVA icon at 48 × 48 dp on black, as Wear OS asks for its branded
+  launch (before, only the icon's foreground layer).
+- At the largest font setting on a small watch nothing is cut off any more: the welcome page's orb makes
+  room for the tagline, the buttons at the bottom edge shrink their label instead of ending in "…" (the
+  Talk button leaves out its microphone), the pairing instruction along the top edge fits in German too,
+  and menu entries show up to four lines below their name (Gemini's "about 1–2 ¢ a minute").
+
 ## 1.0.0 — 2026-10-31
 
 First version.

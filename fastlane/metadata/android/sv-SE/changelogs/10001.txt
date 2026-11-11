@@ -1,0 +1,1 @@
+Första versionen av SayOVA: röstsamtal i realtid med Google Gemini eller OpenAI på klockan, med din egen API-nyckel. Avbryt när du vill, läs med, tolk, minne, timer och alarm, klockfunktioner, saker förberedda på telefonen, bricka och komplikation.

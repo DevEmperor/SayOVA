@@ -15,11 +15,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,7 +60,7 @@ import net.devemperor.sayova.core.provider.ProviderId
 import net.devemperor.sayova.ui.components.CheckButton
 import net.devemperor.sayova.ui.components.CrossButton
 import net.devemperor.sayova.ui.components.EdgeButtonScaffold
-import net.devemperor.sayova.ui.components.FitText
+import net.devemperor.sayova.ui.components.EdgeButtonText
 import net.devemperor.sayova.ui.components.Header
 import net.devemperor.sayova.ui.components.Hint
 import net.devemperor.sayova.ui.components.ListScreen
@@ -68,6 +70,7 @@ import net.devemperor.sayova.ui.components.Orb
 import net.devemperor.sayova.ui.components.OrbHandoff
 import net.devemperor.sayova.ui.components.QrCodeImage
 import net.devemperor.sayova.ui.components.SwitchItem
+import net.devemperor.sayova.ui.components.arcFontSize
 import net.devemperor.sayova.ui.components.openOnPhone
 import net.devemperor.sayova.ui.components.screenWidth
 import net.devemperor.sayova.ui.theme.SayovaColors
@@ -80,7 +83,7 @@ import net.devemperor.sayova.ui.theme.SayovaColors
 fun WelcomeScreen(onStart: () -> Unit) {
     EdgeButtonScaffold(
         edgeButton = {
-            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.ExtraSmall) { FitText(stringResource(R.string.welcome_start)) }
+            EdgeButton(onClick = onStart, buttonSize = EdgeButtonSize.ExtraSmall) { EdgeButtonText(stringResource(R.string.welcome_start)) }
         },
     ) { padding ->
         Column(
@@ -88,7 +91,15 @@ fun WelcomeScreen(onStart: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Box(Modifier.size(screenWidth() * 0.3f).onGloballyPositioned { OrbHandoff.homeBounds = it.boundsInWindow() }) {
+            // The orb gives way to the text: on a small watch at the largest font the tagline's second
+            // line otherwise ended under Start (found while fixing 1.0.0's Play review).
+            Box(
+                Modifier
+                    .weight(1f, fill = false)
+                    .sizeIn(maxWidth = screenWidth() * 0.3f, maxHeight = screenWidth() * 0.3f)
+                    .aspectRatio(1f)
+                    .onGloballyPositioned { OrbHandoff.homeBounds = it.boundsInWindow() },
+            ) {
                 Orb(phase = null, level = 0f, modifier = Modifier.fillMaxSize())
             }
             Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleMedium)
@@ -277,16 +288,19 @@ private fun QrContent(state: PairingState.Waiting) {
     // middle of the screen, and a straight line of text there collided with the clock.
     val instruction = stringResource(if (state.offline) R.string.pair_waiting_offline else R.string.pair_scan)
     val instructionColor = if (state.offline) SayovaColors.Coral else MaterialTheme.colorScheme.onSurfaceVariant
+    val arcSize = arcFontSize()
     EdgeButtonScaffold(
         // Wide enough for the longest translations; the QR code sits low enough to leave the sides free.
-        timeText = { TimeText(maxSweepAngle = 170f) { curvedText(instruction, color = instructionColor, maxSweepAngle = 170f) } },
+        timeText = {
+            TimeText(maxSweepAngle = 170f) { curvedText(instruction, color = instructionColor, fontSize = arcSize, maxSweepAngle = 170f) }
+        },
         edgeButton = {
             EdgeButton(
                 onClick = { openOnPhone(context, state.link) { phoneOpened = it } },
                 buttonSize = EdgeButtonSize.ExtraSmall,
                 colors = ButtonDefaults.filledTonalButtonColors(),
             ) {
-                FitText(stringResource(R.string.pair_open_on_phone))
+                EdgeButtonText(stringResource(R.string.pair_open_on_phone))
             }
         },
     ) { _ ->
@@ -321,8 +335,11 @@ private fun QrContent(state: PairingState.Waiting) {
 private fun CompareCode(code: String, onMatch: () -> Unit, onMismatch: () -> Unit) {
     val question = stringResource(R.string.pair_compare_title)
     val questionColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val arcSize = arcFontSize()
     ScreenScaffold(
-        timeText = { TimeText(maxSweepAngle = 170f) { curvedText(question, color = questionColor, maxSweepAngle = 170f) } },
+        timeText = {
+            TimeText(maxSweepAngle = 170f) { curvedText(question, color = questionColor, fontSize = arcSize, maxSweepAngle = 170f) }
+        },
     ) { _ ->
         val width = screenWidth()
         Column(

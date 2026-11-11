@@ -20,6 +20,7 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.TextDefaults
 import androidx.wear.compose.material3.curvedText
 import net.devemperor.sayova.BuildConfig
 import net.devemperor.sayova.R
@@ -43,7 +44,10 @@ fun AboutScreen(onLicenses: () -> Unit) {
     ListScreen { spec ->
         item {
             Column(
-                Modifier.fillMaxWidth().transformedContent(this, spec),
+                Modifier
+                    .fillMaxWidth()
+                    .transformedContent(this, spec)
+                    .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
@@ -88,7 +92,13 @@ fun LicensesScreen() {
         item { Header(stringResource(R.string.about_licenses), spec) }
         licenses.forEach { (name, license) ->
             item(key = name) {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp).transformedContent(this, spec)) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .transformedContent(this, spec)
+                        .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
+                ) {
                     Text(name, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                     Text(
                         license,

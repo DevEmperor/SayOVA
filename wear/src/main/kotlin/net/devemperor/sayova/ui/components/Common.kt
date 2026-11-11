@@ -66,6 +66,7 @@ import androidx.wear.compose.material3.LocalTextStyle
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.TextDefaults
 import androidx.wear.input.RemoteInputIntentHelper
 import androidx.wear.remote.interactions.RemoteActivityHelper
 import io.nayuki.qrcodegen.QrCode
@@ -125,12 +126,14 @@ fun MessageScreen(
     extra: (@Composable () -> Unit)? = null,
 ) {
     val listState = rememberTransformingLazyColumnState()
+    val textTop = TextDefaults.minimumTopListContentPadding
+    val textBottom = TextDefaults.minimumBottomListContentPadding
     ScreenScaffold(
         scrollState = listState,
         edgeButton = {
             EdgeButton(onClick = onAction) {
                 actionIcon?.let { Icon(painterResource(it), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(20.dp)) }
-                FitText(actionLabel)
+                EdgeButtonText(actionLabel)
             }
         },
     ) { padding ->
@@ -139,9 +142,22 @@ fun MessageScreen(
             contentPadding = padding,
             verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         ) {
-            item { Icon(painterResource(icon), contentDescription = null, tint = iconTint, modifier = Modifier.size(26.dp)) }
+            // Each item with Material 3's list padding for text, so the first and last stay inside the circle.
             item {
-                Text(title, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 14.dp))
+                Icon(
+                    painterResource(icon),
+                    contentDescription = null,
+                    tint = iconTint,
+                    modifier = Modifier.minimumVerticalContentPadding(textTop, textBottom).size(26.dp),
+                )
+            }
+            item {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.minimumVerticalContentPadding(textTop, textBottom).padding(horizontal = 14.dp),
+                )
             }
             if (text != null) {
                 item {
@@ -150,12 +166,16 @@ fun MessageScreen(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 18.dp),
+                        modifier = Modifier.minimumVerticalContentPadding(textTop, textBottom).padding(horizontal = 18.dp),
                     )
                 }
             }
             if (extra != null) {
-                item { Column(horizontalAlignment = Alignment.CenterHorizontally) { extra() } }
+                item {
+                    Column(Modifier.minimumVerticalContentPadding(textTop, textBottom), horizontalAlignment = Alignment.CenterHorizontally) {
+                        extra()
+                    }
+                }
             }
         }
     }
@@ -259,6 +279,28 @@ fun FitText(
         autoSize = TextAutoSize.StepBased(minFontSize = size * minScale, maxFontSize = size, stepSize = 0.5.sp),
     )
 }
+
+/**
+ * The label of an edge button: may shrink further than [FitText]'s default, about back to its size
+ * at the normal font setting. At the largest setting on a small watch the extra-small edge button
+ * cut "Sprechen" and "Am Handy" to "Spre…" and "Am Han…".
+ */
+@Composable
+fun EdgeButtonText(text: String) = FitText(text, minScale = 0.55f)
+
+/**
+ * Font size for a line curved along the top bezel: the theme's arc size, growing with the font
+ * setting only up to 110 %. At the largest setting the German pairing instruction ("Mit Smartphone
+ * scannen") no longer fit its 170° arc and was cut off.
+ */
+@Composable
+fun arcFontSize(): TextUnit {
+    val size = MaterialTheme.typography.arcMedium.fontSize
+    val scale = LocalDensity.current.fontScale
+    return if (scale > MAX_ARC_SCALE) size * (MAX_ARC_SCALE / scale) else size
+}
+
+private const val MAX_ARC_SCALE = 1.1f
 
 /**
  * Text over a few lines that keeps its words whole. Next to an icon and a switch the line is narrow,

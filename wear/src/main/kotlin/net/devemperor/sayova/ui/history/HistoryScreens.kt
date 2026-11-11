@@ -24,6 +24,7 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.OpenOnPhoneDialog
 import androidx.wear.compose.material3.OpenOnPhoneDialogDefaults
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.TextDefaults
 import androidx.wear.compose.material3.curvedText
 import net.devemperor.sayova.Diagnostics
 import net.devemperor.sayova.R
@@ -176,7 +177,11 @@ fun ConversationDetailScreen(conversation: Conversation, onContinue: () -> Unit,
                     style = style,
                     color = color,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 3.dp).transformedContent(this, spec),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 3.dp)
+                        .transformedContent(this, spec)
+                        .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
                 )
             }
         }

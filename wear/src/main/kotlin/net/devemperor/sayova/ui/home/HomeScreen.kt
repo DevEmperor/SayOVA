@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -42,6 +43,7 @@ import net.devemperor.sayova.core.usage.Budget
 import net.devemperor.sayova.core.usage.BudgetLevel
 import net.devemperor.sayova.data.SayovaSettings
 import net.devemperor.sayova.ui.components.EdgeButtonScaffold
+import net.devemperor.sayova.ui.components.EdgeButtonText
 import net.devemperor.sayova.ui.components.FitText
 import net.devemperor.sayova.ui.components.Orb
 import net.devemperor.sayova.ui.components.OrbHandoff
@@ -71,6 +73,9 @@ fun HomeScreen(
     val budget = Budget.level(monthUsd, settings.budgetUsd)
     // The model the next conversation will use: near the budget perhaps the cheaper one (see SessionService).
     val model = if (settings.budgetSave && budget >= BudgetLevel.NEAR) provider.economyModel else provider.model(settings.modelId())
+    // At the largest font settings the microphone gives its room to the word: on a small watch the
+    // extra-small button cut "Sprechen" to "Sprec…" beside it.
+    val talkIcon = LocalDensity.current.fontScale <= 1.15f
     EdgeButtonScaffold(
         timeText = { TimeText() },
         edgeButton = {
@@ -79,8 +84,10 @@ fun HomeScreen(
                 buttonSize = EdgeButtonSize.ExtraSmall,
                 colors = ButtonDefaults.buttonColors(),
             ) {
-                Icon(painterResource(R.drawable.ic_mic), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(20.dp))
-                FitText(stringResource(R.string.home_talk))
+                if (talkIcon) {
+                    Icon(painterResource(R.drawable.ic_mic), contentDescription = null, modifier = Modifier.padding(end = 4.dp).size(20.dp))
+                }
+                EdgeButtonText(stringResource(R.string.home_talk))
             }
         },
     ) { padding ->

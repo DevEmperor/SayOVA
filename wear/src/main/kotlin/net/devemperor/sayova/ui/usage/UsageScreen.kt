@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.TextDefaults
 import androidx.wear.compose.material3.lazy.TransformationSpec
 import net.devemperor.sayova.R
 import net.devemperor.sayova.core.cost.CostMeter
@@ -81,7 +82,8 @@ fun UsageScreen(days: List<UsageDay>, budgetUsd: Int) {
 @Composable
 private fun TransformingLazyColumnItemScope.Summary(label: String, total: UsageTotal, spec: TransformationSpec) {
     Column(
-        Modifier.fillMaxWidth().padding(vertical = 2.dp).transformedContent(this, spec),
+        Modifier.fillMaxWidth().padding(vertical = 2.dp).transformedContent(this, spec)
+            .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -105,7 +107,8 @@ private fun TransformingLazyColumnItemScope.BudgetBar(spentUsd: Double, budgetUs
     }
     val track = MaterialTheme.colorScheme.surfaceContainerHigh
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 30.dp, vertical = 2.dp).transformedContent(this, spec),
+        Modifier.fillMaxWidth().padding(horizontal = 30.dp, vertical = 2.dp).transformedContent(this, spec)
+            .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
@@ -133,7 +136,8 @@ private fun TransformingLazyColumnItemScope.RecentBars(recent: List<Pair<LocalDa
     val most = recent.maxOf { it.second.talkMs }.coerceAtLeast(60_000)
     val day = DateTimeFormatter.ofPattern("d MMM", locale)
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 4.dp).transformedContent(this, spec),
+        Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 4.dp).transformedContent(this, spec)
+            .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
@@ -167,7 +171,8 @@ private fun TransformingLazyColumnItemScope.RecentBars(recent: List<Pair<LocalDa
 @Composable
 private fun TransformingLazyColumnItemScope.MonthLine(month: YearMonth, total: UsageTotal, locale: Locale, spec: TransformationSpec) {
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 3.dp).transformedContent(this, spec),
+        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 3.dp).transformedContent(this, spec)
+            .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -185,7 +190,8 @@ private fun TransformingLazyColumnItemScope.MonthLine(month: YearMonth, total: U
 @Composable
 private fun TransformingLazyColumnItemScope.TotalLines(total: UsageTotal, spec: TransformationSpec) {
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 3.dp).transformedContent(this, spec),
+        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 3.dp).transformedContent(this, spec)
+            .minimumVerticalContentPadding(TextDefaults.minimumTopListContentPadding, TextDefaults.minimumBottomListContentPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {

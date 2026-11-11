@@ -83,7 +83,10 @@ fun MemoryScreen(
 private fun TransformingLazyColumnItemScope.FactItem(fact: Fact, onClick: () -> Unit, spec: TransformationSpec) {
     Button(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth().transformedHeight(this, spec),
+        modifier = Modifier
+            .fillMaxWidth()
+            .transformedHeight(this, spec)
+            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
         transformation = SurfaceTransformation(spec),
         colors = ButtonDefaults.filledTonalButtonColors(),
         label = { Text(fact.text, maxLines = 8, overflow = TextOverflow.Ellipsis) },
