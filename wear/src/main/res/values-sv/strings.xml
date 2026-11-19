@@ -215,6 +215,8 @@
     <string name="tile_label">SayOVA</string>
     <string name="tile_description">Prata med SayOVA med ett tryck</string>
     <string name="tile_latest">Senast: %1$s</string>
+    <string name="tile_running">Samtal pågår</string>
+    <string name="tile_return">Tillbaka</string>
     <string name="complication_label">Prata med SayOVA</string>
     <string name="complication_short">Prata</string>
     <string name="complication_description">Starta ett samtal med SayOVA</string>

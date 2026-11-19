@@ -1,6 +1,11 @@
 package net.devemperor.sayova.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -144,6 +149,13 @@ fun SayovaUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
             /** The introduction's last step: the tour over the home screen. */
             var homeTour by rememberSaveable { mutableStateOf(false) }
             var autoSample by remember { mutableStateOf(launch == Launch.SAMPLE) }
+            /** The conversation that waits for the answer to the notification permission (see startConversation). */
+            var afterNotificationAsk by remember { mutableStateOf<(() -> Unit)?>(null) }
+            var notificationAsked by rememberSaveable { mutableStateOf(false) }
+            val notificationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+                afterNotificationAsk?.invoke()
+                afterNotificationAsk = null
+            }
 
             /**
              * The introduction after the sample: what is still missing (the microphone, a key), then the
@@ -175,6 +187,18 @@ fun SayovaUi(launch: Launch, initialRoutes: List<String>, relaunches: Flow<Launc
                 val spent = Usage.month(app.usage.days.value, YearMonth.now()).costUsd
                 if (!anyway && !SessionHub.running && Budget.level(spent, settings?.budgetUsd ?: 0) == BudgetLevel.REACHED) {
                     held = HeldStart(continueId, interpret)
+                    return
+                }
+                // Without the notification permission (Android 13 and newer) the conversation's
+                // notification, and with it its icon on the watch face and its entry in Recents, stays
+                // hidden. Asked once more if it was refused in the introduction; the conversation then
+                // starts whatever the answer (anyway: the budget was checked above).
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notificationAsked && !SessionHub.running &&
+                    context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    notificationAsked = true
+                    afterNotificationAsk = { startConversation(continueId, interpret, anyway = true) }
+                    notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     return
                 }
                 SessionHub.start(context, continueId, interpret)

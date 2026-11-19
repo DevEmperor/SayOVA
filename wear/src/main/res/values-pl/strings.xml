@@ -220,6 +220,8 @@
     <string name="tile_label">SayOVA</string>
     <string name="tile_description">Rozmowa z SayOVA jednym kliknięciem</string>
     <string name="tile_latest">Ostatnio: %1$s</string>
+    <string name="tile_running">Rozmowa trwa</string>
+    <string name="tile_return">Wróć</string>
     <string name="complication_label">Rozmawiaj z SayOVA</string>
     <string name="complication_short">Mów</string>
     <string name="complication_description">Rozpocznij rozmowę z SayOVA</string>

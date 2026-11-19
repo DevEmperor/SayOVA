@@ -214,6 +214,8 @@
     <string name="tile_label">SayOVA</string>
     <string name="tile_description">Per Tippen mit SayOVA sprechen</string>
     <string name="tile_latest">Zuletzt: %1$s</string>
+    <string name="tile_running">Gespräch läuft</string>
+    <string name="tile_return">Zurück</string>
     <string name="complication_label">Mit SayOVA sprechen</string>
     <string name="complication_short">Reden</string>
     <string name="complication_description">Gespräch mit SayOVA starten</string>

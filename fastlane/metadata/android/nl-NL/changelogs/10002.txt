@@ -1,0 +1,1 @@
+Eerste versie van SayOVA: realtime spraakgesprekken met Google Gemini of OpenAI op je horloge, met je eigen API-sleutel. Altijd onderbreken, meelezen, tolk, geheugen, timers en wekkers, horlogefuncties, klaarzetten op je telefoon, tegel en complicatie.

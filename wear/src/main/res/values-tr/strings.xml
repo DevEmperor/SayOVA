@@ -215,6 +215,8 @@
     <string name="tile_label">SayOVA</string>
     <string name="tile_description">Tek dokunuşla SayOVA ile konuşun</string>
     <string name="tile_latest">Son: %1$s</string>
+    <string name="tile_running">Konuşma sürüyor</string>
+    <string name="tile_return">Geri dön</string>
     <string name="complication_label">SayOVA ile konuş</string>
     <string name="complication_short">Konuş</string>
     <string name="complication_description">SayOVA ile sohbet başlatın</string>

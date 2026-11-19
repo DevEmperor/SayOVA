@@ -2,6 +2,7 @@ package net.devemperor.sayova
 
 import android.content.Context
 import android.content.Intent
+import android.content.LocusId
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,6 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        // The same id as the conversation's ongoing activity (see SessionService), so the launcher's
+        // Recents shows it on SayOVA's own entry.
+        setLocusContext(LocusId(LOCUS_ID), null)
         val launch = if (savedInstanceState == null) launchOf(intent) else Launch.OPEN
         // With diagnostics on (see Diagnostics), a chain of routes to open, for tests and store
         // screenshots: `adb shell am start -n net.devemperor.sayova/.MainActivity --es routes settings`.
@@ -104,6 +108,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         const val ACTION_TALK = "net.devemperor.sayova.action.TALK"
+        const val LOCUS_ID = "sayova"
         private const val EXTRA_DEMO = "demo"
         private const val EXTRA_ROUTES = "routes"
         private const val EXTRA_SAY = "say"

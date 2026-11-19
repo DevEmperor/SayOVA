@@ -226,6 +226,9 @@
     <string name="tile_description">Talk to SayOVA with one tap</string>
     <!-- On the tile above the talk button: the title of the latest conversation. -->
     <string name="tile_latest">Last: %1$s</string>
+    <!-- The tile while a conversation runs; the button leads back to it. -->
+    <string name="tile_running">Conversation running</string>
+    <string name="tile_return">Return</string>
     <string name="complication_label">Talk to SayOVA</string>
     <string name="complication_short">Talk</string>
     <string name="complication_description">Start a conversation with SayOVA</string>

@@ -21,20 +21,34 @@ import android.content.Context
 import net.devemperor.sayova.MainActivity
 import net.devemperor.sayova.R
 import net.devemperor.sayova.sayova
+import net.devemperor.sayova.session.SessionHub
 import net.devemperor.sayova.ui.settings.AppLanguages
 
 /**
  * Tile in the watch carousel: one tap on the edge button starts talking; above it the latest
- * conversation, as a reminder of what was last asked.
+ * conversation, as a reminder of what was last asked. While a conversation runs it says so and leads
+ * back to it, as Google Play's Wear review asks of a tile next to an ongoing activity (WO-V4); the
+ * conversation service asks for a redraw when it starts and stops.
  */
 class SayovaTileService : Material3TileService(allowDynamicTheme = false, defaultColorScheme = TILE_COLORS) {
 
     override suspend fun MaterialScope.tileResponse(requestParams: TileRequest): Tile {
         val app = this@SayovaTileService.sayova
+        val strings = AppLanguages.localized(this@SayovaTileService)
+        if (SessionHub.running) {
+            val back = clickable(action = launch(null), id = "return")
+            val running = primaryLayout(
+                titleSlot = { text(strings.getString(R.string.app_name).layoutString) },
+                mainSlot = { text(strings.getString(R.string.tile_running).layoutString, typography = Typography.BODY_MEDIUM, maxLines = 3) },
+                bottomSlot = {
+                    textEdgeButton(onClick = back, labelContent = { text(strings.getString(R.string.tile_return).layoutString) })
+                },
+            )
+            return tile(timeline = timeline(timelineEntry(running)))
+        }
         app.history.load()
         val latest = app.history.conversations.value.firstOrNull()?.title
         val talk = clickable(action = launch(MainActivity.ACTION_TALK), id = "talk")
-        val strings = AppLanguages.localized(this@SayovaTileService)
 
         val layout = primaryLayout(
             titleSlot = { text(strings.getString(R.string.app_name).layoutString) },
@@ -52,13 +66,18 @@ class SayovaTileService : Material3TileService(allowDynamicTheme = false, defaul
         return tile(timeline = timeline(timelineEntry(layout)))
     }
 
-    private fun launch(action: String): ActionBuilders.LaunchAction =
+    /** Opens SayOVA, with [action] for MainActivity, or as it is (back to a running conversation). */
+    private fun launch(action: String?): ActionBuilders.LaunchAction =
         ActionBuilders.LaunchAction.Builder()
             .setAndroidActivity(
                 ActionBuilders.AndroidActivity.Builder()
                     .setPackageName(packageName)
                     .setClassName(MainActivity::class.java.name)
-                    .addKeyToExtraMapping(EXTRA_ACTION, ActionBuilders.AndroidStringExtra.Builder().setValue(action).build())
+                    .apply {
+                        if (action != null) {
+                            addKeyToExtraMapping(EXTRA_ACTION, ActionBuilders.AndroidStringExtra.Builder().setValue(action).build())
+                        }
+                    }
                     .build(),
             )
             .build()

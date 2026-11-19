@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.2 — 2026-11-19
+
+Fixes for Google Play's Wear OS review, which turned 1.0.1 down for its ongoing activity.
+
+- While a conversation runs, the tile says so and its button leads back to the conversation; when it
+  ends, the tile offers to talk again.
+- The conversation's notification is public, so its icon shows on the watch face also while the watch
+  is locked, and the ongoing activity is tied to SayOVA's own entry in the launcher's Recents.
+- If notifications were turned down in the introduction, SayOVA asks once more before a conversation:
+  without them Wear OS shows neither the icon on the watch face nor the entry in Recents. The
+  conversation starts whatever the answer.
+
 ## 1.0.1 — 2026-11-11
 
 Fixes for Google Play's Wear OS review, which turned 1.0.0 down before it was published.

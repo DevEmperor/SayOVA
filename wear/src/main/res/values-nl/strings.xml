@@ -214,6 +214,8 @@
     <string name="tile_label">SayOVA</string>
     <string name="tile_description">Met één tik met SayOVA praten</string>
     <string name="tile_latest">Laatst: %1$s</string>
+    <string name="tile_running">Gesprek loopt</string>
+    <string name="tile_return">Terug</string>
     <string name="complication_label">Praat met SayOVA</string>
     <string name="complication_short">Praat</string>
     <string name="complication_description">Start een gesprek met SayOVA</string>

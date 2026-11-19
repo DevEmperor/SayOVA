@@ -212,6 +212,8 @@
     <string name="tile_label">SayOVA</string>
     <string name="tile_description">ワンタップで SayOVA と話す</string>
     <string name="tile_latest">前回：%1$s</string>
+    <string name="tile_running">会話中</string>
+    <string name="tile_return">戻る</string>
     <string name="complication_label">SayOVA と話す</string>
     <string name="complication_short">話す</string>
     <string name="complication_description">SayOVA との会話を開始</string>

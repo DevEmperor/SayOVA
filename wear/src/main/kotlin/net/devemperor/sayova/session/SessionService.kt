@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
+import androidx.core.content.LocusIdCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.ongoing.OngoingActivity
@@ -190,6 +191,8 @@ class SessionService : LifecycleService() {
         SessionHub.engine = null
         engine = null
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        // The tile goes back from "Conversation running" to talking (see SayovaTileService).
+        SayovaTileService.refresh(this)
         stopSelf()
     }
 
@@ -210,24 +213,32 @@ class SessionService : LifecycleService() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
         val stop = PendingIntent.getService(this, 1, stopIntent(this), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        // Public: the watch face is the watch's lock screen, and a private notification's ongoing
+        // activity may not show there. It says no more than that SayOVA is listening.
         val builder = NotificationCompat.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_sayova_mono)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.notification_text))
             .setCategory(NotificationCompat.CATEGORY_CALL)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
             .setSilent(true)
             .setContentIntent(open)
             .addAction(R.drawable.ic_call_end, getString(R.string.action_end), stop)
+        // The icon on the watch face, the entry in the launcher's Recents (tied to SayOVA's own entry
+        // by the LocusId MainActivity sets) and, through the tile, the way back: what Google Play's
+        // Wear review asks of an ongoing activity (WO-V4), which turned 1.0.1 down.
         OngoingActivity.Builder(applicationContext, NOTIFICATION_ID, builder)
             .setStaticIcon(R.drawable.ic_sayova_mono)
             .setTouchIntent(open)
+            .setLocusId(LocusIdCompat(MainActivity.LOCUS_ID))
             .setStatus(Status.Builder().addTemplate(getString(R.string.ongoing_status)).build())
             .build()
             .apply(applicationContext)
         val notification: Notification = builder.build()
         this.notification = notification
         ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+        SayovaTileService.refresh(this)
     }
 
     /**
